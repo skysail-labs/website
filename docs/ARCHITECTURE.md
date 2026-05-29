@@ -1,4 +1,4 @@
-# Nyx Darkpool — Architecture
+# Darknyx Darkpool — Architecture
 
 This document is the system-level overview. For a **cryptographer's deep
 dive** — key model, all four ZK circuits, lifecycle walkthrough,
@@ -6,7 +6,7 @@ settlement mechanics — see [`CRYPTOGRAPHY.md`](../CRYPTOGRAPHY.md). For a
 quick look (TL;DR + deployed addresses + 3-step quickstart) see the
 top-level [`README.md`](../README.md).
 
-> **Currency**: this document reflects the `nyx-v2-onchain-hardening`
+> **Currency**: this document reflects the `darknyx-v2-onchain-hardening`
 > branch through the **v3.5 batched-validity migration** (current).
 > Layered hardenings, in landing order:
 >
@@ -110,14 +110,14 @@ Three trust boundaries, three layers:
 |------------------|-------------------------------------|----------------------------------------------|
 | **L1 (Solana)**  | Anchor 0.32 programs (vault + ME)   | Custody, Merkle tree, ZK verifier, settlement |
 | **ER (rollup)**  | MagicBlock Ephemeral Rollup         | Hidden order intent + matching                |
-| **Client (TS)**  | `@nyx/sdk`, snarkjs, ZK circuits    | Key derivation, proof generation, ix builders |
+| **Client (TS)**  | `@darknyx/sdk`, snarkjs, ZK circuits    | Key derivation, proof generation, ix builders |
 
 ---
 
 ## Project layout
 
 ```
-nyx-monorepo/
+darknyx-monorepo/
 ├── programs/                          # On-chain Solana programs (Anchor 0.32)
 │   ├── vault/                         # Custody, UTXO Merkle tree, settlement
 │   │   ├── src/
@@ -207,7 +207,7 @@ nyx-monorepo/
 │   └── build/                                 # Compiled .wasm + .zkey (gitignored, generated)
 │
 ├── packages/
-│   └── sdk/                                   # @nyx/sdk — TypeScript client library
+│   └── sdk/                                   # @darknyx/sdk — TypeScript client library
 │       ├── src/
 │       │   ├── client.ts                      # NyxDarkpoolClient factory
 │       │   ├── providers.ts                   # Injectable Solana / ER providers
@@ -423,7 +423,7 @@ check. Both walk the transaction's instruction list via
 `Ed25519Program` precompile ix, assert that
 `pubkey == VaultConfig.tee_pubkey` and that
 `msg == canonical_payload_hash(payload)` (SHA-256 over a domain tag
-`b"nyx-match-v5"` + a fixed-order serialisation of every payload
+`b"darknyx-match-v5"` + a fixed-order serialisation of every payload
 field), and only then proceed to:
 
 1. Verify the buyer's and seller's `NoteLock` PDAs match
@@ -439,7 +439,7 @@ field), and only then proceed to:
      root; assert the supplied `BatchValidityMarker` PDA is at
      `[b"batch_validity", root]`, owned by us, and not expired.
    * **v3.1 per-match**: recompute
-     `binding_hash = SHA256(b"nyx-create-bind-v1" ‖ 14 fields)` and
+     `binding_hash = SHA256(b"darknyx-create-bind-v1" ‖ 14 fields)` and
      `price_commitment = Poseidon2(domain, clearing_price ‖ batch_slot)`;
      assert `ValidCreateMarker` exists at `[b"valid_create", binding_hash]`
      and `ValidPriceMarker` exists at `[b"valid_price", price_commitment]`,
@@ -790,7 +790,7 @@ roughly by cryptographic impact remaining:
 
 1. **Real Phase-2 ceremony** — All four shipped Groth16 circuits use a
    deterministic dev contribution. The toxic waste is therefore
-   *recoverable from the build script* (`echo "nyx-phase1-dev-contribution-$name"`
+   *recoverable from the build script* (`echo "darknyx-phase1-dev-contribution-$name"`
    passed as entropy). Real MPC with ≥ 3 independent contributors and
    publicly verifiable transcripts required before mainnet. Both PTAU
    files (pot16 + pot18) are SHA-256-pinned in `scripts/download-ptau.sh`
@@ -986,7 +986,7 @@ should be modified so:
 
 | Branch | vault | matching_engine |
 |---|---|---|
-| **`nyx-v2-onchain-hardening`** (v3 — described in this doc) | `C63vKvysCzX55PKraas4Wc22ijqjGJQdPC1mrzCFVWZx` | `6EasFxo6RCWrK4KAwcdUJqL4KjReLC3rtah8EtHgHSqe` |
+| **`darknyx-v2-onchain-hardening`** (v3 — described in this doc) | `C63vKvysCzX55PKraas4Wc22ijqjGJQdPC1mrzCFVWZx` | `6EasFxo6RCWrK4KAwcdUJqL4KjReLC3rtah8EtHgHSqe` |
 | `main` (legacy v1 — hackathon demo) | `ELt4FH2gH8RaZkYbvbbDjGkX8dPhGFdWnspM4w1fdjoY` | `DvYcaiBuaHgJFVjVd57JLM7ZMavzXvBezJwsvA46FJbH` |
 
 The two deployments coexist on devnet at different addresses, so the

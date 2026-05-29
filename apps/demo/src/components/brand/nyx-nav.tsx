@@ -6,17 +6,17 @@ interface NyxNavProps {
   /** "ink" = dark page, "chalk" = light page */
   tone?: "ink" | "chalk";
   /**
-   * Where the "Launch dapp" button points. Defaults to /dapp.
-   * Set to null to suppress the button (e.g. ON the dapp page itself).
+   * Where the launch badge points. Defaults to /dapp.
+   * Set to null to show a non-clickable status badge.
    */
   launchHref?: string | null;
   /** Active page hint — applied to nav links for subtle emphasis. */
-  active?: "home" | "architecture" | "dapp" | null;
+  active?: "home" | "docs" | "dapp" | null;
 }
 
 const LINKS: Array<{ label: string; href: string; key: NonNullable<NyxNavProps["active"]> }> = [
-  { label: "Overview", href: "/landing", key: "home" },
-  { label: "Architecture", href: "/architecture", key: "architecture" },
+  { label: "Overview", href: "/", key: "home" },
+  { label: "Docs", href: "/docs", key: "docs" },
 ];
 
 export function NyxNav({ tone = "ink", launchHref = "/dapp", active = null }: NyxNavProps) {
@@ -72,11 +72,24 @@ export function NyxNav({ tone = "ink", launchHref = "/dapp", active = null }: Ny
               color: "var(--nyx-accent)",
             }}
           >
-            <span>Coming Soon on Mainnet</span>
+            <span>Private Beta Soon</span>
           </div>
         ) : (
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "11px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(174,172,176,0.5)" }}>
-            devnet
+          <span
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: "11px",
+              fontWeight: 600,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              padding: "6px 14px",
+              borderRadius: "2px",
+              background: "var(--nyx-accent-soft)",
+              border: "1px solid oklch(0.62 0.14 260 / 0.35)",
+              color: "var(--nyx-accent)",
+            }}
+          >
+            Private Beta Soon
           </span>
         )}
       </div>

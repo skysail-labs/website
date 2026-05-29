@@ -1,9 +1,9 @@
-# Nyx — TEE v2 Migration Brief
+# Darknyx — TEE v2 Migration Brief
 
 > Authoritative migration doc for moving from the **MagicBlock PER + software-TEE** architecture to a **dedicated attested-TEE on Phala Cloud (Intel TDX via dstack)** architecture. Replaces the outdated `tee_v2_status_and_migration_brief.md` from 2026-05-11.
 >
 > **Last revised:** 2026-05-25 (revision 2 — incorporates the Phala/dstack docs deep-dive + the four locked v2 decisions).
-> **Branch:** `nyx-v2-onchain-hardening`.
+> **Branch:** `darknyx-v2-onchain-hardening`.
 > **Read after:** [`CLAUDE.md`](../CLAUDE.md), [`docs/ARCHITECTURE.md`](ARCHITECTURE.md), [`CRYPTOGRAPHY.md`](../CRYPTOGRAPHY.md), [`docs/v3.5-migration.md`](v3.5-migration.md).
 > **Pairs with:**
 >   * [`docs/tee-api-openapi.yaml`](tee-api-openapi.yaml) — the wire contract.
@@ -22,7 +22,7 @@ The on-chain custody side has reached a stable, audited shape after v2 / v3 / v3
 |---|---|---|---|
 | **D1** | Hosting | Phala Cloud (managed dstack, Intel TDX) | Fastest path to a real attested deployment. Same Docker image runs on dstack-cloud (GCP/AWS) or self-hosted bare metal later — not a lock-in. |
 | **D2** | TEE pubkey rotation gate | Admin multisig (Squads 3-of-5) only — verifies TDX quote off-chain via `dstack-verifier` Docker image | Avoids the multi-week port of `dcap-qvl` to Solana BPF. On-chain quote verification deferred to v3. |
-| **D3** | API edge | Custom domain via dstack-ingress (`api.nyx.example.com`) with RA-HTTPS + `/evidences/` | TLS terminates inside the enclave; cert private key never leaves the TEE; clients verify via the standard dstack-ingress evidence pattern. |
+| **D3** | API edge | Custom domain via dstack-ingress (`api.darknyx.example.com`) with RA-HTTPS + `/evidences/` | TLS terminates inside the enclave; cert private key never leaves the TEE; clients verify via the standard dstack-ingress evidence pattern. |
 | **D4** | Groth16 prover location | Inside the TEE (ark-groth16) | Witness never leaves the enclave. ~5-10% TDX overhead is within budget. Phase-1 benchmark validates; fallback is TEE-signed-public-input + external prover. |
 | **D5** | Matching cadence | Frequent-batch-auction with `BATCH_MS = 2000` default, tunable per market via on-chain `MatchingConfig.batch_ms` | Hot order book + batched clearing. The settle pipeline (~2-3 s finality) is the lower bound; ticking faster queues batches in memory. `VALID_MATCH_BATCH` + `BatchValidityMarker` are structurally batch primitives — continuous matching is incompatible without a circuit rewrite. UCP is the dark-pool privacy pattern (timing-uniform fills). |
 | **D6** | Indexer architecture | Inside the TEE, shared in-memory state with the matcher via `tokio RwLock` | The TEE already holds the Merkle mirror + nullifier/lock sets in RAM. Exposing `/tree/*` + `/transparency` is essentially free. One deployment, one attestation chain. Clients who don't trust the TEE for reads retain the trustless fallback (read `VaultConfig.current_root` + PDAs directly from Solana, re-derive the Merkle path themselves). |
@@ -46,7 +46,7 @@ What this document is **not** for:
 
 ## 1. Where we are right now (architecture audit, 2026-05-24)
 
-### 1.1 What's on-chain and deployed (devnet, `nyx-v2-onchain-hardening`)
+### 1.1 What's on-chain and deployed (devnet, `darknyx-v2-onchain-hardening`)
 
 **Program IDs (post-Phase-1c-hard):**
 
@@ -165,7 +165,7 @@ This is the load-bearing section. Each row tells you exactly what happens to eac
 
 **Why this layer doesn't move:** every cryptographic invariant the on-chain code enforces (`outstanding[mint] ≤ vault_token`, conservation per-leg, `VALID_INPUT`-gated locks, `VALID_MATCH_BATCH`-gated settles, Merkle inclusion against `BatchValidityMarker`, nullifier replay protection) is custody-side, not matching-side. The TEE migration touches *who can sign* the `MatchResultPayload`, not *what the on-chain handler verifies*.
 
-**Note on `vault_config.tee_pubkey` derivation under dstack.** The Ed25519 signer key is **deterministically derived** from a dstack-kms-issued seed: `dstack.getKey("nyx/ed25519-signer/v1")` → 32-byte seed → `ed25519_dalek::SigningKey::from_bytes(seed)`. Because `getKey` is a KDF over `(deployer_id, app_hash, path)`, the **same `compose_hash` produces the same signing key regardless of which TDX host the CVM runs on**. CVM restarts and hardware migrations require no on-chain action; only an image upgrade (new `compose_hash`) requires a `set_tee_pubkey` rotation. Full key-lifecycle matrix in [`docs/tee-attestation-flow.md`](tee-attestation-flow.md) §9.
+**Note on `vault_config.tee_pubkey` derivation under dstack.** The Ed25519 signer key is **deterministically derived** from a dstack-kms-issued seed: `dstack.getKey("darknyx/ed25519-signer/v1")` → 32-byte seed → `ed25519_dalek::SigningKey::from_bytes(seed)`. Because `getKey` is a KDF over `(deployer_id, app_hash, path)`, the **same `compose_hash` produces the same signing key regardless of which TDX host the CVM runs on**. CVM restarts and hardware migrations require no on-chain action; only an image upgrade (new `compose_hash`) requires a `set_tee_pubkey` rotation. Full key-lifecycle matrix in [`docs/tee-attestation-flow.md`](tee-attestation-flow.md) §9.
 
 ### 3.2 ZK circuits (`circuits/`)
 
@@ -191,7 +191,7 @@ The proof system + leaf-hash shape stays. The TEE submits `verify_match_batch` p
 | Nullifier formula (`Poseidon2(spending_key, note_commitment)`) | Keep |
 | Owner commitment derivation (`Poseidon2(spending_key, r_owner)`) | Keep |
 | Key derivation chain (master_seed → spending/viewing/root/trading + per-note blinding) | Keep |
-| Canonical payload hash (`SHA-256("nyx-match-v5" || fields...)`) | Keep — the TEE signs the SAME message format the on-chain handler verifies |
+| Canonical payload hash (`SHA-256("darknyx-match-v5" || fields...)`) | Keep — the TEE signs the SAME message format the on-chain handler verifies |
 
 These are cross-language byte-equality contracts (see CLAUDE.md §6); breaking them means re-verifying parity tests + on-chain handlers + circuits. **Don't.**
 
@@ -209,7 +209,7 @@ These are cross-language byte-equality contracts (see CLAUDE.md §6); breaking t
 | `state/pending_order.rs` (`PendingOrder`) | **DELETE** — the entire state struct + state machine + `MAX_PENDING_SLOTS_PER_USER` cap |
 | `state/batch_results.rs` (`BatchResults`) | **DELETE** — TEE submits settle txs directly with `MatchResultPayload`; no L1 ring buffer needed |
 | `state/match_result.rs` (`MatchResult`) | **DELETE** — TEE constructs the payload in-process |
-| `state/change_note.rs` | **DELETE** — change-note derivation moves into the TEE |
+| `state/change_note.rs` | **DELETED** (TEE v2 PR 3, 2026-05-27) — moved into `darkpool_matcher::change_note`. The on-chain ix calls into the matcher; the SDK's TS port is unchanged. Cross-language byte-equality (matcher ↔ TS) gated by `tests/change_note_parity.rs`. |
 | `state/fee_accumulator.rs` (`FeeAccumulator`) | **DELETE** — fee accrual happens in TEE memory |
 | `state/order_record.rs` | **DELETE** |
 | `state/pyth.rs` | Keep the parser; TEE reads Pyth on its own schedule |
@@ -277,7 +277,7 @@ The TS-side migration is the second-biggest piece of work after the TEE itself. 
 
 ## 4. What's new: the TEE process
 
-The TEE is a Rust binary (`nyx-tee`) running inside an Intel TDX Confidential VM, deployed via Phala Cloud's managed dstack runtime. Full design lives in [`docs/tee-architecture.md`](tee-architecture.md); this section is the migration-relevant overview.
+The TEE is a Rust binary (`darknyx-tee`) running inside an Intel TDX Confidential VM, deployed via Phala Cloud's managed dstack runtime. Full design lives in [`docs/tee-architecture.md`](tee-architecture.md); this section is the migration-relevant overview.
 
 Major components inside the binary:
 
@@ -347,10 +347,10 @@ Ordered by dependency. Each phase produces a working state — a phase can be pa
 
 * [ ] **Set up local dev environment using `dstack-simulator`.** Build the simulator from `github.com/Dstack-TEE/dstack/sdk/simulator/`; set `DSTACK_SIMULATOR_ENDPOINT` env var.
 * [ ] **Sign up for Phala Cloud account.** Create a devnet workspace; deploy a "hello-world" attested container; retrieve a TDX quote; verify via `dstack-verifier` Docker image.
-* [ ] **Decide custom domain.** Buy `api.nyx.example.com` (or pick a subdomain we own); set up DNS access (Cloudflare token); configure CAA stub.
+* [ ] **Decide custom domain.** Buy `api.darknyx.example.com` (or pick a subdomain we own); set up DNS access (Cloudflare token); configure CAA stub.
 * [ ] **Benchmark VALID_MATCH_BATCH N=16 proving time on Phala Cloud TDX-Lab tier vs bare metal.** Acceptance: ≤ 3× bare metal. If fail → flip D4 (move prover out of TEE; TEE signs public input). Phase-1 sign-off.
-* [ ] **Skeleton `nyx-tee` binary**: cargo crate, dstack SDK integration, OAuth2 token issuer, REST + WS framework via axum + tokio-tungstenite, in-memory order book stub (no matching yet). Per [`docs/tee-architecture.md`](tee-architecture.md) §2.
-* [ ] **Lift matching algorithm out of `programs/matching_engine`** into a new crate `crates/darkpool-matcher/`. No Anchor / Solana deps. The existing litesvm test for `run_batch.rs` becomes a thin wrapper around this crate; assert byte-for-byte identical output (parity).
+* [ ] **Skeleton `darknyx-tee` binary**: cargo crate, dstack SDK integration, OAuth2 token issuer, REST + WS framework via axum + tokio-tungstenite, in-memory order book stub (no matching yet). Per [`docs/tee-architecture.md`](tee-architecture.md) §2.
+* [x] **Lift matching algorithm out of `programs/matching_engine`** into a new crate `crates/darkpool-matcher/`. **DONE in PR 1 + PR 2 + PR 3** (2026-05-27). The matcher is Anchor-free; the on-chain `run_batch.rs` is now a thin adapter that builds an `OrderBook` from PendingOrder PDAs, calls `darkpool_matcher::run_batch(...)`, and writes the returned `RunBatchOutput` back to BatchResults + PendingOrder PDAs. Parity gates (matcher: 8 scenarios; on-chain ix: 12 litesvm scenarios) all green. `programs/matching_engine/src/state/change_note.rs` deleted — its content now lives in `darkpool_matcher::change_note`.
 * [ ] **NOT in Phase 1:** the on-chain TDX quote verifier. Deferred to v3 — see §6 R1.
 
 ### Phase 2 — Read-only TEE-as-indexer

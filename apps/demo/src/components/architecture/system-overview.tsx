@@ -19,14 +19,14 @@ const LAYERS: Layer[] = [
     cluster: "TEE",
     title: "Hidden order intent + matching",
     body: "An Intel TDX enclave on Phala Cloud hosts the order book and matching engine. Orders arrive over RA-TLS. A batch auction fires every 2s; VALID_MATCH_BATCH Groth16 proof is generated inside the enclave before any L1 settlement.",
-    techs: ["nyx-tee", "VALID_MATCH_BATCH", "ark-groth16"],
+    techs: ["darknyx-tee", "VALID_MATCH_BATCH", "ark-groth16"],
   },
   {
     tag: "03",
     cluster: "Client",
     title: "Key derivation, proofs, ix builders",
-    body: "@nyx/sdk hand-codes every Anchor instruction. snarkjs runs in a Web Worker for VALID_WALLET_CREATE and VALID_SPEND. Key chain: Phantom signature → master seed → spending / viewing / trading keys.",
-    techs: ["@nyx/sdk", "snarkjs", "darkpool-crypto"],
+    body: "@darknyx/sdk hand-codes every Anchor instruction. snarkjs runs in a Web Worker for VALID_WALLET_CREATE and VALID_SPEND. Key chain: Phantom signature → master seed → spending / viewing / trading keys.",
+    techs: ["@darknyx/sdk", "snarkjs", "darkpool-crypto"],
   },
 ];
 

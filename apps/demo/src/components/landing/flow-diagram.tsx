@@ -11,31 +11,31 @@ export function FlowDiagram() {
     <section
       className="relative isolate overflow-hidden border-t"
       style={{
-        borderColor: "rgba(255,255,255,0.06)",
-        backgroundColor: "#050505",
-        backgroundImage: "radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px)",
+        borderColor: "rgba(10,10,13,0.08)",
+        backgroundColor: "rgb(250,250,249)",
+        backgroundImage: "radial-gradient(rgba(10,10,13,0.08) 1px, transparent 1px)",
         backgroundSize: "18px 18px",
       }}
     >
       <div className="mx-auto w-full max-w-6xl px-5 py-14 sm:px-7 sm:py-16">
         <div className="flex max-w-2xl flex-col items-start gap-2">
           <span
-            className="font-mono text-[10px] uppercase tracking-[0.18em]"
+            className="font-sans text-[10px] uppercase tracking-[0.18em]"
             style={{ color: accent }}
           >
             {flow.eyebrow}
           </span>
           <h2
-            className="font-mono font-semibold leading-tight tracking-[-0.02em]"
+            className="font-sans font-semibold leading-tight tracking-[-0.02em]"
             style={{ fontSize: "clamp(18px, 2.2vw, 28px)" }}
           >
-            <span style={{ color: "rgba(245,243,238,0.9)" }}>{flow.title}</span>
+            <span style={{ color: "rgb(28,25,23)" }}>{flow.title}</span>
             <br />
-            <span style={{ color: "rgba(174,172,176,0.55)" }}>{flow.titleMuted}</span>
+            <span style={{ color: "rgb(87,83,78)" }}>{flow.titleMuted}</span>
           </h2>
           <p
-            className="mt-3 max-w-xl font-mono text-[12px] leading-[1.85]"
-            style={{ color: "rgba(174,172,176,0.55)" }}
+            className="mt-3 max-w-xl font-sans text-[12px] leading-[1.85]"
+            style={{ color: "rgb(87,83,78)" }}
           >
             {flow.lede}
           </p>
@@ -47,28 +47,27 @@ export function FlowDiagram() {
               <div
                 className={`group h-full p-6 transition-all duration-500 nyx-rise nyx-rise-delay-${idx + 1}`}
                 style={{
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: "30px",
-                  background: "rgba(255,255,255,0.035)",
-                  backdropFilter: "blur(14px)",
-                  boxShadow: "0 0 0 1px rgba(255,255,255,0.02) inset",
+                  border: "1px solid rgb(231,229,228)",
+                  borderRadius: "8px",
+                  background: "rgba(255,255,255,0.88)",
+                  boxShadow: "0 1px 2px rgba(28,25,23,0.04)",
                 }}
               >
                 <span
-                  className="font-mono text-[20px] leading-none"
+                  className="font-sans text-[20px] leading-none"
                   style={{ color: accent }}
                 >
                   0{idx + 1}
                 </span>
                 <h3
-                  className="mt-4 font-mono text-[14px] font-semibold leading-snug"
-                  style={{ color: "rgba(245,243,238,0.9)" }}
+                  className="mt-4 font-sans text-[14px] font-semibold leading-snug"
+                  style={{ color: "rgb(28,25,23)" }}
                 >
                   {s.title}
                 </h3>
                 <p
-                  className="mt-3 font-mono text-[11.5px] leading-[1.8]"
-                  style={{ color: "rgba(174,172,176,0.58)" }}
+                  className="mt-3 font-sans text-[11.5px] leading-[1.8]"
+                  style={{ color: "rgb(87,83,78)" }}
                 >
                   {s.body}
                 </p>
@@ -77,15 +76,15 @@ export function FlowDiagram() {
           ))}
         </ol>
 
-        <div className="mt-10 h-px w-full bg-white/[0.06]" />
+        <div className="mt-10 h-px w-full bg-stone-200" />
 
         <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
-          <p className="max-w-xl font-mono text-[12px] leading-[1.75] text-nyx-fog">
+          <p className="max-w-xl font-sans text-[12px] leading-[1.75] text-stone-600">
             {flow.footnote}
           </p>
           <Link
-            href="/architecture"
-            className="inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-nyx-fog transition hover:text-[var(--nyx-accent)]"
+            href="/docs/architecture-overview"
+            className="inline-flex items-center gap-2 rounded-sm font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-stone-600 transition hover:text-[var(--nyx-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--nyx-accent)] focus-visible:ring-offset-4"
           >
             Architecture deep-dive
             <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">

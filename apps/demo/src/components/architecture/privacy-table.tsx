@@ -37,7 +37,7 @@ export function PrivacyTable() {
               What stays<br />hidden.
             </h2>
             <p style={{ marginTop: "10px", fontFamily: "'JetBrains Mono', monospace", fontSize: "11px", lineHeight: 1.75, color: "rgba(174,172,176,0.42)" }}>
-              Nyx hides individual order intent. Aggregate match data is public — by design.
+              Darknyx hides individual order intent. Aggregate match data is public — by design.
             </p>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>

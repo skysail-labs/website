@@ -14,7 +14,7 @@ export function NyxFooter({ tone = "ink" }: { tone?: "ink" | "chalk" }) {
         <NyxLockup size={28} tone={isInk ? "chalk" : "ink"} />
 
         <div className="font-mono text-[10px] uppercase tracking-[0.16em] opacity-50">
-          coming soon on mainnet
+          private beta soon
         </div>
 
         <div className="flex flex-wrap gap-x-6 gap-y-2 text-[12px]">

@@ -37,7 +37,7 @@ function PerspectiveGrid() {
       ctx.beginPath();
       ctx.moveTo(0, originY);
       ctx.lineTo(w, originY);
-      ctx.strokeStyle = "rgba(255,255,255,0.06)";
+      ctx.strokeStyle = "rgba(255,255,255,0.08)";
       ctx.lineWidth = 1;
       ctx.stroke();
 
@@ -46,10 +46,10 @@ function PerspectiveGrid() {
         const baseX = t * w;
 
         const grad = ctx.createLinearGradient(baseX, originY, vpX, vpY);
-        grad.addColorStop(0,    "rgba(255,255,255,0.15)");
-        grad.addColorStop(0.25, "rgba(255,255,255,0.06)");
-        grad.addColorStop(0.65, "rgba(255,255,255,0)");
-        grad.addColorStop(1,    "rgba(255,255,255,0)");
+        grad.addColorStop(0,    "rgba(245,243,238,0.18)");
+        grad.addColorStop(0.25, "rgba(245,243,238,0.08)");
+        grad.addColorStop(0.65, "rgba(245,243,238,0)");
+        grad.addColorStop(1,    "rgba(245,243,238,0)");
 
         ctx.beginPath();
         ctx.moveTo(baseX, originY);
@@ -81,7 +81,7 @@ function ScrollDownButton() {
         document.getElementById("landing-content")?.scrollIntoView({ behavior: "smooth" });
       }}
       aria-label="Scroll down"
-      className="flex items-center justify-center transition-opacity hover:opacity-70"
+      className="flex items-center justify-center transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--nyx-accent)] focus-visible:ring-offset-4"
       style={{
         width: 40,
         height: 40,
@@ -109,14 +109,29 @@ function ScrollDownButton() {
 export function LandingHero() {
   return (
     <section
-      className="relative isolate border-b"
-      style={{ borderColor: "rgba(255,255,255,0.06)", height: "calc(100dvh - 44px)", display: "flex", flexDirection: "column" }}
+      className="relative isolate overflow-hidden border-b"
+      style={{
+        borderColor: "rgba(255,255,255,0.08)",
+        height: "calc(100dvh - 44px)",
+        display: "flex",
+        flexDirection: "column",
+        background:
+          "radial-gradient(circle at 18% 24%, oklch(0.62 0.14 260 / 0.28), transparent 28%), radial-gradient(circle at 84% 70%, rgba(95,184,95,0.18), transparent 30%), #050608",
+      }}
     >
+      <div
+        className="pointer-events-none absolute inset-0 opacity-30"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)",
+          backgroundSize: "28px 28px",
+        }}
+        aria-hidden
+      />
 
-      {/* Hero copy — replaces ASCII banner */}
       <div className="nyx-rise nyx-rise-delay-1 relative flex w-full flex-1 min-h-0 flex-col justify-center pr-5 pl-12 sm:pr-7 sm:pl-16 lg:pr-12 lg:pl-24 xl:pl-32">
         <div
-          className="pointer-events-none absolute inset-0 nyx-grid opacity-60"
+          className="pointer-events-none absolute inset-0 nyx-pixel-grid opacity-70"
           aria-hidden
         />
         <div className="relative pt-8 pb-24 sm:pt-12">
@@ -124,12 +139,10 @@ export function LandingHero() {
         </div>
       </div>
 
-      {/* Perspective grid — sits at the very bottom of the hero, lines radiate from the border */}
       <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
         <PerspectiveGrid />
       </div>
 
-      {/* Scroll-down button */}
       <div className="absolute bottom-17 left-0 right-0 flex justify-center">
         <ScrollDownButton />
       </div>

@@ -21,7 +21,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Nyx — settle in the dark, prove in the light",
+  title: "Darknyx — settle in the dark, prove in the light",
   description:
     "A privacy-preserving darkpool on Solana with TEE-attested execution and zero-knowledge settlement.",
   icons: {
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
   manifest: "/site.webmanifest",
   openGraph: {
-    title: "Nyx — settle in the dark, prove in the light",
+    title: "Darknyx — settle in the dark, prove in the light",
     description:
       "A privacy-preserving darkpool on Solana with TEE-attested execution and zero-knowledge settlement.",
     images: ["/brand/og-default.png"],
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nyx — settle in the dark, prove in the light",
+    title: "Darknyx — settle in the dark, prove in the light",
     description:
       "A privacy-preserving darkpool on Solana with TEE-attested execution and zero-knowledge settlement.",
     images: ["/brand/og-default.png"],

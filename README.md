@@ -1,4 +1,4 @@
-# Nyx Darkpool
+# Darknyx Darkpool
 
 A **dark pool on Solana** for SPL tokens. Order intent stays inside a
 MagicBlock Ephemeral Rollup (ER), settlement is atomic on L1 with a
@@ -87,7 +87,7 @@ To run the live devnet ER trade flow, see
 | `programs/`      | On-chain Anchor programs — `vault` and `matching_engine`                    |
 | `crates/`        | `darkpool-crypto` — host-side Poseidon / key derivation / note crypto       |
 | `circuits/`      | Circom 2 ZK circuits — `valid_wallet_create`, `valid_spend`, `valid_input` (v2), `valid_create` (v3) |
-| `packages/sdk/`  | `@nyx/sdk` — TypeScript client (ix builders, prover, settlement)            |
+| `packages/sdk/`  | `@darknyx/sdk` — TypeScript client (ix builders, prover, settlement)            |
 | `scripts/`       | Build / deploy / setup shell scripts + master dev cheat-sheet               |
 | `docs/`          | Deep-dive design docs                                                        |
 | `.devnet/`       | Generated keypairs + e2e config (gitignored)                                 |

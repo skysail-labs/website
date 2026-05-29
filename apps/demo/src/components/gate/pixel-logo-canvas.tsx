@@ -355,8 +355,7 @@ export function PixelLogoCanvas() {
             whiteSpace: "nowrap",
           }}
         >
-          <span style={{ fontWeight: 600, color: "var(--nyx-chalk)" }}>dark</span>
-          <span style={{ fontWeight: 400, color: "var(--nyx-chalk)", opacity: 0.55 }}>nyx</span>
+          <span style={{ fontWeight: 600, color: "var(--nyx-chalk)" }}>darknyx</span>
         </div>
       )}
     </div>

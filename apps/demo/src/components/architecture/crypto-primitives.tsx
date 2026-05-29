@@ -22,7 +22,7 @@ const GROUPS = [
     label: "SDK + Tooling",
     color: "rgba(174,172,176,0.6)",
     items: [
-      { name: "@nyx/sdk",                  detail: "No-Anchor-runtime client · hand-coded discriminators · Borsh ix builders" },
+      { name: "@darknyx/sdk",              detail: "No-Anchor-runtime client · hand-coded discriminators · Borsh ix builders" },
       { name: "snarkjs",                   detail: "Browser-side prover · runs in Web Worker · VALID_WALLET_CREATE · VALID_SPEND" },
       { name: "darkpool-crypto (Rust)",    detail: "Host-side Poseidon · key derivation · byte-identical parity with TS SDK" },
     ],

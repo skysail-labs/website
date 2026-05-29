@@ -77,8 +77,7 @@ export function NyxLockup({
           color,
         }}
       >
-        <span>dark</span>
-        <span style={{ opacity: 0.55, fontWeight: 400 }}>nyx</span>
+        <span>darknyx</span>
       </span>
     </div>
   );

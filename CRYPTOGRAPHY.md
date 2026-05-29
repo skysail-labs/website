@@ -1,7 +1,7 @@
-# Nyx Darkpool — Cryptographic Design Walkthrough
+# Darknyx Darkpool — Cryptographic Design Walkthrough
 
-> A protocol-engineer's tour through the cryptography of Nyx as of the
-> `nyx-v2-onchain-hardening` branch through the **v3.5 batched-validity
+> A protocol-engineer's tour through the cryptography of Darknyx as of the
+> `darknyx-v2-onchain-hardening` branch through the **v3.5 batched-validity
 > migration**. Written for readers comfortable with ZK proofs and field
 > arithmetic who have not seen this codebase before. Pairs with
 > [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) (system-level overview)
@@ -31,7 +31,7 @@
 
 ## 1. Executive summary
 
-Nyx is a privacy-preserving CLOB-like darkpool on Solana. The custody side is
+Darknyx is a privacy-preserving CLOB-like darkpool on Solana. The custody side is
 shielded (UTXO notes, Groth16 proofs); the matching side runs in a TEE
 (currently a software Ed25519 key, eventually an attested enclave) that signs
 match payloads back to L1 for atomic settlement.
@@ -280,7 +280,7 @@ Every key derivation has byte-for-byte cross-environment parity tests:
 
 ## 5. The note system
 
-Nyx is a UTXO darkpool. Every shielded balance is a **note** — a logical
+Darknyx is a UTXO darkpool. Every shielded balance is a **note** — a logical
 record of one (mint, amount, owner) holding, identified on-chain only by
 its 32-byte Poseidon commitment.
 
@@ -515,7 +515,7 @@ The first five circuits use the **`pot16` Powers-of-Tau** file
 total constraints exceed 2^16 — `scripts/download-ptau.sh` fetches both
 automatically. All six circuits use the **same deterministic dev
 contribution** (seeded with the string
-`"nyx-phase1-dev-contribution-$name"`); v3.5 batched zkeys additionally
+`"darknyx-phase1-dev-contribution-$name"`); v3.5 batched zkeys additionally
 run `zkey beacon 0102…1f20 10` for 10 deterministic rounds so CI can
 rebuild byte-identical VK consts from source. For mainnet, every
 circuit needs a real Phase-2 MPC — flagged repeatedly throughout the
@@ -1021,7 +1021,7 @@ Accounts:
   is rotatable via offset (see §4) so a user can use a fresh per-session
   trading key and burn it after the order, breaking long-term linkage.
 
-**Why**: this is the core privacy property of Nyx. By keeping order intent
+**Why**: this is the core privacy property of Darknyx. By keeping order intent
 inside the ER, L1 observers see only deposits + matches, not the
 unmatched orders themselves. The unmatched anonymity-set is every order
 that entered the ER but didn't fill this batch.
@@ -1230,7 +1230,7 @@ The `binding_hash` is:
 
 ```
 binding_hash = SHA256(
-    "nyx-create-bind-v1",
+    "darknyx-create-bind-v1",
     note_a_commitment, note_b_commitment,
     note_c_commitment, note_d_commitment,
     note_e_commitment, note_f_commitment,
@@ -1412,7 +1412,7 @@ Handler walkthrough:
      fully settled (Step 9.5).
 
    **v3.1 per-match (`tee_forced_settle`):**
-   - Recompute `binding_hash = SHA256(b"nyx-create-bind-v1" ‖ 14
+   - Recompute `binding_hash = SHA256(b"darknyx-create-bind-v1" ‖ 14
      fields)` over the payload + lock mints. Derive
      `[b"valid_create", binding_hash]`, assert the supplied
      `valid_create_marker.key()` matches, owned + non-expired.
@@ -1775,7 +1775,7 @@ value to find the PDA. The flow:
 ```
 Tx B (verify_valid_create):
     args: 14 fields                            ──┐
-    binding_hash = SHA256("nyx-create-bind-v1"   │
+    binding_hash = SHA256("darknyx-create-bind-v1"   │
                           ‖ 14 fields)           │ same 14 fields, same hash
     PDA seed = ["valid_create", binding_hash]    │
     marker created at this address ◀─────────────┘
@@ -1783,7 +1783,7 @@ Tx B (verify_valid_create):
 Tx C (tee_forced_settle):
     payload contains 12 of the 14 fields (no mints — they come from locks)
     lock_a.token_mint, lock_b.token_mint give the 2 missing fields
-    binding_hash' = SHA256("nyx-create-bind-v1" ‖ 14 fields recomputed)
+    binding_hash' = SHA256("darknyx-create-bind-v1" ‖ 14 fields recomputed)
     expected PDA  = find_program_address(["valid_create", binding_hash'])
     assert supplied marker.key() == expected PDA
     consume the marker ◀─── only possible if binding_hash == binding_hash'
@@ -1947,7 +1947,7 @@ the v6→v5 revert during devnet validation):
 
 ```rust
 canonical_payload_hash(p) = SHA256(
-    b"nyx-match-v5",
+    b"darknyx-match-v5",
     p.match_id,
     p.note_a_commitment, p.note_b_commitment,
     p.note_c_commitment, p.note_d_commitment,
@@ -1983,7 +1983,7 @@ or settlements will start failing across the board.
 #### Why the v6 payload mints got reverted
 
 The first cut of v3 added `quote_mint` and `base_mint` as fields in
-`MatchResultPayload` and into the canonical hash (with a `b"nyx-match-v6"`
+`MatchResultPayload` and into the canonical hash (with a `b"darknyx-match-v6"`
 tag). The settle tx was then 1242/1232 — over the cap — because two
 Pubkeys (64 bytes) had been added to the wire payload.
 
@@ -1994,7 +1994,7 @@ conservation work. Adding the mint to the payload (and to the canonical
 hash) was just duplicating information the chain could derive.
 
 So the revert: `MatchResultPayload` shape goes back to v5, tag stays
-`b"nyx-match-v5"`. Mints flow purely through the NoteLock PDAs. The
+`b"darknyx-match-v5"`. Mints flow purely through the NoteLock PDAs. The
 binding hash for the marker PDA (which is computed entirely on-chain
 from payload + lock mints, see §8 step 8) is the one place mints are
 included — it's separated from the wire payload so it doesn't bloat tx
@@ -2172,7 +2172,7 @@ Sorted roughly by cryptographic impact:
 
 2. **Real Phase-2 ceremony** — All six shipped Groth16 circuits use a
    deterministic dev contribution
-   (`echo "nyx-phase1-dev-contribution-$name" | snarkjs zkey contribute`),
+   (`echo "darknyx-phase1-dev-contribution-$name" | snarkjs zkey contribute`),
    plus the v3.5 batched zkeys run `zkey beacon 0102…1f20 10`. The
    toxic waste is therefore *recoverable from the build script*. This
    is fine for devnet but a hard mainnet blocker. Need a real MPC
@@ -2228,7 +2228,7 @@ Sorted roughly by cryptographic impact:
 A walkthrough for someone diving into the code:
 
 ```
-nyx-monorepo/
+darknyx-monorepo/
 ├── circuits/
 │   ├── valid_wallet_create/circuit.circom    1 public input
 │   ├── valid_spend/circuit.circom            5 public inputs
@@ -2386,4 +2386,4 @@ CI gating:
 `tee_forced_settle_batched` + `close_batch_validity_marker` ixs,
 `BatchValidityMarker` PDA (1:N keyed by Merkle root), per-batch ALT
 pattern, multi-match litesvm regression test. Snapshot of
-`nyx-v2-onchain-hardening`.*
+`darknyx-v2-onchain-hardening`.*

@@ -1,5 +1,5 @@
-import { PixelLogoCanvas } from "@/components/gate/pixel-logo-canvas";
+import LandingPage from "@/app/landing/page";
 
-export default function GatePage() {
-  return <PixelLogoCanvas />;
+export default function HomePage() {
+  return <LandingPage />;
 }
