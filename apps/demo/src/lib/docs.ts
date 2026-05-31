@@ -52,15 +52,27 @@ export function slugifyHeading(value: string) {
 }
 
 function readDocFile(fileName: string): DocPageData {
-  const content = fs.readFileSync(path.join(DOCS_DIR, fileName), "utf8");
+  const rawContent = fs.readFileSync(path.join(DOCS_DIR, fileName), "utf8");
   const order = Number(fileName.match(/^(\d+)/)?.[1] ?? 99);
   const slug = slugifyDocFile(fileName);
-  const title = content.match(/^#\s+(.+)$/m)?.[1] ?? slug;
-  const description =
-    content
-      .match(/^>\s+(.+)$/m)?.[1]
-      ?.replace(/\s+/g, " ")
-      .trim() ?? "Darknyx protocol documentation.";
+
+  // Extract title (H1)
+  const title = rawContent.match(/^#\s+(.+)$/m)?.[1] ?? slug;
+
+  // Extract full leading blockquote as description
+  const quoteMatch = rawContent.match(/^>\s+([\s\S]+?)(?=\n\n|\n---|#|$)/m);
+  const description = quoteMatch
+    ? quoteMatch[1]
+        .split(/\r?\n/)
+        .map((line) => line.replace(/^>\s?/, "").trim())
+        .join(" ")
+    : "Darknyx protocol documentation.";
+
+  // Strip H1 and leading blockquote from content
+  const content = rawContent
+    .replace(/^#\s+.+$/m, "")
+    .replace(/^>\s+[\s\S]+?(?=\n\n|\n---|#|$)/m, "")
+    .trim();
 
   const headings = Array.from(content.matchAll(/^(#{2,3})\s+(.+)$/gm)).map((match) => ({
     id: slugifyHeading(match[2]),

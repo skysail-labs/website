@@ -1,7 +1,9 @@
 import Link from "next/link";
 
 import { DocsSearch } from "@/components/docs/docs-search";
+import { DocsThemeProvider } from "@/components/docs/docs-theme-provider";
 import { MarkdownRenderer } from "@/components/docs/markdown-renderer";
+import { ThemeToggle } from "@/components/docs/theme-toggle";
 import { NyxFooter } from "@/components/brand/nyx-footer";
 import { NyxNav } from "@/components/brand/nyx-nav";
 import type { DocPageData } from "@/lib/docs";
@@ -19,15 +21,18 @@ export function DocsShell({ doc }: { doc: DocPageData }) {
       : null;
 
   return (
-    <div className="docs-light min-h-screen bg-stone-50 text-stone-950">
+    <DocsThemeProvider>
       <NyxNav tone="chalk" active="docs" launchHref="/dapp" />
       <main className="mx-auto w-full max-w-[1400px] px-4 pb-14 pt-6 sm:px-7 lg:px-8">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[280px_minmax(0,1fr)_230px]">
           <aside className="hidden lg:block">
             <div className="nyx-doc-sidebar">
-              <Link href="/docs" className="nyx-doc-sidebar-title">
-                Darknyx Documentation
-              </Link>
+              <div className="flex items-center justify-between gap-2">
+                <Link href="/docs" className="nyx-doc-sidebar-title">
+                  Darknyx Documentation
+                </Link>
+                <ThemeToggle />
+              </div>
               <p className="mt-1 text-xs leading-5 text-stone-500">
                 Protocol architecture, trust assumptions, API, and integration notes.
               </p>
@@ -61,8 +66,11 @@ export function DocsShell({ doc }: { doc: DocPageData }) {
 
           <article className="min-w-0">
             <div className="mb-4 rounded-xl border border-stone-200/80 bg-white/85 p-4 backdrop-blur-sm lg:hidden">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.1em] text-stone-500">
-                Browse docs
+              <div className="flex items-center justify-between gap-2">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.1em] text-stone-500">
+                  Browse docs
+                </div>
+                <ThemeToggle />
               </div>
               <div className="mt-3">
                 <DocsSearch items={searchItems} />
@@ -139,6 +147,6 @@ export function DocsShell({ doc }: { doc: DocPageData }) {
         </div>
       </main>
       <NyxFooter tone="chalk" />
-    </div>
+    </DocsThemeProvider>
   );
 }

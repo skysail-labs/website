@@ -3,18 +3,16 @@
 import mermaid from "mermaid";
 import { useEffect, useMemo, useState } from "react";
 
-let mermaidReady = false;
+import { useDocsTheme } from "./docs-theme-provider";
 
-function ensureMermaid() {
-  if (mermaidReady) return;
+function initMermaid(dark: boolean) {
   mermaid.initialize({
     startOnLoad: false,
-    theme: "neutral",
+    theme: dark ? "dark" : "neutral",
     securityLevel: "strict",
     fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif",
     suppressErrorRendering: true,
   });
-  mermaidReady = true;
 }
 
 function safeId(value: string) {
@@ -22,6 +20,7 @@ function safeId(value: string) {
 }
 
 export function MermaidBlock({ chart }: { chart: string }) {
+  const { dark } = useDocsTheme();
   const [svg, setSvg] = useState<string | null>(null);
   const [error, setError] = useState(false);
   const id = useMemo(
@@ -34,7 +33,7 @@ export function MermaidBlock({ chart }: { chart: string }) {
 
     const render = async () => {
       try {
-        ensureMermaid();
+        initMermaid(dark);
         const { svg: renderedSvg } = await mermaid.render(id, chart);
         if (!cancelled) {
           setSvg(renderedSvg);
@@ -53,7 +52,7 @@ export function MermaidBlock({ chart }: { chart: string }) {
     return () => {
       cancelled = true;
     };
-  }, [chart, id]);
+  }, [chart, id, dark]);
 
   if (error) {
     return (
