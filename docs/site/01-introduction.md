@@ -9,6 +9,8 @@
 
 ---
 
+![Darknyx Architecture](/assets/content.png)
+
 ## The problem Darknyx solves
 
 Public order books bleed information. Every limit order resting on a

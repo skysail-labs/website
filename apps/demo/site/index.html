@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Darknyx — Settle in the dark. Prove in the light.</title>
+<meta name="description" content="A privacy-preserving darkpool CLOB on Solana. Hidden orders, attested matching, trustless on-chain settlement.">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- ===== Greek scene line-art symbols (swap for commissioned art) ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="t-grand" viewBox="0 0 460 240">
+    <polyline points="60,72 230,30 400,72"/>
+    <line x1="56" y1="76" x2="404" y2="76"/><line x1="62" y1="84" x2="398" y2="84"/>
+    <line x1="84" y1="84" x2="84" y2="188"/><line x1="121" y1="84" x2="121" y2="188"/><line x1="157" y1="84" x2="157" y2="188"/>
+    <line x1="194" y1="84" x2="194" y2="188"/><line x1="230" y1="84" x2="230" y2="188"/><line x1="266" y1="84" x2="266" y2="188"/>
+    <line x1="303" y1="84" x2="303" y2="188"/><line x1="339" y1="84" x2="339" y2="188"/><line x1="376" y1="84" x2="376" y2="188"/>
+    <line x1="74" y1="188" x2="386" y2="188"/><line x1="66" y1="198" x2="394" y2="198"/><line x1="58" y1="208" x2="402" y2="208"/>
+    <line x1="0" y1="226" x2="460" y2="226"/>
+  </symbol>
+  <symbol id="t-skyline" viewBox="0 0 620 150">
+    <polyline points="40,70 95,48 150,70"/><line x1="36" y1="74" x2="154" y2="74"/>
+    <line x1="52" y1="74" x2="52" y2="118"/><line x1="72" y1="74" x2="72" y2="118"/><line x1="92" y1="74" x2="92" y2="118"/><line x1="112" y1="74" x2="112" y2="118"/><line x1="132" y1="74" x2="132" y2="118"/>
+    <line x1="34" y1="118" x2="156" y2="118"/>
+    <polyline points="185,80 230,62 275,80"/><line x1="182" y1="84" x2="278" y2="84"/>
+    <line x1="196" y1="84" x2="196" y2="118"/><line x1="216" y1="84" x2="216" y2="118"/><line x1="236" y1="84" x2="236" y2="118"/><line x1="256" y1="84" x2="256" y2="118"/>
+    <line x1="180" y1="118" x2="280" y2="118"/>
+    <polyline points="300,90 330,77 360,90"/><line x1="298" y1="93" x2="362" y2="93"/>
+    <line x1="310" y1="93" x2="310" y2="118"/><line x1="330" y1="93" x2="330" y2="118"/><line x1="350" y1="93" x2="350" y2="118"/>
+    <polyline points="392,93 416,81 440,93"/><line x1="390" y1="96" x2="442" y2="96"/>
+    <line x1="400" y1="96" x2="400" y2="118"/><line x1="420" y1="96" x2="420" y2="118"/>
+    <line x1="475" y1="100" x2="600" y2="100"/>
+    <line x1="475" y1="100" x2="475" y2="120"/><line x1="500" y1="100" x2="500" y2="120"/><line x1="525" y1="100" x2="525" y2="120"/><line x1="550" y1="100" x2="550" y2="120"/><line x1="575" y1="100" x2="575" y2="120"/><line x1="600" y1="100" x2="600" y2="120"/>
+    <path d="M475,108 A12 12 0 0 1 500,108"/><path d="M500,108 A12 12 0 0 1 525,108"/><path d="M525,108 A12 12 0 0 1 550,108"/><path d="M550,108 A12 12 0 0 1 575,108"/><path d="M575,108 A12 12 0 0 1 600,108"/>
+    <line x1="0" y1="120" x2="620" y2="120"/>
+  </symbol>
+  <symbol id="t-forum" viewBox="0 0 620 240">
+    <line x1="0" y1="150" x2="300" y2="150"/><line x1="0" y1="162" x2="286" y2="162"/>
+    <polyline points="60,70 150,44 240,70"/><line x1="56" y1="74" x2="244" y2="74"/><line x1="56" y1="82" x2="244" y2="82"/>
+    <line x1="72" y1="82" x2="72" y2="146"/><line x1="96" y1="82" x2="96" y2="146"/><line x1="120" y1="82" x2="120" y2="146"/><line x1="144" y1="82" x2="144" y2="146"/><line x1="168" y1="82" x2="168" y2="146"/><line x1="192" y1="82" x2="192" y2="146"/><line x1="216" y1="82" x2="216" y2="146"/>
+    <line x1="64" y1="146" x2="236" y2="146"/>
+    <line x1="175" y1="238" x2="430" y2="150"/><line x1="560" y1="238" x2="452" y2="150"/>
+    <line x1="300" y1="190" x2="492" y2="190"/><line x1="270" y1="214" x2="520" y2="214"/><line x1="240" y1="236" x2="548" y2="236"/>
+    <line x1="500" y1="118" x2="500" y2="150"/><line x1="494" y1="116" x2="506" y2="116"/><line x1="535" y1="124" x2="535" y2="150"/><line x1="529" y1="122" x2="541" y2="122"/>
+  </symbol>
+  <symbol id="nyx-mark" viewBox="0 0 120 120">
+    <clipPath id="hor-clip"><rect x="0" y="0" width="120" height="66"/></clipPath>
+    <circle cx="60" cy="60" r="36" fill="currentColor" clip-path="url(#hor-clip)"/>
+    <rect x="18" y="66" width="84" height="4" fill="currentColor"/>
+    <rect x="18" y="78" width="60" height="4" fill="currentColor" opacity="0.5"/>
+  </symbol>
+</svg>
+
+<!-- ===================== NAV ===================== -->
+<nav class="nav" id="nav">
+  <a class="lock" href="index.html"><svg class="mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg><b>darknyx</b></a>
+  <div class="links">
+    <a href="#third-option">Overview</a>
+    <a href="docs.html">Docs</a>
+  </div>
+  <div class="end">
+    <span class="btn ghost status"><span class="pdot"></span>Private beta soon</span>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="hero-bg"><img src="assets/final.png" alt="Ancient Greek city in white line-art under a starfield"></div>
+  <div class="hero-scrim"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <svg class="mark glow rise d1" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg>
+      <p class="kicker rise d1"><span class="dot"></span>Darkpool protocol · Solana</p>
+      <h1 class="display h-xl rise d2" style="margin-top:18px">
+        <span class="tag-lo">Settle in the dark.</span>
+        <span class="tag-hi">Prove in the light.</span>
+      </h1>
+      <p class="lede rise d3">A privacy-preserving order book where intent is hidden inside attested hardware and every fill settles trustlessly on Solana — verified, never trusted.</p>
+      <div class="hero-actions rise d4">
+        <a class="btn" href="docs.html">How Darknyx works <span class="arr">→</span></a>
+        <a class="btn ghost" href="#third-option">The idea</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-meta rise d5">
+    <div class="net">Network · <b>Solana</b><br>Matching · <b>Intel TDX</b><br>Status · <b>TDX rollout</b></div>
+    <a class="scroll-cue" href="#third-option"><span>Scroll</span><span class="line"></span></a>
+  </div>
+</header>
+
+<!-- ===== crest: faint skyline cresting the horizon ===== -->
+<div class="crest">
+  <div class="stars" data-stars="40"></div>
+  <svg class="scene-art ghost" viewBox="0 0 620 150" preserveAspectRatio="xMidYMax slice"><use href="#t-skyline"/></svg>
+</div>
+
+<!-- ===================== SECTION 1 — THE THIRD OPTION ===================== -->
+<section class="section" id="third-option">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">The third option</p>
+      <h2 class="display h-lg" style="margin-top:18px">A dark pool you don't<br>have to trust.</h2>
+      <p class="lede">Public order books leak every intention to bots and competitors. Off-chain dark pools take your custody. Darknyx is neither — orders meet inside an attested enclave the operator cannot read, and funds only ever move under a proof verified on Solana.</p>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="ix">01</div>
+        <h3>Orders stay dark<br>until they clear.</h3>
+        <p>Side, size, and limit price are visible only to the enclave — never in a mempool, log, or account an observer can read before settlement.</p>
+        <div class="rule"></div>
+      </div>
+      <div class="pillar">
+        <div class="ix">02</div>
+        <h3>Custody risk<br>is zero.</h3>
+        <p>Funds rest in a non-upgradeable Solana vault. The matcher can propose fills, but only your zero-knowledge proof can move assets out.</p>
+        <div class="rule"></div>
+      </div>
+      <div class="pillar">
+        <div class="ix">03</div>
+        <h3>Settlement can<br>be checked.</h3>
+        <p>Every fill lands on-chain bound to a validity proof and the attested TEE signature — auditable by anyone, without exposing your strategy.</p>
+        <div class="rule"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== crest: temple cresting the horizon ===== -->
+<div class="crest">
+  <div class="stars" data-stars="46"></div>
+  <svg class="scene-art ghost" viewBox="0 0 460 240" preserveAspectRatio="xMidYMax slice"><use href="#t-grand"/></svg>
+</div>
+
+<!-- ===================== SECTION 2 — HOW IT WORKS ===================== -->
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">How it works</p>
+      <h2 class="display h-lg" style="margin-top:18px">From private intent<br>to verified settlement.</h2>
+      <p class="lede">You sign custody actions with your wallet and orders with a separate trading key. The sensitive path stays private inside the enclave; the money path stays verifiable on-chain.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <span class="n">01</span>
+        <div class="stage">Fund privately</div>
+        <h3>Deposit into the vault.</h3>
+        <p>Funds become private note commitments instead of a public, trackable trading balance.</p>
+        <span class="tech">Solana vault</span>
+      </div>
+      <div class="step">
+        <span class="n">02</span>
+        <div class="stage">Match in batches</div>
+        <h3>Orders clear in the dark.</h3>
+        <p>Signed intent meets inside an attested TDX enclave. Compatible orders clear every two seconds at one uniform price.</p>
+        <span class="tech">Intel TDX · FBA</span>
+      </div>
+      <div class="step">
+        <span class="n">03</span>
+        <div class="stage">Settle on-chain</div>
+        <h3>Fills land verifiably.</h3>
+        <p>Settlement posts to Solana with proof material and the registered TEE signature. Withdrawals stay user-controlled.</p>
+        <span class="tech">ZK proofs</span>
+      </div>
+    </div>
+
+    <div style="margin-top:clamp(40px,6vw,60px)">
+      <a class="btn ghost" href="docs.html#architecture">Read the architecture <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="scene-wrap">
+    <div class="stars" data-stars="70"></div>
+    <svg class="scene-art faint" viewBox="0 0 620 240" preserveAspectRatio="xMidYMax slice"><use href="#t-forum"/></svg>
+  </div>
+
+  <div class="footer-inner wrap">
+    <svg class="mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg>
+    <p class="eyebrow">Privacy without sacrificing auditability</p>
+    <h2 class="display h-md" style="margin-top:16px;max-width:18ch;margin-left:auto;margin-right:auto">Start where the homework is.</h2>
+    <p class="lede">The docs lay out the trust model, the settlement pipeline, the cryptography, and honest comparisons against every comparable venue.</p>
+    <div class="footer-cta"><a class="btn" href="docs.html">Read the docs <span class="arr">→</span></a></div>
+  </div>
+
+  <div class="footer-foot">
+    <div class="row">
+      <div class="lock"><svg class="mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg><b>darknyx</b><span class="tagline" style="margin-left:14px">Settle in the dark · Prove in the light</span></div>
+      <div class="fl">
+        <a href="docs.html">Docs</a>
+        <a href="docs.html#architecture">Architecture</a>
+        <a href="docs.html#glossary">Glossary</a>
+        <a href="https://github.com/skysail-labs/website" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // starfield
+  document.querySelectorAll('.stars').forEach(function (el) {
+    var n = +el.dataset.stars || 40, f = document.createDocumentFragment();
+    for (var i = 0; i < n; i++) {
+      var s = document.createElement('span');
+      var big = Math.random() < 0.14, sz = big ? 2 : 1;
+      s.style.width = s.style.height = sz + 'px';
+      s.style.left = (Math.random() * 100).toFixed(2) + '%';
+      s.style.top = (Math.random() * 100).toFixed(2) + '%';
+      var o = 0.2 + Math.random() * 0.55;
+      s.style.setProperty('--o0', (o * 0.4).toFixed(2));
+      s.style.setProperty('--o1', o.toFixed(2));
+      s.style.setProperty('--tw', (2.5 + Math.random() * 4).toFixed(1) + 's');
+      s.style.animationDelay = (Math.random() * 4).toFixed(1) + 's';
+      f.appendChild(s);
+    }
+    el.appendChild(f);
+  });
+  // nav scrolled state
+  var nav = document.getElementById('nav');
+  var onScroll = function () { nav.classList.toggle('scrolled', window.scrollY > 40); };
+  onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+})();
+</script>
+
+</body>
+</html>

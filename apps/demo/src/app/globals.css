@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./site.css";
 
 /* ---------------------------------------------------------------------------
  * Darknyx design tokens (mirrors apps/demo/design-system/tokens/tokens.css).
