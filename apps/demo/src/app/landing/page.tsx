@@ -175,27 +175,17 @@ export default function Home() {
         </div>
 
         <div className="hero-meta rise d5">
-          <div className="net">
+          {/* <div className="net">
             Network · <b>Solana</b>
             <br />
             Matching · <b>Intel TDX</b>
             <br />
             Status · <b>TDX rollout</b>
-          </div>
-          <a className="scroll-cue" href="#third-option">
-            <span>Scroll</span>
-            <span className="line"></span>
-          </a>
+          </div> */}
         </div>
       </header>
 
-      {/* ===== crest: faint skyline cresting the horizon ===== */}
-      <div className="crest">
-        <Starfield count={40} />
-        <svg className="scene-art ghost" viewBox="0 0 620 150" preserveAspectRatio="xMidYMax slice">
-          <use href="#t-skyline"/>
-        </svg>
-      </div>
+
 
       {/* ===================== SECTION 1 — THE THIRD OPTION ===================== */}
       <section className="section" id="third-option">
@@ -253,13 +243,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== crest: temple cresting the horizon ===== */}
-      <div className="crest">
-        <Starfield count={46} />
-        <svg className="scene-art ghost" viewBox="0 0 460 240" preserveAspectRatio="xMidYMax slice">
-          <use href="#t-grand"/>
-        </svg>
-      </div>
+
 
       {/* ===================== SECTION 2 — HOW IT WORKS ===================== */}
       <section className="section" id="how">
@@ -312,9 +296,8 @@ export default function Home() {
       <footer className="footer">
         <div className="scene-wrap">
           <Starfield count={70} />
-          <svg className="scene-art faint" viewBox="0 0 620 240" preserveAspectRatio="xMidYMax slice">
-            <use href="#t-forum"/>
-          </svg>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="scene-art faint" src="/assets/footer.png" alt="Ancient columns under a starry sky" />
         </div>
 
         <div className="footer-inner wrap">

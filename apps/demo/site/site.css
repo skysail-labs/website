@@ -137,6 +137,7 @@ a { color: inherit; text-decoration: none; }
    GREEK SCENE LINE-ART (schematic stand-ins, swap for real art)
    ============================================================ */
 .scene-art { display: block; width: 100%; height: 100%; fill: none; stroke: var(--chalk); stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+img.scene-art { object-fit: cover; object-position: bottom; }
 .scene-art.faint { opacity: 0.34; }
 .scene-art.ghost { opacity: 0.10; }
 
@@ -158,13 +159,13 @@ a { color: inherit; text-decoration: none; }
   border-bottom: 1px solid transparent;
 }
 .nav.scrolled { background: rgba(5,6,8,0.72); backdrop-filter: blur(14px) saturate(1.2); border-bottom-color: var(--line); }
-.nav .lock { display: flex; align-items: center; gap: 11px; }
+.nav .lock { display: flex; align-items: center; gap: 11px; flex: 1; }
 .nav .lock .mark { width: 26px; height: 26px; }
 .nav .lock b { font-weight: 600; font-size: 18px; letter-spacing: -0.04em; }
 .nav .links { display: flex; align-items: center; gap: 30px; }
 .nav .links a { font: 500 11px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--chalk-dim); transition: color .2s; }
 .nav .links a:hover { color: var(--chalk); }
-.nav .end { display: flex; align-items: center; gap: 20px; }
+.nav .end { display: flex; align-items: center; gap: 20px; flex: 1; justify-content: flex-end; }
 @media (max-width: 760px) { .nav .links { display: none; } }
 
 /* ============================================================
@@ -172,20 +173,20 @@ a { color: inherit; text-decoration: none; }
    ============================================================ */
 .hero { position: relative; min-height: 100svh; display: flex; align-items: center; overflow: hidden; }
 .hero-bg { position: absolute; inset: 0; z-index: 0; }
-.hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 30% 60%; }
+.hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .hero-scrim {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
-    radial-gradient(120% 90% at 72% 38%, transparent 0%, rgba(5,6,8,0.30) 48%, rgba(5,6,8,0.86) 100%),
+    radial-gradient(120% 90% at 50% 38%, transparent 0%, rgba(5,6,8,0.30) 48%, rgba(5,6,8,0.86) 100%),
     linear-gradient(180deg, rgba(5,6,8,0.55) 0%, transparent 22%, transparent 55%, rgba(5,6,8,0.92) 100%);
 }
-.hero-glow { position: absolute; z-index: 1; top: 26%; left: 64%; width: 520px; height: 520px; transform: translate(-50%,-50%);
+.hero-glow { position: absolute; z-index: 1; top: 26%; left: 50%; width: 520px; height: 520px; transform: translate(-50%,-50%);
   background: radial-gradient(circle, oklch(0.64 0.15 262 / 0.22), transparent 62%); pointer-events: none; filter: blur(8px); }
 .hero-inner {
   position: relative; z-index: 3;
   width: 100%; max-width: var(--maxw); margin: 0 auto;
   padding: 0 clamp(20px, 5vw, 56px);
-  display: flex; justify-content: flex-end;
+  display: flex; justify-content: center;
 }
 .hero-copy { width: min(560px, 100%); text-align: center; position: relative; }
 .hero-copy::before {
