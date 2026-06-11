@@ -9,6 +9,16 @@
 </head>
 <body>
 
+<!-- ===================== TICKER BANNER ===================== -->
+<div class="ticker-banner">
+  <div class="ticker-track">
+    <div class="ticker-item"><span class="pdot"></span>DARKNYX <b>TESTNET</b><span style="margin: 0 10px; opacity: 0.3">•</span>SOLANA <b>CUSTODY</b><span style="margin: 0 10px; opacity: 0.3">•</span>INTEL TDX <b>CONFIDENTIAL VMS</b><span style="margin: 0 10px; opacity: 0.3">•</span>ZERO-KNOWLEDGE <b>SETTLEMENT</b><span style="margin: 0 10px; opacity: 0.3">•</span>PRIVATE <b>ORDER BOOK</b></div>
+    <div class="ticker-item"><span class="pdot"></span>DARKNYX <b>TESTNET</b><span style="margin: 0 10px; opacity: 0.3">•</span>SOLANA <b>CUSTODY</b><span style="margin: 0 10px; opacity: 0.3">•</span>INTEL TDX <b>CONFIDENTIAL VMS</b><span style="margin: 0 10px; opacity: 0.3">•</span>ZERO-KNOWLEDGE <b>SETTLEMENT</b><span style="margin: 0 10px; opacity: 0.3">•</span>PRIVATE <b>ORDER BOOK</b></div>
+    <div class="ticker-item"><span class="pdot"></span>DARKNYX <b>TESTNET</b><span style="margin: 0 10px; opacity: 0.3">•</span>SOLANA <b>CUSTODY</b><span style="margin: 0 10px; opacity: 0.3">•</span>INTEL TDX <b>CONFIDENTIAL VMS</b><span style="margin: 0 10px; opacity: 0.3">•</span>ZERO-KNOWLEDGE <b>SETTLEMENT</b><span style="margin: 0 10px; opacity: 0.3">•</span>PRIVATE <b>ORDER BOOK</b></div>
+    <div class="ticker-item"><span class="pdot"></span>DARKNYX <b>TESTNET</b><span style="margin: 0 10px; opacity: 0.3">•</span>SOLANA <b>CUSTODY</b><span style="margin: 0 10px; opacity: 0.3">•</span>INTEL TDX <b>CONFIDENTIAL VMS</b><span style="margin: 0 10px; opacity: 0.3">•</span>ZERO-KNOWLEDGE <b>SETTLEMENT</b><span style="margin: 0 10px; opacity: 0.3">•</span>PRIVATE <b>ORDER BOOK</b></div>
+  </div>
+</div>
+
 <!-- ===== Greek scene line-art symbols (swap for commissioned art) ===== -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="t-grand" viewBox="0 0 460 240">
@@ -67,6 +77,10 @@
 
 <!-- ===================== HERO ===================== -->
 <header class="hero">
+  <div class="layout-line-left"></div>
+  <div class="layout-line-right"></div>
+  <div class="layout-node left" style="top: 30px"></div>
+  <div class="layout-node right" style="top: 30px"></div>
   <div class="hero-bg"><img src="assets/final.png" alt="Ancient Greek city in white line-art under a starfield"></div>
   <div class="hero-scrim"></div>
   <div class="hero-glow"></div>
@@ -92,9 +106,18 @@
   </div>
 </header>
 
+<div class="section-divider">
+  <div class="line"></div>
+  <svg class="divider-mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg>
+  <div class="line"></div>
+</div>
 
 <!-- ===================== SECTION 1 — THE THIRD OPTION ===================== -->
 <section class="section" id="third-option">
+  <div class="layout-line-left"></div>
+  <div class="layout-line-right"></div>
+  <div class="layout-node left"></div>
+  <div class="layout-node right"></div>
   <div class="wrap">
     <div class="section-head">
       <p class="eyebrow">The third option</p>
@@ -125,8 +148,124 @@
   </div>
 </section>
 
+<div class="section-divider">
+  <div class="line"></div>
+  <svg class="divider-mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg>
+  <div class="line"></div>
+</div>
+
+<!-- ===================== NEW: ARCHITECTURE SECTION ===================== -->
+<section class="section" id="architecture">
+  <div class="layout-line-left"></div>
+  <div class="layout-line-right"></div>
+  <div class="layout-node left"></div>
+  <div class="layout-node right"></div>
+
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">System design</p>
+      <h2 class="display h-lg" style="margin-top:18px">Three layers,<br>one chain of trust.</h2>
+      <p class="lede">Whatever needs to be trusted goes on-chain; whatever needs to be private goes in-TEE; whatever must remain a secret stays on your device.</p>
+    </div>
+
+    <div class="arch-grid">
+      <div class="arch-nav">
+        <button class="arch-tab-btn active" data-tab="custody">
+          <span class="num">LAYER 1</span>
+          <span class="title">Custody Layer</span>
+        </button>
+        <button class="arch-tab-btn" data-tab="matching">
+          <span class="num">LAYER 2</span>
+          <span class="title">Matching Layer</span>
+        </button>
+        <button class="arch-tab-btn" data-tab="client">
+          <span class="num">LAYER 3</span>
+          <span class="title">Client / SDK</span>
+        </button>
+      </div>
+
+      <div class="arch-pane">
+        <!-- Tab 1: Custody -->
+        <div class="arch-pane-content" id="arch-pane-custody">
+          <div>
+            <h3 class="arch-pane-title">On-Chain Solana Vault Program</h3>
+            <p class="arch-pane-desc">The foundation of the trust model. Records note commitments, spent-note nullifiers, and verifies match validity proofs. Since it is non-upgradeable, no operator or TEE can touch or exit your funds without a valid zero-knowledge spend proof signed by your key.</p>
+          </div>
+          <div class="arch-features">
+            <div class="arch-feature">
+              <span class="label">Location</span>
+              <span class="val">On-Chain (Solana RPC)</span>
+            </div>
+            <div class="arch-feature">
+              <span class="label">Responsibility</span>
+              <span class="val">Deposits, Withdrawals, Nullifiers</span>
+            </div>
+            <div class="arch-feature">
+              <span class="label">Trust Assumption</span>
+              <span class="val">Cryptography + L1 Validators</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Matching -->
+        <div class="arch-pane-content" id="arch-pane-matching" style="display:none">
+          <div>
+            <h3 class="arch-pane-title">In-TEE Private Matching Engine</h3>
+            <p class="arch-pane-desc">A single process running inside an attested Intel TDX confidential VM. It manages the private order intake, conducts uniform-clearing-price matching loops on fixed intervals to eliminate front-running, and submits signed batch settlements directly to Solana.</p>
+          </div>
+          <div class="arch-features">
+            <div class="arch-feature">
+              <span class="label">Location</span>
+              <span class="val">Intel TDX Enclave</span>
+            </div>
+            <div class="arch-feature">
+              <span class="label">Responsibility</span>
+              <span class="val">FBA Matching, Order Book Privacy</span>
+            </div>
+            <div class="arch-feature">
+              <span class="label">Trust Assumption</span>
+              <span class="val">Intel TDX Hardware Attestation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Client -->
+        <div class="arch-pane-content" id="arch-pane-client" style="display:none">
+          <div>
+            <h3 class="arch-pane-title">Local Cryptographic Client (SDK)</h3>
+            <p class="arch-pane-desc">Runs locally on the user's machine. It generates client-side zero-knowledge spend proofs for deposits and withdrawals, verifiably measures and checks TEE attestation before submitting orders, and signs order intents using a dedicated, isolated trading key.</p>
+          </div>
+          <div class="arch-features">
+            <div class="arch-feature">
+              <span class="label">Location</span>
+              <span class="val">User Device (Local JS/TS)</span>
+            </div>
+            <div class="arch-feature">
+              <span class="label">Responsibility</span>
+              <span class="val">ZK Proof Gen, TEE Measurement Check</span>
+            </div>
+            <div class="arch-feature">
+              <span class="label">Trust Assumption</span>
+              <span class="val">Zero (Self-generated proofs)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider">
+  <div class="line"></div>
+  <svg class="divider-mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg>
+  <div class="line"></div>
+</div>
 
 <section class="section" id="how">
+  <div class="layout-line-left"></div>
+  <div class="layout-line-right"></div>
+  <div class="layout-node left"></div>
+  <div class="layout-node right"></div>
   <div class="wrap how-container">
     <div class="how-left">
       <div class="section-head">
@@ -166,8 +305,91 @@
   </div>
 </section>
 
+<div class="section-divider">
+  <div class="line"></div>
+  <svg class="divider-mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg>
+  <div class="line"></div>
+</div>
+
+<!-- ===================== NEW: DIFFERENTIATION SECTION ===================== -->
+<section class="section" id="differentiation">
+  <div class="layout-line-left"></div>
+  <div class="layout-line-right"></div>
+  <div class="layout-node left"></div>
+  <div class="layout-node right"></div>
+
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Comparison</p>
+      <h2 class="display h-lg" style="margin-top:18px">How Darknyx compares</h2>
+      <p class="lede">Honest trade-offs across order privacy, custody risk, matching speed, and L1 compatibility.</p>
+    </div>
+
+    <div class="diff-table-wrapper">
+      <table class="diff-table">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Darknyx</th>
+            <th>MPC Pools (e.g. Renegade)</th>
+            <th>Public DEXs / CLOBs</th>
+            <th>Centralized Exchanges</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Order Privacy</b></td>
+            <td><span class="highlight">Hidden (In-TEE)</span></td>
+            <td>Hidden (MPC matches)</td>
+            <td>Public (Front-runnable)</td>
+            <td>Visible to operator</td>
+          </tr>
+          <tr>
+            <td><b>Custody Risk</b></td>
+            <td><span class="highlight">Zero (Solana Vault)</span></td>
+            <td>Zero (On-chain Vault)</td>
+            <td>Zero (On-chain)</td>
+            <td>Total operator custody</td>
+          </tr>
+          <tr>
+            <td><b>Matching Speed</b></td>
+            <td><span class="highlight">Sub-millisecond</span></td>
+            <td>Slow (100ms - 1s MPC overhead)</td>
+            <td>Block-level delay</td>
+            <td>Sub-millisecond</td>
+          </tr>
+          <tr>
+            <td><b>Liquidity Access</b></td>
+            <td><span class="highlight">Direct (Solana assets)</span></td>
+            <td>Isolated / Bridged</td>
+            <td>Direct L1 liquidity</td>
+            <td>Deep custodian book</td>
+          </tr>
+          <tr>
+            <td><b>Moat / Defensibility</b></td>
+            <td><span class="highlight">Batched private settlement</span></td>
+            <td>MPC cryptography</td>
+            <td>Network effects</td>
+            <td>Brand & licensing</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider">
+  <div class="line"></div>
+  <svg class="divider-mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg>
+  <div class="line"></div>
+</div>
+
 <!-- ===================== FOOTER ===================== -->
 <footer class="footer">
+  <div class="layout-line-left"></div>
+  <div class="layout-line-right"></div>
+  <div class="layout-node left" style="top: 0"></div>
+  <div class="layout-node right" style="top: 0"></div>
   <div class="scene-wrap">
     <div class="stars" data-stars="70"></div>
     <img class="scene-art faint" src="assets/footer.png" alt="Ancient columns under a starry sky">
@@ -270,6 +492,22 @@
       }
     }
   };
+
+  // Architecture tabs switching
+  document.querySelectorAll('.arch-tab-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.arch-tab-btn').forEach(function (b) {
+        b.classList.remove('active');
+      });
+      btn.classList.add('active');
+      var tab = btn.getAttribute('data-tab');
+      document.querySelectorAll('.arch-pane-content').forEach(function (pane) {
+        pane.style.display = 'none';
+      });
+      var activePane = document.getElementById('arch-pane-' + tab);
+      if (activePane) activePane.style.display = 'block';
+    });
+  });
 
   window.addEventListener('scroll', handleScroll, { passive: true });
 })();

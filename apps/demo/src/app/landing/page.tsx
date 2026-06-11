@@ -64,6 +64,7 @@ function Starfield({ count = 40 }: { count?: number }) {
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
+  const [activeTab, setActiveTab] = useState("custody");
   const howCompletedRef = useRef(false);
   const isLockedRef = useRef(false);
 
@@ -134,6 +135,26 @@ export default function Home() {
 
   return (
     <>
+      {/* ===================== TICKER BANNER ===================== */}
+      <div className="ticker-banner">
+        <div className="ticker-track">
+          {Array.from({ length: 4 }).map((_, idx) => (
+            <div className="ticker-item" key={idx}>
+              <span className="pdot"></span>
+              DARKNYX <b>TESTNET</b>
+              <span style={{ margin: "0 10px", opacity: 0.3 }}>•</span>
+              SOLANA <b>CUSTODY</b>
+              <span style={{ margin: "0 10px", opacity: 0.3 }}>•</span>
+              INTEL TDX <b>CONFIDENTIAL VMS</b>
+              <span style={{ margin: "0 10px", opacity: 0.3 }}>•</span>
+              ZERO-KNOWLEDGE <b>SETTLEMENT</b>
+              <span style={{ margin: "0 10px", opacity: 0.3 }}>•</span>
+              PRIVATE <b>ORDER BOOK</b>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ===== Greek scene line-art symbols (retained exactly from static site design) ===== */}
       <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
         <symbol id="t-grand" viewBox="0 0 460 240">
@@ -199,6 +220,10 @@ export default function Home() {
 
       {/* ===================== HERO ===================== */}
       <header className="hero">
+        <div className="layout-line-left"></div>
+        <div className="layout-line-right"></div>
+        <div className="layout-node left" style={{ top: "30px" }}></div>
+        <div className="layout-node right" style={{ top: "30px" }}></div>
         <div className="hero-bg">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/assets/final.png" alt="Ancient Greek city in white line-art under a starfield" />
@@ -243,10 +268,20 @@ export default function Home() {
         </div>
       </header>
 
-
+      <div className="section-divider">
+        <div className="line"></div>
+        <svg className="divider-mark" viewBox="0 0 120 120">
+          <use href="#nyx-mark"/>
+        </svg>
+        <div className="line"></div>
+      </div>
 
       {/* ===================== SECTION 1 — THE THIRD OPTION ===================== */}
       <section className="section" id="third-option">
+        <div className="layout-line-left"></div>
+        <div className="layout-line-right"></div>
+        <div className="layout-node left"></div>
+        <div className="layout-node right"></div>
         <div className="wrap">
           <div className="section-head">
             <p className="eyebrow">The third option</p>
@@ -301,9 +336,152 @@ export default function Home() {
         </div>
       </section>
 
+      <div className="section-divider">
+        <div className="line"></div>
+        <svg className="divider-mark" viewBox="0 0 120 120">
+          <use href="#nyx-mark"/>
+        </svg>
+        <div className="line"></div>
+      </div>
 
+      {/* ===================== NEW: ARCHITECTURE SECTION ===================== */}
+      <section className="section" id="architecture">
+        <div className="layout-line-left"></div>
+        <div className="layout-line-right"></div>
+        <div className="layout-node left"></div>
+        <div className="layout-node right"></div>
+
+        <div className="wrap">
+          <div className="section-head">
+            <p className="eyebrow">System design</p>
+            <h2 className="display h-lg" style={{ marginTop: "18px" }}>
+              Three layers,
+              <br />
+              one chain of trust.
+            </h2>
+            <p className="lede">
+              Whatever needs to be trusted goes on-chain; whatever needs to be private goes in-TEE; whatever must remain a secret stays on your device.
+            </p>
+          </div>
+
+          <div className="arch-grid">
+            <div className="arch-nav">
+              <button
+                className={`arch-tab-btn ${activeTab === "custody" ? "active" : ""}`}
+                onClick={() => setActiveTab("custody")}
+              >
+                <span className="num">LAYER 1</span>
+                <span className="title">Custody Layer</span>
+              </button>
+              <button
+                className={`arch-tab-btn ${activeTab === "matching" ? "active" : ""}`}
+                onClick={() => setActiveTab("matching")}
+              >
+                <span className="num">LAYER 2</span>
+                <span className="title">Matching Layer</span>
+              </button>
+              <button
+                className={`arch-tab-btn ${activeTab === "client" ? "active" : ""}`}
+                onClick={() => setActiveTab("client")}
+              >
+                <span className="num">LAYER 3</span>
+                <span className="title">Client / SDK</span>
+              </button>
+            </div>
+
+            <div className="arch-pane">
+              {activeTab === "custody" && (
+                <div className="arch-pane-content">
+                  <div>
+                    <h3 className="arch-pane-title">On-Chain Solana Vault Program</h3>
+                    <p className="arch-pane-desc">
+                      The foundation of the trust model. Records note commitments, spent-note nullifiers, and verifies match validity proofs. Since it is non-upgradeable, no operator or TEE can touch or exit your funds without a valid zero-knowledge spend proof signed by your key.
+                    </p>
+                  </div>
+                  <div className="arch-features">
+                    <div className="arch-feature">
+                      <span className="label">Location</span>
+                      <span className="val">On-Chain (Solana RPC)</span>
+                    </div>
+                    <div className="arch-feature">
+                      <span className="label">Responsibility</span>
+                      <span className="val">Deposits, Withdrawals, Nullifiers</span>
+                    </div>
+                    <div className="arch-feature">
+                      <span className="label">Trust Assumption</span>
+                      <span className="val">Cryptography + L1 Validators</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "matching" && (
+                <div className="arch-pane-content">
+                  <div>
+                    <h3 className="arch-pane-title">In-TEE Private Matching Engine</h3>
+                    <p className="arch-pane-desc">
+                      A single process running inside an attested Intel TDX confidential VM. It manages the private order intake, conducts uniform-clearing-price matching loops on fixed intervals to eliminate front-running, and submits signed batch settlements directly to Solana.
+                    </p>
+                  </div>
+                  <div className="arch-features">
+                    <div className="arch-feature">
+                      <span className="label">Location</span>
+                      <span className="val">Intel TDX Enclave</span>
+                    </div>
+                    <div className="arch-feature">
+                      <span className="label">Responsibility</span>
+                      <span className="val">FBA Matching, Order Book Privacy</span>
+                    </div>
+                    <div className="arch-feature">
+                      <span className="label">Trust Assumption</span>
+                      <span className="val">Intel TDX Hardware Attestation</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "client" && (
+                <div className="arch-pane-content">
+                  <div>
+                    <h3 className="arch-pane-title">Local Cryptographic Client (SDK)</h3>
+                    <p className="arch-pane-desc">
+                      Runs locally on the user's machine. It generates client-side zero-knowledge spend proofs for deposits and withdrawals, verifiably measures and checks TEE attestation before submitting orders, and signs order intents using a dedicated, isolated trading key.
+                    </p>
+                  </div>
+                  <div className="arch-features">
+                    <div className="arch-feature">
+                      <span className="label">Location</span>
+                      <span className="val">User Device (Local JS/TS)</span>
+                    </div>
+                    <div className="arch-feature">
+                      <span className="label">Responsibility</span>
+                      <span className="val">ZK Proof Gen, TEE Measurement Check</span>
+                    </div>
+                    <div className="arch-feature">
+                      <span className="label">Trust Assumption</span>
+                      <span className="val">Zero (Self-generated proofs)</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider">
+        <div className="line"></div>
+        <svg className="divider-mark" viewBox="0 0 120 120">
+          <use href="#nyx-mark"/>
+        </svg>
+        <div className="line"></div>
+      </div>
 
       <section className="section" id="how">
+        <div className="layout-line-left"></div>
+        <div className="layout-line-right"></div>
+        <div className="layout-node left"></div>
+        <div className="layout-node right"></div>
         <div className="wrap how-container">
           <div className="how-left">
             <div className="section-head">
@@ -351,8 +529,99 @@ export default function Home() {
         </div>
       </section>
 
+      <div className="section-divider">
+        <div className="line"></div>
+        <svg className="divider-mark" viewBox="0 0 120 120">
+          <use href="#nyx-mark"/>
+        </svg>
+        <div className="line"></div>
+      </div>
+
+      {/* ===================== NEW: DIFFERENTIATION SECTION ===================== */}
+      <section className="section" id="differentiation">
+        <div className="layout-line-left"></div>
+        <div className="layout-line-right"></div>
+        <div className="layout-node left"></div>
+        <div className="layout-node right"></div>
+
+        <div className="wrap">
+          <div className="section-head">
+            <p className="eyebrow">Comparison</p>
+            <h2 className="display h-lg" style={{ marginTop: "18px" }}>
+              How Darknyx compares
+            </h2>
+            <p className="lede">
+              Honest trade-offs across order privacy, custody risk, matching speed, and L1 compatibility.
+            </p>
+          </div>
+
+          <div className="diff-table-wrapper">
+            <table className="diff-table">
+              <thead>
+                <tr>
+                  <th>Dimension</th>
+                  <th>Darknyx</th>
+                  <th>MPC Pools (e.g. Renegade)</th>
+                  <th>Public DEXs / CLOBs</th>
+                  <th>Centralized Exchanges</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Order Privacy</b></td>
+                  <td><span className="highlight">Hidden (In-TEE)</span></td>
+                  <td>Hidden (MPC matches)</td>
+                  <td>Public (Front-runnable)</td>
+                  <td>Visible to operator</td>
+                </tr>
+                <tr>
+                  <td><b>Custody Risk</b></td>
+                  <td><span className="highlight">Zero (Solana Vault)</span></td>
+                  <td>Zero (On-chain Vault)</td>
+                  <td>Zero (On-chain)</td>
+                  <td>Total operator custody</td>
+                </tr>
+                <tr>
+                  <td><b>Matching Speed</b></td>
+                  <td><span className="highlight">Sub-millisecond</span></td>
+                  <td>Slow (100ms - 1s MPC overhead)</td>
+                  <td>Block-level delay</td>
+                  <td>Sub-millisecond</td>
+                </tr>
+                <tr>
+                  <td><b>Liquidity Access</b></td>
+                  <td><span className="highlight">Direct (Solana assets)</span></td>
+                  <td>Isolated / Bridged</td>
+                  <td>Direct L1 liquidity</td>
+                  <td>Deep custodian book</td>
+                </tr>
+                <tr>
+                  <td><b>Moat / Defensibility</b></td>
+                  <td><span className="highlight">Batched private settlement</span></td>
+                  <td>MPC cryptography</td>
+                  <td>Network effects</td>
+                  <td>Brand & licensing</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider">
+        <div className="line"></div>
+        <svg className="divider-mark" viewBox="0 0 120 120">
+          <use href="#nyx-mark"/>
+        </svg>
+        <div className="line"></div>
+      </div>
+
       {/* ===================== FOOTER ===================== */}
       <footer className="footer">
+        <div className="layout-line-left"></div>
+        <div className="layout-line-right"></div>
+        <div className="layout-node left" style={{ top: "0" }}></div>
+        <div className="layout-node right" style={{ top: "0" }}></div>
         <div className="scene-wrap">
           <Starfield count={70} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
