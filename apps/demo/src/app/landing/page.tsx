@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 
 interface Star {
@@ -64,14 +64,72 @@ function Starfield({ count = 40 }: { count?: number }) {
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
+  const howCompletedRef = useRef(false);
+  const isLockedRef = useRef(false);
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      const currentScrollY = window.scrollY;
+      const direction = currentScrollY > lastScrollY ? "down" : "up";
+      lastScrollY = currentScrollY;
+
+      setScrolled(currentScrollY > 40);
+
+      const howSection = document.getElementById("how");
+      if (!howSection) return;
+
+      const rect = howSection.getBoundingClientRect();
+      const sectionTop = currentScrollY + rect.top;
+      const sectionHeight = rect.height;
+      const targetScrollY = Math.round(sectionTop + (sectionHeight / 2) - (window.innerHeight / 2));
+
+      // Reset completed flag if they scroll far above the section
+      if (currentScrollY < targetScrollY - window.innerHeight) {
+        howCompletedRef.current = false;
+        howSection.classList.remove("in-view");
+      }
+
+      // If scrolling down, not completed yet, and not already locked
+      if (direction === "down" && !howCompletedRef.current && !isLockedRef.current) {
+        // Capture range around targetScrollY
+        if (currentScrollY >= targetScrollY - 80 && currentScrollY < targetScrollY + 80) {
+          // Snap scroll to target position
+          window.scrollTo(0, targetScrollY);
+
+          isLockedRef.current = true;
+
+          const prevent = (e: Event) => e.preventDefault();
+          const preventKey = (e: KeyboardEvent) => {
+            if ([32, 33, 34, 35, 36, 37, 38, 39, 40].includes(e.keyCode)) {
+              e.preventDefault();
+            }
+          };
+
+          window.addEventListener("wheel", prevent, { passive: false });
+          window.addEventListener("touchmove", prevent, { passive: false });
+          window.addEventListener("keydown", preventKey, { passive: false });
+
+          // Trigger card slide up animation
+          howSection.classList.add("in-view");
+
+          setTimeout(() => {
+            window.removeEventListener("wheel", prevent);
+            window.removeEventListener("touchmove", prevent);
+            window.removeEventListener("keydown", preventKey);
+            isLockedRef.current = false;
+            howCompletedRef.current = true;
+          }, 1500);
+        }
+      }
     };
-    handleScroll();
+
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
@@ -245,19 +303,26 @@ export default function Home() {
 
 
 
-      {/* ===================== SECTION 2 — HOW IT WORKS ===================== */}
       <section className="section" id="how">
-        <div className="wrap">
-          <div className="section-head">
-            <p className="eyebrow">How it works</p>
-            <h2 className="display h-lg" style={{ marginTop: "18px" }}>
-              From private intent
-              <br />
-              to verified settlement.
-            </h2>
-            <p className="lede">
-              You sign custody actions with your wallet and orders with a separate trading key. The sensitive path stays private inside the enclave; the money path stays verifiable on-chain.
-            </p>
+        <div className="wrap how-container">
+          <div className="how-left">
+            <div className="section-head">
+              <p className="eyebrow">How it works</p>
+              <h2 className="display h-lg" style={{ marginTop: "18px" }}>
+                From private intent
+                <br />
+                to verified settlement.
+              </h2>
+              <p className="lede">
+                You sign custody actions with your wallet and orders with a separate trading key. The sensitive path stays private inside the enclave; the money path stays verifiable on-chain.
+              </p>
+            </div>
+
+            <div style={{ marginTop: "clamp(30px,4vw,40px)" }}>
+              <Link className="btn ghost" href="/docs/architecture-overview">
+                Read the architecture <span className="arr">→</span>
+              </Link>
+            </div>
           </div>
 
           <div className="steps">
@@ -282,12 +347,6 @@ export default function Home() {
               <p>Settlement posts to Solana with proof material and the registered TEE signature. Withdrawals stay user-controlled.</p>
               <span className="tech">ZK proofs</span>
             </div>
-          </div>
-
-          <div style={{ marginTop: "clamp(40px,6vw,60px)" }}>
-            <Link className="btn ghost" href="/docs/architecture-overview">
-              Read the architecture <span className="arr">→</span>
-            </Link>
           </div>
         </div>
       </section>

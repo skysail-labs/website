@@ -126,13 +126,18 @@
 </section>
 
 
-<!-- ===================== SECTION 2 — HOW IT WORKS ===================== -->
 <section class="section" id="how">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">How it works</p>
-      <h2 class="display h-lg" style="margin-top:18px">From private intent<br>to verified settlement.</h2>
-      <p class="lede">You sign custody actions with your wallet and orders with a separate trading key. The sensitive path stays private inside the enclave; the money path stays verifiable on-chain.</p>
+  <div class="wrap how-container">
+    <div class="how-left">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2 class="display h-lg" style="margin-top:18px">From private intent<br>to verified settlement.</h2>
+        <p class="lede">You sign custody actions with your wallet and orders with a separate trading key. The sensitive path stays private inside the enclave; the money path stays verifiable on-chain.</p>
+      </div>
+
+      <div style="margin-top:clamp(30px,4vw,40px)">
+        <a class="btn ghost" href="docs.html#architecture">Read the architecture <span class="arr">→</span></a>
+      </div>
     </div>
 
     <div class="steps">
@@ -157,10 +162,6 @@
         <p>Settlement posts to Solana with proof material and the registered TEE signature. Withdrawals stay user-controlled.</p>
         <span class="tech">ZK proofs</span>
       </div>
-    </div>
-
-    <div style="margin-top:clamp(40px,6vw,60px)">
-      <a class="btn ghost" href="docs.html#architecture">Read the architecture <span class="arr">→</span></a>
     </div>
   </div>
 </section>
@@ -213,10 +214,64 @@
     }
     el.appendChild(f);
   });
-  // nav scrolled state
-  var nav = document.getElementById('nav');
-  var onScroll = function () { nav.classList.toggle('scrolled', window.scrollY > 40); };
-  onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+  // nav scrolled state and section 2 scroll animation
+  var howCompleted = false;
+  var isLocked = false;
+  var lastScrollY = window.scrollY;
+
+  var handleScroll = function () {
+    var currentScrollY = window.scrollY;
+    var direction = currentScrollY > lastScrollY ? 'down' : 'up';
+    lastScrollY = currentScrollY;
+
+    var nav = document.getElementById('nav');
+    if (nav) nav.classList.toggle('scrolled', currentScrollY > 40);
+
+    var howSection = document.getElementById('how');
+    if (!howSection) return;
+
+    var rect = howSection.getBoundingClientRect();
+    var sectionTop = currentScrollY + rect.top;
+    var sectionHeight = rect.height;
+    var targetScrollY = Math.round(sectionTop + (sectionHeight / 2) - (window.innerHeight / 2));
+
+    // Reset completed flag if they scroll far above the section
+    if (currentScrollY < targetScrollY - window.innerHeight) {
+      howCompleted = false;
+      howSection.classList.remove('in-view');
+    }
+
+    // If scrolling down, not completed yet, and not already locked
+    if (direction === 'down' && !howCompleted && !isLocked) {
+      if (currentScrollY >= targetScrollY - 80 && currentScrollY < targetScrollY + 80) {
+        window.scrollTo(0, targetScrollY);
+        isLocked = true;
+
+        var prevent = function (e) { e.preventDefault(); };
+        var preventKey = function (e) {
+          if ([32, 33, 34, 35, 36, 37, 38, 39, 40].includes(e.keyCode)) {
+            e.preventDefault();
+          }
+        };
+
+        window.addEventListener('wheel', prevent, { passive: false });
+        window.addEventListener('touchmove', prevent, { passive: false });
+        window.addEventListener('keydown', preventKey, { passive: false });
+
+        howSection.classList.add('in-view');
+
+        setTimeout(function () {
+          window.removeEventListener('wheel', prevent);
+          window.removeEventListener('touchmove', prevent);
+          window.removeEventListener('keydown', preventKey);
+          isLocked = false;
+          howCompleted = true;
+        }, 1500);
+      }
+    }
+  };
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
 })();
 </script>
 

@@ -256,6 +256,46 @@ img.scene-art { object-fit: cover; object-position: bottom; }
 .step .tech { margin-top: 16px; display: inline-flex; white-space: nowrap; align-items: center; gap: 7px; font: 500 9px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--chalk-mute); border: 1px solid var(--line-2); border-radius: 3px; padding: 5px 9px; }
 @media (max-width: 820px) { .steps { grid-template-columns: 1fr; } }
 
+/* How it works section layout (Section 2) */
+.how-container { display: flex; flex-direction: column; gap: 40px; }
+.how-left { display: flex; flex-direction: column; justify-content: center; }
+@media (min-width: 900px) {
+  .how-container { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(40px, 6vw, 96px); align-items: center; }
+  .how-container .steps { grid-template-columns: 1fr; margin-top: 0; }
+  .how-container .section-head { max-width: none; }
+}
+
+/* Staggered card slide-up scroll animation */
+#how .step {
+  opacity: 0;
+  transform: translateY(120px);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#how.in-view .step:nth-child(1) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.1s;
+}
+#how.in-view .step:nth-child(2) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.35s;
+}
+#how.in-view .step:nth-child(3) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.6s;
+}
+@media (prefers-reduced-motion: reduce) {
+  #how .step {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+
 /* ============================================================
    FOOTER (with full scene)
    ============================================================ */
