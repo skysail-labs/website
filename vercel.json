@@ -1,0 +1,7 @@
+{
+  "framework": "nextjs",
+  "rootDirectory": "apps/demo",
+  "installCommand": "npm ci",
+  "buildCommand": "cd ../docs && npm ci && npm run build && mkdir -p ../demo/public/docs && cp -r build/* ../demo/public/docs/ && cd ../demo && npm run build",
+  "outputDirectory": ".next"
+}

@@ -18,6 +18,15 @@ const nextConfig: NextConfig = {
           root: path.join(__dirname, "..", ".."),
         },
       }),
+  async redirects() {
+    return [
+      {
+        source: "/docs",
+        destination: "/docs/introduction/",
+        permanent: false,
+      },
+    ];
+  },
   async headers() {
     return [
       {

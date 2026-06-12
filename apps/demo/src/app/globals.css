@@ -215,12 +215,15 @@ body {
   line-height: 1.75;
 }
 
-.docs-light,
 .landing-light,
-.docs-light .font-sans,
-.landing-light .font-sans,
-.docs-light .nyx-doc-prose {
+.landing-light .font-sans {
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.docs-light,
+.docs-light .font-sans,
+.docs-light .nyx-doc-prose {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
 #docs-root.docs-light {
@@ -269,7 +272,7 @@ body {
   color: var(--nyx-fog) !important;
 }
 .docs-dark {
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   background: #0d0e12;
   color: rgba(245, 243, 238, 0.9);
 }
@@ -585,7 +588,7 @@ body {
 
 .nyx-doc-prose {
   max-width: 780px;
-  font-family: var(--nyx-font-body);
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   color: rgb(41, 37, 36);
 }
 .nyx-doc-prose :target {
@@ -595,7 +598,7 @@ body {
 .nyx-doc-prose h2 {
   scroll-margin-top: 96px;
   margin-top: 52px;
-  font-family: var(--nyx-font-body);
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   font-size: 28px;
   font-weight: 600;
   line-height: 1.25;
@@ -604,7 +607,7 @@ body {
 .nyx-doc-prose h3 {
   scroll-margin-top: 96px;
   margin-top: 34px;
-  font-family: var(--nyx-font-body);
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   font-size: 19px;
   font-weight: 600;
   line-height: 1.45;

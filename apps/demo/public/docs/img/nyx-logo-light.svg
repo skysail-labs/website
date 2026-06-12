@@ -1,0 +1,7 @@
+<svg width="80" height="28" viewBox="0 0 80 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="2" y="4" width="3" height="20" rx="1" fill="#0a0a0d"/>
+  <polygon points="5,4 8,4 17,20 14,20" fill="#0a0a0d"/>
+  <rect x="14" y="4" width="3" height="20" rx="1" fill="#0a0a0d"/>
+  <text x="22" y="21" font-family="'Space Grotesk', system-ui, sans-serif" font-size="16" font-weight="700" letter-spacing="-0.04em" fill="#0a0a0d">YX</text>
+  <circle cx="53" cy="20" r="2.5" fill="#5566f3"/>
+</svg>
