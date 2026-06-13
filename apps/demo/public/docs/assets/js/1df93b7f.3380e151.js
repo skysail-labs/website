@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunknyx_docs=self.webpackChunknyx_docs||[]).push([["452"],{5146(n,s,t){t.r(s),t.d(s,{default:()=>e});var u=t(4848),c=t(6347);function e(){return(0,u.jsx)(c.rd,{to:"/introduction"})}}}]);

@@ -76,7 +76,7 @@ export default function Home() {
       const direction = currentScrollY > lastScrollY ? "down" : "up";
       lastScrollY = currentScrollY;
 
-      setScrolled(currentScrollY > 40);
+      setScrolled(currentScrollY > 10);
 
       const howSection = document.getElementById("how");
       if (!howSection) return;
@@ -135,26 +135,6 @@ export default function Home() {
 
   return (
     <>
-      {/* ===================== TICKER BANNER ===================== */}
-      <div className="ticker-banner">
-        <div className="ticker-track">
-          {Array.from({ length: 4 }).map((_, idx) => (
-            <div className="ticker-item" key={idx}>
-              <span className="pdot"></span>
-              DARKNYX <b>TESTNET</b>
-              <span style={{ margin: "0 10px", opacity: 0.3 }}>•</span>
-              SOLANA <b>CUSTODY</b>
-              <span style={{ margin: "0 10px", opacity: 0.3 }}>•</span>
-              INTEL TDX <b>CONFIDENTIAL VMS</b>
-              <span style={{ margin: "0 10px", opacity: 0.3 }}>•</span>
-              ZERO-KNOWLEDGE <b>SETTLEMENT</b>
-              <span style={{ margin: "0 10px", opacity: 0.3 }}>•</span>
-              PRIVATE <b>ORDER BOOK</b>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* ===== Greek scene line-art symbols (retained exactly from static site design) ===== */}
       <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
         <symbol id="t-grand" viewBox="0 0 460 240">
@@ -634,11 +614,11 @@ export default function Home() {
           </svg>
           <p className="eyebrow">Privacy without sacrificing auditability</p>
           <h2 className="display h-md" style={{ marginTop: "16px", maxWidth: "18ch", marginLeft: "auto", marginRight: "auto" }}>
-            Start where the homework is.
+            Privacy Without Sacrificing Auditability.
           </h2>
-          <p className="lede">
+          {/* <p className="lede">
             The docs lay out the trust model, the settlement pipeline, the cryptography, and honest comparisons against every comparable venue.
-          </p>
+          </p> */}
           <div className="footer-cta">
             <Link className="btn" href="/docs">
               Read the docs <span className="arr">→</span>

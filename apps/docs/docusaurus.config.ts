@@ -60,15 +60,16 @@ const config: Config = {
       },
     },
     navbar: {
-      title: "",
+      title: "darknyx",
       hideOnScroll: false,
       logo: {
         alt: "darknyx",
-        src: "img/lockup-light.svg",
-        srcDark: "img/lockup-dark.svg",
-        href: "/",
-        width: 120,
-        height: 38,
+        src: "img/favicon-light.svg",
+        srcDark: "img/favicon-dark.svg",
+        href: "pathname:///../",
+        target: "_self",
+        width: 26,
+        height: 26,
       },
       items: [
         {

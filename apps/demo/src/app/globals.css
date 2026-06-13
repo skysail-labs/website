@@ -7,17 +7,22 @@
  * ------------------------------------------------------------------------- */
 :root {
   /* Color */
-  --nyx-ink: #0a0a0d;
-  --nyx-chalk: #f5f3ee;
+  --nyx-ink: #14121d;
+  --nyx-chalk: #f3effc;
   --nyx-slate: #6b6b74;
   --nyx-fog: #aeacb0;
-  --nyx-graphite: #1a1a20;
-  --nyx-graphite-2: #14141a;
-  --nyx-accent: oklch(0.62 0.14 260);
-  --nyx-accent-soft: oklch(0.62 0.14 260 / 0.18);
+  --nyx-graphite: #21173d;
+  --nyx-graphite-2: #1b1233;
+  --nyx-accent: #c5a059;
+  --nyx-accent-soft: rgba(197, 160, 89, 0.12);
   --nyx-signal-green: #5fb85f;
   --nyx-signal-amber: #d9a441;
   --nyx-signal-red: #c84545;
+
+  /* Custom palette overrides requested by user */
+  --color-malachite: #14121d;
+  --color-orchid: #a37482;
+  --color-faint-purple: #5e4b6c;
 
   /* Type */
   --nyx-font-display: var(--font-space-grotesk), 'Inter', system-ui, sans-serif;
@@ -84,6 +89,10 @@
   --color-nyx-signal-amber: var(--nyx-signal-amber);
   --color-nyx-signal-red: var(--nyx-signal-red);
 
+  --color-malachite: var(--color-malachite);
+  --color-orchid: var(--color-orchid);
+  --color-faint-purple: var(--color-faint-purple);
+
   --font-display: var(--nyx-font-display);
   --font-mono: var(--nyx-font-mono);
   --font-sans: var(--nyx-font-body);
@@ -95,7 +104,7 @@ html, body { margin: 0; padding: 0; overflow-x: hidden; }
 *::-webkit-scrollbar { display: none !important; width: 0 !important; }
 
 html {
-  background: #050608;
+  background: var(--nyx-ink);
   color: var(--nyx-chalk);
   font-family: var(--nyx-font-body);
   font-feature-settings: 'ss01';
@@ -104,7 +113,7 @@ html {
 }
 
 body {
-  background: #050608;
+  background: var(--nyx-ink);
   color: var(--nyx-chalk);
   font-family: var(--nyx-font-body);
   font-size: var(--nyx-fs-md);
