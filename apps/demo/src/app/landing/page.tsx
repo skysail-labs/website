@@ -225,29 +225,27 @@ export default function Home() {
                   Built for active traders, market makers, and institutions that need discretion without giving up custody or auditability.
                 </p>
               </div>
-              <Link
-                href="/docs"
+              <span
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "0.5rem",
-                  background: "var(--cobalt)",
-                  color: "#000",
-                  border: "1px solid rgba(0,0,0,0.6)",
+                  background: "transparent",
+                  color: "var(--cobalt)",
+                  border: "1px solid var(--cobalt)",
                   fontWeight: 700,
                   padding: "0.75rem 2rem",
                   fontSize: "11px",
                   letterSpacing: "0.1em",
                   textTransform: "uppercase",
                   fontFamily: "var(--mono)",
-                  boxShadow: "3px 3px 0px rgba(0,0,0,0.8)",
-                  textDecoration: "none",
                   flexShrink: 0,
-                  transition: "transform 0.2s, box-shadow 0.2s",
+                  opacity: 0.7,
+                  cursor: "default",
                 }}
               >
-                Enter the Pool →
-              </Link>
+                Private Beta Soon
+              </span>
             </div>
           </div>
         </div>
