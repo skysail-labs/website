@@ -120,7 +120,7 @@ const config: Config = {
         {
           label: "MCP Server",
           position: "right",
-          href: "#",
+          to: "/mcp-server",
           className: "navbar-btn navbar-btn--mcp",
         },
         {
