@@ -1,0 +1,22 @@
+{
+  "title": {
+    "message": "darknyx",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "darknyx",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Docs": {
+    "message": "Docs",
+    "description": "Navbar item with label Docs"
+  },
+  "item.label.MCP Server": {
+    "message": "MCP Server",
+    "description": "Navbar item with label MCP Server"
+  },
+  "item.label.Feedback": {
+    "message": "Feedback",
+    "description": "Navbar item with label Feedback"
+  }
+}

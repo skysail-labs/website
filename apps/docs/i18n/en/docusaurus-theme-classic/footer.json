@@ -1,0 +1,58 @@
+{
+  "link.title.Get Started": {
+    "message": "Get Started",
+    "description": "The title of the footer links column with title=Get Started in the footer"
+  },
+  "link.title.Build": {
+    "message": "Build",
+    "description": "The title of the footer links column with title=Build in the footer"
+  },
+  "link.title.Connect": {
+    "message": "Connect",
+    "description": "The title of the footer links column with title=Connect in the footer"
+  },
+  "link.item.label.Overview": {
+    "message": "Overview",
+    "description": "The label of footer link with label=Overview linking to /get-started/overview"
+  },
+  "link.item.label.Programmatic Access": {
+    "message": "Programmatic Access",
+    "description": "The label of footer link with label=Programmatic Access linking to /get-started/programmatic-access"
+  },
+  "link.item.label.Trade Flow": {
+    "message": "Trade Flow",
+    "description": "The label of footer link with label=Trade Flow linking to /how-it-works/trade-flow"
+  },
+  "link.item.label.Place Order": {
+    "message": "Place Order",
+    "description": "The label of footer link with label=Place Order linking to /orders/place-order"
+  },
+  "link.item.label.API": {
+    "message": "API",
+    "description": "The label of footer link with label=API linking to /api/base-urls"
+  },
+  "link.item.label.TypeScript SDK": {
+    "message": "TypeScript SDK",
+    "description": "The label of footer link with label=TypeScript SDK linking to /sdk/typescript-client"
+  },
+  "link.item.label.Glossary": {
+    "message": "Glossary",
+    "description": "The label of footer link with label=Glossary linking to /reference/glossary"
+  },
+  "link.item.label.𝕏 / Twitter": {
+    "message": "𝕏 / Twitter",
+    "description": "The label of footer link with label=𝕏 / Twitter linking to https://x.com/darknyx"
+  },
+  "link.item.label.Discord": {
+    "message": "Discord",
+    "description": "The label of footer link with label=Discord linking to https://discord.gg/darknyx"
+  },
+  "link.item.label.hello@darknyx.xyz": {
+    "message": "hello@darknyx.xyz",
+    "description": "The label of footer link with label=hello@darknyx.xyz linking to mailto:hello@darknyx.xyz"
+  },
+  "copyright": {
+    "message": "© 2026 Nyx. Settle in the dark, prove in the light.",
+    "description": "The footer copyright"
+  }
+}

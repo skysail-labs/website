@@ -15,7 +15,7 @@ orders. Use it instead of polling `GET /orders/{id}`.
 
 ## Connect
 
-```text
+```
 wss://<gateway-host>/ws/orders?token=<access_token>
 ```
 
@@ -60,11 +60,14 @@ and produces no further events.
 
 ## Event flow
 
-```text
-order.place ──► (rests) ──► partially_filled ──► partially_filled ──► fully_filled
-                                                                       └── terminal
-            └──► (rests) ──► expired            (terminal)
-            └──► (rests) ──► cancelled          (terminal)
+```mermaid
+flowchart LR
+  P["order.place"] --> R["resting"]
+  R --> PF["partially_filled"]
+  PF --> PF2["partially_filled …"]
+  PF2 --> FF["✅ fully_filled\n(terminal)"]
+  R --> EX["⏱ expired\n(terminal)"]
+  R --> CA["🚫 cancelled\n(terminal)"]
 ```
 
 A partial fill carries the residual size so you always know how much is still

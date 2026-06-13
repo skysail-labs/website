@@ -1,10 +1,13 @@
 ---
 sidebar_position: 1
 title: Overview
+hide_title: false
 description: Nyx is a privacy-preserving spot darkpool on Solana — hidden orders matched inside an attested confidential VM, settled trustlessly with zero-knowledge proofs.
 ---
 
 # Overview
+
+<div style={{marginBottom: "2rem"}} />
 
 :::info TL;DR
 Nyx is a **privacy-preserving spot darkpool on Solana**. You submit hidden
@@ -53,27 +56,51 @@ sees enough to deanonymize your trading.
 
 Nyx is three layers that compose into one trust chain.
 
-```text
-┌──────────────────────────────────────────────────────────────┐
-│  CUSTODY — the Solana "vault" program                         │
-│  Holds funds. Owns the Merkle tree of note commitments,       │
-│  the nullifier set, and the Groth16 verifier. The only        │
-│  layer that can move tokens — and only against a proof.       │
-└──────────────────────────────────────────────────────────────┘
-                         ▲  attested, signed settle txs + ZK proofs
-┌──────────────────────────────────────────────────────────────┐
-│  MATCHING — the in-enclave engine (the "CVM")                 │
-│  Takes hidden orders, runs a uniform-clearing-price batch     │
-│  auction, and drives the settlement transactions directly.    │
-│  Never sees your spending key; cannot move funds itself.      │
-└──────────────────────────────────────────────────────────────┘
-                         ▲  signed orders + ZK input proofs over HTTPS/WS
-┌──────────────────────────────────────────────────────────────┐
-│  CLIENT — your wallet + the SDK                               │
-│  Builds notes, generates the input proofs, signs orders with  │
-│  a trading key, and verifies the enclave's attestation.       │
-└──────────────────────────────────────────────────────────────┘
-```
+<div style={{display:'flex',alignItems:'stretch',gap:'0',margin:'2rem 0',fontFamily:'system-ui,sans-serif'}}>
+
+  {/* CLIENT */}
+  <div style={{flex:1,padding:'16px 18px',border:'1.5px solid #c5a059',borderRadius:'4px',background:'#1b1b22',color:'#f5f3ee',minWidth:0}}>
+    <div style={{fontSize:'11px',fontWeight:600,letterSpacing:'0.15em',textTransform:'uppercase',color:'#c5a059',marginBottom:'8px'}}>Client</div>
+    <div style={{fontSize:'12px',color:'rgba(245,243,238,0.7)',lineHeight:'1.8'}}>
+      · wallet + SDK <br/>builds notes<br/>signs orders <br/>verifies attestation
+    </div>
+  </div>
+
+  {/* Arrow 1 */}
+  <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'0 8px',minWidth:'110px',flexShrink:0}}>
+    <div style={{fontSize:'11px',color:'#666',textAlign:'center',marginBottom:'5px',lineHeight:'1.4'}}>signed orders<br/>+ ZK input proofs</div>
+    <div style={{width:'100%',display:'flex',alignItems:'center'}}>
+      <div style={{flex:1,height:'1.5px',background:'#c5a059'}}/>
+      <div style={{width:0,height:0,borderTop:'5px solid transparent',borderBottom:'5px solid transparent',borderLeft:'9px solid #c5a059'}}/>
+    </div>
+  </div>
+
+  {/* MATCHING */}
+  <div style={{flex:1,padding:'16px 18px',border:'1.5px solid #c5a059',borderRadius:'4px',background:'#1b1b22',color:'#f5f3ee',minWidth:0}}>
+    <div style={{fontSize:'11px',fontWeight:600,letterSpacing:'0.15em',textTransform:'uppercase',color:'#c5a059',marginBottom:'8px'}}>Matching</div>
+    <div style={{fontSize:'12px',color:'rgba(245,243,238,0.7)',lineHeight:'1.8'}}>
+      · in-enclave CVM <br/> batch auction<br/>proves matches<br/>drives settlement
+    </div>
+  </div>
+
+  {/* Arrow 2 */}
+  <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'0 8px',minWidth:'110px',flexShrink:0}}>
+    <div style={{fontSize:'11px',color:'#666',textAlign:'center',marginBottom:'5px',lineHeight:'1.4'}}>settle txs<br/>+ ZK proofs</div>
+    <div style={{width:'100%',display:'flex',alignItems:'center'}}>
+      <div style={{flex:1,height:'1.5px',background:'#c5a059'}}/>
+      <div style={{width:0,height:0,borderTop:'5px solid transparent',borderBottom:'5px solid transparent',borderLeft:'9px solid #c5a059'}}/>
+    </div>
+  </div>
+
+  {/* CUSTODY */}
+  <div style={{flex:1,padding:'16px 18px',border:'1.5px solid #c5a059',borderRadius:'4px',background:'#1b1b22',color:'#f5f3ee',minWidth:0}}>
+    <div style={{fontSize:'11px',fontWeight:600,letterSpacing:'0.15em',textTransform:'uppercase',color:'#c5a059',marginBottom:'8px'}}>Custody</div>
+    <div style={{fontSize:'12px',color:'rgba(245,243,238,0.7)',lineHeight:'1.8'}}>
+      · Solana vault <br/> Merkle tree<br/>ZK verifier <br/>
+    </div>
+  </div>
+
+</div>
 
 - **Custody (Solana).** A single program owns custody: the incremental Merkle
   tree of note commitments, the nullifier and consumed-note sets that prevent

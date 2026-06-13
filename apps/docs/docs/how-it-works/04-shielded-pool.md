@@ -19,8 +19,12 @@ without ever learning what you hold.
 A custodial venue stores your balance as a number in a database. Nyx stores it as
 a set of **notes**. A note is a commitment — a Poseidon hash — to four things:
 
-```text
-note commitment = Hash( token mint, amount, owner, inner_hash )
+```mermaid
+flowchart LR
+  A["token mint"] --> H["note commitment\n= Poseidon Hash"]
+  B["amount"] --> H
+  C["owner"] --> H
+  D["inner_hash"] --> H
 ```
 
 The commitment reveals none of its inputs. From the outside, a note is an opaque
@@ -35,14 +39,17 @@ tree's root is a single hash summarizing every note that exists. To use a note y
 prove, in zero knowledge, that it is a leaf under the current root — without
 revealing *which* leaf.
 
-```text
-                       root  (one hash over all notes)
-                      /    \
-                   …          …
-                 /   \      /   \
-              leaf  leaf  leaf  leaf …      ← each leaf is a note commitment
-               │
-               └─ your note: you hold a secret opening + an inclusion path
+```mermaid
+flowchart TB
+  R["root\n(one hash over all notes)"]
+  N1["…"] & N2["…"]
+  L1["leaf"] & L2["leaf"] & L3["leaf"] & L4["leaf …"]
+  YN["🔑 your note\nsecret opening + inclusion path"]
+
+  R --> N1 & N2
+  N1 --> L1 & L2
+  N2 --> L3 & L4
+  L1 -. "you own this" .-> YN
 ```
 
 The tree is **sharded** for settlement throughput — several independent subtrees,
@@ -62,10 +69,11 @@ derived from it is published on-chain. The nullifier is computed so that:
   nullifier, and the second spend is rejected because the nullifier already
   exists.
 
-```text
-spend note ──► publish nullifier(note)
-                     │
-   try to spend it again ──► same nullifier already on-chain ──► rejected
+```mermaid
+flowchart LR
+  S["spend note"] --> P["publish nullifier on-chain"]
+  P --> A["try to spend again"]
+  A --> R["❌ rejected\nnullifier already exists"]
 ```
 
 This is the double-spend guard, and it is enforced on-chain independently of the
@@ -98,17 +106,15 @@ much beyond what a withdrawal necessarily reveals.
 
 ## The lifecycle, end to end
 
-```text
- deposit ──► note appended to the tree (SPENDABLE)
-                │
- place order ──► note pinned by a per-order lock (LOCKED)
-                │
- settle ──────► input nullified (CONSUMED); outputs appended:
-                  • your filled asset (a new note)
-                  • a change note for any unfilled remainder
-                  • fee notes
-                │
- withdraw ────► note nullified; tokens released to your wallet
+```mermaid
+flowchart TB
+  D["deposit"] --> SP["SPENDABLE\nnote in tree"]
+  SP --> LK["LOCKED\nper-order lock"]
+  LK --> CO["CONSUMED\ninput nullified"]
+  CO --> O1["filled asset note"]
+  CO --> O2["change note"]
+  CO --> O3["fee notes"]
+  SP --> W["withdraw → tokens released to wallet"]
 ```
 
 Every transition is gated on-chain by a distinct record — a wallet entry, a

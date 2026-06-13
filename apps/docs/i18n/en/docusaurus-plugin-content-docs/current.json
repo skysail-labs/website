@@ -1,0 +1,126 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.mainSidebar.category.Get Started": {
+    "message": "Get Started",
+    "description": "The label for category 'Get Started' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Get Started.link.generated-index.title": {
+    "message": "Get Started",
+    "description": "The generated-index page title for category 'Get Started' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Get Started.link.generated-index.description": {
+    "message": "What Nyx is, how the venue is put together, and how to start trading it programmatically.",
+    "description": "The generated-index page description for category 'Get Started' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.API": {
+    "message": "API",
+    "description": "The label for category 'API' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.API.link.generated-index.title": {
+    "message": "API",
+    "description": "The generated-index page title for category 'API' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.API.link.generated-index.description": {
+    "message": "Where the endpoints live, how requests are authenticated, and how the transport is secured and attested.",
+    "description": "The generated-index page description for category 'API' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Reference Data": {
+    "message": "Reference Data",
+    "description": "The label for category 'Reference Data' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Reference Data.link.generated-index.title": {
+    "message": "Reference Data",
+    "description": "The generated-index page title for category 'Reference Data' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Reference Data.link.generated-index.description": {
+    "message": "Static market metadata: the instruments you can trade and their parameters.",
+    "description": "The generated-index page description for category 'Reference Data' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Account": {
+    "message": "Account",
+    "description": "The label for category 'Account' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Account.link.generated-index.title": {
+    "message": "Account",
+    "description": "The generated-index page title for category 'Account' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Account.link.generated-index.description": {
+    "message": "Your balances are notes you own on-chain. This section covers the account model, the Merkle proofs you read to reconstruct state, the public proof-of-reserves, and settlement status.",
+    "description": "The generated-index page description for category 'Account' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Orders": {
+    "message": "Orders",
+    "description": "The label for category 'Orders' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Orders.link.generated-index.title": {
+    "message": "Orders",
+    "description": "The generated-index page title for category 'Orders' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Orders.link.generated-index.description": {
+    "message": "Place, cancel, modify, and inspect orders, and top up the continuation anchor pool that lets a partially-filled order keep working.",
+    "description": "The generated-index page description for category 'Orders' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.WebSocket API": {
+    "message": "WebSocket API",
+    "description": "The label for category 'WebSocket API' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.WebSocket API.link.generated-index.title": {
+    "message": "WebSocket API",
+    "description": "The generated-index page title for category 'WebSocket API' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.WebSocket API.link.generated-index.description": {
+    "message": "Low-latency, persistent connections: a bidirectional trading socket, a per-account order-lifecycle stream, and a per-account fills stream.",
+    "description": "The generated-index page description for category 'WebSocket API' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Trading Concepts": {
+    "message": "Trading Concepts",
+    "description": "The label for category 'Trading Concepts' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Trading Concepts.link.generated-index.title": {
+    "message": "Trading Concepts",
+    "description": "The generated-index page title for category 'Trading Concepts' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Trading Concepts.link.generated-index.description": {
+    "message": "How orders behave on a uniform-clearing-price batch auction: order types, time in force, execution attributes, the clearing price, self-trade prevention, and the continuation anchor pool.",
+    "description": "The generated-index page description for category 'Trading Concepts' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.SDK": {
+    "message": "SDK",
+    "description": "The label for category 'SDK' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.SDK.link.generated-index.title": {
+    "message": "SDK",
+    "description": "The generated-index page title for category 'SDK' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.SDK.link.generated-index.description": {
+    "message": "A worked TypeScript client: authenticate, build and submit orders, and stream order and fill events.",
+    "description": "The generated-index page description for category 'SDK' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.How It Works": {
+    "message": "How It Works",
+    "description": "The label for category 'How It Works' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.How It Works.link.generated-index.title": {
+    "message": "How It Works",
+    "description": "The generated-index page title for category 'How It Works' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.How It Works.link.generated-index.description": {
+    "message": "The architecture under the API: the trade lifecycle, the confidential VM, the privacy and attestation model, the shielded note pool, settlement, and fees.",
+    "description": "The generated-index page description for category 'How It Works' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Reference": {
+    "message": "Reference",
+    "description": "The label for category 'Reference' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Reference.link.generated-index.title": {
+    "message": "Reference",
+    "description": "The generated-index page title for category 'Reference' in sidebar 'mainSidebar'"
+  },
+  "sidebar.mainSidebar.category.Reference.link.generated-index.description": {
+    "message": "Error handling, the venue's degraded-mode signaling, and a glossary of terms.",
+    "description": "The generated-index page description for category 'Reference' in sidebar 'mainSidebar'"
+  }
+}

@@ -3,7 +3,7 @@
    All values sourced from design-system/tokens/tokens.json
    ========================================================= */
 
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap");
 
 /* ─── Design tokens ────────────────────────────────────── */
 :root {
@@ -13,7 +13,7 @@
   --nyx-slate:    #6b6b74;
   --nyx-fog:      #aeacb0;
   --nyx-graphite: #1a1a20;
-  --nyx-accent:   oklch(0.62 0.14 260);
+  --nyx-accent:   #c5a059;
 
   /* Borders (from tokens: hairline = dark surface, rule = light surface) */
   --nyx-hairline: 1px solid rgba(245, 243, 238, 0.08);
@@ -29,18 +29,18 @@
   --nyx-ease:     cubic-bezier(0.2, 0, 0, 1);
 
   /* ── Docusaurus / Infima overrides — light mode ── */
-  --ifm-color-primary:          oklch(0.55 0.14 260);
-  --ifm-color-primary-dark:     oklch(0.48 0.14 260);
-  --ifm-color-primary-darker:   oklch(0.43 0.14 260);
-  --ifm-color-primary-darkest:  oklch(0.35 0.14 260);
-  --ifm-color-primary-light:    oklch(0.62 0.14 260);
-  --ifm-color-primary-lighter:  oklch(0.68 0.14 260);
-  --ifm-color-primary-lightest: oklch(0.76 0.14 260);
+  --ifm-color-primary:          #a8863a;
+  --ifm-color-primary-dark:     #96762f;
+  --ifm-color-primary-darker:   #8a6c2a;
+  --ifm-color-primary-darkest:  #6e5520;
+  --ifm-color-primary-light:    #c5a059;
+  --ifm-color-primary-lighter:  #cfaf72;
+  --ifm-color-primary-lightest: #dcc491;
 
-  --ifm-font-family-base: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --ifm-font-family-base: Verdana, Geneva, sans-serif;
   --ifm-font-family-monospace: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  --ifm-font-size-base: 15px;          /* md from tokens */
-  --ifm-line-height-base: 1.55;
+  --ifm-font-size-base: 16px;
+  --ifm-line-height-base: 1.7;
   --ifm-code-font-size: 87%;
   --ifm-navbar-height: 60px;
 
@@ -50,18 +50,18 @@
   --ifm-global-shadow-tl: none;
   --ifm-card-border-radius: var(--nyx-r-xs);
 
-  --docusaurus-highlighted-code-line-bg: oklch(0.62 0.14 260 / 0.12);
+  --docusaurus-highlighted-code-line-bg: rgba(197, 160, 89, 0.10);
 }
 
 /* ─── Dark mode overrides ──────────────────────────────── */
 [data-theme="dark"] {
-  --ifm-color-primary:          oklch(0.72 0.12 260);
-  --ifm-color-primary-dark:     oklch(0.65 0.13 260);
-  --ifm-color-primary-darker:   oklch(0.60 0.14 260);
-  --ifm-color-primary-darkest:  oklch(0.52 0.14 260);
-  --ifm-color-primary-light:    oklch(0.79 0.11 260);
-  --ifm-color-primary-lighter:  oklch(0.84 0.09 260);
-  --ifm-color-primary-lightest: oklch(0.90 0.06 260);
+  --ifm-color-primary:          #c5a059;
+  --ifm-color-primary-dark:     #b8903a;
+  --ifm-color-primary-darker:   #a87e2e;
+  --ifm-color-primary-darkest:  #8a6520;
+  --ifm-color-primary-light:    #d0b070;
+  --ifm-color-primary-lighter:  #dabe88;
+  --ifm-color-primary-lightest: #e8d0a8;
 
   --ifm-background-color:         #0a0a0d;  /* nyx-ink */
   --ifm-background-surface-color: #1a1a20;  /* nyx-graphite */
@@ -76,13 +76,13 @@
 
   --ifm-menu-color:                    rgba(174, 172, 176, 0.72);
   --ifm-menu-color-active:             rgba(245, 243, 238, 0.95);
-  --ifm-menu-color-background-active:  oklch(0.62 0.14 260 / 0.12);
+  --ifm-menu-color-background-active:  rgba(197, 160, 89, 0.10);
   --ifm-menu-color-background-hover:   rgba(245, 243, 238, 0.04);
 
   --ifm-code-background: rgba(245, 243, 238, 0.06);
   --ifm-pre-background:  #0d0d11;
 
-  --docusaurus-highlighted-code-line-bg: oklch(0.62 0.14 260 / 0.15);
+  --docusaurus-highlighted-code-line-bg: rgba(197, 160, 89, 0.12);
 
   color-scheme: dark;
 }
@@ -95,7 +95,7 @@ html {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-family: Verdana, Geneva, sans-serif;
   font-feature-settings: "ss01";
 }
 
@@ -128,11 +128,99 @@ h1, h2, h3, h4, h5, h6 {
   gap: 11px;
 }
 
+/* Theme toggle — tint sun/moon icons gold */
+[class*="toggleButton"] svg,
+[class*="colorModeToggle"] svg {
+  color: #c5a059;
+  fill: #c5a059;
+}
+
 .navbar__title {
   font-family: "Space Grotesk", system-ui, -apple-system, sans-serif;
   font-weight: 600;
   font-size: 18px;
   letter-spacing: -0.04em;
+  color: #c5a059;
+}
+
+.navbar-btn {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  padding: 5px 14px !important;
+  border-radius: 4px !important;
+  margin-left: 6px !important;
+  transition: background 160ms, color 160ms !important;
+}
+
+/* ─── Search bar (docusaurus-search-local) ─────────────── */
+/* Search icon override — simple two-element mark */
+:root,
+[data-theme="dark"] {
+  --ifm-navbar-search-input-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Ccircle cx='6.5' cy='6.5' r='4' stroke='%23c5a059' stroke-width='1.5'/%3E%3Cline x1='10' y1='10' x2='14' y2='14' stroke='%23c5a059' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+.navbar__search-input {
+  background-color: rgba(245, 243, 238, 0.07) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Ccircle cx='6.5' cy='6.5' r='4' stroke='%23c5a059' stroke-width='1.5'/%3E%3Cline x1='10' y1='10' x2='14' y2='14' stroke='%23c5a059' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: 0.75rem center !important;
+  background-size: 1rem 1rem !important;
+  border: 1px solid rgba(245, 243, 238, 0.18) !important;
+  border-radius: 4px !important;
+  color: var(--nyx-chalk) !important;
+  font-family: Verdana, Geneva, sans-serif !important;
+  font-size: 13px !important;
+  padding: 5px 12px 5px 32px !important;
+  min-width: 180px !important;
+  transition: border-color 160ms, background 160ms !important;
+}
+
+.navbar__search-input::placeholder {
+  color: rgba(174, 172, 176, 0.5) !important;
+}
+
+.navbar__search-input:focus {
+  border-color: rgba(197, 160, 89, 0.5) !important;
+  background: rgba(245, 243, 238, 0.08) !important;
+  outline: none !important;
+}
+
+.search-result-match {
+  color: #c5a059;
+}
+
+/* Hide individual kbd badge boxes */
+[class*="searchHint"] {
+  display: none !important;
+}
+
+/* Replace hint container with plain text */
+[class*="searchHintContainer"] {
+  display: flex !important;
+  align-items: center !important;
+}
+
+[class*="searchHintContainer"]::after {
+  content: "ctrl/cmd K";
+  font-size: 11px;
+  color: rgba(174, 172, 176, 0.55);
+  font-family: Verdana, Geneva, sans-serif;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.navbar-btn--mcp,
+.navbar-btn--feedback {
+  color: #c5a059 !important;
+  border: none !important;
+  background: none !important;
+  padding: 5px 8px !important;
+}
+
+.navbar-btn--mcp:hover,
+.navbar-btn--feedback:hover {
+  color: #d0b070 !important;
+  background: none !important;
 }
 
 .navbar__link {
@@ -216,6 +304,18 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 12px;
   border-left: var(--nyx-hairline);
   padding-left: 16px;
+  margin-top: -1.5rem;
+  padding-top: 1.5rem;
+  align-self: flex-start;
+}
+
+.nyx-toc-logo {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  margin-left: calc(-1rem - 1px);
+  margin-right: -1rem;
 }
 
 [data-theme="light"] .table-of-contents {
@@ -297,8 +397,8 @@ article header h1 {
 }
 
 [data-theme="dark"] .alert--info {
-  background: oklch(0.62 0.14 260 / 0.09);
-  border-left-color: oklch(0.62 0.14 260);
+  background: rgba(197, 160, 89, 0.08);
+  border-left-color: #c5a059;
   color: rgba(214, 212, 210, 0.88);
 }
 
@@ -397,8 +497,8 @@ code {
 }
 
 [data-theme="dark"] .pagination-nav__link:hover {
-  border-color: oklch(0.62 0.14 260 / 0.4);
-  background: oklch(0.62 0.14 260 / 0.06);
+  border-color: rgba(197, 160, 89, 0.5);
+  background: rgba(197, 160, 89, 0.06);
 }
 
 .pagination-nav__sublabel {
@@ -448,6 +548,10 @@ code {
   font-size: 13px;
   font-weight: 500;
   line-height: 2;
+}
+
+.footer__link-item svg {
+  display: none;
 }
 
 [data-theme="dark"] .footer__link-item {

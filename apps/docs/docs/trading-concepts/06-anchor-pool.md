@@ -33,12 +33,14 @@ carries a pool of **continuation anchors**: each anchor is the `{ inner_hash,
 nullifier }` pair for one future change note, derived deterministically from your
 seed so you can always regenerate it.
 
-```text
-place order  ──►  collateral note + anchor pool [a0, a1, a2, … a9]
-                              │
-   partial fill 1  ──► consume a0  ──► mint change note (you own it) ──► order keeps resting
-   partial fill 2  ──► consume a1  ──► mint change note               ──► order keeps resting
-        …
+```mermaid
+flowchart TB
+  PO["place order"] --> POOL["collateral note +\nanchor pool [a0 … a9]"]
+  POOL --> F1["partial fill 1\n→ consume a0"]
+  POOL --> F2["partial fill 2\n→ consume a1"]
+  POOL --> FN["…"]
+  F1 --> C1["mint change note\n→ order keeps resting"]
+  F2 --> C2["mint change note\n→ order keeps resting"]
 ```
 
 The hash of the pool is bound into your order signature, so the engine cannot
@@ -63,8 +65,11 @@ continuation rather than guess at material it does not have, and you replenish t
 pool with [`POST /orders/{order_id}/anchors`](../orders/anchor-topup) — five fresh
 anchors, signed, continuing the sequence. The order resumes immediately.
 
-```text
-remaining anchors → 0   →   order paused   →   POST …/anchors (5 fresh)   →   resumes
+```mermaid
+flowchart LR
+  Z["anchors → 0"] --> P["order paused"]
+  P --> T["POST …/anchors\n(5 fresh)"]
+  T --> R["▶ resumes"]
 ```
 
 :::tip Replenish proactively

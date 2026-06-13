@@ -27,14 +27,24 @@ TLS therefore terminates *inside* the confidential VM — the same boundary that
 runs the matching engine. There is no intermediate hop that sees plaintext, so
 there is no need for a second encryption layer:
 
-```text
-        TLS (key generated inside the enclave, never exported)
-client ───────────────────────────────────────────────► ┌───────────────┐
-                                                         │  Confidential │
-                  plaintext exists ONLY here ──────────► │  VM (enclave) │
-                                                         └───────────────┘
-        no gateway / load balancer in the trust path
-```
+<div style={{display:'flex',alignItems:'center',gap:'0',margin:'2rem 0',fontFamily:'inherit'}}>
+  <div style={{padding:'16px 24px',border:'1.5px solid #c5a059',borderRadius:'4px',background:'#1b1b22',color:'#f5f3ee',fontSize:'14px',whiteSpace:'nowrap'}}>
+    Client
+  </div>
+  <div style={{flex:1,position:'relative',display:'flex',alignItems:'center',padding:'0 8px',minHeight:'60px'}}>
+    <div style={{position:'absolute',top:0,left:0,right:0,textAlign:'center',fontSize:'6px',color:'#888',lineHeight:'1.4'}}>
+      TLS — key generated inside enclave, never exported<br/>no gateway / load balancer in the trust path
+    </div>
+    <div style={{width:'100%',display:'flex',alignItems:'center'}}>
+      <div style={{flex:1,height:'1.5px',background:'#c5a059'}}/>
+      <div style={{width:0,height:0,borderTop:'6px solid transparent',borderBottom:'6px solid transparent',borderLeft:'10px solid #c5a059'}}/>
+    </div>
+  </div>
+  <div style={{padding:'16px 24px',border:'1.5px solid #c5a059',borderRadius:'4px',background:'#1b1b22',color:'#f5f3ee',fontSize:'14px',textAlign:'center',lineHeight:'1.6'}}>
+    <div style={{fontWeight:600,marginBottom:'2px'}}>Confidential VM (enclave)</div>
+    <div style={{fontSize:'12px',color:'#c5a059',fontStyle:'italic'}}>plaintext exists ONLY here</div>
+  </div>
+</div>
 
 What this gives you:
 
@@ -54,7 +64,7 @@ the strong guarantee).
 
 Returns the identity of the running image.
 
-```text
+```
 GET /info
 ```
 
@@ -80,7 +90,7 @@ GET /info
 
 Returns an Intel TDX attestation quote plus the data needed to verify it.
 
-```text
+```
 GET /attestation?reportData=<optional-nonce>
 ```
 

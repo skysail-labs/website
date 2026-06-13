@@ -3,6 +3,23 @@ import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
+  themes: [
+    '@docusaurus/theme-mermaid',
+    [
+      '@easyops-cn/docusaurus-search-local',
+      {
+        hashed: true,
+        indexDocs: true,
+        indexBlog: false,
+        docsRouteBasePath: '/',
+        searchBarShortcut: true,
+        searchBarShortcutHint: true,
+        searchBarPosition: 'right',
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
+      },
+    ],
+  ],
   title: "Nyx Docs",
   tagline: "Settle in the dark, prove in the light.",
   favicon: "img/favicon.svg",
@@ -19,6 +36,7 @@ const config: Config = {
 
   onBrokenLinks: "warn",
   markdown: {
+    mermaid: true,
     hooks: {
       onBrokenMarkdownLinks: "warn",
     },
@@ -47,6 +65,27 @@ const config: Config = {
   ],
 
   themeConfig: {
+    mermaid: {
+      theme: { light: 'neutral', dark: 'dark' },
+      options: {
+        darkMode: true,
+        themeVariables: {
+          background: '#0a0a0d',
+          mainBkg: '#1a1a20',
+          nodeBorder: '#c5a059',
+          clusterBkg: '#1a1a20',
+          titleColor: '#f5f3ee',
+          edgeLabelBackground: '#1a1a20',
+          primaryColor: '#1a1a20',
+          primaryBorderColor: '#c5a059',
+          primaryTextColor: '#f5f3ee',
+          lineColor: '#c5a059',
+          secondaryColor: '#0a0a0d',
+          tertiaryColor: '#0a0a0d',
+          fontFamily: 'Space Grotesk, system-ui, sans-serif',
+        },
+      },
+    },
     colorMode: {
       defaultMode: "dark",
       disableSwitch: false,
@@ -79,15 +118,16 @@ const config: Config = {
           label: "Docs",
         },
         {
-          href: "https://darknyx.xyz",
-          label: "App",
+          label: "MCP Server",
           position: "right",
+          href: "#",
+          className: "navbar-btn navbar-btn--mcp",
         },
         {
-          href: "https://github.com/Nyx-Privacy/nyx",
+          label: "Feedback",
           position: "right",
-          className: "header-github-link",
-          "aria-label": "GitHub",
+          href: "#",
+          className: "navbar-btn navbar-btn--feedback",
         },
       ],
     },
@@ -112,16 +152,11 @@ const config: Config = {
           ],
         },
         {
-          title: "Links",
+          title: "Connect",
           items: [
-            {
-              label: "App",
-              href: "https://darknyx.xyz",
-            },
-            {
-              label: "GitHub",
-              href: "https://github.com/Nyx-Privacy/nyx",
-            },
+            { label: "𝕏 / Twitter", href: "https://x.com/darknyx" },
+            { label: "Discord", href: "https://discord.gg/darknyx" },
+            { label: "hello@darknyx.xyz", href: "mailto:hello@darknyx.xyz" },
           ],
         },
       ],

@@ -54,12 +54,12 @@ note. There is no separate fee transaction and no off-chain fee accounting: the
 fee moves as a note, on-chain, under the same zero-knowledge proof that gates the
 trade.
 
-```text
-settle a match ──► outputs:
-                     • counterparty's filled asset
-                     • your change note (unfilled remainder)
-                     • fee note (base side)   → protocol
-                     • fee note (quote side)  → protocol
+```mermaid
+flowchart LR
+  M["settle a match"] --> A["counterparty's\nfilled asset"]
+  M --> B["your change note\n(unfilled remainder)"]
+  M --> C["fee note · base side\n→ protocol"]
+  M --> D["fee note · quote side\n→ protocol"]
 ```
 
 Because the fee is charged on the actual cleared amount, an order that locked

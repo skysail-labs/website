@@ -16,26 +16,20 @@ Solana transaction; only the *result* settles.
 
 ## Order-to-settlement lifecycle
 
-```text
- ┌────────┐   deposit    ┌───────────────┐   sign+submit    ┌───────────────┐
- │ Wallet │ ───────────► │  Vault (L1)   │                  │   Client/SDK  │
- └────────┘  funds→note  │  custody +    │ ◄─── input proof │  build note,  │
-                         │  note tree    │      + signature │  proof, order │
-                         └───────┬───────┘                  └───────┬───────┘
-                                 │ note exists in tree              │ order (private)
-                                 │                                  ▼
-                                 │                          ┌───────────────┐
-                                 │                          │   Enclave     │
-                                 │                          │  (matching)   │
-                                 │                          │  batch auction│
-                                 │   settle txs + ZK proof  │  prove matches│
-                                 └◄─────────────────────────┤  settle on L1 │
-                                                            └───────┬───────┘
-                                                                    │ fill memos
-                                                                    ▼ + order events
-                                                              ┌───────────┐
-                                                              │  Client   │
-                                                              └───────────┘
+```mermaid
+sequenceDiagram
+  participant W as Wallet
+  participant V as Vault (Solana)
+  participant S as Client / SDK
+  participant E as Enclave
+
+  W->>V: deposit funds → note commitment
+  S->>S: build note · generate ZK input proof
+  S->>E: signed order + input proof (private, HTTPS/WS)
+  E->>E: batch auction · match · prove
+  E->>V: settle txs + ZK batch proof
+  V-->>S: on-chain confirmation
+  E-->>S: fill memos + order events
 ```
 
 ## Step by step

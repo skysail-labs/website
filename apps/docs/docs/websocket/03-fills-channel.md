@@ -27,7 +27,7 @@ spend it.
 
 ## Connect
 
-```text
+```
 wss://<gateway-host>/ws/fills?token=<access_token>
 ```
 

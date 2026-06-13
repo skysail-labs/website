@@ -50,21 +50,22 @@ you can inspect, not terms of service.
 
 Verification is a client-side step (the SDK ships a helper). In order, you confirm:
 
-```text
- 1. Hardware attestation valid?
-        TDX quote signature checks out; platform TCB is current.
-                          │  yes
-                          ▼
- 2. Right code?
-        measured compose_hash == the value YOU expect for a trusted build.
-                          │  yes
-                          ▼
- 3. Same engine end-to-end?
-        the quote binds the enclave's signing key, and that key == the
-        on-chain settlement signer.
-                          │  all three hold
-                          ▼
-                 trust the channel with order intent
+```mermaid
+flowchart TB
+  A{"1. Hardware attestation valid?\nTDX quote checks out · TCB current"}
+  B{"2. Right code?\ncompose_hash matches your expected value"}
+  C{"3. Same engine end-to-end?\nquote binds signing key = on-chain signer"}
+  T["✅ Trust the channel with order intent"]
+  F1["❌ Reject — hardware not verified"]
+  F2["❌ Reject — wrong or tampered code"]
+  F3["❌ Reject — engine mismatch"]
+
+  A -->|yes| B
+  A -->|no| F1
+  B -->|yes| C
+  B -->|no| F2
+  C -->|yes| T
+  C -->|no| F3
 ```
 
 - **Step 1** is standard DCAP verification of the hardware quote.

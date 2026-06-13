@@ -27,19 +27,44 @@ final authority on whether a settlement is correct.
 
 Settlement runs as a short sequence of on-chain transactions per batch:
 
-```text
-   ┌─ A ─ lock ─────────┐  pin the input notes of every match in the batch
-   │                     │  (a per-note lock blocks any double-commit)
-   ▼                     │
-   ┌─ B ─ verify ───────┐│  verify the batch's zero-knowledge match proof
-   │                     ││  on-chain (one proof covers all matches in the batch)
-   ▼                     ▼│
-   ┌─ C ─ settle ───────┐ │  execute the atomic transfers: nullify inputs,
-   │   (per match)       │ │  append output notes (filled asset, change, fees)
-   ▼                     ▼ │
-   ┌─ D ─ close ────────┐  │  reclaim the batch marker once every match settled
-   └─────────────────────┘ ┘
-```
+<div style={{display:'flex',alignItems:'stretch',gap:'0',margin:'1.5rem 0',fontFamily:'system-ui,sans-serif'}}>
+
+  <div style={{flex:1,padding:'14px 16px',border:'1.5px solid #c5a059',borderRadius:'4px',background:'#1b1b22',color:'#f5f3ee',minWidth:0}}>
+    <div style={{fontSize:'11px',fontWeight:600,letterSpacing:'0.12em',textTransform:'uppercase',color:'#c5a059',marginBottom:'6px'}}>A · Lock</div>
+    <div style={{fontSize:'12px',color:'rgba(245,243,238,0.65)',lineHeight:'1.6'}}>Pin input notes with per-note lock · blocks double-commit</div>
+  </div>
+
+  <div style={{display:'flex',alignItems:'center',padding:'0 6px',flexShrink:0}}>
+    <div style={{flex:1,width:'24px',height:'1.5px',background:'#c5a059'}}/>
+    <div style={{width:0,height:0,borderTop:'5px solid transparent',borderBottom:'5px solid transparent',borderLeft:'8px solid #c5a059'}}/>
+  </div>
+
+  <div style={{flex:1,padding:'14px 16px',border:'1.5px solid #c5a059',borderRadius:'4px',background:'#1b1b22',color:'#f5f3ee',minWidth:0}}>
+    <div style={{fontSize:'11px',fontWeight:600,letterSpacing:'0.12em',textTransform:'uppercase',color:'#c5a059',marginBottom:'6px'}}>B · Verify</div>
+    <div style={{fontSize:'12px',color:'rgba(245,243,238,0.65)',lineHeight:'1.6'}}>Verify ZK batch proof on-chain · one proof covers all matches</div>
+  </div>
+
+  <div style={{display:'flex',alignItems:'center',padding:'0 6px',flexShrink:0}}>
+    <div style={{flex:1,width:'24px',height:'1.5px',background:'#c5a059'}}/>
+    <div style={{width:0,height:0,borderTop:'5px solid transparent',borderBottom:'5px solid transparent',borderLeft:'8px solid #c5a059'}}/>
+  </div>
+
+  <div style={{flex:1,padding:'14px 16px',border:'1.5px solid #c5a059',borderRadius:'4px',background:'#1b1b22',color:'#f5f3ee',minWidth:0}}>
+    <div style={{fontSize:'11px',fontWeight:600,letterSpacing:'0.12em',textTransform:'uppercase',color:'#c5a059',marginBottom:'6px'}}>C · Settle</div>
+    <div style={{fontSize:'12px',color:'rgba(245,243,238,0.65)',lineHeight:'1.6'}}>Nullify inputs · append output notes · filled asset · change fees</div>
+  </div>
+
+  <div style={{display:'flex',alignItems:'center',padding:'0 6px',flexShrink:0}}>
+    <div style={{flex:1,width:'24px',height:'1.5px',background:'#c5a059'}}/>
+    <div style={{width:0,height:0,borderTop:'5px solid transparent',borderBottom:'5px solid transparent',borderLeft:'8px solid #c5a059'}}/>
+  </div>
+
+  <div style={{flex:1,padding:'14px 16px',border:'1.5px solid #c5a059',borderRadius:'4px',background:'#1b1b22',color:'#f5f3ee',minWidth:0}}>
+    <div style={{fontSize:'11px',fontWeight:600,letterSpacing:'0.12em',textTransform:'uppercase',color:'#c5a059',marginBottom:'6px'}}>D · Close</div>
+    <div style={{fontSize:'12px',color:'rgba(245,243,238,0.65)',lineHeight:'1.6'}}>Reclaim batch marker · once all matches settled</div>
+  </div>
+
+</div>
 
 | Stage | What it does |
 |---|---|

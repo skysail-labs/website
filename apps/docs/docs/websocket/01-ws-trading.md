@@ -16,7 +16,7 @@ round-trip per request) and **cancel-on-disconnect** for market makers.
 
 ## Connect
 
-```text
+```
 wss://<gateway-host>/ws/trading?token=<access_token>
 ```
 
@@ -24,7 +24,7 @@ The socket self-authenticates with the bearer token as `?token=` (an
 `Authorization: Bearer` header is also accepted). To enable cancel-on-disconnect,
 add `&cancel_on_disconnect=true`.
 
-```text
+```
 wss://<gateway-host>/ws/trading?token=<access_token>&cancel_on_disconnect=true
 ```
 
@@ -82,11 +82,11 @@ The teardown is a server-initiated cancel using each order's own booked key — 
 needs no client signature, because the order was placed on this authenticated
 session and a cancel only un-rests an order (it never settles or moves funds).
 
-```text
-socket opens  ──►  order.place ×N  ──►  (connectivity lost / socket closes)
-                                              │
-                                              ▼
-                          engine cancels this session's still-resting orders
+```mermaid
+flowchart LR
+  A["socket opens"] --> B["order.place ×N"]
+  B --> C["connectivity lost\n/ socket closes"]
+  C --> D["engine cancels\nthis session's resting orders"]
 ```
 
 Orders that have already filled, expired, or been cancelled are left as-is; only

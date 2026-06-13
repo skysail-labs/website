@@ -19,11 +19,29 @@ crossing orders in a batch share the same trading key, the engine does not pair
 them — it skips the self-pair and continues matching each order against other
 counterparties.
 
-```text
-your bid  ⨯  your ask     →  skipped (same trading key)
-your bid  ✓  other ask    →  eligible to match
-other bid ✓  your ask     →  eligible to match
-```
+<div style={{margin:'1.5rem 0',fontFamily:'system-ui,sans-serif',fontSize:'13px'}}>
+  <div style={{display:'flex',alignItems:'center',gap:'12px',padding:'10px 16px',marginBottom:'6px',background:'#1b1b22',border:'1.5px solid rgba(255,80,80,0.3)',borderRadius:'4px'}}>
+    <span style={{color:'#f5f3ee',minWidth:'80px'}}>your bid</span>
+    <span style={{fontSize:'16px',color:'#ff6060'}}>⨯</span>
+    <span style={{color:'#f5f3ee',minWidth:'80px'}}>your ask</span>
+    <span style={{color:'#555',margin:'0 4px'}}>→</span>
+    <span style={{color:'rgba(255,100,100,0.9)'}}>skipped — same trading key</span>
+  </div>
+  <div style={{display:'flex',alignItems:'center',gap:'12px',padding:'10px 16px',marginBottom:'6px',background:'#1b1b22',border:'1.5px solid rgba(197,160,89,0.3)',borderRadius:'4px'}}>
+    <span style={{color:'#f5f3ee',minWidth:'80px'}}>your bid</span>
+    <span style={{fontSize:'16px',color:'#c5a059'}}>✓</span>
+    <span style={{color:'#f5f3ee',minWidth:'80px'}}>other ask</span>
+    <span style={{color:'#555',margin:'0 4px'}}>→</span>
+    <span style={{color:'rgba(197,160,89,0.9)'}}>eligible to match</span>
+  </div>
+  <div style={{display:'flex',alignItems:'center',gap:'12px',padding:'10px 16px',marginBottom:'6px',background:'#1b1b22',border:'1.5px solid rgba(197,160,89,0.3)',borderRadius:'4px'}}>
+    <span style={{color:'#f5f3ee',minWidth:'80px'}}>other bid</span>
+    <span style={{fontSize:'16px',color:'#c5a059'}}>✓</span>
+    <span style={{color:'#f5f3ee',minWidth:'80px'}}>your ask</span>
+    <span style={{color:'#555',margin:'0 4px'}}>→</span>
+    <span style={{color:'rgba(197,160,89,0.9)'}}>eligible to match</span>
+  </div>
+</div>
 
 The result: every execution you receive is against a *different* counterparty.
 
