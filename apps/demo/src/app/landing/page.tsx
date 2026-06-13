@@ -190,11 +190,6 @@ export default function Home() {
               overflow: "hidden",
             }}
           >
-            {/* Watermark */}
-            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", userSelect: "none", opacity: 0.04, zIndex: 0 }}>
-              <span style={{ fontSize: "clamp(80px, 14vw, 200px)", fontWeight: 700, letterSpacing: "0.15em", color: "#5e4b6c", textTransform: "uppercase" }}>DARKNYX</span>
-            </div>
-
             {/* Badge */}
             <div className="hero-rise hero-rise-3" style={{ position: "relative", zIndex: 10, marginBottom: "2rem" }}>
               <div style={{ display: "inline-block", border: "1px solid #c5a059", color: "#c5a059", padding: "0.25rem 0.875rem", fontFamily: "var(--mono)", fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.2em", fontWeight: 600, background: "rgba(197,160,89,0.05)" }}>
