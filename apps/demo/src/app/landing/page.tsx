@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 interface Star {
@@ -65,72 +65,27 @@ function Starfield({ count = 40 }: { count?: number }) {
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [activeTab, setActiveTab] = useState("custody");
-  const howCompletedRef = useRef(false);
-  const isLockedRef = useRef(false);
 
   useEffect(() => {
-    let lastScrollY = window.scrollY;
-
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const direction = currentScrollY > lastScrollY ? "down" : "up";
-      lastScrollY = currentScrollY;
-
-      setScrolled(currentScrollY > 10);
-
-      const howSection = document.getElementById("how");
-      if (!howSection) return;
-
-      const rect = howSection.getBoundingClientRect();
-      const sectionTop = currentScrollY + rect.top;
-      const sectionHeight = rect.height;
-      const targetScrollY = Math.round(sectionTop + (sectionHeight / 2) - (window.innerHeight / 2));
-
-      // Reset completed flag if they scroll far above the section
-      if (currentScrollY < targetScrollY - window.innerHeight) {
-        howCompletedRef.current = false;
-        howSection.classList.remove("in-view");
-      }
-
-      // If scrolling down, not completed yet, and not already locked
-      if (direction === "down" && !howCompletedRef.current && !isLockedRef.current) {
-        // Capture range around targetScrollY
-        if (currentScrollY >= targetScrollY - 80 && currentScrollY < targetScrollY + 80) {
-          // Snap scroll to target position
-          window.scrollTo(0, targetScrollY);
-
-          isLockedRef.current = true;
-
-          const prevent = (e: Event) => e.preventDefault();
-          const preventKey = (e: KeyboardEvent) => {
-            if ([32, 33, 34, 35, 36, 37, 38, 39, 40].includes(e.keyCode)) {
-              e.preventDefault();
-            }
-          };
-
-          window.addEventListener("wheel", prevent, { passive: false });
-          window.addEventListener("touchmove", prevent, { passive: false });
-          window.addEventListener("keydown", preventKey, { passive: false });
-
-          // Trigger card slide up animation
-          howSection.classList.add("in-view");
-
-          setTimeout(() => {
-            window.removeEventListener("wheel", prevent);
-            window.removeEventListener("touchmove", prevent);
-            window.removeEventListener("keydown", preventKey);
-            isLockedRef.current = false;
-            howCompletedRef.current = true;
-          }, 1500);
-        }
-      }
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+  useEffect(() => {
+    const els = document.querySelectorAll("[data-reveal]");
+    if (!("IntersectionObserver" in window)) {
+      els.forEach((el) => el.classList.add("is-revealed"));
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((entry) => {
+        if (entry.isIntersecting) { entry.target.classList.add("is-revealed"); observer.unobserve(entry.target); }
+      }),
+      { threshold: 0.12 }
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -179,72 +134,122 @@ export default function Home() {
         </symbol>
       </svg>
 
-      {/* ===================== NAV ===================== */}
-      <nav className={`nav ${scrolled ? "scrolled" : ""}`} id="nav">
-        <Link className="lock" href="/">
-          <svg className="mark" viewBox="0 0 120 120">
-            <use href="#nyx-mark"/>
-          </svg>
-          <b>darknyx</b>
-        </Link>
-        <div className="links">
-          <a href="#third-option">Overview</a>
-          <Link href="/docs">Docs</Link>
-        </div>
-        <div className="end">
-          <span className="btn ghost status">
-            <span className="pdot"></span>Private beta soon
-          </span>
-        </div>
-      </nav>
-
       {/* ===================== HERO ===================== */}
-      <header className="hero">
-        <div className="layout-line-left"></div>
-        <div className="layout-line-right"></div>
-        <div className="layout-node left" style={{ top: "30px" }}></div>
-        <div className="layout-node right" style={{ top: "30px" }}></div>
-        <div className="hero-bg">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/final.png" alt="Ancient Greek city in white line-art under a starfield" />
-        </div>
-        <div className="hero-scrim"></div>
-        <div className="hero-glow"></div>
-
-        <div className="hero-inner">
-          <div className="hero-copy">
-            <svg className="mark glow rise d1" viewBox="0 0 120 120">
+      <header
+        className="hero-parallax"
+        style={{
+          position: "relative",
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          backgroundImage: "url('/bg.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          borderBottom: "2px solid #000",
+        }}
+      >
+        {/* NAV */}
+        <div className="hero-rise hero-rise-1" style={{ position: "relative", zIndex: 20, width: "100%", padding: "1.5rem 2rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          {/* Logo: half-moon mark + Space Grotesk "darknyx" */}
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: "11px", textDecoration: "none" }}>
+            <svg className="mark" width="26" height="26" viewBox="0 0 120 120">
               <use href="#nyx-mark"/>
             </svg>
-            <p className="kicker rise d1">
-              <span className="dot"></span>Darkpool protocol · Solana
-            </p>
-            <h1 className="display h-xl rise d2" style={{ marginTop: "18px" }}>
-              <span className="tag-lo">Settle in the dark.</span>
-              <span className="tag-hi">Prove in the light.</span>
-            </h1>
-            <p className="lede rise d3">
-              A privacy-preserving order book where intent is hidden inside attested hardware and every fill settles trustlessly on Solana — verified, never trusted.
-            </p>
-            <div className="hero-actions rise d4">
-              <Link className="btn" href="/docs">
-                How Darknyx works <span className="arr">→</span>
-              </Link>
-              <a className="btn ghost" href="#third-option">
-                The idea
-              </a>
-            </div>
-          </div>
+            <b style={{ fontWeight: 600, fontSize: "26px", letterSpacing: "-0.04em", color: "var(--cobalt-bright)", fontFamily: "var(--font)" }}>darknyx</b>
+          </Link>
+          {/* Gold pill nav */}
+          <nav style={{ display: "flex", alignItems: "center", background: "var(--cobalt)", color: "#000", padding: "0.5rem 1rem", border: "1px solid rgba(0,0,0,0.5)", fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", gap: "1.25rem", boxShadow: "2px 2px 0px rgba(0,0,0,0.6)", fontFamily: "var(--mono)" }}>
+            <a href="#third-option" style={{ color: "#000", textDecoration: "none" }}>Overview</a>
+            <Link href="/docs" style={{ color: "#000", textDecoration: "none" }}>Docs</Link>
+          </nav>
+        </div>
+        {/* Layered backdrop: sunken reliefs, navy marble tint */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(4,5,9,0.88) 0%, rgba(4,5,9,0.66) 14%, rgba(4,5,9,0.26) 34%, rgba(4,5,9,0.14) 50%, rgba(4,5,9,0.26) 66%, rgba(4,5,9,0.66) 86%, rgba(4,5,9,0.88) 100%)" }} />
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 70% 55% at 28% 30%, rgba(23,33,63,0.6), transparent 70%), radial-gradient(ellipse 60% 50% at 74% 62%, rgba(16,24,47,0.55), transparent 70%), radial-gradient(ellipse 110% 85% at 50% 55%, rgba(12,16,36,0.5), transparent 80%)", mixBlendMode: "screen" as const }} />
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 55% 50% at 50% 50%, transparent 40%, rgba(4,5,9,0.35) 100%)" }} />
         </div>
 
-        <div className="hero-meta rise d5">
-          {/* <div className="net">
-            Network · <b>Solana</b>
-            <br />
-            Matching · <b>Intel TDX</b>
-            <br />
-            Status · <b>TDX rollout</b>
-          </div> */}
+        {/* Hero card */}
+        <div style={{ position: "relative", zIndex: 10, flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "3rem 1rem" }}>
+          <div
+            className="hero-rise hero-rise-2"
+            style={{
+              position: "relative",
+              width: "100%",
+              maxWidth: "896px",
+              background: "#14121d",
+              border: "2px solid #000",
+              padding: "clamp(2rem, 5vw, 3.5rem)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              minHeight: "480px",
+              boxShadow: "12px 12px 0px rgba(0,0,0,0.95)",
+              overflow: "hidden",
+            }}
+          >
+            {/* Watermark */}
+            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", userSelect: "none", opacity: 0.04, zIndex: 0 }}>
+              <span style={{ fontSize: "clamp(80px, 14vw, 200px)", fontWeight: 700, letterSpacing: "0.15em", color: "#5e4b6c", textTransform: "uppercase" }}>DARKNYX</span>
+            </div>
+
+            {/* Badge */}
+            <div className="hero-rise hero-rise-3" style={{ position: "relative", zIndex: 10, marginBottom: "2rem" }}>
+              <div style={{ display: "inline-block", border: "1px solid #c5a059", color: "#c5a059", padding: "0.25rem 0.875rem", fontFamily: "var(--mono)", fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.2em", fontWeight: 600, background: "rgba(197,160,89,0.05)" }}>
+                Darkpool protocol · Solana
+              </div>
+            </div>
+
+            {/* Headline */}
+            <div className="hero-rise hero-rise-4" style={{ position: "relative", zIndex: 10, flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", margin: "1.5rem 0" }}>
+              <h1 style={{ margin: 0, fontWeight: 300, letterSpacing: "-0.02em", lineHeight: 1.02, color: "#c5a059", fontSize: "clamp(3rem, 8vw, 5.5rem)", fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif" }}>
+                <span style={{ color: "#fff", fontWeight: 300 }}>Settle </span>
+                <span style={{ fontStyle: "italic", color: "#fff", fontWeight: 300 }}>in the </span>
+                <span style={{ fontWeight: 300 }}>Dark</span>
+                <br />
+                <span style={{ fontWeight: 300 }}>Prove </span>
+                <span style={{ fontStyle: "italic", color: "#fff", fontWeight: 300 }}>in the </span>
+                <span style={{ color: "#fff", fontWeight: 300 }}>Light</span>
+              </h1>
+            </div>
+
+            {/* Bottom row */}
+            <div className="hero-rise hero-rise-5" style={{ position: "relative", zIndex: 10, display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: "2rem", borderTop: "1px solid var(--line-2)", paddingTop: "2rem", marginTop: "1rem" }}>
+              <div style={{ maxWidth: "28rem" }}>
+                <p style={{ margin: "0 0 0.75rem", fontSize: "12px", color: "var(--chalk-dim)", lineHeight: 1.7 }}>
+                  A privacy-preserving order book where intent is hidden inside attested hardware and every fill settles trustlessly on Solana, verified, never trusted.
+                </p>
+                <p style={{ margin: 0, fontSize: "11px", color: "var(--chalk-mute)", lineHeight: 1.75 }}>
+                  Built for active traders, market makers, and institutions that need discretion without giving up custody or auditability.
+                </p>
+              </div>
+              <Link
+                href="/docs"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  background: "var(--cobalt)",
+                  color: "#000",
+                  border: "1px solid rgba(0,0,0,0.6)",
+                  fontWeight: 700,
+                  padding: "0.75rem 2rem",
+                  fontSize: "11px",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  fontFamily: "var(--mono)",
+                  boxShadow: "3px 3px 0px rgba(0,0,0,0.8)",
+                  textDecoration: "none",
+                  flexShrink: 0,
+                  transition: "transform 0.2s, box-shadow 0.2s",
+                }}
+              >
+                Enter the Pool →
+              </Link>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -263,54 +268,56 @@ export default function Home() {
         <div className="layout-node left"></div>
         <div className="layout-node right"></div>
         <div className="wrap">
-          <div className="section-head">
-            <p className="eyebrow">The third option</p>
-            <h2 className="display h-lg" style={{ marginTop: "18px" }}>
-              A dark pool you don't
-              <br />
-              have to trust.
+          <div data-reveal className="dark-section-head">
+            <span className="badge">The third option</span>
+            <h2 className="display h-lg" style={{ marginTop: "16px", fontWeight: 300, fontFamily: "var(--font-cormorant)", letterSpacing: "-0.01em" }}>
+              A dark pool you don't have to trust
             </h2>
-            <p className="lede">
-              Public order books leak every intention to bots and competitors. Off-chain dark pools take your custody. Darknyx is neither — orders meet inside an attested enclave the operator cannot read, and funds only ever move under a proof verified on Solana.
+            <div data-reveal="line" style={{ "--reveal-delay": "0.3s" } as React.CSSProperties} className="dark-section-divider" />
+            <p className="lede" style={{ marginTop: "32px", maxWidth: "64ch" }}>
+              Public order books leak every intention to bots and competitors. <br />Off-chain dark pools take your custody. Darknyx is neither, orders meet inside an attested enclave the operator cannot read, and funds only ever move under a proof verified on Solana.
             </p>
           </div>
 
-          <div className="pillars">
-            <div className="pillar">
-              <div className="ix">01</div>
-              <h3>
-                Orders stay dark
-                <br />
-                until they clear.
-              </h3>
-              <p>
-                Side, size, and limit price are visible only to the enclave — never in a mempool, log, or account an observer can read before settlement.
-              </p>
-              <div className="rule"></div>
+          <div className="dark-cards-grid">
+            <div data-reveal>
+              <div className="dark-card">
+                <div className="dark-card-num">01</div>
+                <h3 className="dark-card-title">
+                  Orders stay dark
+                  <br />
+                  until they clear.
+                </h3>
+                <p className="dark-card-body">
+                  Side, size, and limit price are visible only to the enclave — never in a mempool, log, or account an observer can read before settlement.
+                </p>
+              </div>
             </div>
-            <div className="pillar">
-              <div className="ix">02</div>
-              <h3>
-                Custody risk
-                <br />
-                is zero.
-              </h3>
-              <p>
-                Funds rest in a non-upgradeable Solana vault. The matcher can propose fills, but only your zero-knowledge proof can move assets out.
-              </p>
-              <div className="rule"></div>
+            <div data-reveal style={{ "--reveal-delay": "0.15s" } as React.CSSProperties}>
+              <div className="dark-card">
+                <div className="dark-card-num">02</div>
+                <h3 className="dark-card-title">
+                  Custody risk
+                  <br />
+                  is zero.
+                </h3>
+                <p className="dark-card-body">
+                  Funds rest in a non-upgradeable Solana vault. The matcher can propose fills, but only your zero-knowledge proof can move assets out.
+                </p>
+              </div>
             </div>
-            <div className="pillar">
-              <div className="ix">03</div>
-              <h3>
-                Settlement can
-                <br />
-                be checked.
-              </h3>
-              <p>
-                Every fill lands on-chain bound to a validity proof and the attested TEE signature — auditable by anyone, without exposing your strategy.
-              </p>
-              <div className="rule"></div>
+            <div data-reveal style={{ "--reveal-delay": "0.3s" } as React.CSSProperties}>
+              <div className="dark-card">
+                <div className="dark-card-num">03</div>
+                <h3 className="dark-card-title">
+                  Settlement can
+                  <br />
+                  be checked.
+                </h3>
+                <p className="dark-card-body">
+                  Every fill lands on-chain bound to a validity proof and the attested TEE signature — auditable by anyone, without exposing your strategy.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -324,7 +331,80 @@ export default function Home() {
         <div className="line"></div>
       </div>
 
-      {/* ===================== NEW: ARCHITECTURE SECTION ===================== */}
+      {/* ===================== PANTHEON — "From private intent" ===================== */}
+      <section className="section pantheon-section" id="how">
+        <div className="layout-line-left"></div>
+        <div className="layout-line-right"></div>
+        <div className="layout-node left"></div>
+        <div className="layout-node right"></div>
+        <div className="wrap">
+
+          <div data-reveal className="pantheon-head">
+            <span className="pantheon-badge">How it works</span>
+            <h2 className="pantheon-title">From private intent to verified settlement</h2>
+            <div data-reveal="line" style={{ "--reveal-delay": "300ms" } as React.CSSProperties} className="pantheon-line" />
+          </div>
+
+          <div className="pantheon-grid">
+
+            <div data-reveal>
+              <div className="pantheon-card">
+                <div className="pantheon-card-num">01</div>
+                <h3 className="pantheon-card-name">Fund privately</h3>
+                <span className="pantheon-card-sub">Deposit into the vault</span>
+                <p className="pantheon-card-body">
+                  Your assets never appear as a named trading balance. When you deposit into the Solana vault, funds are converted into private note commitments: cryptographic hashes that are visible on-chain but carry no information about size or owner. No bot, counterparty, or block explorer can link your balance to your orders before a fill is settled.
+                </p>
+                <div className="pantheon-card-foot">
+                  <span className="pantheon-card-foot-label">Pre-Trade Privacy</span>
+                  <span className="pantheon-card-tag">SOLANA VAULT</span>
+                </div>
+              </div>
+            </div>
+
+            <div data-reveal style={{ "--reveal-delay": "150ms" } as React.CSSProperties}>
+              <div className="pantheon-card">
+                <div className="pantheon-card-num">02</div>
+                <h3 className="pantheon-card-name">Orders clear in the dark</h3>
+                <span className="pantheon-card-sub">The Matching Engine</span>
+                <p className="pantheon-card-body">
+                  Your signed order intent is routed directly into an Intel TDX confidential VM, a hardware-attested enclave the operator cannot inspect. Inside, compatible orders are matched every two seconds using a frequent batch auction at one uniform clearing price. No participant can see the order book, jump the queue, or extract value by reading flow ahead of settlement.
+                </p>
+                <div className="pantheon-card-foot">
+                  <span className="pantheon-card-foot-label">PRIVATE MATCHING</span>
+                  <span className="pantheon-card-tag">INTEL TDX · FBA</span>
+                </div>
+              </div>
+            </div>
+
+            <div data-reveal style={{ "--reveal-delay": "300ms" } as React.CSSProperties}>
+              <div className="pantheon-card">
+                <div className="pantheon-card-num">03</div>
+                <h3 className="pantheon-card-name">Settle on-chain</h3>
+                <span className="pantheon-card-sub">Fills land verifiably</span>
+                <p className="pantheon-card-body">
+                  Every matched fill is posted to Solana alongside a validity proof and the registered TEE attestation signature. The on-chain vault program verifies both before releasing any funds. The matching engine can only propose a fill, never force one. When you withdraw, a zero-knowledge spend proof generated on your own device is the only key that moves assets out.
+                </p>
+                <div className="pantheon-card-foot">
+                  <span className="pantheon-card-foot-label">On-Chain Settlement</span>
+                  <span className="pantheon-card-tag">ZK PROOFS</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider">
+        <div className="line"></div>
+        <svg className="divider-mark" viewBox="0 0 120 120">
+          <use href="#nyx-mark"/>
+        </svg>
+        <div className="line"></div>
+      </div>
+
+      {/* ===================== ARCHITECTURE — "Three layers" ===================== */}
       <section className="section" id="architecture">
         <div className="layout-line-left"></div>
         <div className="layout-line-right"></div>
@@ -332,14 +412,13 @@ export default function Home() {
         <div className="layout-node right"></div>
 
         <div className="wrap">
-          <div className="section-head">
-            <p className="eyebrow">System design</p>
-            <h2 className="display h-lg" style={{ marginTop: "18px" }}>
-              Three layers,
-              <br />
-              one chain of trust.
+          <div data-reveal className="dark-section-head">
+            <span className="badge">System design</span>
+            <h2 className="display h-lg" style={{ marginTop: "16px", fontWeight: 300, fontFamily: "var(--font-cormorant)", letterSpacing: "-0.01em" }}>
+              Three layers, one chain of trust.
             </h2>
-            <p className="lede">
+            <div data-reveal="line" style={{ "--reveal-delay": "0.3s" } as React.CSSProperties} className="dark-section-divider" />
+            <p className="lede" style={{ marginTop: "32px", maxWidth: "52ch", margin: "32px auto 0" }}>
               Whatever needs to be trusted goes on-chain; whatever needs to be private goes in-TEE; whatever must remain a secret stays on your device.
             </p>
           </div>
@@ -457,66 +536,6 @@ export default function Home() {
         <div className="line"></div>
       </div>
 
-      <section className="section" id="how">
-        <div className="layout-line-left"></div>
-        <div className="layout-line-right"></div>
-        <div className="layout-node left"></div>
-        <div className="layout-node right"></div>
-        <div className="wrap how-container">
-          <div className="how-left">
-            <div className="section-head">
-              <p className="eyebrow">How it works</p>
-              <h2 className="display h-lg" style={{ marginTop: "18px" }}>
-                From private intent
-                <br />
-                to verified settlement.
-              </h2>
-              <p className="lede">
-                You sign custody actions with your wallet and orders with a separate trading key. The sensitive path stays private inside the enclave; the money path stays verifiable on-chain.
-              </p>
-            </div>
-
-            <div style={{ marginTop: "clamp(30px,4vw,40px)" }}>
-              <Link className="btn ghost" href="/docs/architecture-overview">
-                Read the architecture <span className="arr">→</span>
-              </Link>
-            </div>
-          </div>
-
-          <div className="steps">
-            <div className="step">
-              <span className="n">01</span>
-              <div className="stage">Fund privately</div>
-              <h3>Deposit into the vault.</h3>
-              <p>Funds become private note commitments instead of a public, trackable trading balance.</p>
-              <span className="tech">Solana vault</span>
-            </div>
-            <div className="step">
-              <span className="n">02</span>
-              <div className="stage">Match in batches</div>
-              <h3>Orders clear in the dark.</h3>
-              <p>Signed intent meets inside an attested TDX enclave. Compatible orders clear every two seconds at one uniform price.</p>
-              <span className="tech">Intel TDX · FBA</span>
-            </div>
-            <div className="step">
-              <span className="n">03</span>
-              <div className="stage">Settle on-chain</div>
-              <h3>Fills land verifiably.</h3>
-              <p>Settlement posts to Solana with proof material and the registered TEE signature. Withdrawals stay user-controlled.</p>
-              <span className="tech">ZK proofs</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="section-divider">
-        <div className="line"></div>
-        <svg className="divider-mark" viewBox="0 0 120 120">
-          <use href="#nyx-mark"/>
-        </svg>
-        <div className="line"></div>
-      </div>
-
       {/* ===================== NEW: DIFFERENTIATION SECTION ===================== */}
       <section className="section" id="differentiation">
         <div className="layout-line-left"></div>
@@ -525,65 +544,93 @@ export default function Home() {
         <div className="layout-node right"></div>
 
         <div className="wrap">
-          <div className="section-head">
-            <p className="eyebrow">Comparison</p>
-            <h2 className="display h-lg" style={{ marginTop: "18px" }}>
+          <div data-reveal className="dark-section-head">
+            <span className="badge">Comparison</span>
+            <h2 className="display h-lg" style={{ marginTop: "16px", fontWeight: 300, fontFamily: "var(--font-cormorant)", letterSpacing: "-0.01em" }}>
               How Darknyx compares
             </h2>
-            <p className="lede">
+            <div data-reveal="line" style={{ "--reveal-delay": "0.3s" } as React.CSSProperties} className="dark-section-divider" />
+            <p className="lede" style={{ maxWidth: "52ch", margin: "32px auto 0" }}>
               Honest trade-offs across order privacy, custody risk, matching speed, and L1 compatibility.
             </p>
           </div>
 
-          <div className="diff-table-wrapper">
-            <table className="diff-table">
-              <thead>
-                <tr>
-                  <th>Dimension</th>
-                  <th>Darknyx</th>
-                  <th>MPC Pools (e.g. Renegade)</th>
-                  <th>Public DEXs / CLOBs</th>
-                  <th>Centralized Exchanges</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><b>Order Privacy</b></td>
-                  <td><span className="highlight">Hidden (In-TEE)</span></td>
-                  <td>Hidden (MPC matches)</td>
-                  <td>Public (Front-runnable)</td>
-                  <td>Visible to operator</td>
-                </tr>
-                <tr>
-                  <td><b>Custody Risk</b></td>
-                  <td><span className="highlight">Zero (Solana Vault)</span></td>
-                  <td>Zero (On-chain Vault)</td>
-                  <td>Zero (On-chain)</td>
-                  <td>Total operator custody</td>
-                </tr>
-                <tr>
-                  <td><b>Matching Speed</b></td>
-                  <td><span className="highlight">Sub-millisecond</span></td>
-                  <td>Slow (100ms - 1s MPC overhead)</td>
-                  <td>Block-level delay</td>
-                  <td>Sub-millisecond</td>
-                </tr>
-                <tr>
-                  <td><b>Liquidity Access</b></td>
-                  <td><span className="highlight">Direct (Solana assets)</span></td>
-                  <td>Isolated / Bridged</td>
-                  <td>Direct L1 liquidity</td>
-                  <td>Deep custodian book</td>
-                </tr>
-                <tr>
-                  <td><b>Moat / Defensibility</b></td>
-                  <td><span className="highlight">Batched private settlement</span></td>
-                  <td>MPC cryptography</td>
-                  <td>Network effects</td>
-                  <td>Brand & licensing</td>
-                </tr>
-              </tbody>
-            </table>
+          {/* Column header row */}
+          <div data-reveal className="cmp-grid">
+            <div className="cmp-label-col">
+              <div className="cmp-header-cell cmp-dim-header" />
+              {["Order Privacy", "Custody Risk", "Matching Speed", "Liquidity Access", "Defensibility"].map(dim => (
+                <div key={dim} className="cmp-dim-cell">{dim}</div>
+              ))}
+            </div>
+
+            {/* Darknyx — highlighted column */}
+            <div className="cmp-col cmp-col-darknyx" data-reveal style={{ "--reveal-delay": "0.1s" } as React.CSSProperties}>
+              <div className="cmp-header-cell cmp-col-title">
+                <span className="cmp-col-name">Darknyx</span>
+                <span className="cmp-col-sub">TEE + ZK</span>
+              </div>
+              {[
+                "Hidden in-enclave",
+                "Zero — Solana vault",
+                "Sub-millisecond",
+                "Direct Solana assets",
+                "Batched private settlement",
+              ].map(val => (
+                <div key={val} className="cmp-val-cell cmp-val-gold">{val}</div>
+              ))}
+            </div>
+
+            {/* MPC Pools */}
+            <div className="cmp-col" data-reveal style={{ "--reveal-delay": "0.2s" } as React.CSSProperties}>
+              <div className="cmp-header-cell cmp-col-title">
+                <span className="cmp-col-name">MPC Pools</span>
+                <span className="cmp-col-sub">e.g. Renegade</span>
+              </div>
+              {[
+                "Hidden via MPC",
+                "Zero — on-chain vault",
+                "Slow (100ms–1s overhead)",
+                "Isolated / bridged",
+                "MPC cryptography",
+              ].map(val => (
+                <div key={val} className="cmp-val-cell">{val}</div>
+              ))}
+            </div>
+
+            {/* Public DEXs */}
+            <div className="cmp-col" data-reveal style={{ "--reveal-delay": "0.3s" } as React.CSSProperties}>
+              <div className="cmp-header-cell cmp-col-title">
+                <span className="cmp-col-name">Public DEXs</span>
+                <span className="cmp-col-sub">CLOBs / AMMs</span>
+              </div>
+              {[
+                "Public — front-runnable",
+                "Zero — on-chain",
+                "Block-level delay",
+                "Direct L1 liquidity",
+                "Network effects",
+              ].map(val => (
+                <div key={val} className="cmp-val-cell cmp-val-warn">{val}</div>
+              ))}
+            </div>
+
+            {/* CEXs */}
+            <div className="cmp-col" data-reveal style={{ "--reveal-delay": "0.4s" } as React.CSSProperties}>
+              <div className="cmp-header-cell cmp-col-title">
+                <span className="cmp-col-name">CEXs</span>
+                <span className="cmp-col-sub">Centralized</span>
+              </div>
+              {[
+                "Visible to operator",
+                "Total operator custody",
+                "Sub-millisecond",
+                "Deep custodian book",
+                "Brand & licensing",
+              ].map(val => (
+                <div key={val} className="cmp-val-cell cmp-val-warn">{val}</div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -612,10 +659,10 @@ export default function Home() {
           <svg className="mark" viewBox="0 0 120 120">
             <use href="#nyx-mark"/>
           </svg>
-          <p className="eyebrow">Privacy without sacrificing auditability</p>
-          <h2 className="display h-md" style={{ marginTop: "16px", maxWidth: "18ch", marginLeft: "auto", marginRight: "auto" }}>
+          <p className="eyebrow" style={{ fontSize: "16px", letterSpacing: "0.2em" }}>Privacy without sacrificing auditability</p>
+          {/* <h2 className="display h-md" style={{ marginTop: "16px", maxWidth: "18ch", marginLeft: "auto", marginRight: "auto" }}>
             Privacy Without Sacrificing Auditability.
-          </h2>
+          </h2> */}
           {/* <p className="lede">
             The docs lay out the trust model, the settlement pipeline, the cryptography, and honest comparisons against every comparable venue.
           </p> */}
@@ -626,28 +673,25 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="footer-foot">
-          <div className="row">
-            <div className="lock">
-              <svg className="mark" viewBox="0 0 120 120">
-                <use href="#nyx-mark"/>
-              </svg>
-              <b>darknyx</b>
-              <span className="tagline" style={{ marginLeft: "14px" }}>
-                Settle in the dark · Prove in the light
-              </span>
-            </div>
-            <div className="fl">
-              <Link href="/docs">Docs</Link>
-              <Link href="/docs/architecture-overview">Architecture</Link>
-              <Link href="/docs/glossary">Glossary</Link>
-              <a href="https://github.com/skysail-labs/website" target="_blank" rel="noopener noreferrer">
-                GitHub
-              </a>
-            </div>
+      </footer>
+
+      <div className="footer-foot">
+        <div className="row">
+          <div className="lock">
+            <svg className="mark" viewBox="0 0 120 120">
+              <use href="#nyx-mark"/>
+            </svg>
+            <b>darknyx</b>
+            <span className="tagline" style={{ marginLeft: "14px" }}>
+              Settle in the dark · Prove in the light
+            </span>
+          </div>
+          <div className="fl">
+            <a href="#third-option">Overview</a>
+            <Link href="/docs">Docs</Link>
           </div>
         </div>
-      </footer>
+      </div>
     </>
   );
 }
