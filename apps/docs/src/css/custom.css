@@ -505,6 +505,47 @@ code {
   border-radius: 0;  /* sharp — matches brand */
 }
 
+/* ─── ASCII diagram blocks (```text```) ────────────────── */
+.language-text {
+  overflow-x: auto;
+  white-space: pre;
+}
+
+[data-theme="dark"] div:has(> .prism-code.language-text) {
+  background: transparent !important;
+}
+
+[data-theme="dark"] .prism-code.language-text {
+  background: rgba(245, 243, 238, 0.03) !important;
+  border: 1px solid rgba(245, 243, 238, 0.08);
+  color: rgba(245, 243, 238, 0.72) !important;
+  font-size: 11.5px;
+  line-height: 1.55;
+  padding: 20px 24px;
+  border-radius: var(--nyx-r-xs);
+}
+
+[data-theme="light"] .prism-code.language-text {
+  background: rgba(10, 10, 13, 0.03) !important;
+  border: 1px solid rgba(10, 10, 13, 0.10);
+  color: rgba(10, 10, 13, 0.62) !important;
+  font-size: 11.5px;
+  line-height: 1.55;
+  padding: 20px 24px;
+  border-radius: var(--nyx-r-xs);
+}
+
+/* strip the copy-button and language label from diagram blocks */
+div:has(> .prism-code.language-text) .buttonGroup__atx,
+div:has(> .prism-code.language-text) .codeBlockTitle_Ktv7 {
+  display: none;
+}
+
+/* override any token colors inside plain-text blocks */
+.prism-code.language-text span[class^="token"] {
+  color: inherit !important;
+}
+
 /* ─── Reduce motion ────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

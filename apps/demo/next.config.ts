@@ -22,7 +22,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/docs",
-        destination: "/docs/introduction/",
+        destination: "/docs/get-started/overview/",
         permanent: false,
       },
     ];

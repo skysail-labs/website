@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunknyx_docs=self.webpackChunknyx_docs||[]).push([["9452"],{5146(e,s,t){t.r(s),t.d(s,{default:()=>c});var r=t(4848),n=t(6347),u=t(6497);function c(){return(0,r.jsx)(n.rd,{to:(0,u.Ay)("/get-started/overview")})}}}]);

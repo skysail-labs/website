@@ -95,19 +95,20 @@ const config: Config = {
       style: "dark",
       links: [
         {
-          title: "Protocol",
+          title: "Get Started",
           items: [
-            { label: "Introduction", to: "/introduction" },
-            { label: "Architecture", to: "/architecture-overview" },
-            { label: "Trust model", to: "/trust-model" },
+            { label: "Overview", to: "/get-started/overview" },
+            { label: "Programmatic Access", to: "/get-started/programmatic-access" },
+            { label: "Trade Flow", to: "/how-it-works/trade-flow" },
           ],
         },
         {
           title: "Build",
           items: [
-            { label: "Integration", to: "/integration" },
-            { label: "API reference", to: "/api-reference" },
-            { label: "Glossary", to: "/glossary" },
+            { label: "Place Order", to: "/orders/place-order" },
+            { label: "API", to: "/api/base-urls" },
+            { label: "TypeScript SDK", to: "/sdk/typescript-client" },
+            { label: "Glossary", to: "/reference/glossary" },
           ],
         },
         {
