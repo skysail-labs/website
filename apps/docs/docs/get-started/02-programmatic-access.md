@@ -6,7 +6,7 @@ description: The Nyx API surface at a glance — the two-layer auth model, the R
 
 # Programmatic Access
 
-:::info TL;DR
+:::info[TL;DR]
 Nyx exposes a **REST + WebSocket API** served directly by the enclave over
 RA-TLS. Authentication is **two layers**: an account **bearer token** (who is
 allowed to talk to the venue) plus a per-order **trading-key signature** (who
@@ -108,7 +108,7 @@ curl -s -X POST "$GATEWAY/orders" \
   -d @order.json | jq .
 ```
 
-:::tip Use the SDK
+:::tip[Use the SDK]
 A raw place-order body is large: it includes a note commitment, a 256-byte
 zero-knowledge input proof, an owner-commitment opening, and a ten-entry
 continuation anchor pool — all of which the **TypeScript SDK** derives and signs

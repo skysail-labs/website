@@ -6,7 +6,7 @@ description: A per-account push stream of order-lifecycle events — partial fil
 
 # Orders Channel
 
-:::info TL;DR
+:::info[TL;DR]
 `/ws/orders` streams **order-lifecycle events** for your account: each time one
 of your orders changes state — partial fill, full fill, cancellation, expiry — the
 engine pushes an event. The stream is per-account: you only ever see your own

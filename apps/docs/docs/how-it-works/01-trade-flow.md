@@ -6,7 +6,7 @@ description: The end-to-end lifecycle of a Nyx order, from deposit through hidde
 
 # Trade Flow
 
-:::info TL;DR
+:::info[TL;DR]
 You deposit funds into the on-chain vault as a private **note**. You submit a
 hidden order, backed by that note, to the enclave. The enclave matches it in a
 batch auction and proves the matches, then settles them on Solana itself — moving

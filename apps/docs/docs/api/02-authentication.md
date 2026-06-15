@@ -6,7 +6,7 @@ description: The two-layer Nyx auth model — account bearer tokens plus per-ord
 
 # Authentication
 
-:::info TL;DR
+:::info[TL;DR]
 Authentication has **two layers**. An **account bearer token** (`POST
 /auth/token`) gates access to the venue. A per-order **Ed25519 trading-key
 signature** proves cryptographic ownership of each order. You need the token to

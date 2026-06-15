@@ -6,7 +6,7 @@ description: How long an order stays working — GTC, GTT, IOC, and FOK — expr
 
 # Time in Force
 
-:::info TL;DR
+:::info[TL;DR]
 Time-in-force on Nyx is expressed two ways: the **order type** decides whether an
 order may rest (limit rests; IOC and FOK do not), and **`expiry_slot`** decides
 how long a resting order lives. Order expiry is measured in **Solana slots**, not
@@ -65,7 +65,7 @@ rests and never partially fills.
 | IOC | `ioc` | No |
 | FOK | `fok` | No |
 
-:::note Slots, not timestamps
+:::note[Slots, not timestamps]
 Because settlement is on Solana, expiry is anchored to the chain's clock — the
 slot — so it stays consistent with on-chain state. `/time` gives you both the slot
 and the wall-clock instant so you can convert between them. See

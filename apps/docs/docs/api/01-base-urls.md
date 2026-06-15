@@ -6,7 +6,7 @@ description: Where the Nyx API lives, the common request and response convention
 
 # Base URLs
 
-:::info TL;DR
+:::info[TL;DR]
 Every endpoint — REST and WebSocket — is served by the **same enclave gateway**
 over RA-TLS. There is no separate gateway tier in the trust path: TLS terminates
 inside the attested VM. Use the gateway origin for HTTPS and the same origin
@@ -98,7 +98,7 @@ and for clock-skew diagnostics.
 | `slot` | integer | The TEE's current view of the Solana slot. |
 | `unix_ms` | integer | Server wall-clock time, milliseconds since the Unix epoch. |
 
-:::tip Order expiry is slot-based
+:::tip[Order expiry is slot-based]
 Nyx orders expire at a **Solana slot**, not a wall-clock timestamp. To place a
 "good for the next ten minutes" order, read `/time`, project the wall-clock
 target onto a slot using the current slot as the anchor (Solana targets roughly

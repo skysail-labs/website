@@ -6,7 +6,7 @@ description: Submit orders over a single warm, pre-authenticated socket — fram
 
 # WebSocket Trading
 
-:::info TL;DR
+:::info[TL;DR]
 `/ws/trading` is a bidirectional socket for order submission. Stream framed
 `order.place` / `order.cancel` / `order.modify` requests and receive one reply
 per frame — dispatched to the **same** intake and verification the REST endpoints
@@ -28,7 +28,7 @@ add `&cancel_on_disconnect=true`.
 wss://<gateway-host>/ws/trading?token=<access_token>&cancel_on_disconnect=true
 ```
 
-:::caution The order signature is still required
+:::caution[The order signature is still required]
 Authenticating the socket establishes *who is connected*, not *who owns an
 order*. Every `order.place` / `order.cancel` / `order.modify` frame still carries
 the per-order **trading-key signature** (the same one the REST endpoints require).

@@ -6,7 +6,7 @@ description: How a partially-filled order keeps working — the pre-supplied con
 
 # The Anchor Pool
 
-:::info TL;DR
+:::info[TL;DR]
 A partial fill consumes your order's collateral note, so the unfilled remainder
 needs a *new* note to keep resting. Rather than ask you for one on every fill, you
 pre-supply a small pool of **continuation anchors** — secret material for future
@@ -67,7 +67,7 @@ anchors, signed, continuing the sequence. The order resumes immediately.
 remaining anchors → 0   →   order paused   →   POST …/anchors (5 fresh)   →   resumes
 ```
 
-:::tip Replenish proactively
+:::tip[Replenish proactively]
 Watch the remaining-anchor count and top up *before* it hits zero so a working
 order never stops. A market maker resting a quote across many fills should treat
 anchor replenishment as routine, the same way it tops up inventory.

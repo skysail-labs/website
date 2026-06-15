@@ -46,6 +46,17 @@ const config: Config = {
     ],
   ],
 
+  themes: [
+    [
+      "@easyops-cn/docusaurus-search-local",
+      {
+        hashed: true,
+        indexBlog: false,
+        docsRouteBasePath: "/",
+      },
+    ],
+  ],
+
   themeConfig: {
     colorMode: {
       defaultMode: "dark",
@@ -77,11 +88,6 @@ const config: Config = {
           sidebarId: "mainSidebar",
           position: "left",
           label: "Docs",
-        },
-        {
-          href: "https://darknyx.xyz",
-          label: "App",
-          position: "right",
         },
         {
           href: "https://github.com/Nyx-Privacy/nyx",

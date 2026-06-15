@@ -6,7 +6,7 @@ description: Replace a resting order atomically — an in-place cancel-and-repla
 
 # Modify Order
 
-:::info TL;DR
+:::info[TL;DR]
 `PUT /orders/{order_id}` modifies a resting order as an **atomic cancel +
 replace**. The body carries a signed cancel of the old order plus a full,
 independently-signed replacement order. The swap happens under one lock with both

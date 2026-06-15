@@ -6,7 +6,7 @@ description: How Nyx signals failure — HTTP status codes and the conditions th
 
 # Error Codes
 
-:::info TL;DR
+:::info[TL;DR]
 REST errors are signaled by HTTP **status code** plus a human-readable message
 describing the specific reason. WebSocket frame errors carry the same
 HTTP-equivalent status as a `code` field. Branch on the status; log the message.
@@ -74,7 +74,7 @@ HTTP-equivalent status and whose `message` is the same reason string:
 | `429` | Back off with jitter; prefer the WebSocket trading socket for high-frequency management. |
 | `503` | Poll `/system/status`; resume when matching/settlement is available. |
 
-:::tip Make cancels idempotent in your logic
+:::tip[Make cancels idempotent in your logic]
 A cancel that races a fill returns `404` once the order has matched. Treat
 `404`-on-cancel as success-equivalent ("the order is gone") and reconcile state,
 rather than as a hard error.

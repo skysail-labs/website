@@ -6,7 +6,7 @@ description: Submit a hidden, fully-collateralized order — the request body, t
 
 # Place Order
 
-:::info TL;DR
+:::info[TL;DR]
 `POST /orders` submits a new order. The body carries the usual economic fields
 (symbol, side, type, amount, price) **plus** the cryptographic backing that makes
 the order private and trustless: the collateral-note commitment, a zero-knowledge
@@ -131,7 +131,7 @@ Returned with `202 Accepted`.
 | `status` | string | `"accepted"` — the order passed verification and entered the book. |
 | `arrival_slot` | integer | The slot the engine stamped on arrival; frozen for the order's life. |
 
-:::note Accepted is not filled
+:::note[Accepted is not filled]
 A `202` means the order passed signature and collateral verification and entered
 the book — **not** that it has filled. Track fills via
 [`GET /orders/{order_id}`](./get-order) or the

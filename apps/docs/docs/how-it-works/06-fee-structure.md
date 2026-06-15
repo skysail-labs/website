@@ -6,7 +6,7 @@ description: How trading fees work on Nyx — a basis-point protocol fee both si
 
 # Fee Structure
 
-:::info TL;DR
+:::info[TL;DR]
 Nyx charges a flat **protocol fee** in basis points (for example, 30 bps). **Both
 sides of a trade pay their own fee.** Each order pre-funds its fee as part of its
 collateral, and the fee is collected at settlement as a **fee note** minted to the
@@ -38,7 +38,7 @@ where the nominal cost is `amount × price_limit` for a bid (quote units) or
 collateral note does not cover it, the order is rejected as conservation-breaking
 rather than allowed to under-pay.
 
-:::note The SDK handles fee-inclusive collateral
+:::note[The SDK handles fee-inclusive collateral]
 You do not compute the fee yourself. The SDK sizes an order's collateral note to
 cover the nominal cost plus the fee, so the order passes the conservation check.
 This is also why a place-order request is fully collateralized up front — the fee

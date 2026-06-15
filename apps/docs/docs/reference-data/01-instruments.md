@@ -6,7 +6,7 @@ description: List the markets Nyx supports and read a single market's parameters
 
 # Get Instruments
 
-:::info TL;DR
+:::info[TL;DR]
 Instruments describe the markets you can trade: the base and quote token mints,
 the price increment, the minimum order size, and the **oracle** that anchors the
 clearing price. Both endpoints are public.

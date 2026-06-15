@@ -6,7 +6,7 @@ description: A worked TypeScript client — authenticate, read markets, build an
 
 # TypeScript Client
 
-:::info TL;DR
+:::info[TL;DR]
 A reference client that ties the pieces together: get a bearer token, read
 markets and server time, use the SDK's **order builders** to assemble a signed
 order from a deposited note, submit it, and subscribe to the order and fill
@@ -208,7 +208,7 @@ console.log(markets.instruments.map((m) => m.symbol));
 // build + place an order (see above), then watch its lifecycle on the streams.
 ```
 
-:::tip Verify the engine first
+:::tip[Verify the engine first]
 For the full trust guarantee, verify the enclave's attestation against an
 expected measurement before sending order intent — the SDK ships a helper that
 runs the [attestation chain](../api/transport-and-attestation) for you. Skipping it

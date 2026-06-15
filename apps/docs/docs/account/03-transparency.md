@@ -6,7 +6,7 @@ description: A public, unauthenticated proof-of-reserves — per-mint outstandin
 
 # Transparency
 
-:::info TL;DR
+:::info[TL;DR]
 `GET /transparency` is a **public proof-of-reserves**: for every mint it reports
 the outstanding note value (the venue's liability) against the actual SPL balance
 held in the vault (the assets). Anyone can verify the vault covers what it owes —

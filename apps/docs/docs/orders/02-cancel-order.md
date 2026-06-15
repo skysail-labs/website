@@ -6,7 +6,7 @@ description: Cancel a resting order with a signed cancel request from the owning
 
 # Cancel Order
 
-:::info TL;DR
+:::info[TL;DR]
 `DELETE /orders/{order_id}` removes a resting order. The body carries a fresh
 **trading-key signature** over the order id and a cancel nonce, proving the
 caller owns the order. Only the trading key that placed the order can cancel it.
@@ -86,7 +86,7 @@ order leave without polling.
 | The signature does not verify, or the key does not own the order | `403` |
 | No such (resting) order — already filled, expired, or cancelled | `404` |
 
-:::note Cancelling races the match
+:::note[Cancelling races the match]
 An order can match in a batch between when you decide to cancel and when the
 cancel lands. If the order has already left the book, the cancel returns `404`.
 Treat a `404` on cancel as "the order is no longer resting" and reconcile via

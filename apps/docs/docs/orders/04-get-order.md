@@ -6,7 +6,7 @@ description: Read the current status of one order — its state, filled quantity
 
 # Get Order
 
-:::info TL;DR
+:::info[TL;DR]
 `GET /orders/{order_id}` returns the current state of one order: its status,
 filled quantity, and remaining size. For live updates without polling, subscribe
 to the [Orders Channel](../websocket/orders-channel) instead.
@@ -77,7 +77,7 @@ without a request per check.
 | Missing or invalid bearer token | `401` |
 | No order with that id is currently tracked | `404` |
 
-:::note Terminal orders age out
+:::note[Terminal orders age out]
 The book tracks resting and recently-terminal orders. A long-since-filled,
 expired, or cancelled order may no longer be queryable here; recover fill details
 from your durable fill history (see [Fills Channel](../websocket/fills-channel))

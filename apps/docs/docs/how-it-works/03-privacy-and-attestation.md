@@ -6,7 +6,7 @@ description: Who can see your orders on Nyx (no one), and how you verify the eng
 
 # Privacy & Attestation
 
-:::info TL;DR
+:::info[TL;DR]
 On Nyx, **no party — not even the operator — can see your orders, balances, or
 strategy**. Order intent lives only inside an attested enclave; balances are
 sealed inside on-chain note commitments. You do not take this on trust: you
@@ -74,7 +74,7 @@ Verification is a client-side step (the SDK ships a helper). In order, you confi
 - **Step 3** closes the loop: the engine you are talking to is the same engine
   whose key the Solana program accepts for settlement.
 
-:::caution TLS alone is not verification
+:::caution[TLS alone is not verification]
 Connecting over TLS gives you a private channel to *some* machine. Only attestation
 tells you the machine runs the real engine. A client that skips the attestation
 check has confidentiality without integrity. Pin an expected measurement and

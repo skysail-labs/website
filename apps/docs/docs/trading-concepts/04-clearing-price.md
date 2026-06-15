@@ -6,7 +6,7 @@ description: How Nyx prices a batch — one uniform, oracle-anchored clearing pr
 
 # Clearing Price
 
-:::info TL;DR
+:::info[TL;DR]
 Every match in a batch settles at **one uniform price**, anchored to the market's
 oracle. There is no maker/taker spread to game and no separate "peg" order type —
 the fair mid is already baked into how every batch clears. A hard circuit breaker,
@@ -80,7 +80,7 @@ The practical effect: if the oracle is stale or the market gaps, Nyx **does not
 clear** rather than clearing at a price far from fair. Your order waits for a batch
 that prices within the band.
 
-:::tip What this means for you
+:::tip[What this means for you]
 You do not — and cannot — set an execution price; you set a `price_limit` bound and
 receive the batch's uniform, oracle-anchored clearing price when it is within your
 bound and the circuit-breaker band. No spread, no last look, no peg to maintain.

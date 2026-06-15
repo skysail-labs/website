@@ -220,8 +220,8 @@ export default function Home() {
               <span className="dot"></span>Darkpool protocol · Solana
             </p>
             <h1 className="display h-xl rise d2" style={{ marginTop: "18px" }}>
-              <span className="tag-lo">Settle in the dark.</span>
-              <span className="tag-hi">Prove in the light.</span>
+              <span style={{ display: "block", color: "var(--cobalt)" }}>Settle in the <span className="tag-lo">dark</span>.</span>
+              <span style={{ display: "block", color: "var(--cobalt-bright)" }}>Prove in the <span className="tag-hi">light</span>.</span>
             </h1>
             <p className="lede rise d3">
               A privacy-preserving order book where intent is hidden inside attested hardware and every fill settles trustlessly on Solana — verified, never trusted.
@@ -348,6 +348,7 @@ export default function Home() {
             <div className="arch-nav">
               <button
                 className={`arch-tab-btn ${activeTab === "custody" ? "active" : ""}`}
+                onMouseEnter={() => setActiveTab("custody")}
                 onClick={() => setActiveTab("custody")}
               >
                 <span className="num">LAYER 1</span>
@@ -355,6 +356,7 @@ export default function Home() {
               </button>
               <button
                 className={`arch-tab-btn ${activeTab === "matching" ? "active" : ""}`}
+                onMouseEnter={() => setActiveTab("matching")}
                 onClick={() => setActiveTab("matching")}
               >
                 <span className="num">LAYER 2</span>
@@ -362,6 +364,7 @@ export default function Home() {
               </button>
               <button
                 className={`arch-tab-btn ${activeTab === "client" ? "active" : ""}`}
+                onMouseEnter={() => setActiveTab("client")}
                 onClick={() => setActiveTab("client")}
               >
                 <span className="num">LAYER 3</span>

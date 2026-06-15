@@ -6,7 +6,7 @@ description: How matched trades become final on Solana — the batched, proven, 
 
 # Settlement
 
-:::info TL;DR
+:::info[TL;DR]
 The enclave settles matches on Solana **itself**, in batches. For each batch it
 locks the input notes, verifies a zero-knowledge **batch proof** on-chain,
 executes the per-match transfers atomically, then reclaims the batch marker. A

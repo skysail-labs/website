@@ -90,8 +90,8 @@
       <svg class="mark glow rise d1" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg>
       <p class="kicker rise d1"><span class="dot"></span>Darkpool protocol · Solana</p>
       <h1 class="display h-xl rise d2" style="margin-top:18px">
-        <span class="tag-lo">Settle in the dark.</span>
-        <span class="tag-hi">Prove in the light.</span>
+        <span style="display: block; color: var(--chalk);">Settle in the <span class="tag-lo">dark</span>.</span>
+        <span style="display: block; color: var(--cobalt-bright);">Prove in the <span class="tag-hi">light</span>.</span>
       </h1>
       <p class="lede rise d3">A privacy-preserving order book where intent is hidden inside attested hardware and every fill settles trustlessly on Solana — verified, never trusted.</p>
       <div class="hero-actions rise d4">
@@ -495,7 +495,7 @@
 
   // Architecture tabs switching
   document.querySelectorAll('.arch-tab-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
+    function activate() {
       document.querySelectorAll('.arch-tab-btn').forEach(function (b) {
         b.classList.remove('active');
       });
@@ -506,7 +506,9 @@
       });
       var activePane = document.getElementById('arch-pane-' + tab);
       if (activePane) activePane.style.display = 'block';
-    });
+    }
+    btn.addEventListener('mouseenter', activate);
+    btn.addEventListener('click', activate);
   });
 
   window.addEventListener('scroll', handleScroll, { passive: true });

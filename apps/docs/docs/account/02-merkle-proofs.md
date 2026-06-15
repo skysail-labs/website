@@ -6,7 +6,7 @@ description: Read the on-chain note tree — the current root, an inclusion proo
 
 # Merkle Proofs
 
-:::info TL;DR
+:::info[TL;DR]
 The note commitments live in an on-chain incremental Merkle tree. These endpoints
 expose the engine's mirror of it: the current **root**, an **inclusion proof** for
 a note you own, and a paginated **leaf** read. You use the inclusion proof to
@@ -52,7 +52,7 @@ GET /tree/root?tree_id=0
 | `leaf_count` | integer | Number of leaves in this shard. |
 | `on_chain_slot` | integer | Solana slot at which the engine last synced this shard from chain. |
 
-:::note Cross-check on-chain
+:::note[Cross-check on-chain]
 The root is also readable directly from the Solana program. The endpoint is a
 convenience mirror; a client that wants zero trust in the engine for this value
 can read the on-chain account itself.
@@ -89,7 +89,7 @@ the input-proof circuit. You do not assemble the proof by hand — the SDK takes
 the inclusion proof and produces the Groth16 proof you attach to an order or
 withdrawal.
 
-:::caution Roots age out
+:::caution[Roots age out]
 A proof is generated against a specific root. The on-chain program keeps a
 bounded ring buffer of recent roots, so a proof must be *used* (settled or
 withdrawn against) while its root is still in that window. In practice this means

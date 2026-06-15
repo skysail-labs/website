@@ -20,10 +20,10 @@ export function LandingHeroCopy() {
         }}
       >
         <span className="block" style={{ color: "var(--nyx-chalk)" }}>
-          Settle in the dark.
+          Settle in the <span style={{ color: "var(--nyx-accent)" }}>dark</span>.
         </span>
-        <span className="mt-2 block" style={{ color: "var(--nyx-accent)", opacity: 0.85 }}>
-          Prove in the light.
+        <span className="mt-2 block" style={{ color: "var(--nyx-accent)" }}>
+          Prove in the <span style={{ color: "var(--nyx-chalk)" }}>light</span>.
         </span>
       </h1>
       <p className={`${mono} mt-6 max-w-xl text-[13px] leading-[1.85] sm:text-[14px]`} style={{ color: muted }}>

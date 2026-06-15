@@ -39,7 +39,7 @@
 
   --ifm-font-family-base: Arial, "Helvetica Neue", Helvetica, sans-serif;
   --ifm-font-family-monospace: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  --ifm-font-size-base: 15px;          /* md from tokens */
+  --ifm-font-size-base: 17px;          /* md from tokens */
   --ifm-line-height-base: 1.55;
   --ifm-code-font-size: 87%;
   --ifm-navbar-height: 60px;
@@ -131,12 +131,12 @@ h1, h2, h3, h4, h5, h6 {
 .navbar__title {
   font-family: "Space Grotesk", system-ui, -apple-system, sans-serif;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 20px;
   letter-spacing: -0.04em;
 }
 
 .navbar__link {
-  font-size: 14px;   /* sm from tokens */
+  font-size: 16px;   /* sm from tokens */
   font-weight: 500;
   letter-spacing: -0.01em;
 }
@@ -169,7 +169,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .menu {
   padding: 20px 10px;
-  font-size: 13px;  /* sm */
+  font-size: 15px;  /* sm */
 }
 
 .menu__link {
@@ -192,7 +192,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .menu__list-item-collapsible > .menu__link {
   font-family: "JetBrains Mono", monospace;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -213,7 +213,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ─── Table of contents ────────────────────────────────── */
 .table-of-contents {
-  font-size: 12px;
+  font-size: 14px;
   border-left: var(--nyx-hairline);
   padding-left: 16px;
 }
@@ -238,7 +238,7 @@ h1, h2, h3, h4, h5, h6 {
 .theme-doc-markdown { max-width: 780px; }
 
 article header h1 {
-  font-size: 32px;       /* 2xl from tokens */
+  font-size: 34px;       /* 2xl from tokens */
   font-weight: 600;
   letter-spacing: -0.025em;
   line-height: 1.15;
@@ -246,7 +246,7 @@ article header h1 {
 }
 
 .markdown h2 {
-  font-size: 24px;       /* xl */
+  font-size: 26px;       /* xl */
   font-weight: 600;
   letter-spacing: -0.02em;
   margin-top: 48px;
@@ -259,7 +259,7 @@ article header h1 {
 }
 
 .markdown h3 {
-  font-size: 18px;       /* lg */
+  font-size: 20px;       /* lg */
   font-weight: 600;
   letter-spacing: -0.015em;
   margin-top: 28px;
@@ -267,7 +267,7 @@ article header h1 {
 
 .markdown p,
 .markdown li {
-  font-size: 15px;       /* md */
+  font-size: 17px;       /* md */
   line-height: 1.78;
 }
 
@@ -278,10 +278,10 @@ article header h1 {
 
 /* ─── Admonitions ──────────────────────────────────────── */
 .admonition {
-  border-radius: var(--nyx-r-xs);
-  border-left-width: 2px;
-  padding: 14px 18px;
-  font-size: 14px;
+  border-radius: 12px !important;
+  border: 1px solid transparent !important;
+  padding: 16px 20px;
+  font-size: 16px;
   line-height: 1.7;
   margin: 24px 0;
   box-shadow: none;
@@ -289,69 +289,196 @@ article header h1 {
 
 .admonition-heading h5 {
   font-family: "JetBrains Mono", monospace;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin: 0 0 6px;
 }
 
+/* Dark mode alerts */
 [data-theme="dark"] .alert--info {
-  background: oklch(0.62 0.14 260 / 0.09);
-  border-left-color: oklch(0.62 0.14 260);
+  background: oklch(0.62 0.14 260 / 0.09) !important;
+  border: 1px solid oklch(0.62 0.14 260 / 0.2) !important;
   color: rgba(214, 212, 210, 0.88);
 }
 
 [data-theme="dark"] .alert--success {
-  background: rgba(95, 184, 95, 0.08);
-  border-left-color: #5fb85f;
+  background: rgba(95, 184, 95, 0.08) !important;
+  border: 1px solid rgba(95, 184, 95, 0.2) !important;
+  color: rgba(214, 212, 210, 0.88);
 }
 
 [data-theme="dark"] .alert--warning {
-  background: rgba(217, 164, 65, 0.09);
-  border-left-color: #d9a441;
+  background: rgba(217, 164, 65, 0.09) !important;
+  border: 1px solid rgba(217, 164, 65, 0.2) !important;
+  color: rgba(214, 212, 210, 0.88);
 }
 
 [data-theme="dark"] .alert--danger {
-  background: rgba(200, 69, 69, 0.09);
-  border-left-color: #c84545;
+  background: rgba(200, 69, 69, 0.09) !important;
+  border: 1px solid rgba(200, 69, 69, 0.2) !important;
+  color: rgba(214, 212, 210, 0.88);
 }
 
 [data-theme="dark"] .alert--secondary {
-  background: rgba(245, 243, 238, 0.03);
-  border-left-color: rgba(245, 243, 238, 0.18);
+  background: rgba(245, 243, 238, 0.03) !important;
+  border: 1px solid rgba(245, 243, 238, 0.08) !important;
+  color: rgba(214, 212, 210, 0.88);
+}
+
+/* Light mode alerts */
+[data-theme="light"] .alert--info {
+  background: oklch(0.62 0.14 260 / 0.07) !important;
+  border: 1px solid oklch(0.62 0.14 260 / 0.18) !important;
+  color: rgba(10, 10, 13, 0.88);
+}
+
+[data-theme="light"] .alert--success {
+  background: rgba(95, 184, 95, 0.06) !important;
+  border: 1px solid rgba(95, 184, 95, 0.18) !important;
+  color: rgba(10, 10, 13, 0.88);
+}
+
+[data-theme="light"] .alert--warning {
+  background: rgba(217, 164, 65, 0.06) !important;
+  border: 1px solid rgba(217, 164, 65, 0.18) !important;
+  color: rgba(10, 10, 13, 0.88);
+}
+
+[data-theme="light"] .alert--danger {
+  background: rgba(200, 69, 69, 0.06) !important;
+  border: 1px solid rgba(200, 69, 69, 0.18) !important;
+  color: rgba(10, 10, 13, 0.88);
+}
+
+[data-theme="light"] .alert--secondary {
+  background: rgba(10, 10, 13, 0.03) !important;
+  border: 1px solid rgba(10, 10, 13, 0.08) !important;
+  color: rgba(10, 10, 13, 0.88);
 }
 
 /* ─── Code blocks ──────────────────────────────────────── */
+div[class*='codeBlockContainer_'] {
+  border-radius: 12px !important;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  transition: border-color var(--nyx-dur-fast) var(--nyx-ease), box-shadow var(--nyx-dur-fast) var(--nyx-ease);
+}
+
+div[class*='codeBlockContainer_']:hover {
+  border-color: oklch(0.62 0.14 260 / 0.4);
+  box-shadow: 0 8px 40px oklch(0.62 0.14 260 / 0.15);
+}
+
+[data-theme="light"] div[class*='codeBlockContainer_'] {
+  border-color: rgba(10, 10, 13, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] div[class*='codeBlockContainer_']:hover {
+  border-color: oklch(0.62 0.14 260 / 0.3);
+  box-shadow: 0 8px 30px oklch(0.62 0.14 260 / 0.08);
+}
+
 .prism-code {
-  font-size: 12.5px;
+  font-size: 15px;
   line-height: 1.65;
-  border-radius: var(--nyx-r-xs);
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 18px 22px !important;
 }
 
 [data-theme="dark"] .prism-code {
-  background: #0d0d11 !important;
+  background: #09090c !important;
 }
 
 [data-theme="light"] .prism-code {
-  background: #f3f2ef !important;
+  background: #fafafa !important;
 }
 
 code {
-  border-radius: var(--nyx-r-xs);
-  font-size: 87%;
-  padding: 2px 5px;
+  border-radius: 6px;
+  font-size: 85%;
+  padding: 3px 6px;
   font-weight: 500;
+  border: 1px solid rgba(10, 10, 13, 0.08);
 }
 
 [data-theme="dark"] code {
-  background: rgba(245, 243, 238, 0.07);
+  background: rgba(245, 243, 238, 0.05);
   color: rgba(245, 243, 238, 0.9);
+  border: 1px solid rgba(245, 243, 238, 0.08);
+}
+
+/* Prevent inline code styles from leaking into code blocks */
+[data-theme] pre code,
+pre code {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Custom token styling to format code & JSON responses beautifully in dark mode */
+[data-theme="dark"] .prism-code .token.property {
+  color: #a78bfa !important; /* Elegant light violet/purple for JSON keys */
+  font-weight: 500;
+}
+[data-theme="dark"] .prism-code .token.string {
+  color: #34d399 !important; /* Fresh, bright emerald green for string values */
+}
+[data-theme="dark"] .prism-code .token.number {
+  color: #fb923c !important; /* Crisp orange for numbers */
+}
+[data-theme="dark"] .prism-code .token.boolean,
+[data-theme="dark"] .prism-code .token.keyword {
+  color: #60a5fa !important; /* Bright blue for keywords/booleans */
+}
+[data-theme="dark"] .prism-code .token.punctuation {
+  color: rgba(245, 243, 238, 0.45) !important; /* Muted punctuation */
+}
+[data-theme="dark"] .prism-code .token.comment {
+  color: rgba(174, 172, 176, 0.45) !important;
+  font-style: italic;
+}
+[data-theme="dark"] .prism-code .token.operator {
+  color: #aeacb0 !important;
+}
+[data-theme="dark"] .prism-code .token.function {
+  color: #60a5fa !important;
+}
+
+/* Custom token styling for light mode */
+[data-theme="light"] .prism-code .token.property {
+  color: #7c3aed !important; /* Elegant purple for JSON keys */
+  font-weight: 500;
+}
+[data-theme="light"] .prism-code .token.string {
+  color: #059669 !important; /* Deep forest green for string values */
+}
+[data-theme="light"] .prism-code .token.number {
+  color: #ea580c !important; /* Orange for numbers */
+}
+[data-theme="light"] .prism-code .token.boolean,
+[data-theme="light"] .prism-code .token.keyword {
+  color: #2563eb !important; /* Blue for keywords/booleans */
+}
+[data-theme="light"] .prism-code .token.punctuation {
+  color: rgba(10, 10, 13, 0.45) !important;
+}
+[data-theme="light"] .prism-code .token.comment {
+  color: rgba(107, 107, 116, 0.55) !important;
+  font-style: italic;
 }
 
 /* ─── Tables ───────────────────────────────────────────── */
 .markdown table {
-  font-size: 13px;
+  font-size: 15px;
   border-collapse: collapse;
   width: 100%;
   display: table;
@@ -359,7 +486,7 @@ code {
 
 .markdown th {
   font-family: "JetBrains Mono", monospace;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -516,23 +643,31 @@ code {
 }
 
 [data-theme="dark"] .prism-code.language-text {
-  background: rgba(245, 243, 238, 0.03) !important;
-  border: 1px solid rgba(245, 243, 238, 0.08);
-  color: rgba(245, 243, 238, 0.72) !important;
-  font-size: 11.5px;
+  background: rgba(10, 11, 16, 0.95) !important;
+  border: none !important;
+  border-left: 4px solid var(--nyx-accent) !important;
+  color: var(--nyx-chalk) !important;
+  font-size: 14px;
+  font-weight: 500;
   line-height: 1.55;
-  padding: 20px 24px;
-  border-radius: var(--nyx-r-xs);
+  padding: 18px 22px;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
 }
 
 [data-theme="light"] .prism-code.language-text {
   background: rgba(10, 10, 13, 0.03) !important;
-  border: 1px solid rgba(10, 10, 13, 0.10);
-  color: rgba(10, 10, 13, 0.62) !important;
-  font-size: 11.5px;
+  border: none !important;
+  border-left: 4px solid var(--nyx-accent) !important;
+  color: var(--nyx-ink) !important;
+  font-size: 14px;
+  font-weight: 500;
   line-height: 1.55;
-  padding: 20px 24px;
-  border-radius: var(--nyx-r-xs);
+  padding: 18px 22px;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
 }
 
 /* strip the copy-button and language label from diagram blocks */

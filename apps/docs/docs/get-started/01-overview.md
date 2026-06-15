@@ -6,7 +6,7 @@ description: Nyx is a privacy-preserving spot darkpool on Solana — hidden orde
 
 # Overview
 
-:::info TL;DR
+:::info[TL;DR]
 Nyx is a **privacy-preserving spot darkpool on Solana**. You submit hidden
 orders to a matching engine that runs **inside an attested Intel TDX Confidential
 VM** (a "CVM"). Settlement lands **trustlessly on Solana**, with a zero-knowledge

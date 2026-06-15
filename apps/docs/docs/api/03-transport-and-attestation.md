@@ -6,7 +6,7 @@ description: How the Nyx transport is secured — RA-TLS terminating inside the 
 
 # Transport & Attestation
 
-:::info TL;DR
+:::info[TL;DR]
 TLS terminates **inside the attested enclave**, with a certificate whose private
 key is generated in the VM and never leaves it. There is no separate gateway in
 the trust path and no in-band session-encryption envelope to negotiate — the TLS
@@ -113,7 +113,7 @@ The SDK ships a helper that runs this chain for you against an expected
 measurement. Only when all three hold should a client trust the channel with
 order intent.
 
-:::caution Pin the measurement, not the host
+:::caution[Pin the measurement, not the host]
 The security guarantee comes from the **measurement**, not from the hostname.
 A client that connects over TLS but skips attestation has confidentiality to
 *some* machine; it has not verified that the machine runs the real engine. Pin an

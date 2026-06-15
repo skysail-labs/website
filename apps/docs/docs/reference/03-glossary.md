@@ -6,7 +6,7 @@ description: Terms and acronyms used across the Nyx documentation.
 
 # Glossary
 
-:::info TL;DR
+:::info[TL;DR]
 A quick reference for the terms that recur across these docs. Most link back to
 the page that explains them in depth.
 :::

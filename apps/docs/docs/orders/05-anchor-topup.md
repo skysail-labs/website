@@ -6,7 +6,7 @@ description: Replenish a partially-filled order's continuation anchor pool so it
 
 # Anchor Top-Up
 
-:::info TL;DR
+:::info[TL;DR]
 A resting order carries a pool of pre-supplied **continuation anchors** that let
 the engine settle partial fills and re-lock the remainder automatically. A
 long-lived, frequently-filled order can exhaust that pool. `POST
@@ -101,7 +101,7 @@ continuation on the next batch.
 | The order is gone (filled / cancelled / expired) | `404` |
 | `topup_nonce` did not advance past the last accepted value | `409` |
 
-:::tip Top up before you run dry
+:::tip[Top up before you run dry]
 The order's status and the pool's remaining count let you top up *before* an
 order pauses, so it never stops filling. A market maker keeping a quote resting
 across many fills should monitor the remaining anchors and replenish proactively.
