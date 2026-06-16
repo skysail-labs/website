@@ -6,7 +6,7 @@ description: The two-layer Darknyx auth model - account bearer tokens plus per-o
 
 # Authentication
 
-:::info[TL;DR]
+:::info
 Authentication has **two layers**. An **account bearer token** (`POST
 /auth/token`) gates access to the venue. A per-order **Ed25519 trading-key
 signature** proves cryptographic ownership of each order. You need the token to

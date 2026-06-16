@@ -371,6 +371,7 @@ img.scene-art { object-fit: cover; object-position: bottom; }
 .footer-foot .fl { display: flex; gap: 22px; }
 .footer-foot .fl a { font: 500 11px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--chalk-dim); transition: color .2s; }
 .footer-foot .fl a:hover { color: var(--cobalt-bright); }
+.footer-foot .fl a.social-link { display: inline-flex; align-items: center; }
 
 /* ============================================================
    DOCS PORTAL (retained for backward compatibility and general docs routes)

@@ -6,7 +6,7 @@ description: Replenish a partially-filled order's continuation anchor pool so it
 
 # Anchor Top-Up
 
-:::info[TL;DR]
+:::info
 A resting order carries a pool of pre-supplied **continuation anchors** that let
 the engine settle partial fills and re-lock the remainder automatically. A
 long-lived, frequently-filled order can exhaust that pool. `POST

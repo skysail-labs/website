@@ -1111,8 +1111,145 @@ button.wallet-adapter-button-trigger .wallet-adapter-button-start-icon {
   border-radius: 12px !important;
 }
 
-/* Admonitions rounded corners */
+/* Admonitions rounded corners and custom layout matching screenshots */
 .admonition,
 .alert {
   border-radius: 12px !important;
+  border: 1px solid transparent !important;
+  border-left-width: 1px !important; /* ensure left side has 1px border like all other sides */
+  padding: 16px 20px;
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 24px 0;
+  box-shadow: none;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+}
+
+/* Hide the heading text (like "info" or custom text) while keeping the container as the icon wrapper */
+.admonition-heading,
+[class*='admonitionHeading_'] {
+  font-size: 0 !important;
+  color: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  width: 12px !important; /* matches icon width */
+  height: 27px !important; /* vertically centers icon with first line of content (16px * 1.7 = 27.2px line-height) */
+}
+
+/* Target both Docusaurus and custom icon structures to set small icon dimensions */
+.admonition-heading span,
+.admonition-heading svg,
+[class*='admonitionHeading_'] span,
+[class*='admonitionHeading_'] svg,
+[class*='admonitionIcon_'] svg {
+  font-size: 12px !important;
+  width: 12px !important;
+  height: 12px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+}
+
+.admonition-content,
+[class*='admonitionContent_'] {
+  flex: 1 !important;
+}
+
+.admonition-content p:first-child,
+[class*='admonitionContent_'] p:first-child {
+  margin-top: 0 !important;
+}
+
+.admonition-content p:last-child,
+[class*='admonitionContent_'] p:last-child {
+  margin-bottom: 0 !important;
+}
+
+.admonition code,
+.alert code {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: none !important;
+  padding: 2px 6px !important;
+  border-radius: 6px !important;
+}
+
+/* Dark mode alerts */
+[data-theme="dark"] .alert--info,
+[data-theme="dark"] .alert--secondary {
+  background: rgba(12, 28, 56, 0.45) !important;
+  border: 1px solid rgba(59, 130, 246, 0.35) !important;
+  color: rgba(224, 236, 255, 0.9) !important;
+}
+[data-theme="dark"] .alert--info a,
+[data-theme="dark"] .alert--secondary a {
+  color: #60a5fa !important;
+}
+[data-theme="dark"] .alert--info code,
+[data-theme="dark"] .alert--secondary code {
+  color: #93c5fd !important;
+}
+
+[data-theme="dark"] .alert--success {
+  background: rgba(10, 38, 20, 0.45) !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  color: rgba(167, 243, 208, 0.9) !important;
+}
+[data-theme="dark"] .alert--success a {
+  color: #34d399 !important;
+}
+[data-theme="dark"] .alert--success code {
+  color: #6ee7b7 !important;
+}
+
+[data-theme="dark"] .alert--warning,
+[data-theme="dark"] .alert--danger {
+  background: rgba(38, 22, 5, 0.45) !important;
+  border: 1px solid rgba(217, 119, 6, 0.35) !important;
+  color: rgba(243, 192, 102, 0.9) !important;
+}
+[data-theme="dark"] .alert--warning a,
+[data-theme="dark"] .alert--danger a {
+  color: #fbbf24 !important;
+}
+[data-theme="dark"] .alert--warning code,
+[data-theme="dark"] .alert--danger code {
+  color: #fcd34d !important;
+}
+
+/* Light mode alerts */
+[data-theme="light"] .alert--info,
+[data-theme="light"] .alert--secondary {
+  background: rgba(12, 28, 56, 0.05) !important;
+  border: 1px solid rgba(59, 130, 246, 0.2) !important;
+  color: rgba(10, 25, 47, 0.9) !important;
+}
+[data-theme="light"] .alert--info code,
+[data-theme="light"] .alert--secondary code {
+  color: #1e3a8a !important;
+}
+
+[data-theme="light"] .alert--success {
+  background: rgba(10, 38, 20, 0.05) !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+  color: rgba(6, 78, 59, 0.9) !important;
+}
+[data-theme="light"] .alert--success code {
+  color: #065f46 !important;
+}
+
+[data-theme="light"] .alert--warning,
+[data-theme="light"] .alert--danger {
+  background: rgba(38, 22, 5, 0.05) !important;
+  border: 1px solid rgba(217, 119, 6, 0.2) !important;
+  color: rgba(120, 53, 4, 0.9) !important;
+}
+[data-theme="light"] .alert--warning code,
+[data-theme="light"] .alert--danger code {
+  color: #92400e !important;
 }

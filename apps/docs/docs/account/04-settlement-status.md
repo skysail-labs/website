@@ -6,7 +6,7 @@ description: Track a matched batch from proof through to on-chain finality, and 
 
 # Settlement Status
 
-:::info[TL;DR]
+:::info
 When your order matches, it settles on Solana as part of a **batch**. `GET
 /settlement/status/{batch_id}` translates a batch id into its on-chain
 transaction signatures and tells you which stage of the settlement pipeline it is

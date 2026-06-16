@@ -6,7 +6,7 @@ description: Submit a hidden, fully-collateralized order - the request body, the
 
 # Place Order
 
-:::info[TL;DR]
+:::info
 `POST /orders` submits a new order. The body carries the usual economic fields
 (symbol, side, type, amount, price) **plus** the cryptographic backing that makes
 the order private and trustless: the collateral-note commitment, a zero-knowledge

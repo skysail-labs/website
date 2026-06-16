@@ -6,7 +6,7 @@ description: Submit orders over a single warm, pre-authenticated socket - framed
 
 # WebSocket Trading
 
-:::info[TL;DR]
+:::info
 `/ws/trading` is a bidirectional socket for order submission. Stream framed
 `order.place` / `order.cancel` / `order.modify` requests and receive one reply
 per frame - dispatched to the **same** intake and verification the REST endpoints

@@ -6,7 +6,7 @@ description: How trading fees work on Darknyx - a basis-point protocol fee both 
 
 # Fee Structure
 
-:::info[TL;DR]
+:::info
 Darknyx charges a flat **protocol fee** in basis points (for example, 30 bps). **Both
 sides of a trade pay their own fee.** Each order pre-funds its fee as part of its
 collateral, and the fee is collected at settlement as a **fee note** minted to the

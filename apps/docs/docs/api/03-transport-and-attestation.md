@@ -6,7 +6,7 @@ description: How the Darknyx transport is secured - RA-TLS terminating inside th
 
 # Transport & Attestation
 
-:::info[TL;DR]
+:::info
 TLS terminates **inside the attested enclave**, with a certificate whose private
 key is generated in the VM and never leaves it. There is no separate gateway in
 the trust path and no in-band session-encryption envelope to negotiate - the TLS

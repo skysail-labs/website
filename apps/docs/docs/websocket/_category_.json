@@ -1,10 +1,5 @@
 {
   "label": "WebSocket API",
   "position": 6,
-  "collapsed": false,
-  "link": {
-    "type": "generated-index",
-    "title": "WebSocket API",
-    "description": "Low-latency, persistent connections: a bidirectional trading socket, a per-account order-lifecycle stream, and a per-account fills stream."
-  }
+  "collapsed": false
 }

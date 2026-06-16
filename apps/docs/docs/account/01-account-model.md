@@ -6,7 +6,7 @@ description: How balances work on Darknyx - UTXO-style notes you own on-chain, r
 
 # Account Model
 
-:::info[TL;DR]
+:::info
 Darknyx has no server-held balance ledger. Your assets are **UTXO-style notes**
 committed on-chain as hashes. Only you - with your spending key - can determine
 which notes are yours and what they are worth. You reconstruct your account state

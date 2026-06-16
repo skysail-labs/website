@@ -6,7 +6,7 @@ description: A per-account stream of continuation-fill memos - the secret materi
 
 # Fills Channel
 
-:::info[TL;DR]
+:::info
 `/ws/fills` streams a **fill memo** per continuation fill: the data you need to
 recover the change note a partial fill produced. You verify each memo against
 your own keys before storing it - a misbehaving engine cannot slip you a note you

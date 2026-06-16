@@ -6,7 +6,7 @@ description: Who can see your orders on Darknyx (no one), and how you verify the
 
 # Privacy & Attestation
 
-:::info[TL;DR]
+:::info
 On Darknyx, **no party - not even the operator - can see your orders, balances, or
 strategy**. Order intent lives only inside an attested enclave; balances are
 sealed inside on-chain note commitments. You do not take this on trust: you

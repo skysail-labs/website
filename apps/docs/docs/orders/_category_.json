@@ -1,10 +1,5 @@
 {
   "label": "Orders",
   "position": 5,
-  "collapsed": false,
-  "link": {
-    "type": "generated-index",
-    "title": "Orders",
-    "description": "Place, cancel, modify, and inspect orders, and top up the continuation anchor pool that lets a partially-filled order keep working."
-  }
+  "collapsed": false
 }

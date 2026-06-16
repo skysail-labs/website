@@ -6,7 +6,7 @@ description: Where the Darknyx API lives, the common request and response conven
 
 # Base URLs
 
-:::info[TL;DR]
+:::info
 Every endpoint - REST and WebSocket - is served by the **same enclave gateway**
 over RA-TLS. There is no separate gateway tier in the trust path: TLS terminates
 inside the attested VM. Use the gateway origin for HTTPS and the same origin

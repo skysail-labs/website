@@ -6,7 +6,7 @@ description: The order types Darknyx supports - limit, IOC, and FOK - plus the m
 
 # Order Types
 
-:::info[TL;DR]
+:::info
 Darknyx has three native order types: **limit**, **IOC**, and **FOK**. A **market**
 order is a convention - an IOC with a price cap - and an **all-or-none** order is
 a limit with its minimum fill size set to the full amount. Every order clears at

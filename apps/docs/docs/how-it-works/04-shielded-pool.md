@@ -6,7 +6,7 @@ description: How balances are held privately - UTXO-style notes committed on-cha
 
 # Shielded Pool
 
-:::info[TL;DR]
+:::info
 Your balance on Darknyx is a set of **notes** - UTXO-style values committed on-chain as
 Poseidon hashes that seal the owner, amount, and token. The commitments live in a
 Merkle tree; spending a note publishes a **nullifier** that prevents reuse. You

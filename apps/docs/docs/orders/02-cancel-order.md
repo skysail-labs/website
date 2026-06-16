@@ -6,7 +6,7 @@ description: Cancel a resting order with a signed cancel request from the owning
 
 # Cancel Order
 
-:::info[TL;DR]
+:::info
 `DELETE /orders/{order_id}` removes a resting order. The body carries a fresh
 **trading-key signature** over the order id and a cancel nonce, proving the
 caller owns the order. Only the trading key that placed the order can cancel it.

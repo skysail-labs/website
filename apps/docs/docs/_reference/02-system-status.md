@@ -6,7 +6,7 @@ description: How Darknyx signals readiness and degraded mode - check it before t
 
 # System Status
 
-:::info[TL;DR]
+:::info
 `GET /system/status` is a public readiness snapshot: is matching running, is
 settlement wired, is an oracle attached, and what slot the engine is on. A
 `degraded` flag tells you, in one boolean, whether to back off before you hit a

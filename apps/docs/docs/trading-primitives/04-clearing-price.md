@@ -6,7 +6,7 @@ description: How Darknyx prices a batch - one uniform, oracle-anchored clearing 
 
 # Clearing Price
 
-:::info[TL;DR]
+:::info
 Every match in a batch settles at **one uniform price**, anchored to the market's
 oracle. There is no maker/taker spread to game and no separate "peg" order type - the fair mid is already baked into how every batch clears. A hard circuit breaker,
 enforced inside the settlement proof, caps how far the clearing price may move

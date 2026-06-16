@@ -6,7 +6,7 @@ description: Read the on-chain note tree - the current root, an inclusion proof 
 
 # Merkle Proofs
 
-:::info[TL;DR]
+:::info
 The note commitments live in an on-chain incremental Merkle tree. These endpoints
 expose the engine's mirror of it: the current **root**, an **inclusion proof** for
 a note you own, and a paginated **leaf** read. You use the inclusion proof to

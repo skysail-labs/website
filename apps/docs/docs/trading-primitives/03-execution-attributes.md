@@ -6,7 +6,7 @@ description: Constrain how an order fills - all-or-none and minimum fill size - 
 
 # Execution Attributes
 
-:::info[TL;DR]
+:::info
 Execution attributes constrain *how* an order fills, on top of its type. Darknyx
 supports a **minimum fill size** - reject any execution smaller than a threshold - and **all-or-none**, which is the special case where the threshold equals the full
 order amount.
@@ -37,7 +37,7 @@ waiting, batch after batch, until one batch can fill it whole at its price.
 amount = 100, min_fill_size = 100   →  fills 100 or nothing, but keeps resting
 ```
 
-This is the resting cousin of [FOK](./order-types#fok--fill-or-kill): FOK demands whole
+This is the resting cousin of [FOK](./order-types#fok---fill-or-kill): FOK demands whole
 execution *immediately* and is dropped otherwise; an AON limit demands whole
 execution but is patient.
 

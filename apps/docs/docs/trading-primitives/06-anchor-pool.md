@@ -6,7 +6,7 @@ description: How a partially-filled order keeps working - the pre-supplied conti
 
 # The Anchor Pool
 
-:::info[TL;DR]
+:::info
 A partial fill consumes your order's collateral note, so the unfilled remainder
 needs a *new* note to keep resting. Rather than ask you for one on every fill, you
 pre-supply a small pool of **continuation anchors** - secret material for future

@@ -6,7 +6,7 @@ description: The matching engine runs inside a single attested Intel TDX confide
 
 # Confidential VM Architecture
 
-:::info[TL;DR]
+:::info
 Darknyx matches orders inside a single **Intel TDX Confidential VM** - a hardware-
 isolated enclave whose memory the operator cannot read and whose signing keys are
 **derived from its measured image**. Change the code and the keys no longer

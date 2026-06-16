@@ -6,7 +6,7 @@ description: The Darknyx API surface at a glance - the two-layer auth model, the
 
 # Programmatic Access
 
-:::info[TL;DR]
+:::info
 Darknyx exposes a **REST + WebSocket API** served directly by the enclave over
 RA-TLS. Authentication is **two layers**: an account **bearer token** (who is
 allowed to talk to the venue) plus a per-order **trading-key signature** (who

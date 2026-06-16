@@ -6,7 +6,7 @@ description: A worked TypeScript client - authenticate, read markets, build and 
 
 # TypeScript Client
 
-:::info[TL;DR]
+:::info
 A reference client that ties the pieces together: get a bearer token, read
 markets and server time, use the SDK's **order builders** to assemble a signed
 order from a deposited note, submit it, and subscribe to the order and fill

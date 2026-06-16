@@ -6,7 +6,7 @@ description: How Darknyx signals failure - HTTP status codes and the conditions 
 
 # Error Codes
 
-:::info[TL;DR]
+:::info
 REST errors are signaled by HTTP **status code** plus a human-readable message
 describing the specific reason. WebSocket frame errors carry the same
 HTTP-equivalent status as a `code` field. Branch on the status; log the message.

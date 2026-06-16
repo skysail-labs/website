@@ -6,7 +6,7 @@ description: How long an order stays working - GTC, GTT, IOC, and FOK - expresse
 
 # Time in Force
 
-:::info[TL;DR]
+:::info
 Time-in-force on Darknyx is expressed two ways: the **order type** decides whether an
 order may rest (limit rests; IOC and FOK do not), and **`expiry_slot`** decides
 how long a resting order lives. Order expiry is measured in **Solana slots**, not

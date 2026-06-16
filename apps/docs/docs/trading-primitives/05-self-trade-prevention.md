@@ -6,7 +6,7 @@ description: Two orders signed by the same trading key never match each other - 
 
 # Self-Trade Prevention
 
-:::info[TL;DR]
+:::info
 Orders signed by the **same trading key** never match each other. If your bid and
 your ask would cross in a batch, the engine skips that self-pair and matches each
 against other traders instead. This prevents accidental wash trading.

@@ -6,7 +6,7 @@ description: List the markets Darknyx supports and read a single market's parame
 
 # Get Instruments
 
-:::info[TL;DR]
+:::info
 Instruments describe the markets you can trade: the base and quote token mints,
 the price increment, the minimum order size, and the **oracle** that anchors the
 clearing price. Both endpoints are public.
