@@ -227,17 +227,14 @@ export default function Home() {
             }}
           >
             {/* Badge */}
-            <div className="rise d1" style={{ position: "relative", zIndex: 10, marginBottom: "1rem" }}>
-              <svg className="mark glow" style={{ marginBottom: "0.75rem", width: 28, height: 28 }} viewBox="0 0 120 120">
-                <use href="#nyx-mark"/>
-              </svg>
-              <p className="kicker" style={{ marginTop: 0 }}>
-                <span className="dot"></span>Darkpool protocol · Solana
-              </p>
+            <div className="rise d1" style={{ position: "relative", zIndex: 10, marginBottom: "2rem" }}>
+              <div style={{ display: "inline-block", border: "1px solid var(--cobalt-line)", color: "var(--cobalt)", padding: "0.25rem 0.875rem", fontFamily: "var(--mono)", fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.2em", fontWeight: 600, background: "rgba(197,160,89,0.05)" }}>
+                Darkpool protocol · Solana
+              </div>
             </div>
 
             {/* Headline */}
-            <div style={{ position: "relative", zIndex: 10, margin: "0.75rem 0" }}>
+            <div style={{ position: "relative", zIndex: 10, flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", margin: "1.5rem 0" }}>
               <h1 className="display" style={{ marginTop: 0, fontSize: "clamp(32px, 4.2vw, 62px)", whiteSpace: "nowrap" }}>
                 <span style={{ display: "block", color: "var(--cobalt)" }}>Settle in the <span className="tag-lo">dark</span>.</span>
                 <span style={{ display: "block", color: "var(--cobalt-bright)" }}>Prove in the <span className="tag-hi">light</span>.</span>
@@ -251,18 +248,23 @@ export default function Home() {
                 position: "relative",
                 zIndex: 10,
                 display: "flex",
-                flexWrap: "wrap",
+                flexWrap: "nowrap",
                 justifyContent: "space-between",
                 alignItems: "flex-end",
-                gap: "1.4rem",
+                gap: "2rem",
                 borderTop: "1px solid rgba(255,255,255,0.08)",
-                paddingTop: "1rem",
-                marginTop: "0.75rem",
+                paddingTop: "2rem",
+                marginTop: "1rem",
               }}
             >
-              <p className="lede" style={{ margin: 0, maxWidth: "28rem", fontSize: "12px", lineHeight: 1.7 }}>
-                A privacy-preserving order book where intent is hidden inside attested hardware and every fill settles trustlessly on Solana — verified, never trusted.
-              </p>
+              <div style={{ maxWidth: "28rem" }}>
+                <p style={{ margin: "0 0 0.75rem", fontSize: "13px", color: "var(--chalk-dim)", lineHeight: 1.7 }}>
+                  A privacy-preserving order book where intent is hidden inside attested hardware and every fill settles trustlessly on Solana — verified, never trusted.
+                </p>
+                <p style={{ margin: 0, fontSize: "11px", color: "var(--chalk-mute)", lineHeight: 1.75 }}>
+                  Built for active traders, market makers, and institutions that need discretion without giving up custody or auditability.
+                </p>
+              </div>
               <div className="hero-actions">
                 <Link className="btn" href="/docs">
                   How Darknyx works <span className="arr">→</span>
@@ -283,7 +285,7 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="section-divider">
+      <div className="section-divider" style={{ background: "var(--ink)" }}>
         <div className="line"></div>
         <svg className="divider-mark" viewBox="0 0 120 120">
           <use href="#nyx-mark"/>
@@ -299,8 +301,8 @@ export default function Home() {
         <div className="layout-node right"></div>
         <div className="wrap">
           <div className="section-head">
-            <p className="eyebrow">The third option</p>
-            <h2 className="display h-lg" style={{ marginTop: "18px" }}>
+            <span className="badge">The third option</span>
+            <h2 className="display h-lg" style={{ marginTop: "16px", fontWeight: 300, fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif", letterSpacing: "-0.01em" }}>
               A dark pool you don't
               <br />
               have to trust.
@@ -368,8 +370,8 @@ export default function Home() {
 
         <div className="wrap">
           <div className="section-head">
-            <p className="eyebrow">System design</p>
-            <h2 className="display h-lg" style={{ marginTop: "18px" }}>
+            <span className="badge">System design</span>
+            <h2 className="display h-lg" style={{ marginTop: "16px", fontWeight: 300, fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif", letterSpacing: "-0.01em" }}>
               Three layers,
               <br />
               one chain of trust.
@@ -503,8 +505,8 @@ export default function Home() {
         <div className="wrap how-container">
           <div className="how-left">
             <div className="section-head">
-              <p className="eyebrow">How it works</p>
-              <h2 className="display h-lg" style={{ marginTop: "18px" }}>
+              <span className="badge">How it works</span>
+              <h2 className="display h-lg" style={{ marginTop: "16px", fontWeight: 300, fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif", letterSpacing: "-0.01em" }}>
                 From private intent
                 <br />
                 to verified settlement.
@@ -564,8 +566,8 @@ export default function Home() {
 
         <div className="wrap">
           <div className="section-head">
-            <p className="eyebrow">Comparison</p>
-            <h2 className="display h-lg" style={{ marginTop: "18px" }}>
+            <span className="badge">Comparison</span>
+            <h2 className="display h-lg" style={{ marginTop: "16px", fontWeight: 300, fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif", letterSpacing: "-0.01em" }}>
               How Darknyx compares
             </h2>
             <p className="lede">
@@ -650,13 +652,7 @@ export default function Home() {
           <svg className="mark" viewBox="0 0 120 120">
             <use href="#nyx-mark"/>
           </svg>
-          <p className="eyebrow">Privacy without sacrificing auditability</p>
-          <h2 className="display h-md" style={{ marginTop: "16px", maxWidth: "18ch", marginLeft: "auto", marginRight: "auto" }}>
-            Privacy Without Sacrificing Auditability.
-          </h2>
-          {/* <p className="lede">
-            The docs lay out the trust model, the settlement pipeline, the cryptography, and honest comparisons against every comparable venue.
-          </p> */}
+          <p className="eyebrow" style={{ fontSize: "16px", letterSpacing: "0.2em" }}>Privacy without sacrificing auditability</p>
           <div className="footer-cta">
             <Link className="btn" href="/docs">
               Read the docs <span className="arr">→</span>
@@ -664,7 +660,9 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="footer-foot">
+      </footer>
+
+      <div className="footer-foot">
           <div className="row">
             <div className="lock">
               <svg className="mark" viewBox="0 0 120 120">
@@ -685,7 +683,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </footer>
     </>
   );
 }
