@@ -204,7 +204,7 @@ export default function Home() {
         <div className="layout-node right" style={{ top: "30px" }}></div>
         <div className="hero-bg">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/final.png" alt="Ancient Greek city in white line-art under a starfield" />
+          <img src="/assets/v2.png" alt="Ancient Greek city in white line-art under a starfield" />
         </div>
         <div className="hero-scrim"></div>
         <div className="hero-glow"></div>
