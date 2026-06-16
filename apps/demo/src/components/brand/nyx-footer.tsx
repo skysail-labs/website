@@ -28,7 +28,7 @@ export function NyxFooter({ tone = "ink" }: { tone?: "ink" | "chalk" }) {
           </a>
           <a
             className="hover:text-nyx-accent"
-            href="https://x.com/DarknyxProtocol/"
+            href="https://x.com/DarkNyxProtocol"
             target="_blank"
             rel="noreferrer"
           >

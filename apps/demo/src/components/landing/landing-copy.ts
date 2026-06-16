@@ -50,7 +50,7 @@ export const institutionalBenefits = {
   eyebrow: "Why institutions care",
   title: "Dark pools protect execution quality when the order itself is valuable information.",
   lede:
-    "Large traders are not just buying or selling assets — they are managing information leakage, slippage, signaling risk, and execution certainty.",
+    "Large traders are not just buying or selling assets - they are managing information leakage, slippage, signaling risk, and execution certainty.",
   cards: [
     {
       title: "Lower market impact",

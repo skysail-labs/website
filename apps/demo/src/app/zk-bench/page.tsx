@@ -8,7 +8,7 @@ import { NyxNav } from "@/components/brand/nyx-nav";
 import { NyxFooter } from "@/components/brand/nyx-footer";
 
 // ---------------------------------------------------------------------------
-// Poseidon helpers — built from bundled circomlibjs, identical to SDK
+// Poseidon helpers - built from bundled circomlibjs, identical to SDK
 // ---------------------------------------------------------------------------
 type PoseidonFn = ((inputs: bigint[]) => Uint8Array) & { F: { toObject: (x: Uint8Array) => bigint } };
 let poseidonCache: PoseidonFn | null = null;
@@ -32,7 +32,7 @@ function randFr(): bigint {
   return n % BN254_R;
 }
 
-// Split a 32-byte pubkey into [lo_u128, hi_u128] — mirrors pubkeyToFrPair in SDK
+// Split a 32-byte pubkey into [lo_u128, hi_u128] - mirrors pubkeyToFrPair in SDK
 function pubkeyToFrPair(pk: Uint8Array): [bigint, bigint] {
   let lo = 0n, hi = 0n;
   for (let i = 0; i < 16; i++)  hi = (hi << 8n) | BigInt(pk[i]);
@@ -275,7 +275,7 @@ export default function ZkBenchPage() {
       const inputs = await buildInputs(addLog);
 
       let db: IDBDatabase | null = null;
-      try { db = await openArtifactDb(); } catch { addLog("IndexedDB unavailable — falling back to network only"); }
+      try { db = await openArtifactDb(); } catch { addLog("IndexedDB unavailable - falling back to network only"); }
 
       addLog("Fetching circuit artifacts in parallel (IDB → network)...");
 

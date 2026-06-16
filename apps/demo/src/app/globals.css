@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./site.css";
 
 /* ---------------------------------------------------------------------------
  * Darknyx design tokens (mirrors apps/demo/design-system/tokens/tokens.css).
@@ -6,17 +7,22 @@
  * ------------------------------------------------------------------------- */
 :root {
   /* Color */
-  --nyx-ink: #0a0a0d;
-  --nyx-chalk: #f5f3ee;
+  --nyx-ink: #14121d;
+  --nyx-chalk: #f3effc;
   --nyx-slate: #6b6b74;
   --nyx-fog: #aeacb0;
-  --nyx-graphite: #1a1a20;
-  --nyx-graphite-2: #14141a;
-  --nyx-accent: oklch(0.62 0.14 260);
-  --nyx-accent-soft: oklch(0.62 0.14 260 / 0.18);
+  --nyx-graphite: #21173d;
+  --nyx-graphite-2: #1b1233;
+  --nyx-accent: #c5a059;
+  --nyx-accent-soft: rgba(197, 160, 89, 0.12);
   --nyx-signal-green: #5fb85f;
   --nyx-signal-amber: #d9a441;
   --nyx-signal-red: #c84545;
+
+  /* Custom palette overrides requested by user */
+  --color-malachite: #14121d;
+  --color-orchid: #a37482;
+  --color-faint-purple: #5e4b6c;
 
   /* Type */
   --nyx-font-display: var(--font-space-grotesk), 'Inter', system-ui, sans-serif;
@@ -70,7 +76,7 @@
   --nyx-ease-exit: cubic-bezier(0.4, 0, 1, 1);
 }
 
-/* Tailwind v4 design tokens — wires our css variables into utility classes */
+/* Tailwind v4 design tokens - wires our css variables into utility classes */
 @theme inline {
   --color-nyx-ink: var(--nyx-ink);
   --color-nyx-chalk: var(--nyx-chalk);
@@ -83,6 +89,10 @@
   --color-nyx-signal-amber: var(--nyx-signal-amber);
   --color-nyx-signal-red: var(--nyx-signal-red);
 
+  --color-malachite: var(--color-malachite);
+  --color-orchid: var(--color-orchid);
+  --color-faint-purple: var(--color-faint-purple);
+
   --font-display: var(--nyx-font-display);
   --font-mono: var(--nyx-font-mono);
   --font-sans: var(--nyx-font-body);
@@ -94,7 +104,7 @@ html, body { margin: 0; padding: 0; overflow-x: hidden; }
 *::-webkit-scrollbar { display: none !important; width: 0 !important; }
 
 html {
-  background: #050608;
+  background: var(--nyx-ink);
   color: var(--nyx-chalk);
   font-family: var(--nyx-font-body);
   font-feature-settings: 'ss01';
@@ -103,14 +113,14 @@ html {
 }
 
 body {
-  background: #050608;
+  background: var(--nyx-ink);
   color: var(--nyx-chalk);
   font-family: var(--nyx-font-body);
   font-size: var(--nyx-fs-md);
   line-height: 1.55;
 }
 
-/* Gate-style vertical pixel grid — used on landing + architecture pages */
+/* Gate-style vertical pixel grid - used on landing + architecture pages */
 .nyx-pixel-grid {
   background-image: repeating-linear-gradient(
     to right,
@@ -121,14 +131,14 @@ body {
   );
 }
 
-/* Light "chalk" surface used by /dapp — opt-in via `data-theme="chalk"` on a wrapper. */
+/* Light "chalk" surface used by /dapp - opt-in via `data-theme="chalk"` on a wrapper. */
 [data-theme="chalk"] {
   background: var(--nyx-chalk);
   color: var(--nyx-ink);
 }
 
 /* ---------------------------------------------------------------------------
- * Motion primitives — `rise` (entrance) and `orbit` (loading), straight from
+ * Motion primitives - `rise` (entrance) and `orbit` (loading), straight from
  * design-system/brand-guidelines.html.
  * ------------------------------------------------------------------------- */
 @keyframes nyx-rise {
@@ -214,12 +224,15 @@ body {
   line-height: 1.75;
 }
 
-.docs-light,
 .landing-light,
-.docs-light .font-sans,
-.landing-light .font-sans,
-.docs-light .nyx-doc-prose {
+.landing-light .font-sans {
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.docs-light,
+.docs-light .font-sans,
+.docs-light .nyx-doc-prose {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
 #docs-root.docs-light {
@@ -233,7 +246,7 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
- * Docs dark mode — toggled via .docs-dark on #docs-root
+ * Docs dark mode - toggled via .docs-dark on #docs-root
  * Nav + footer dark overrides (both use tone="chalk" inline styles in docs)
  * ------------------------------------------------------------------------- */
 .docs-dark header:not(.nyx-doc-article-header) {
@@ -268,7 +281,7 @@ body {
   color: var(--nyx-fog) !important;
 }
 .docs-dark {
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   background: #0d0e12;
   color: rgba(245, 243, 238, 0.9);
 }
@@ -383,35 +396,60 @@ body {
 
 /* Code block dark overrides */
 .docs-dark .nyx-doc-code-block {
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.06);
   background: rgba(10, 11, 16, 0.95);
-  box-shadow: none;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  transition: border-color var(--nyx-dur-fast) var(--nyx-ease), box-shadow var(--nyx-dur-fast) var(--nyx-ease);
+}
+.docs-dark .nyx-doc-code-block:hover {
+  border-color: oklch(0.62 0.14 260 / 0.4);
+  box-shadow: 0 8px 40px oklch(0.62 0.14 260 / 0.15);
 }
 .docs-dark .nyx-doc-code-label {
-  border-bottom-color: rgba(255, 255, 255, 0.08);
+  border-bottom-color: rgba(255, 255, 255, 0.06);
   background: rgba(255, 255, 255, 0.04);
   color: rgba(174, 172, 176, 0.7);
 }
-.docs-dark .nyx-doc-code-block pre,
+.docs-dark .nyx-doc-code-block pre {
+  background: rgba(10, 11, 16, 0.95);
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+}
 .docs-dark .nyx-doc-prose pre {
   background: rgba(10, 11, 16, 0.95);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 .docs-dark .nyx-doc-code-block pre code,
 .docs-dark .nyx-doc-prose pre code {
   color: rgba(214, 211, 208, 0.9);
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 .docs-dark .nyx-doc-code-block .hljs {
   color: rgba(214, 211, 208, 0.9);
 }
 .docs-dark .nyx-doc-code-block .hljs-keyword,
 .docs-dark .nyx-doc-code-block .hljs-selector-tag,
-.docs-dark .nyx-doc-code-block .hljs-literal,
 .docs-dark .nyx-doc-code-block .hljs-title {
-  color: oklch(0.72 0.14 260);
+  color: #60a5fa;
 }
-.docs-dark .nyx-doc-code-block .hljs-string,
+.docs-dark .nyx-doc-code-block .hljs-literal {
+  color: #f472b6;
+}
 .docs-dark .nyx-doc-code-block .hljs-attr {
-  color: #7dd3a8;
+  color: #a78bfa;
+  font-weight: 500;
+}
+.docs-dark .nyx-doc-code-block .hljs-string {
+  color: #34d399;
 }
 .docs-dark .nyx-doc-code-block .hljs-number,
 .docs-dark .nyx-doc-code-block .hljs-symbol,
@@ -463,7 +501,7 @@ body {
 }
 .nyx-doc-sidebar-title {
   color: rgb(41, 37, 36);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   text-decoration: none;
 }
@@ -476,7 +514,7 @@ body {
   border: 1px solid transparent;
   padding: 8px 10px;
   color: rgb(87, 83, 78);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.45;
   text-decoration: none;
   transition: all var(--nyx-dur-fast) var(--nyx-ease-standard);
@@ -504,7 +542,7 @@ body {
   background: white;
   padding: 8px 10px;
   color: rgb(87, 83, 78);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   text-decoration: none;
 }
@@ -533,7 +571,7 @@ body {
   background: oklch(0.62 0.14 260 / 0.1);
   padding: 4px 10px;
   color: var(--nyx-accent);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -566,7 +604,7 @@ body {
   border-radius: 6px;
   padding: 4px 8px;
   color: rgb(87, 83, 78);
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.35;
   text-decoration: none;
 }
@@ -584,7 +622,7 @@ body {
 
 .nyx-doc-prose {
   max-width: 780px;
-  font-family: var(--nyx-font-body);
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   color: rgb(41, 37, 36);
 }
 .nyx-doc-prose :target {
@@ -594,8 +632,8 @@ body {
 .nyx-doc-prose h2 {
   scroll-margin-top: 96px;
   margin-top: 52px;
-  font-family: var(--nyx-font-body);
-  font-size: 28px;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 30px;
   font-weight: 600;
   line-height: 1.25;
   color: rgb(28, 25, 23);
@@ -603,8 +641,8 @@ body {
 .nyx-doc-prose h3 {
   scroll-margin-top: 96px;
   margin-top: 34px;
-  font-family: var(--nyx-font-body);
-  font-size: 19px;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 21px;
   font-weight: 600;
   line-height: 1.45;
   color: rgb(28, 25, 23);
@@ -612,7 +650,7 @@ body {
 .nyx-doc-prose p,
 .nyx-doc-prose li {
   margin-top: 14px;
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.82;
   color: rgb(68, 64, 60);
 }
@@ -635,39 +673,57 @@ body {
   background: rgb(250, 250, 249);
   padding: 1px 5px;
   font-family: var(--nyx-font-mono);
-  font-size: 12px;
+  font-size: 14px;
   color: rgb(28, 25, 23);
 }
 .nyx-doc-code-block {
   margin-top: 20px;
   overflow: hidden;
   border: 1px solid rgb(231, 229, 228);
-  border-radius: 8px;
+  border-radius: 12px;
   background: white;
-  box-shadow: 0 1px 2px rgba(28, 25, 23, 0.04);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  transition: border-color var(--nyx-dur-fast) var(--nyx-ease), box-shadow var(--nyx-dur-fast) var(--nyx-ease);
+}
+.nyx-doc-code-block:hover {
+  border-color: oklch(0.62 0.14 260 / 0.3);
+  box-shadow: 0 8px 30px oklch(0.62 0.14 260 / 0.08);
 }
 .nyx-doc-code-label {
   border-bottom: 1px solid rgb(231, 229, 228);
   background: rgb(250, 250, 249);
   padding: 8px 14px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: rgb(87, 83, 78);
 }
-.nyx-doc-code-block pre,
+.nyx-doc-code-block pre {
+  overflow-x: auto;
+  padding: 18px 22px;
+  background: rgb(255, 255, 255);
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+}
 .nyx-doc-prose pre {
   overflow-x: auto;
   padding: 18px;
   background: rgb(255, 255, 255);
+  border-radius: 12px;
+  border: 1px solid rgb(231, 229, 228);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 .nyx-doc-code-block pre code,
 .nyx-doc-prose pre code {
-  border: 0;
-  background: transparent;
-  padding: 0;
-  font-size: 12px;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-size: 14px;
   line-height: 1.7;
   color: rgb(41, 37, 36);
 }
@@ -677,12 +733,17 @@ body {
 }
 .nyx-doc-code-block .hljs-keyword,
 .nyx-doc-code-block .hljs-selector-tag,
-.nyx-doc-code-block .hljs-literal,
 .nyx-doc-code-block .hljs-title {
-  color: oklch(0.5 0.15 262);
+  color: rgb(29, 78, 216);
 }
-.nyx-doc-code-block .hljs-string,
+.nyx-doc-code-block .hljs-literal {
+  color: rgb(190, 24, 74);
+}
 .nyx-doc-code-block .hljs-attr {
+  color: #7c3aed;
+  font-weight: 500;
+}
+.nyx-doc-code-block .hljs-string {
   color: rgb(21, 128, 61);
 }
 .nyx-doc-code-block .hljs-number,
@@ -703,7 +764,7 @@ body {
   border-left: 1px solid var(--nyx-accent);
   padding: 14px 18px;
   background: oklch(0.62 0.14 260 / 0.08);
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.8;
   color: rgb(68, 64, 60);
 }
@@ -719,7 +780,7 @@ body {
   width: 100%;
   min-width: 620px;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 16px;
 }
 .nyx-doc-prose th,
 .nyx-doc-prose td {
@@ -764,7 +825,7 @@ body {
 }
 .nyx-doc-pipeline-chip {
   padding: 9px 12px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
 }
 .nyx-doc-pipeline-arrow,
@@ -782,12 +843,12 @@ body {
   padding: 16px;
 }
 .nyx-doc-flow-title {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
 }
 .nyx-doc-flow-line {
   margin-top: 6px;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.55;
   color: rgb(87, 83, 78);
 }
@@ -806,7 +867,7 @@ body {
   border-left: 1px solid rgb(231, 229, 228);
   padding-left: 12px;
   color: rgb(68, 64, 60);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.45;
 }
 .nyx-doc-tree-dot {
@@ -834,6 +895,20 @@ body {
   display: block;
   margin: 0 auto;
 }
+
+/* Align text rendering properties to guarantee no clipping or wrapping mismatches */
+.nyx-doc-mermaid svg text,
+.nyx-doc-mermaid svg foreignObject,
+.nyx-doc-mermaid svg foreignObject *,
+.nyx-doc-mermaid svg span,
+.nyx-doc-mermaid svg div {
+  font-family: var(--font-space-grotesk), 'Inter', system-ui, -apple-system, sans-serif !important;
+  line-height: 1.25 !important;
+  font-size: 13.5px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 .nyx-doc-mermaid :is(.node rect, .node polygon, .node circle, .node path) {
   stroke: rgb(214, 211, 209) !important;
 }
@@ -841,10 +916,18 @@ body {
   color: rgb(41, 37, 36) !important;
 }
 
+/* Dark mode overrides */
+.docs-dark .nyx-doc-mermaid :is(.node rect, .node polygon, .node circle, .node path) {
+  stroke: rgba(243, 239, 252, 0.2) !important;
+}
+.docs-dark .nyx-doc-mermaid .node .label {
+  color: var(--nyx-chalk) !important;
+}
+
 /* ---------------------------------------------------------------------------
  * Backdrops
- *   .nyx-grid    — institutional dotted grid (used on landing background)
- *   .nyx-aurora  — soft cobalt glow behind hero
+ *   .nyx-grid - institutional dotted grid (used on landing background)
+ *   .nyx-aurora - soft cobalt glow behind hero
  * ------------------------------------------------------------------------- */
 .nyx-grid {
   background-image:
@@ -873,7 +956,7 @@ body {
   z-index: 0;
 }
 
-/* horizon line — section divider that echoes the brand mark */
+/* horizon line - section divider that echoes the brand mark */
 .nyx-horizon {
   position: relative;
   height: 1px;
@@ -900,7 +983,7 @@ body {
   animation: nyx-scanline 2.4s linear infinite;
 }
 
-/* Wallet adapter button — override purple with official Cobalt accent */
+/* Wallet adapter button - override purple with official Cobalt accent */
 button.wallet-adapter-button,
 button.wallet-adapter-button-trigger {
   background: var(--nyx-accent-soft) !important;
@@ -938,7 +1021,7 @@ button.wallet-adapter-button-trigger .wallet-adapter-button-start-icon {
   to { stroke-dashoffset: -100; }
 }
 
-/* Reduce motion — respect system preference */
+/* Reduce motion - respect system preference */
 @media (prefers-reduced-motion: reduce) {
   .nyx-rise,
   .nyx-pulse,
@@ -1019,4 +1102,154 @@ button.wallet-adapter-button-trigger .wallet-adapter-button-start-icon {
 }
 [style*="fill: rgba(217, 104, 32"], [style*="fill: rgba(217,104,32"] {
   fill: var(--nyx-accent-soft) !important;
+}
+
+/* Category cards rounded corners */
+.card,
+.theme-doc-card,
+[class*='docCard_'] {
+  border-radius: 12px !important;
+}
+
+/* Admonitions rounded corners and custom layout matching screenshots */
+.admonition,
+.alert {
+  border-radius: 12px !important;
+  border: 1px solid transparent !important;
+  border-left-width: 1px !important; /* ensure left side has 1px border like all other sides */
+  padding: 16px 20px;
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 24px 0;
+  box-shadow: none;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+}
+
+/* Hide the heading text (like "info" or custom text) while keeping the container as the icon wrapper */
+.admonition-heading,
+[class*='admonitionHeading_'] {
+  font-size: 0 !important;
+  color: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  width: 12px !important; /* matches icon width */
+  height: 27px !important; /* vertically centers icon with first line of content (16px * 1.7 = 27.2px line-height) */
+}
+
+/* Target both Docusaurus and custom icon structures to set small icon dimensions */
+.admonition-heading span,
+.admonition-heading svg,
+[class*='admonitionHeading_'] span,
+[class*='admonitionHeading_'] svg,
+[class*='admonitionIcon_'] svg {
+  font-size: 12px !important;
+  width: 12px !important;
+  height: 12px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+}
+
+.admonition-content,
+[class*='admonitionContent_'] {
+  flex: 1 !important;
+}
+
+.admonition-content p:first-child,
+[class*='admonitionContent_'] p:first-child {
+  margin-top: 0 !important;
+}
+
+.admonition-content p:last-child,
+[class*='admonitionContent_'] p:last-child {
+  margin-bottom: 0 !important;
+}
+
+.admonition code,
+.alert code {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: none !important;
+  padding: 2px 6px !important;
+  border-radius: 6px !important;
+}
+
+/* Dark mode alerts */
+[data-theme="dark"] .alert--info,
+[data-theme="dark"] .alert--secondary {
+  background: rgba(12, 28, 56, 0.45) !important;
+  border: 1px solid rgba(59, 130, 246, 0.35) !important;
+  color: rgba(224, 236, 255, 0.9) !important;
+}
+[data-theme="dark"] .alert--info a,
+[data-theme="dark"] .alert--secondary a {
+  color: #60a5fa !important;
+}
+[data-theme="dark"] .alert--info code,
+[data-theme="dark"] .alert--secondary code {
+  color: #93c5fd !important;
+}
+
+[data-theme="dark"] .alert--success {
+  background: rgba(10, 38, 20, 0.45) !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  color: rgba(167, 243, 208, 0.9) !important;
+}
+[data-theme="dark"] .alert--success a {
+  color: #34d399 !important;
+}
+[data-theme="dark"] .alert--success code {
+  color: #6ee7b7 !important;
+}
+
+[data-theme="dark"] .alert--warning,
+[data-theme="dark"] .alert--danger {
+  background: rgba(38, 22, 5, 0.45) !important;
+  border: 1px solid rgba(217, 119, 6, 0.35) !important;
+  color: rgba(243, 192, 102, 0.9) !important;
+}
+[data-theme="dark"] .alert--warning a,
+[data-theme="dark"] .alert--danger a {
+  color: #fbbf24 !important;
+}
+[data-theme="dark"] .alert--warning code,
+[data-theme="dark"] .alert--danger code {
+  color: #fcd34d !important;
+}
+
+/* Light mode alerts */
+[data-theme="light"] .alert--info,
+[data-theme="light"] .alert--secondary {
+  background: rgba(12, 28, 56, 0.05) !important;
+  border: 1px solid rgba(59, 130, 246, 0.2) !important;
+  color: rgba(10, 25, 47, 0.9) !important;
+}
+[data-theme="light"] .alert--info code,
+[data-theme="light"] .alert--secondary code {
+  color: #1e3a8a !important;
+}
+
+[data-theme="light"] .alert--success {
+  background: rgba(10, 38, 20, 0.05) !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+  color: rgba(6, 78, 59, 0.9) !important;
+}
+[data-theme="light"] .alert--success code {
+  color: #065f46 !important;
+}
+
+[data-theme="light"] .alert--warning,
+[data-theme="light"] .alert--danger {
+  background: rgba(38, 22, 5, 0.05) !important;
+  border: 1px solid rgba(217, 119, 6, 0.2) !important;
+  color: rgba(120, 53, 4, 0.9) !important;
+}
+[data-theme="light"] .alert--warning code,
+[data-theme="light"] .alert--danger code {
+  color: #92400e !important;
 }

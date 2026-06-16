@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Darknyx - Settle in the dark. Prove in the light.</title>
+<meta name="description" content="A privacy-preserving darkpool CLOB on Solana. Hidden orders, attested matching, trustless on-chain settlement.">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- ===================== TICKER BANNER ===================== -->
+<div class="ticker-banner">
+  <div class="ticker-track">
+    <div class="ticker-item"><span class="pdot"></span>DARKNYX <b>TESTNET</b><span style="margin: 0 10px; opacity: 0.3">•</span>SOLANA <b>CUSTODY</b><span style="margin: 0 10px; opacity: 0.3">•</span>INTEL TDX <b>CONFIDENTIAL VMS</b><span style="margin: 0 10px; opacity: 0.3">•</span>ZERO-KNOWLEDGE <b>SETTLEMENT</b><span style="margin: 0 10px; opacity: 0.3">•</span>PRIVATE <b>ORDER BOOK</b></div>
+    <div class="ticker-item"><span class="pdot"></span>DARKNYX <b>TESTNET</b><span style="margin: 0 10px; opacity: 0.3">•</span>SOLANA <b>CUSTODY</b><span style="margin: 0 10px; opacity: 0.3">•</span>INTEL TDX <b>CONFIDENTIAL VMS</b><span style="margin: 0 10px; opacity: 0.3">•</span>ZERO-KNOWLEDGE <b>SETTLEMENT</b><span style="margin: 0 10px; opacity: 0.3">•</span>PRIVATE <b>ORDER BOOK</b></div>
+    <div class="ticker-item"><span class="pdot"></span>DARKNYX <b>TESTNET</b><span style="margin: 0 10px; opacity: 0.3">•</span>SOLANA <b>CUSTODY</b><span style="margin: 0 10px; opacity: 0.3">•</span>INTEL TDX <b>CONFIDENTIAL VMS</b><span style="margin: 0 10px; opacity: 0.3">•</span>ZERO-KNOWLEDGE <b>SETTLEMENT</b><span style="margin: 0 10px; opacity: 0.3">•</span>PRIVATE <b>ORDER BOOK</b></div>
+    <div class="ticker-item"><span class="pdot"></span>DARKNYX <b>TESTNET</b><span style="margin: 0 10px; opacity: 0.3">•</span>SOLANA <b>CUSTODY</b><span style="margin: 0 10px; opacity: 0.3">•</span>INTEL TDX <b>CONFIDENTIAL VMS</b><span style="margin: 0 10px; opacity: 0.3">•</span>ZERO-KNOWLEDGE <b>SETTLEMENT</b><span style="margin: 0 10px; opacity: 0.3">•</span>PRIVATE <b>ORDER BOOK</b></div>
+  </div>
+</div>
+
+<!-- ===== Greek scene line-art symbols (swap for commissioned art) ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="t-grand" viewBox="0 0 460 240">
+    <polyline points="60,72 230,30 400,72"/>
+    <line x1="56" y1="76" x2="404" y2="76"/><line x1="62" y1="84" x2="398" y2="84"/>
+    <line x1="84" y1="84" x2="84" y2="188"/><line x1="121" y1="84" x2="121" y2="188"/><line x1="157" y1="84" x2="157" y2="188"/>
+    <line x1="194" y1="84" x2="194" y2="188"/><line x1="230" y1="84" x2="230" y2="188"/><line x1="266" y1="84" x2="266" y2="188"/>
+    <line x1="303" y1="84" x2="303" y2="188"/><line x1="339" y1="84" x2="339" y2="188"/><line x1="376" y1="84" x2="376" y2="188"/>
+    <line x1="74" y1="188" x2="386" y2="188"/><line x1="66" y1="198" x2="394" y2="198"/><line x1="58" y1="208" x2="402" y2="208"/>
+    <line x1="0" y1="226" x2="460" y2="226"/>
+  </symbol>
+  <symbol id="t-skyline" viewBox="0 0 620 150">
+    <polyline points="40,70 95,48 150,70"/><line x1="36" y1="74" x2="154" y2="74"/>
+    <line x1="52" y1="74" x2="52" y2="118"/><line x1="72" y1="74" x2="72" y2="118"/><line x1="92" y1="74" x2="92" y2="118"/><line x1="112" y1="74" x2="112" y2="118"/><line x1="132" y1="74" x2="132" y2="118"/>
+    <line x1="34" y1="118" x2="156" y2="118"/>
+    <polyline points="185,80 230,62 275,80"/><line x1="182" y1="84" x2="278" y2="84"/>
+    <line x1="196" y1="84" x2="196" y2="118"/><line x1="216" y1="84" x2="216" y2="118"/><line x1="236" y1="84" x2="236" y2="118"/><line x1="256" y1="84" x2="256" y2="118"/>
+    <line x1="180" y1="118" x2="280" y2="118"/>
+    <polyline points="300,90 330,77 360,90"/><line x1="298" y1="93" x2="362" y2="93"/>
+    <line x1="310" y1="93" x2="310" y2="118"/><line x1="330" y1="93" x2="330" y2="118"/><line x1="350" y1="93" x2="350" y2="118"/>
+    <polyline points="392,93 416,81 440,93"/><line x1="390" y1="96" x2="442" y2="96"/>
+    <line x1="400" y1="96" x2="400" y2="118"/><line x1="420" y1="96" x2="420" y2="118"/>
+    <line x1="475" y1="100" x2="600" y2="100"/>
+    <line x1="475" y1="100" x2="475" y2="120"/><line x1="500" y1="100" x2="500" y2="120"/><line x1="525" y1="100" x2="525" y2="120"/><line x1="550" y1="100" x2="550" y2="120"/><line x1="575" y1="100" x2="575" y2="120"/><line x1="600" y1="100" x2="600" y2="120"/>
+    <path d="M475,108 A12 12 0 0 1 500,108"/><path d="M500,108 A12 12 0 0 1 525,108"/><path d="M525,108 A12 12 0 0 1 550,108"/><path d="M550,108 A12 12 0 0 1 575,108"/><path d="M575,108 A12 12 0 0 1 600,108"/>
+    <line x1="0" y1="120" x2="620" y2="120"/>
+  </symbol>
+  <symbol id="t-forum" viewBox="0 0 620 240">
+    <line x1="0" y1="150" x2="300" y2="150"/><line x1="0" y1="162" x2="286" y2="162"/>
+    <polyline points="60,70 150,44 240,70"/><line x1="56" y1="74" x2="244" y2="74"/><line x1="56" y1="82" x2="244" y2="82"/>
+    <line x1="72" y1="82" x2="72" y2="146"/><line x1="96" y1="82" x2="96" y2="146"/><line x1="120" y1="82" x2="120" y2="146"/><line x1="144" y1="82" x2="144" y2="146"/><line x1="168" y1="82" x2="168" y2="146"/><line x1="192" y1="82" x2="192" y2="146"/><line x1="216" y1="82" x2="216" y2="146"/>
+    <line x1="64" y1="146" x2="236" y2="146"/>
+    <line x1="175" y1="238" x2="430" y2="150"/><line x1="560" y1="238" x2="452" y2="150"/>
+    <line x1="300" y1="190" x2="492" y2="190"/><line x1="270" y1="214" x2="520" y2="214"/><line x1="240" y1="236" x2="548" y2="236"/>
+    <line x1="500" y1="118" x2="500" y2="150"/><line x1="494" y1="116" x2="506" y2="116"/><line x1="535" y1="124" x2="535" y2="150"/><line x1="529" y1="122" x2="541" y2="122"/>
+  </symbol>
+  <symbol id="nyx-mark" viewBox="0 0 120 120">
+    <clipPath id="hor-clip"><rect x="0" y="0" width="120" height="66"/></clipPath>
+    <circle cx="60" cy="60" r="36" fill="currentColor" clip-path="url(#hor-clip)"/>
+    <rect x="18" y="66" width="84" height="4" fill="currentColor"/>
+    <rect x="18" y="78" width="60" height="4" fill="currentColor" opacity="0.5"/>
+  </symbol>
+</svg>
+
+<!-- ===================== NAV ===================== -->
+<nav class="nav" id="nav">
+  <a class="lock" href="index.html"><svg class="mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg><b>darknyx</b></a>
+  <div class="links">
+    <a href="#third-option">Overview</a>
+    <a href="docs.html">Docs</a>
+  </div>
+  <div class="end">
+    <span class="btn ghost status"><span class="pdot"></span>Private beta soon</span>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="layout-line-left"></div>
+  <div class="layout-line-right"></div>
+  <div class="layout-node left" style="top: 30px"></div>
+  <div class="layout-node right" style="top: 30px"></div>
+  <div class="hero-bg"><img src="assets/v2.png" alt="Ancient Greek city in white line-art under a starfield"></div>
+  <div class="hero-scrim"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <!-- Brand Header -->
+      <div class="rise d1" style="margin-bottom: 12px;">
+        <div style="display: inline-flex; align-items: center; gap: 10px;">
+          <svg style="width: 60px; height: 60px; fill: var(--cobalt); transform: translateY(9px);" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg>
+          <b style="font-family: 'Space Grotesk', sans-serif; font-size: 40px; font-weight: 600; letter-spacing: -0.04em; color: var(--chalk);">darknyx</b>
+        </div>
+      </div>
+      <h1 class="display h-xl rise d2" style="margin-top:8px">
+        <span style="display: block; color: var(--chalk);">Settle in the <span class="tag-lo">dark</span></span>
+        <span style="display: block; color: var(--cobalt-bright);">Prove in the <span class="tag-hi">light</span></span>
+      </h1>
+      <p class="lede rise d3">A privacy-preserving order book where intent is hidden inside attested hardware and every fill settles trustlessly on Solana - verified, never trusted.</p>
+      <div class="hero-actions rise d4">
+        <a class="btn" href="docs.html">How Darknyx works <span class="arr">→</span></a>
+        <a class="btn ghost" href="#third-option">The idea</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-meta rise d5">
+    <!-- <div class="net">Network · <b>Solana</b><br>Matching · <b>Intel TDX</b><br>Status · <b>TDX rollout</b></div> -->
+  </div>
+</header>
+
+<div class="section-divider">
+  <div class="line"></div>
+  <svg class="divider-mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg>
+  <div class="line"></div>
+</div>
+
+<!-- ===================== SECTION 1 - THE THIRD OPTION ===================== -->
+<section class="section" id="third-option">
+  <div class="layout-line-left"></div>
+  <div class="layout-line-right"></div>
+  <div class="layout-node left"></div>
+  <div class="layout-node right"></div>
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">The third option</p>
+      <h2 class="display h-lg" style="margin-top:18px">A dark pool you don't<br>have to trust.</h2>
+      <p class="lede">Public order books leak every intention to bots and competitors. Off-chain dark pools take your custody. Darknyx is neither - orders meet inside an attested enclave the operator cannot read, and funds only ever move under a proof verified on Solana.</p>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="ix">01</div>
+        <h3>Orders stay dark<br>until they clear.</h3>
+        <p>Side, size, and limit price are visible only to the enclave - never in a mempool, log, or account an observer can read before settlement.</p>
+        <div class="rule"></div>
+      </div>
+      <div class="pillar">
+        <div class="ix">02</div>
+        <h3>Custody risk<br>is zero.</h3>
+        <p>Funds rest in a non-upgradeable Solana vault. The matcher can propose fills, but only your zero-knowledge proof can move assets out.</p>
+        <div class="rule"></div>
+      </div>
+      <div class="pillar">
+        <div class="ix">03</div>
+        <h3>Settlement can<br>be checked.</h3>
+        <p>Every fill lands on-chain bound to a validity proof and the attested TEE signature - auditable by anyone, without exposing your strategy.</p>
+        <div class="rule"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider">
+  <div class="line"></div>
+  <svg class="divider-mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg>
+  <div class="line"></div>
+</div>
+
+<!-- ===================== NEW: ARCHITECTURE SECTION ===================== -->
+<section class="section" id="architecture">
+  <div class="layout-line-left"></div>
+  <div class="layout-line-right"></div>
+  <div class="layout-node left"></div>
+  <div class="layout-node right"></div>
+
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">System design</p>
+      <h2 class="display h-lg" style="margin-top:18px">Three layers,<br>one chain of trust.</h2>
+      <p class="lede">Whatever needs to be trusted goes on-chain; whatever needs to be private goes in-TEE; whatever must remain a secret stays on your device.</p>
+    </div>
+
+    <div class="arch-grid">
+      <div class="arch-nav">
+        <button class="arch-tab-btn active" data-tab="custody">
+          <span class="num">LAYER 1</span>
+          <span class="title">Custody Layer</span>
+        </button>
+        <button class="arch-tab-btn" data-tab="matching">
+          <span class="num">LAYER 2</span>
+          <span class="title">Matching Layer</span>
+        </button>
+        <button class="arch-tab-btn" data-tab="client">
+          <span class="num">LAYER 3</span>
+          <span class="title">Client / SDK</span>
+        </button>
+      </div>
+
+      <div class="arch-pane">
+        <!-- Tab 1: Custody -->
+        <div class="arch-pane-content" id="arch-pane-custody">
+          <div>
+            <h3 class="arch-pane-title">On-Chain Solana Vault Program</h3>
+            <p class="arch-pane-desc">The foundation of the trust model. Records note commitments, spent-note nullifiers, and verifies match validity proofs. Since it is non-upgradeable, no operator or TEE can touch or exit your funds without a valid zero-knowledge spend proof signed by your key.</p>
+          </div>
+          <div class="arch-features">
+            <div class="arch-feature">
+              <span class="label">Location</span>
+              <span class="val">On-Chain (Solana RPC)</span>
+            </div>
+            <div class="arch-feature">
+              <span class="label">Responsibility</span>
+              <span class="val">Deposits, Withdrawals, Nullifiers</span>
+            </div>
+            <div class="arch-feature">
+              <span class="label">Trust Assumption</span>
+              <span class="val">Cryptography + L1 Validators</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Matching -->
+        <div class="arch-pane-content" id="arch-pane-matching" style="display:none">
+          <div>
+            <h3 class="arch-pane-title">In-TEE Private Matching Engine</h3>
+            <p class="arch-pane-desc">A single process running inside an attested Intel TDX confidential VM. It manages the private order intake, conducts uniform-clearing-price matching loops on fixed intervals to eliminate front-running, and submits signed batch settlements directly to Solana.</p>
+          </div>
+          <div class="arch-features">
+            <div class="arch-feature">
+              <span class="label">Location</span>
+              <span class="val">Intel TDX Enclave</span>
+            </div>
+            <div class="arch-feature">
+              <span class="label">Responsibility</span>
+              <span class="val">FBA Matching, Order Book Privacy</span>
+            </div>
+            <div class="arch-feature">
+              <span class="label">Trust Assumption</span>
+              <span class="val">Intel TDX Hardware Attestation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Client -->
+        <div class="arch-pane-content" id="arch-pane-client" style="display:none">
+          <div>
+            <h3 class="arch-pane-title">Local Cryptographic Client (SDK)</h3>
+            <p class="arch-pane-desc">Runs locally on the user's machine. It generates client-side zero-knowledge spend proofs for deposits and withdrawals, verifiably measures and checks TEE attestation before submitting orders, and signs order intents using a dedicated, isolated trading key.</p>
+          </div>
+          <div class="arch-features">
+            <div class="arch-feature">
+              <span class="label">Location</span>
+              <span class="val">User Device (Local JS/TS)</span>
+            </div>
+            <div class="arch-feature">
+              <span class="label">Responsibility</span>
+              <span class="val">ZK Proof Gen, TEE Measurement Check</span>
+            </div>
+            <div class="arch-feature">
+              <span class="label">Trust Assumption</span>
+              <span class="val">Zero (Self-generated proofs)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider">
+  <div class="line"></div>
+  <svg class="divider-mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg>
+  <div class="line"></div>
+</div>
+
+<section class="section" id="how">
+  <div class="layout-line-left"></div>
+  <div class="layout-line-right"></div>
+  <div class="layout-node left"></div>
+  <div class="layout-node right"></div>
+  <div class="wrap how-container">
+    <div class="how-left">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2 class="display h-lg" style="margin-top:18px">From private intent<br>to verified settlement.</h2>
+        <p class="lede">You sign custody actions with your wallet and orders with a separate trading key. The sensitive path stays private inside the enclave; the money path stays verifiable on-chain.</p>
+      </div>
+
+      <div style="margin-top:clamp(30px,4vw,40px)">
+        <a class="btn ghost" href="docs.html#architecture">Read the architecture <span class="arr">→</span></a>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <span class="n">01</span>
+        <div class="stage">Fund privately</div>
+        <h3>Deposit into the vault.</h3>
+        <p>Funds become private note commitments instead of a public, trackable trading balance.</p>
+        <span class="tech">Solana vault</span>
+      </div>
+      <div class="step">
+        <span class="n">02</span>
+        <div class="stage">Match in batches</div>
+        <h3>Orders clear in the dark.</h3>
+        <p>Signed intent meets inside an attested TDX enclave. Compatible orders clear every two seconds at one uniform price.</p>
+        <span class="tech">Intel TDX · FBA</span>
+      </div>
+      <div class="step">
+        <span class="n">03</span>
+        <div class="stage">Settle on-chain</div>
+        <h3>Fills land verifiably.</h3>
+        <p>Settlement posts to Solana with proof material and the registered TEE signature. Withdrawals stay user-controlled.</p>
+        <span class="tech">ZK proofs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider">
+  <div class="line"></div>
+  <svg class="divider-mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg>
+  <div class="line"></div>
+</div>
+
+<!-- ===================== NEW: DIFFERENTIATION SECTION ===================== -->
+<section class="section" id="differentiation">
+  <div class="layout-line-left"></div>
+  <div class="layout-line-right"></div>
+  <div class="layout-node left"></div>
+  <div class="layout-node right"></div>
+
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Comparison</p>
+      <h2 class="display h-lg" style="margin-top:18px">How Darknyx compares</h2>
+      <p class="lede">Honest trade-offs across order privacy, custody risk, matching speed, and L1 compatibility.</p>
+    </div>
+
+    <div class="diff-table-wrapper">
+      <table class="diff-table">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Darknyx</th>
+            <th>Public DEXs / CLOBs</th>
+            <th>Centralized Exchanges</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Order Privacy</b></td>
+            <td><span class="highlight">Hidden (In-TEE)</span></td>
+            <td>Public (Front-runnable)</td>
+            <td>Visible to operator</td>
+          </tr>
+          <tr>
+            <td><b>Custody Risk</b></td>
+            <td><span class="highlight">Zero (Solana Vault)</span></td>
+            <td>Zero (On-chain)</td>
+            <td>Total operator custody</td>
+          </tr>
+          <tr>
+            <td><b>Matching Speed</b></td>
+            <td><span class="highlight">Sub-millisecond</span></td>
+            <td>Block-level delay</td>
+            <td>Sub-millisecond</td>
+          </tr>
+          <tr>
+            <td><b>Liquidity Access</b></td>
+            <td><span class="highlight">Direct (Solana assets)</span></td>
+            <td>Direct L1 liquidity</td>
+            <td>Deep custodian book</td>
+          </tr>
+          <tr>
+            <td><b>Moat / Defensibility</b></td>
+            <td><span class="highlight">Batched private settlement</span></td>
+            <td>Network effects</td>
+            <td>Brand & licensing</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider">
+  <div class="line"></div>
+  <svg class="divider-mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg>
+  <div class="line"></div>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="layout-line-left"></div>
+  <div class="layout-line-right"></div>
+  <div class="layout-node left" style="top: 0"></div>
+  <div class="layout-node right" style="top: 0"></div>
+  <div class="scene-wrap">
+    <div class="stars" data-stars="70"></div>
+    <img class="scene-art faint" src="assets/footer.png" alt="Ancient columns under a starry sky">
+  </div>
+
+  <div class="footer-inner wrap">
+    <svg class="mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg>
+    <!-- <p class="eyebrow">Privacy without sacrificing auditability</p> -->
+    <!-- <h2 class="display h-md" style="margin-top:16px;max-width:18ch;margin-left:auto;margin-right:auto">Privacy Without Sacrificing Auditability.</h2> -->
+    <!-- <p class="lede">The docs lay out the trust model, the settlement pipeline, the cryptography, and honest comparisons against every comparable venue.</p> -->
+    <div class="footer-cta"><a class="btn" href="docs.html">Read the docs <span class="arr">→</span></a></div>
+  </div>
+
+  <div class="footer-foot">
+    <div class="row">
+      <div class="lock"><svg class="mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg><b>darknyx</b><span class="tagline" style="margin-left:14px">Settle in the dark · Prove in the light</span></div>
+      <div class="fl">
+        <a href="docs.html">Docs</a>
+        <a href="docs.html#architecture">Architecture</a>
+        <a href="docs.html#glossary">Glossary</a>
+        <a href="https://x.com/DarkNyxProtocol" target="_blank" rel="noopener" class="social-link" aria-label="X (Twitter)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </a>
+        <a href="https://github.com/skysail-labs/darknyx" target="_blank" rel="noopener" class="social-link" aria-label="GitHub">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // starfield
+  document.querySelectorAll('.stars').forEach(function (el) {
+    var n = +el.dataset.stars || 40, f = document.createDocumentFragment();
+    for (var i = 0; i < n; i++) {
+      var s = document.createElement('span');
+      var big = Math.random() < 0.14, sz = big ? 2 : 1;
+      s.style.width = s.style.height = sz + 'px';
+      s.style.left = (Math.random() * 100).toFixed(2) + '%';
+      s.style.top = (Math.random() * 100).toFixed(2) + '%';
+      var o = 0.2 + Math.random() * 0.55;
+      s.style.setProperty('--o0', (o * 0.4).toFixed(2));
+      s.style.setProperty('--o1', o.toFixed(2));
+      s.style.setProperty('--tw', (2.5 + Math.random() * 4).toFixed(1) + 's');
+      s.style.animationDelay = (Math.random() * 4).toFixed(1) + 's';
+      f.appendChild(s);
+    }
+    el.appendChild(f);
+  });
+  // nav scrolled state and section 2 scroll animation
+  var howCompleted = false;
+  var isLocked = false;
+  var lastScrollY = window.scrollY;
+
+  var handleScroll = function () {
+    var currentScrollY = window.scrollY;
+    var direction = currentScrollY > lastScrollY ? 'down' : 'up';
+    lastScrollY = currentScrollY;
+
+    var nav = document.getElementById('nav');
+    if (nav) nav.classList.toggle('scrolled', currentScrollY > 40);
+
+    var howSection = document.getElementById('how');
+    if (!howSection) return;
+
+    var rect = howSection.getBoundingClientRect();
+    var sectionTop = currentScrollY + rect.top;
+    var sectionHeight = rect.height;
+    var targetScrollY = Math.round(sectionTop + (sectionHeight / 2) - (window.innerHeight / 2));
+
+    // Reset completed flag if they scroll far above the section
+    if (currentScrollY < targetScrollY - window.innerHeight) {
+      howCompleted = false;
+      howSection.classList.remove('in-view');
+    }
+
+    // If scrolling down, not completed yet, and not already locked
+    if (direction === 'down' && !howCompleted && !isLocked) {
+      if (currentScrollY >= targetScrollY - 80 && currentScrollY < targetScrollY + 80) {
+        window.scrollTo(0, targetScrollY);
+        isLocked = true;
+
+        var prevent = function (e) { e.preventDefault(); };
+        var preventKey = function (e) {
+          if ([32, 33, 34, 35, 36, 37, 38, 39, 40].includes(e.keyCode)) {
+            e.preventDefault();
+          }
+        };
+
+        window.addEventListener('wheel', prevent, { passive: false });
+        window.addEventListener('touchmove', prevent, { passive: false });
+        window.addEventListener('keydown', preventKey, { passive: false });
+
+        howSection.classList.add('in-view');
+
+        setTimeout(function () {
+          window.removeEventListener('wheel', prevent);
+          window.removeEventListener('touchmove', prevent);
+          window.removeEventListener('keydown', preventKey);
+          isLocked = false;
+          howCompleted = true;
+        }, 1500);
+      }
+    }
+  };
+
+  // Architecture tabs switching
+  document.querySelectorAll('.arch-tab-btn').forEach(function (btn) {
+    function activate() {
+      document.querySelectorAll('.arch-tab-btn').forEach(function (b) {
+        b.classList.remove('active');
+      });
+      btn.classList.add('active');
+      var tab = btn.getAttribute('data-tab');
+      document.querySelectorAll('.arch-pane-content').forEach(function (pane) {
+        pane.style.display = 'none';
+      });
+      var activePane = document.getElementById('arch-pane-' + tab);
+      if (activePane) activePane.style.display = 'block';
+    }
+    btn.addEventListener('mouseenter', activate);
+    btn.addEventListener('click', activate);
+  });
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+})();
+</script>
+
+</body>
+</html>

@@ -12,7 +12,7 @@ export function OnChainInspectorPanel({ scenario }: OnChainInspectorPanelProps) 
   return (
     <section className="w-full rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
       <div className="mb-5">
-        <h2 className="text-xl font-semibold text-zinc-900">Panel B — On-chain Inspector</h2>
+        <h2 className="text-xl font-semibold text-zinc-900">Panel B - On-chain Inspector</h2>
         <p className="mt-1 text-sm text-zinc-600">
           Cluster: {scenario.cluster}. Scenario: {scenario.name}. Snapshot date: {scenario.asOf}.
         </p>

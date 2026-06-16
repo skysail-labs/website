@@ -12,7 +12,7 @@ export function ProofQuote() {
     >
       <div className="flex flex-col lg:flex-row" style={{ minHeight: "320px" }}>
 
-        {/* LEFT — stat only */}
+        {/* LEFT - stat only */}
         <div
           className="flex flex-col justify-center px-8 py-14 sm:px-12 lg:w-1/2"
           style={{ borderRight: "1px solid rgba(255,255,255,0.05)" }}
@@ -45,7 +45,7 @@ export function ProofQuote() {
           </div>
         </div>
 
-        {/* RIGHT — ambient wireframe globe */}
+        {/* RIGHT - ambient wireframe globe */}
         <div className="relative flex-1 overflow-hidden" style={{ minHeight: "320px" }}>
           <div
             className="absolute pointer-events-none"

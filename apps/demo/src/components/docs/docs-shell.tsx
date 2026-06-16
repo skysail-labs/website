@@ -3,7 +3,6 @@ import Link from "next/link";
 import { DocsSearch } from "@/components/docs/docs-search";
 import { DocsThemeProvider } from "@/components/docs/docs-theme-provider";
 import { MarkdownRenderer } from "@/components/docs/markdown-renderer";
-import { ThemeToggle } from "@/components/docs/theme-toggle";
 import { NyxFooter } from "@/components/brand/nyx-footer";
 import { NyxNav } from "@/components/brand/nyx-nav";
 import type { DocPageData } from "@/lib/docs";
@@ -31,7 +30,6 @@ export function DocsShell({ doc }: { doc: DocPageData }) {
                 <Link href="/docs" className="nyx-doc-sidebar-title">
                   Darknyx Documentation
                 </Link>
-                <ThemeToggle />
               </div>
               <p className="mt-1 text-xs leading-5 text-stone-500">
                 Protocol architecture, trust assumptions, API, and integration notes.
@@ -70,7 +68,6 @@ export function DocsShell({ doc }: { doc: DocPageData }) {
                 <div className="text-[11px] font-semibold uppercase tracking-[0.1em] text-stone-500">
                   Browse docs
                 </div>
-                <ThemeToggle />
               </div>
               <div className="mt-3">
                 <DocsSearch items={searchItems} />

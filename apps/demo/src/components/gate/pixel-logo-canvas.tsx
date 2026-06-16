@@ -12,7 +12,7 @@ const COLS = 30;
 const ROWS = 20;
 
 /* -------------------------------------------------------------------------- */
-/* PIXEL FONT — 5×7 bitmap — COMMENTED OUT, replaced by typed wordmark       */
+/* PIXEL FONT - 5×7 bitmap - COMMENTED OUT, replaced by typed wordmark       */
 /* -------------------------------------------------------------------------- */
 
 // const PIXEL_FONT: Record<string, number[]> = {
@@ -312,7 +312,7 @@ export function PixelLogoCanvas() {
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
-        aria-label="DarkNyx — click logo to enter"
+        aria-label="DarkNyx - click logo to enter"
       />
 
       {/* SVG LOGO OVERLAY */}
@@ -338,7 +338,7 @@ export function PixelLogoCanvas() {
         </button>
       )}
 
-      {/* TYPED WORDMARK — Space Grotesk, design-system font */}
+      {/* TYPED WORDMARK - Space Grotesk, design-system font */}
       {svgLayout && (
         <div
           style={{

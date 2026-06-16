@@ -33,7 +33,7 @@ function PerspectiveGrid() {
       // origin row: 1px above canvas bottom so lines sit on top of the section border
       const originY = h - 1;
 
-      // horizontal line at the origin — merges visually with the section's border-b
+      // horizontal line at the origin - merges visually with the section's border-b
       ctx.beginPath();
       ctx.moveTo(0, originY);
       ctx.lineTo(w, originY);

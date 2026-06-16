@@ -24,7 +24,7 @@ export function PrivacyTimelinePanel({ steps }: PrivacyTimelinePanelProps) {
   return (
     <section className="w-full rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
       <div className="mb-5">
-        <h2 className="text-xl font-semibold text-zinc-900">Panel A — Privacy Timeline</h2>
+        <h2 className="text-xl font-semibold text-zinc-900">Panel A - Privacy Timeline</h2>
         <p className="mt-1 text-sm text-zinc-600">
           ER stages keep order intent private; L1 stages expose only settlement-level artifacts.
         </p>

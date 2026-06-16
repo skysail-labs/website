@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Darknyx Docs - Introduction</title>
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="t-column" viewBox="0 0 120 260">
+    <line x1="34" y1="20" x2="86" y2="20"/><line x1="38" y1="28" x2="82" y2="28"/>
+    <path d="M50,28 C50,22 70,22 70,28"/>
+    <line x1="50" y1="28" x2="50" y2="224"/><line x1="70" y1="28" x2="70" y2="224"/>
+    <line x1="58" y1="32" x2="58" y2="220" opacity="0.5"/><line x1="62" y1="32" x2="62" y2="220" opacity="0.5"/>
+    <line x1="42" y1="224" x2="78" y2="224"/><line x1="36" y1="234" x2="84" y2="234"/>
+    <line x1="40" y1="234" x2="40" y2="250"/><line x1="80" y1="234" x2="80" y2="250"/><line x1="34" y1="250" x2="86" y2="250"/>
+  </symbol>
+  <symbol id="t-skyline" viewBox="0 0 620 150">
+    <polyline points="40,70 95,48 150,70"/><line x1="36" y1="74" x2="154" y2="74"/>
+    <line x1="52" y1="74" x2="52" y2="118"/><line x1="72" y1="74" x2="72" y2="118"/><line x1="92" y1="74" x2="92" y2="118"/><line x1="112" y1="74" x2="112" y2="118"/><line x1="132" y1="74" x2="132" y2="118"/>
+    <line x1="34" y1="118" x2="156" y2="118"/>
+    <polyline points="185,80 230,62 275,80"/><line x1="182" y1="84" x2="278" y2="84"/>
+    <line x1="196" y1="84" x2="196" y2="118"/><line x1="216" y1="84" x2="216" y2="118"/><line x1="236" y1="84" x2="236" y2="118"/><line x1="256" y1="84" x2="256" y2="118"/>
+    <line x1="180" y1="118" x2="280" y2="118"/>
+    <polyline points="300,90 330,77 360,90"/><line x1="298" y1="93" x2="362" y2="93"/>
+    <line x1="310" y1="93" x2="310" y2="118"/><line x1="330" y1="93" x2="330" y2="118"/><line x1="350" y1="93" x2="350" y2="118"/>
+    <line x1="0" y1="120" x2="620" y2="120"/>
+  </symbol>
+  <symbol id="nyx-mark" viewBox="0 0 120 120">
+    <clipPath id="hor-clip"><rect x="0" y="0" width="120" height="66"/></clipPath>
+    <circle cx="60" cy="60" r="36" fill="currentColor" clip-path="url(#hor-clip)"/>
+    <rect x="18" y="66" width="84" height="4" fill="currentColor"/>
+    <rect x="18" y="78" width="60" height="4" fill="currentColor" opacity="0.5"/>
+  </symbol>
+</svg>
+
+<div class="docs">
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside class="docs-side">
+    <a class="brand" href="index.html">
+      <svg class="mark" viewBox="0 0 120 120"><use href="#nyx-mark"/></svg>
+      <b>darknyx</b><small>docs</small>
+    </a>
+
+    <div class="docs-search"><input id="docSearch" type="text" placeholder="Search the docs…" aria-label="Search docs"></div>
+
+    <nav class="docs-nav" id="docNav">
+      <div class="docs-group">
+        <div class="g-label">Introduction</div>
+        <a class="active" href="#"><span class="idx">01</span>Introduction</a>
+      </div>
+      <div class="docs-group" id="nav-architecture">
+        <div class="g-label">Architecture</div>
+        <a href="#"><span class="idx">02</span>Architecture overview</a>
+        <a href="#"><span class="idx">03</span>Custody layer</a>
+        <a href="#"><span class="idx">04</span>Matching layer</a>
+        <a href="#"><span class="idx">05</span>Cryptography</a>
+        <a href="#"><span class="idx">06</span>Trust model</a>
+      </div>
+      <div class="docs-group">
+        <div class="g-label">Pipeline</div>
+        <a href="#"><span class="idx">07</span>Settlement pipeline</a>
+        <a href="#"><span class="idx">08</span>API &amp; integration</a>
+      </div>
+      <div class="docs-group">
+        <div class="g-label">Status &amp; roadmap</div>
+        <a href="#"><span class="idx">09</span>Roadmap &amp; status</a>
+        <a id="differentiation" href="#"><span class="idx">10</span>Differentiation</a>
+      </div>
+      <div class="docs-group">
+        <div class="g-label">Reference</div>
+        <a id="glossary" href="#"><span class="idx">11</span>Glossary</a>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ===================== MAIN ===================== -->
+  <main class="docs-main">
+    <svg class="scene-corner scene-art ghost" viewBox="0 0 620 150" preserveAspectRatio="xMaxYMin meet"><use href="#t-skyline"/></svg>
+
+    <div class="docs-crumb"><span>Docs</span><span class="sep">/</span><span>Introduction</span><span class="sep">/</span><span class="here">01 · Introduction</span></div>
+
+    <h1 class="doc-title">Introduction</h1>
+
+    <div class="tldr">
+      <div class="l">TL;DR</div>
+      <p>Darknyx is a privacy-preserving central-limit-order-book darkpool on Solana. Hidden orders meet inside an attested Intel TDX confidential VM; settlement happens trustlessly on Solana with zero-knowledge proofs binding every transfer to a verified note commitment. The on-chain footprint is custody and proofs - matching is invisible to mempools, sequencers, and validators.</p>
+    </div>
+
+    <div class="prose">
+      <h2 id="problem">The problem Darknyx solves</h2>
+      <p>Public order books bleed information. Every limit order resting on a DEX is a free signal to a sandwich bot, a market maker rebalancing inventory against you, or a counterparty looking to wait you out. The literature calls it <strong>informational alpha leakage</strong>; on-chain order books make this worse, not better, than centralized venues - because the leak is permanent, public, and indexed.</p>
+      <p>The traditional response is to take the order off-chain entirely: quote-driven RFQ venues, off-chain matching engines, or dark pools operated by a custodian. These solutions cost custody risk. The operator can see every order, every fill, and every position. They can front-run, they can leak, they can be subpoenaed, they can be hacked. The Mt. Gox shape never goes away.</p>
+      <p><strong>Darknyx is the third option.</strong> Orders enter an enclave whose code is attested and whose key material is cryptographically gated to a specific compiled image. The operator cannot read order intent inside the enclave; the enclave cannot exit funds without a zero-knowledge proof verified on Solana.</p>
+
+      <h2 id="privacy">What "privacy-preserving" actually means</h2>
+      <p>Three distinct privacy properties, each enforced by a separate mechanism.</p>
+
+      <h3><span class="num">1</span>Order privacy</h3>
+      <p>Order side, size, and limit price are visible only to the TEE. They are not in any Solana transaction, log, or account an external observer can read. The hardware attestation prevents code substitution, and the on-chain verifier rejects any settlement that doesn't come from the attested binary.</p>
+
+      <h3><span class="num">2</span>Trader privacy</h3>
+      <p>A user's Solana wallet pubkey is never a parameter in any Darknyx API request. Users authenticate to the TEE with a separate trading-key keypair - freshly generated client-side. On-chain settlement instructions carry only the trading key; the link to the wallet exists only in the user's own withdraw-time proof, where the spending key never leaves their device.</p>
+
+      <h3><span class="num">3</span>Position privacy</h3>
+      <p>Notes - the UTXO-style commitments Darknyx uses for assets - are stored on-chain only as Poseidon hashes. Owner, value, and token are bound inside the hash; nothing about them is observable on-chain until the user themselves spends the note via a zero-knowledge proof.</p>
+
+      <h2 id="who">Who Darknyx is for</h2>
+      <table class="doc-table">
+        <thead><tr><th>Segment</th><th>Why they use Darknyx</th></tr></thead>
+        <tbody>
+          <tr><td>Active traders</td><td>Large limit orders that don't telegraph intent. The clearing-price auction sidesteps slippage from sandwich bots; the hidden book stops the "wait it out" game.</td></tr>
+          <tr><td>Market makers</td><td>A two-sided venue where quotes don't leak to retail flow before they fill. Quote turnover and inventory rebalancing stay private.</td></tr>
+          <tr><td>Institutions</td><td>Trustless custody combined with off-chain matching speed. TDX attestation, multisig governance, and a deterministic image satisfy compliance teams who would never approve a black-box dark pool.</td></tr>
+          <tr><td>Treasury / OTC</td><td>One-shot block trades with no market impact. The order is visible only to the TEE; the resulting settle batches with other trades.</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="architecture">Headline architecture</h2>
+      <p>Darknyx is three layers that compose. Whatever needs to be <strong>trusted</strong> goes on-chain; whatever needs to be <strong>private</strong> goes in-TEE; whatever needs to remain the user's secret stays on their device.</p>
+
+      <div class="code-panel">
+        <div class="bar"><i></i><i></i><i></i><span>three-layer model</span></div>
+<pre>┌──────────────────────────────────────────────────────────┐
+│  <b>CUSTODY LAYER</b> - Solana program (vault)              │
+│  Holds funds. Owns the Merkle tree of note commitments.  │
+│  Verifies every withdraw with a <b>VALID_SPEND</b> proof and  │
+│  every settlement with a <b>VALID_MATCH_BATCH</b> proof.       │
+│  The only layer that can move tokens.                    │
+└──────────────────────────────────────────────────────────┘
+                        ▲   signed settle tx (attested TEE)
+                        │
+┌──────────────────────────────────────────────────────────┐
+│  <b>MATCHING LAYER</b> - Intel TDX Confidential VM           │
+│  Runs the order book, the matching engine, the in-TEE    │
+│  prover, and the settle scheduler. A <span class="g">frequent-batch</span>    │
+│  <span class="g">auction</span> clears every 2s. Only the compiled image whose │
+│  compose_hash is on-chain can produce valid signatures.  │
+└──────────────────────────────────────────────────────────┘
+                        ▲   signed order intents (Ed25519)
+                        │
+┌──────────────────────────────────────────────────────────┐
+│  <b>CLIENT LAYER</b> - TypeScript SDK                        │
+│  Generates ZK proofs locally, signs canonical orders,    │
+│  attests the TEE before trusting it, and manages three   │
+│  identities: wallet · trading key · API credentials.     │
+└──────────────────────────────────────────────────────────┘</pre>
+      </div>
+
+      <ul>
+        <li><strong>Solana sees:</strong> deposit notes (Poseidon hashes), Merkle-root updates, settlement transactions (trading keys, not wallet keys), withdraw proofs.</li>
+        <li><strong>The TEE sees:</strong> orders signed by trading keys, the matching results, the canonical payload it signs.</li>
+        <li><strong>Each user sees:</strong> their own wallet → trading-key link, their own notes, their own spending keys.</li>
+      </ul>
+      <p>No single component sees enough to deanonymize a user's trading.</p>
+
+      <h2 id="next">Where to go from here</h2>
+      <p>If you're skimming for the technology, continue to <a class="xref" href="#architecture">architecture overview</a>. If you're evaluating the trust model, jump to the <a class="xref" href="#">trust model</a>. Integrators should start with the <a class="xref" href="#">API &amp; integration</a> wire contract.</p>
+
+      <div style="margin-top:40px;display:flex;gap:14px;flex-wrap:wrap">
+        <a class="btn" href="index.html">Back to home <span class="arr">→</span></a>
+        <a class="btn ghost" href="https://github.com/skysail-labs/darknyx" target="_blank" rel="noopener">View source</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===================== TOC ===================== -->
+  <aside class="docs-toc">
+    <div class="l">On this page</div>
+    <nav id="toc">
+      <a href="#problem" class="active">The problem</a>
+      <a href="#privacy">What privacy means</a>
+      <a href="#who">Who it's for</a>
+      <a href="#architecture">Headline architecture</a>
+      <a href="#next">Where to go next</a>
+    </nav>
+  </aside>
+
+</div>
+
+<script>
+(function () {
+  // sidebar search filter
+  var search = document.getElementById('docSearch');
+  var nav = document.getElementById('docNav');
+  search.addEventListener('input', function () {
+    var q = search.value.trim().toLowerCase();
+    nav.querySelectorAll('.docs-group').forEach(function (g) {
+      var any = false;
+      g.querySelectorAll('a').forEach(function (a) {
+        var hit = a.textContent.toLowerCase().indexOf(q) > -1;
+        a.style.display = hit ? '' : 'none';
+        if (hit) any = true;
+      });
+      g.style.display = any ? '' : 'none';
+    });
+  });
+
+  // TOC scrollspy
+  var links = Array.prototype.slice.call(document.querySelectorAll('#toc a'));
+  var sections = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+  var spy = function () {
+    var idx = 0;
+    sections.forEach(function (s, i) {
+      if (s && s.getBoundingClientRect().top <= 140) idx = i;
+    });
+    // if we've reached the bottom, activate the last section
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) idx = sections.length - 1;
+    links.forEach(function (a, i) { a.classList.toggle('active', i === idx); });
+  };
+  spy(); window.addEventListener('scroll', spy, { passive: true });
+})();
+</script>
+
+</body>
+</html>

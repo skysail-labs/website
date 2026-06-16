@@ -37,7 +37,7 @@ export function PrivacyTable() {
               What stays<br />hidden.
             </h2>
             <p style={{ marginTop: "10px", fontFamily: "'JetBrains Mono', monospace", fontSize: "11px", lineHeight: 1.75, color: "rgba(174,172,176,0.42)" }}>
-              Darknyx hides individual order intent. Aggregate match data is public — by design.
+              Darknyx hides individual order intent. Aggregate match data is public - by design.
             </p>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -61,7 +61,7 @@ export function PrivacyTable() {
               <div key={h} style={{ padding: "8px 20px", fontFamily: "'JetBrains Mono', monospace", fontSize: "8.5px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(174,172,176,0.3)" }}>{h}</div>
             ))}
           </div>
-          {/* Rows — flex so they fill height evenly */}
+          {/* Rows - flex so they fill height evenly */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
             {ROWS.map((r, idx) => (
               <div key={r.object} style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 100px 1fr", borderTop: idx > 0 ? "1px solid rgba(255,255,255,0.04)" : "none", borderBottom: idx === ROWS.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none", alignItems: "stretch" }}>

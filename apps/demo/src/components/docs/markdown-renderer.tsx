@@ -270,7 +270,7 @@ function docHref(href: string) {
 
 function renderInline(text: string): ReactNode[] {
   const nodes: ReactNode[] = [];
-  const pattern = /(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\))/g;
+  const pattern = /(\*\*[^*]+\*\*|`[^`]+`|!\[[^\]]*\]\([^)]+\)|\[[^\]]+\]\([^)]+\))/g;
   let lastIndex = 0;
   let match: RegExpExecArray | null;
 
@@ -282,6 +282,19 @@ function renderInline(text: string): ReactNode[] {
       nodes.push(<strong key={`${token}-${match.index}`}>{token.slice(2, -2)}</strong>);
     } else if (token.startsWith("`")) {
       nodes.push(<code key={`${token}-${match.index}`}>{token.slice(1, -1)}</code>);
+    } else if (token.startsWith("![")) {
+      const img = token.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+      if (img) {
+        nodes.push(
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={`${img[2]}-${match.index}`}
+            src={img[2]}
+            alt={img[1]}
+            className="my-6 max-w-full rounded-lg border border-stone-200/80 dark:border-white/10"
+          />
+        );
+      }
     } else {
       const link = token.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
       if (link) {
@@ -319,6 +332,21 @@ export function MarkdownRenderer({ content }: { content: string }) {
         }
 
         if (block.type === "paragraph") {
+          const isImgOnly = /^!\[[^\]]*\]\([^)]+\)$/.test(block.text.trim());
+          if (isImgOnly) {
+            const imgMatch = block.text.trim().match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+            if (imgMatch) {
+              return (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={index}
+                  src={imgMatch[2]}
+                  alt={imgMatch[1]}
+                  className="my-6 max-w-full rounded-lg border border-stone-200/80 dark:border-white/10 block mx-auto"
+                />
+              );
+            }
+          }
           return <p key={index}>{renderInline(block.text)}</p>;
         }
 

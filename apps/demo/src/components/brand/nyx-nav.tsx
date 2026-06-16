@@ -10,7 +10,7 @@ interface NyxNavProps {
    * Set to null to show a non-clickable status badge.
    */
   launchHref?: string | null;
-  /** Active page hint — applied to nav links for subtle emphasis. */
+  /** Active page hint - applied to nav links for subtle emphasis. */
   active?: "home" | "docs" | "dapp" | null;
 }
 
@@ -31,7 +31,7 @@ export function NyxNav({ tone = "ink", launchHref = "/dapp", active = null }: Ny
       }}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 sm:px-7">
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex-1 flex items-center gap-2">
           <NyxLockup size={22} tone={tone === "ink" ? "chalk" : "ink"} />
         </Link>
 
@@ -56,42 +56,44 @@ export function NyxNav({ tone = "ink", launchHref = "/dapp", active = null }: Ny
           ))}
         </nav>
 
-        {launchHref ? (
-          <div
-            className="inline-flex items-center gap-2 select-none"
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "11px",
-              fontWeight: 600,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              padding: "6px 14px",
-              borderRadius: "2px",
-              background: "var(--nyx-accent-soft)",
-              border: "1px solid oklch(0.62 0.14 260 / 0.35)",
-              color: "var(--nyx-accent)",
-            }}
-          >
-            <span>Private Beta Soon</span>
-          </div>
-        ) : (
-          <span
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "11px",
-              fontWeight: 600,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              padding: "6px 14px",
-              borderRadius: "2px",
-              background: "var(--nyx-accent-soft)",
-              border: "1px solid oklch(0.62 0.14 260 / 0.35)",
-              color: "var(--nyx-accent)",
-            }}
-          >
-            Private Beta Soon
-          </span>
-        )}
+        <div className="flex-1 flex justify-end">
+          {launchHref ? (
+            <div
+              className="inline-flex items-center gap-2 select-none"
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: "11px",
+                fontWeight: 600,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                padding: "6px 14px",
+                borderRadius: "2px",
+                background: "var(--nyx-accent-soft)",
+                border: "1px solid oklch(0.62 0.14 260 / 0.35)",
+                color: "var(--nyx-accent)",
+              }}
+            >
+              <span>Private Beta Soon</span>
+            </div>
+          ) : (
+            <span
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: "11px",
+                fontWeight: 600,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                padding: "6px 14px",
+                borderRadius: "2px",
+                background: "var(--nyx-accent-soft)",
+                border: "1px solid oklch(0.62 0.14 260 / 0.35)",
+                color: "var(--nyx-accent)",
+              }}
+            >
+              Private Beta Soon
+            </span>
+          )}
+        </div>
       </div>
     </header>
   );
