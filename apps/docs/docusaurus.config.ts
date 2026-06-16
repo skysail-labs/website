@@ -3,7 +3,7 @@ import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
-  title: "Nyx Docs",
+  title: "Darknyx Docs",
   tagline: "Settle in the dark, prove in the light.",
   favicon: "img/favicon.svg",
 
@@ -116,7 +116,6 @@ const config: Config = {
             { label: "Place Order", to: "/orders/place-order" },
             { label: "API", to: "/api/base-urls" },
             { label: "TypeScript SDK", to: "/sdk/typescript-client" },
-            { label: "Glossary", to: "/reference/glossary" },
           ],
         },
         {
@@ -133,7 +132,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `© ${new Date().getFullYear()} Nyx. Settle in the dark, prove in the light.`,
+      copyright: `© ${new Date().getFullYear()} Darknyx. Settle in the dark, prove in the light.`,
     },
     prism: {
       theme: prismThemes.oneDark,

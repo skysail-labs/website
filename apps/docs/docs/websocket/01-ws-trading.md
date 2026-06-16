@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 title: WebSocket Trading
-description: Submit orders over a single warm, pre-authenticated socket — framed place / cancel / modify, with optional cancel-on-disconnect.
+description: Submit orders over a single warm, pre-authenticated socket - framed place / cancel / modify, with optional cancel-on-disconnect.
 ---
 
 # WebSocket Trading
@@ -9,7 +9,7 @@ description: Submit orders over a single warm, pre-authenticated socket — fram
 :::info[TL;DR]
 `/ws/trading` is a bidirectional socket for order submission. Stream framed
 `order.place` / `order.cancel` / `order.modify` requests and receive one reply
-per frame — dispatched to the **same** intake and verification the REST endpoints
+per frame - dispatched to the **same** intake and verification the REST endpoints
 use. The wins over REST: one warm, pre-authenticated connection (no TLS + bearer
 round-trip per request) and **cancel-on-disconnect** for market makers.
 :::
@@ -47,7 +47,7 @@ reply echoes so a client can correlate responses on the multiplexed socket.
 | `order.place` | `request_id?`, `params` (a full [Place Order](../orders/place-order) body) | `POST /orders` |
 | `order.cancel` | `request_id?`, `order_id`, `params` (`trading_key`, `cancel_nonce`, `trading_key_signature`) | `DELETE /orders/{id}` |
 | `order.modify` | `request_id?`, `order_id`, `params` (a [Modify Order](../orders/modify-order) body) | `PUT /orders/{id}` |
-| `ping` | `request_id?` | — |
+| `ping` | `request_id?` | - |
 
 ```json
 { "op": "order.place", "request_id": "r1", "params": { "symbol": "SOL-USDC", "side": "bid", "…": "…" } }
@@ -78,7 +78,7 @@ placed on **this** socket and, when the socket closes, cancels the ones still
 resting. This protects a market maker that loses connectivity from leaving stale
 quotes crossing.
 
-The teardown is a server-initiated cancel using each order's own booked key — it
+The teardown is a server-initiated cancel using each order's own booked key - it
 needs no client signature, because the order was placed on this authenticated
 session and a cancel only un-rests an order (it never settles or moves funds).
 

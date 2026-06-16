@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 title: Place Order
-description: Submit a hidden, fully-collateralized order — the request body, the cryptographic fields the SDK builds for you, and the response lifecycle.
+description: Submit a hidden, fully-collateralized order - the request body, the cryptographic fields the SDK builds for you, and the response lifecycle.
 ---
 
 # Place Order
@@ -21,11 +21,11 @@ POST /orders
 
 Auth: `Authorization: Bearer <token>` **and** a trading-key signature in the body.
 
-## How a Nyx order differs
+## How a Darknyx order differs
 
 On a transparent venue, placing an order is just sending its economic fields. On
-Nyx an order is *fully collateralized by a specific note you already deposited*,
-and it is *private* — so the request also carries:
+Darknyx an order is *fully collateralized by a specific note you already deposited*,
+and it is *private* - so the request also carries:
 
 - the **commitment** of the collateral note, and a secret **opening** of that
   note the in-enclave prover needs;
@@ -34,7 +34,7 @@ and it is *private* — so the request also carries:
 - a **continuation anchor pool** that lets the engine settle partial fills and
   keep the remainder working without a round-trip to you per fill;
 - an **Ed25519 signature** from your trading key over the canonical body, so the
-  engine can attribute — and ultimately settle — the order to you without any
+  engine can attribute - and ultimately settle - the order to you without any
   per-order on-chain transaction.
 
 You do not assemble these by hand. The SDK takes your keys and a spendable note
@@ -49,11 +49,11 @@ wire contract is unambiguous.
 |---|---|---|---|
 | `symbol` | string | Yes | Market id, e.g. `"SOL-USDC"`. |
 | `side` | string | Yes | `"bid"` (buy base) or `"ask"` (sell base). |
-| `order_type` | string | Yes | `"limit"`, `"ioc"`, or `"fok"`. See [Order Types](../trading-concepts/order-types). |
+| `order_type` | string | Yes | `"limit"`, `"ioc"`, or `"fok"`. See [Order Types](../trading-primitives/order-types). |
 | `amount` | integer | Yes | Order size in base units. |
 | `price_limit` | integer | Conditional | Worst acceptable price, in quote units per base. Required for a bid; an ask may use `0` to accept any clearing price. |
-| `min_fill_size` | integer | No | Reject fills smaller than this. Set equal to `amount` for all-or-none. Default `0` (any partial fill). See [Execution Attributes](../trading-concepts/execution-attributes). |
-| `expiry_slot` | integer | Yes | Solana slot past which the order auto-expires. Bounded by the market's max expiry. See [Time in Force](../trading-concepts/time-in-force). |
+| `min_fill_size` | integer | No | Reject fills smaller than this. Set equal to `amount` for all-or-none. Default `0` (any partial fill). See [Execution Attributes](../trading-primitives/execution-attributes). |
+| `expiry_slot` | integer | Yes | Solana slot past which the order auto-expires. Bounded by the market's max expiry. See [Time in Force](../trading-primitives/time-in-force). |
 | `order_id` | string | Yes | A client-chosen 16-byte id, hex. Must be unique and non-zero. |
 | `arrival_nonce` | integer | Yes | A per-order nonce bound into the signature. |
 
@@ -63,7 +63,7 @@ wire contract is unambiguous.
 |---|---|---|---|
 | `note_commitment` | string | Yes | 32-byte hex. The commitment of the collateral note backing this order. The note must exist in the tree and be lockable (not already locked). |
 | `collateral_amount` | integer | No | The value the collateral note actually carries, when it exceeds the order's nominal cost. Lets you point a large note at a small order and receive the surplus back as a change note. Omit for exact collateral. |
-| `owner_commitment` | string | Yes | 32-byte hex. The collateral note's owner commitment — part of the secret opening the in-enclave prover re-derives the commitment from. Distinct from `user_commitment`. Held in enclave memory only. |
+| `owner_commitment` | string | Yes | 32-byte hex. The collateral note's owner commitment - part of the secret opening the in-enclave prover re-derives the commitment from. Distinct from `user_commitment`. Held in enclave memory only. |
 | `note_inner_hash` | string | Yes | 32-byte hex. The note's amount-independent inner hash (an opening field that anchors both the commitment and the nullifier). |
 | `user_commitment` | string | Yes | 32-byte hex. Binds the order's output notes to the correct owner on-chain. |
 | `nullifier` | string | Yes | 32-byte hex. Precomputed client-side (it needs the spending key, which never enters the enclave). Opaque to the engine; carried into the settlement payload. |
@@ -74,14 +74,14 @@ wire contract is unambiguous.
 
 | Field | Type | Required | Description |
 |---|---|---|---|
-| `anchors` | array | Yes | Exactly **10** continuation anchors. Each is an `{ inner_hash, nullifier }` pair (both 32-byte hex) for a future change note, so the engine can settle a partial fill and re-lock the remainder without asking you for a new note per fill. The hash of the pool is bound into the signature. See [The Anchor Pool](../trading-concepts/anchor-pool). |
+| `anchors` | array | Yes | Exactly **10** continuation anchors. Each is an `{ inner_hash, nullifier }` pair (both 32-byte hex) for a future change note, so the engine can settle a partial fill and re-lock the remainder without asking you for a new note per fill. The hash of the pool is bound into the signature. See [The Anchor Pool](../trading-primitives/anchor-pool). |
 
 ### Signature
 
 | Field | Type | Required | Description |
 |---|---|---|---|
 | `trading_key` | string | Yes | 32-byte hex. The Ed25519 public key that owns this order. |
-| `trading_key_signature` | string | Yes | 64-byte hex. Signature over the canonical encoding of the body — every economic field plus the anchor-pool hash and `arrival_nonce`. |
+| `trading_key_signature` | string | Yes | 64-byte hex. Signature over the canonical encoding of the body - every economic field plus the anchor-pool hash and `arrival_nonce`. |
 
 ## Example
 
@@ -128,12 +128,12 @@ Returned with `202 Accepted`.
 | Field | Type | Description |
 |---|---|---|
 | `order_id` | string | The order's id (the one you supplied). |
-| `status` | string | `"accepted"` — the order passed verification and entered the book. |
+| `status` | string | `"accepted"` - the order passed verification and entered the book. |
 | `arrival_slot` | integer | The slot the engine stamped on arrival; frozen for the order's life. |
 
 :::note[Accepted is not filled]
 A `202` means the order passed signature and collateral verification and entered
-the book — **not** that it has filled. Track fills via
+the book - **not** that it has filled. Track fills via
 [`GET /orders/{order_id}`](./get-order) or the
 [Orders Channel](../websocket/orders-channel).
 :::
@@ -165,4 +165,4 @@ of these failed:
 
 Because the opening is checked against the *signed* commitment, the secret
 opening fields are cryptographically pinned to your signature without being part
-of the signed canonical body. See [Error Codes](../reference/error-codes).
+of the signed canonical body.
