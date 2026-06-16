@@ -200,8 +200,6 @@ export default function Home() {
 
       {/* ===================== HERO ===================== */}
       <header className="hero">
-        <div className="layout-line-left"></div>
-        <div className="layout-line-right"></div>
         <div className="layout-node left" style={{ top: "30px" }}></div>
         <div className="layout-node right" style={{ top: "30px" }}></div>
         <div className="hero-bg">
@@ -212,24 +210,64 @@ export default function Home() {
         <div className="hero-glow"></div>
 
         <div className="hero-inner">
-          <div className="hero-copy">
-            <svg className="mark glow rise d1" viewBox="0 0 120 120">
-              <use href="#nyx-mark"/>
-            </svg>
-            <p className="kicker rise d1">
-              <span className="dot"></span>Darkpool protocol · Solana
-            </p>
-            <h1 className="display h-xl rise d2" style={{ marginTop: "18px" }}>
-              <span style={{ display: "block", color: "var(--cobalt)" }}>Settle in the <span className="tag-lo">dark</span>.</span>
-              <span style={{ display: "block", color: "var(--cobalt-bright)" }}>Prove in the <span className="tag-hi">light</span>.</span>
-            </h1>
-            <p className="lede rise d3">
-              A privacy-preserving order book where intent is hidden inside attested hardware and every fill settles trustlessly on Solana — verified, never trusted.
-            </p>
-            <div className="hero-actions rise d4">
-              <Link className="btn" href="/docs">
-                How Darknyx works <span className="arr">→</span>
-              </Link>
+          <div
+            className="rise d2"
+            style={{
+              position: "relative",
+              width: "100%",
+              maxWidth: "760px",
+              background: "#14121d",
+              border: "2px solid #000",
+              padding: "clamp(1.5rem, 3vw, 2rem)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              boxShadow: "12px 12px 0px rgba(0,0,0,0.95)",
+              overflow: "hidden",
+            }}
+          >
+            {/* Badge */}
+            <div className="rise d1" style={{ position: "relative", zIndex: 10, marginBottom: "1rem" }}>
+              <svg className="mark glow" style={{ marginBottom: "0.75rem", width: 28, height: 28 }} viewBox="0 0 120 120">
+                <use href="#nyx-mark"/>
+              </svg>
+              <p className="kicker" style={{ marginTop: 0 }}>
+                <span className="dot"></span>Darkpool protocol · Solana
+              </p>
+            </div>
+
+            {/* Headline */}
+            <div style={{ position: "relative", zIndex: 10, margin: "0.75rem 0" }}>
+              <h1 className="display" style={{ marginTop: 0, fontSize: "clamp(32px, 4.2vw, 62px)", whiteSpace: "nowrap" }}>
+                <span style={{ display: "block", color: "var(--cobalt)" }}>Settle in the <span className="tag-lo">dark</span>.</span>
+                <span style={{ display: "block", color: "var(--cobalt-bright)" }}>Prove in the <span className="tag-hi">light</span>.</span>
+              </h1>
+            </div>
+
+            {/* Bottom row */}
+            <div
+              className="rise d3"
+              style={{
+                position: "relative",
+                zIndex: 10,
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+                gap: "1.4rem",
+                borderTop: "1px solid rgba(255,255,255,0.08)",
+                paddingTop: "1rem",
+                marginTop: "0.75rem",
+              }}
+            >
+              <p className="lede" style={{ margin: 0, maxWidth: "28rem", fontSize: "12px", lineHeight: 1.7 }}>
+                A privacy-preserving order book where intent is hidden inside attested hardware and every fill settles trustlessly on Solana — verified, never trusted.
+              </p>
+              <div className="hero-actions">
+                <Link className="btn" href="/docs">
+                  How Darknyx works <span className="arr">→</span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
