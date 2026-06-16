@@ -44,10 +44,10 @@ export function ArchitectureHero({ onScrollDown }: { onScrollDown?: () => void }
         <RichGridBackground stroke="rgba(255,255,255,1)" opacity={0.18} />
       </div>
 
-      {/* MAIN — content contained within inner rect (17% inset on all sides) */}
+      {/* MAIN - content contained within inner rect (17% inset on all sides) */}
       <div className="flex flex-1 flex-col justify-between" style={{ padding: "18dvh 18vw" }}>
 
-        {/* Poster text — top */}
+        {/* Poster text - top */}
         <h1
           className="nyx-rise"
           style={{
@@ -65,7 +65,7 @@ export function ArchitectureHero({ onScrollDown }: { onScrollDown?: () => void }
           </span>
         </h1>
 
-        {/* Metadata blocks — directly below heading, no dividers */}
+        {/* Metadata blocks - directly below heading, no dividers */}
         <div className="mt-14 flex flex-col gap-10 sm:flex-row sm:gap-22">
 
           {/* Architecture block */}
@@ -83,14 +83,14 @@ export function ArchitectureHero({ onScrollDown }: { onScrollDown?: () => void }
             >
               Darknyx is a privacy-preserving on-chain darkpool for Solana. Order intent stays
               inside and gets matched in an Intel TDX attested TEE. Settlement lands as shielded UTXO notes
-              verified by Groth16 zero-knowledge proofs — every balance reconciles, no
+              verified by Groth16 zero-knowledge proofs - every balance reconciles, no
               individual order is exposed.
             </p>
           </div>
 
         </div>
 
-        {/* Docs button — bottom */}
+        {/* Docs button - bottom */}
         <div className="mt-auto flex items-center justify-center pt-16">
           <DocsButton onClick={onScrollDown} />
         </div>

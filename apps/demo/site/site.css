@@ -1,5 +1,5 @@
 /* ============================================================
-   DARKNYX — "Night" design system
+   DARKNYX - "Night" design system
    Settle in the dark. Prove in the light.
    Brand: Space Grotesk + JetBrains Mono · ink/chalk · cobalt
    ============================================================ */
@@ -7,7 +7,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  /* surfaces — true brand ink, layered */
+  /* surfaces - true brand ink, layered */
   --ink:      #050608;
   --ink-1:    #07090c;
   --ink-2:    #0b0e13;
@@ -24,7 +24,7 @@
   --line:   rgba(245, 243, 238, 0.085);
   --line-2: rgba(245, 243, 238, 0.16);
 
-  /* cobalt — the single jewel accent */
+  /* cobalt - the single jewel accent */
   --cobalt:        oklch(0.64 0.15 262);
   --cobalt-bright: oklch(0.72 0.16 264);
   --cobalt-soft:   oklch(0.64 0.15 262 / 0.13);
@@ -124,7 +124,7 @@ a { color: inherit; text-decoration: none; }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 @media (prefers-reduced-motion: reduce) { .btn.status .pdot { animation: none; } }
 
-/* horizon divider — the brand motif made structural -------------------- */
+/* horizon divider - the brand motif made structural -------------------- */
 .horizon { position: relative; height: 0; border-top: 1px solid var(--line-2); }
 .horizon::after {
   content: ""; position: absolute; top: 7px; left: 50%; transform: translateX(-50%);
@@ -169,7 +169,7 @@ img.scene-art { object-fit: cover; object-position: bottom; }
 @media (max-width: 760px) { .nav .links { display: none; } }
 
 /* ============================================================
-   LANDING — HERO
+   LANDING - HERO
    ============================================================ */
 .hero { position: relative; min-height: 100svh; display: flex; align-items: center; overflow: hidden; }
 .hero-bg { position: absolute; inset: 0; z-index: 0; }
@@ -218,7 +218,7 @@ img.scene-art { object-fit: cover; object-position: bottom; }
 }
 
 /* ============================================================
-   LANDING — SECTIONS
+   LANDING - SECTIONS
    ============================================================ */
 .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(20px, 5vw, 56px); }
 .section { position: relative; padding: clamp(72px, 11vw, 132px) 0; }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Darknyx — Settle in the dark. Prove in the light.</title>
+<title>Darknyx - Settle in the dark. Prove in the light.</title>
 <meta name="description" content="A privacy-preserving darkpool CLOB on Solana. Hidden orders, attested matching, trustless on-chain settlement.">
 <link rel="stylesheet" href="site.css">
 </head>
@@ -93,7 +93,7 @@
         <span style="display: block; color: var(--chalk);">Settle in the <span class="tag-lo">dark</span>.</span>
         <span style="display: block; color: var(--cobalt-bright);">Prove in the <span class="tag-hi">light</span>.</span>
       </h1>
-      <p class="lede rise d3">A privacy-preserving order book where intent is hidden inside attested hardware and every fill settles trustlessly on Solana — verified, never trusted.</p>
+      <p class="lede rise d3">A privacy-preserving order book where intent is hidden inside attested hardware and every fill settles trustlessly on Solana - verified, never trusted.</p>
       <div class="hero-actions rise d4">
         <a class="btn" href="docs.html">How Darknyx works <span class="arr">→</span></a>
         <a class="btn ghost" href="#third-option">The idea</a>
@@ -112,7 +112,7 @@
   <div class="line"></div>
 </div>
 
-<!-- ===================== SECTION 1 — THE THIRD OPTION ===================== -->
+<!-- ===================== SECTION 1 - THE THIRD OPTION ===================== -->
 <section class="section" id="third-option">
   <div class="layout-line-left"></div>
   <div class="layout-line-right"></div>
@@ -122,14 +122,14 @@
     <div class="section-head">
       <p class="eyebrow">The third option</p>
       <h2 class="display h-lg" style="margin-top:18px">A dark pool you don't<br>have to trust.</h2>
-      <p class="lede">Public order books leak every intention to bots and competitors. Off-chain dark pools take your custody. Darknyx is neither — orders meet inside an attested enclave the operator cannot read, and funds only ever move under a proof verified on Solana.</p>
+      <p class="lede">Public order books leak every intention to bots and competitors. Off-chain dark pools take your custody. Darknyx is neither - orders meet inside an attested enclave the operator cannot read, and funds only ever move under a proof verified on Solana.</p>
     </div>
 
     <div class="pillars">
       <div class="pillar">
         <div class="ix">01</div>
         <h3>Orders stay dark<br>until they clear.</h3>
-        <p>Side, size, and limit price are visible only to the enclave — never in a mempool, log, or account an observer can read before settlement.</p>
+        <p>Side, size, and limit price are visible only to the enclave - never in a mempool, log, or account an observer can read before settlement.</p>
         <div class="rule"></div>
       </div>
       <div class="pillar">
@@ -141,7 +141,7 @@
       <div class="pillar">
         <div class="ix">03</div>
         <h3>Settlement can<br>be checked.</h3>
-        <p>Every fill lands on-chain bound to a validity proof and the attested TEE signature — auditable by anyone, without exposing your strategy.</p>
+        <p>Every fill lands on-chain bound to a validity proof and the attested TEE signature - auditable by anyone, without exposing your strategy.</p>
         <div class="rule"></div>
       </div>
     </div>
@@ -331,7 +331,6 @@
           <tr>
             <th>Dimension</th>
             <th>Darknyx</th>
-            <th>MPC Pools (e.g. Renegade)</th>
             <th>Public DEXs / CLOBs</th>
             <th>Centralized Exchanges</th>
           </tr>
@@ -340,35 +339,30 @@
           <tr>
             <td><b>Order Privacy</b></td>
             <td><span class="highlight">Hidden (In-TEE)</span></td>
-            <td>Hidden (MPC matches)</td>
             <td>Public (Front-runnable)</td>
             <td>Visible to operator</td>
           </tr>
           <tr>
             <td><b>Custody Risk</b></td>
             <td><span class="highlight">Zero (Solana Vault)</span></td>
-            <td>Zero (On-chain Vault)</td>
             <td>Zero (On-chain)</td>
             <td>Total operator custody</td>
           </tr>
           <tr>
             <td><b>Matching Speed</b></td>
             <td><span class="highlight">Sub-millisecond</span></td>
-            <td>Slow (100ms - 1s MPC overhead)</td>
             <td>Block-level delay</td>
             <td>Sub-millisecond</td>
           </tr>
           <tr>
             <td><b>Liquidity Access</b></td>
             <td><span class="highlight">Direct (Solana assets)</span></td>
-            <td>Isolated / Bridged</td>
             <td>Direct L1 liquidity</td>
             <td>Deep custodian book</td>
           </tr>
           <tr>
             <td><b>Moat / Defensibility</b></td>
             <td><span class="highlight">Batched private settlement</span></td>
-            <td>MPC cryptography</td>
             <td>Network effects</td>
             <td>Brand & licensing</td>
           </tr>

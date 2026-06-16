@@ -1,5 +1,5 @@
 /**
- * Minimal ambient typing for `snarkjs` — the upstream package ships no types.
+ * Minimal ambient typing for `snarkjs` - the upstream package ships no types.
  *
  * We only declare the surface our code actually consumes (Groth16 fullProve)
  * so we don't accidentally type-check against a fictional API.

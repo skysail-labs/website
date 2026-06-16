@@ -10,7 +10,7 @@ const FLOW: FlowRow[] = [
   { step: "01", cluster: "L1", ix: "vault::create_wallet", signer: "user payer", privacy: "links user_commitment to a Solana payer; identity-only" },
   { step: "02", cluster: "L1", ix: "vault::deposit", signer: "user payer", privacy: "reveals deposit amount + mint (SPL transfer)" },
   { step: "03", cluster: "L1", ix: "vault::lock_note (VALID_INPUT)", signer: "user trading_key", privacy: "commits to note being tradeable; no amount revealed" },
-  { step: "04", cluster: "TEE", ix: "POST /order (RA-TLS)", signer: "user trading_key", privacy: "HIDDEN — side, price, amount encrypted inside TDX enclave" },
+  { step: "04", cluster: "TEE", ix: "POST /order (RA-TLS)", signer: "user trading_key", privacy: "HIDDEN - side, price, amount encrypted inside TDX enclave" },
   { step: "05", cluster: "TEE", ix: "batch auction (in-enclave)", signer: "TEE / operator", privacy: "uniform-clearing-price matching, every 2 s, never leaves enclave" },
   { step: "06", cluster: "TEE", ix: "VALID_MATCH_BATCH proof (in-enclave)", signer: "TEE prover", privacy: "Groth16 proof over N=16 match slots; batch Merkle root sealed" },
   { step: "07", cluster: "L1", ix: "vault::verify_match_batch", signer: "TEE", privacy: "on-chain Groth16 verifier; creates BatchValidityMarker PDA" },
@@ -51,8 +51,8 @@ export function TransactionFlow() {
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {[
-              { color: "rgba(95,184,95,0.45)", label: "L1 — Solana", text: "rgba(95,184,95,0.6)" },
-              { color: "oklch(0.62 0.14 260 / 0.45)", label: "TEE — Intel TDX", text: "oklch(0.62 0.14 260 / 0.6)" },
+              { color: "rgba(95,184,95,0.45)", label: "L1 - Solana", text: "rgba(95,184,95,0.6)" },
+              { color: "oklch(0.62 0.14 260 / 0.45)", label: "TEE - Intel TDX", text: "oklch(0.62 0.14 260 / 0.6)" },
             ].map((l) => (
               <div key={l.label} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <div style={{ height: "1px", width: "20px", background: l.color }} />

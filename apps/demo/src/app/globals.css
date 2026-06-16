@@ -76,7 +76,7 @@
   --nyx-ease-exit: cubic-bezier(0.4, 0, 1, 1);
 }
 
-/* Tailwind v4 design tokens — wires our css variables into utility classes */
+/* Tailwind v4 design tokens - wires our css variables into utility classes */
 @theme inline {
   --color-nyx-ink: var(--nyx-ink);
   --color-nyx-chalk: var(--nyx-chalk);
@@ -120,7 +120,7 @@ body {
   line-height: 1.55;
 }
 
-/* Gate-style vertical pixel grid — used on landing + architecture pages */
+/* Gate-style vertical pixel grid - used on landing + architecture pages */
 .nyx-pixel-grid {
   background-image: repeating-linear-gradient(
     to right,
@@ -131,14 +131,14 @@ body {
   );
 }
 
-/* Light "chalk" surface used by /dapp — opt-in via `data-theme="chalk"` on a wrapper. */
+/* Light "chalk" surface used by /dapp - opt-in via `data-theme="chalk"` on a wrapper. */
 [data-theme="chalk"] {
   background: var(--nyx-chalk);
   color: var(--nyx-ink);
 }
 
 /* ---------------------------------------------------------------------------
- * Motion primitives — `rise` (entrance) and `orbit` (loading), straight from
+ * Motion primitives - `rise` (entrance) and `orbit` (loading), straight from
  * design-system/brand-guidelines.html.
  * ------------------------------------------------------------------------- */
 @keyframes nyx-rise {
@@ -246,7 +246,7 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
- * Docs dark mode — toggled via .docs-dark on #docs-root
+ * Docs dark mode - toggled via .docs-dark on #docs-root
  * Nav + footer dark overrides (both use tone="chalk" inline styles in docs)
  * ------------------------------------------------------------------------- */
 .docs-dark header:not(.nyx-doc-article-header) {
@@ -926,8 +926,8 @@ body {
 
 /* ---------------------------------------------------------------------------
  * Backdrops
- *   .nyx-grid    — institutional dotted grid (used on landing background)
- *   .nyx-aurora  — soft cobalt glow behind hero
+ *   .nyx-grid - institutional dotted grid (used on landing background)
+ *   .nyx-aurora - soft cobalt glow behind hero
  * ------------------------------------------------------------------------- */
 .nyx-grid {
   background-image:
@@ -956,7 +956,7 @@ body {
   z-index: 0;
 }
 
-/* horizon line — section divider that echoes the brand mark */
+/* horizon line - section divider that echoes the brand mark */
 .nyx-horizon {
   position: relative;
   height: 1px;
@@ -983,7 +983,7 @@ body {
   animation: nyx-scanline 2.4s linear infinite;
 }
 
-/* Wallet adapter button — override purple with official Cobalt accent */
+/* Wallet adapter button - override purple with official Cobalt accent */
 button.wallet-adapter-button,
 button.wallet-adapter-button-trigger {
   background: var(--nyx-accent-soft) !important;
@@ -1021,7 +1021,7 @@ button.wallet-adapter-button-trigger .wallet-adapter-button-start-icon {
   to { stroke-dashoffset: -100; }
 }
 
-/* Reduce motion — respect system preference */
+/* Reduce motion - respect system preference */
 @media (prefers-reduced-motion: reduce) {
   .nyx-rise,
   .nyx-pulse,

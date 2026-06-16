@@ -259,7 +259,7 @@ export default function Home() {
             >
               <div style={{ maxWidth: "28rem" }}>
                 <p style={{ margin: "0 0 0.75rem", fontSize: "13px", color: "var(--chalk-dim)", lineHeight: 1.7 }}>
-                  A privacy-preserving order book where intent is hidden inside attested hardware and every fill settles trustlessly on Solana — verified, never trusted.
+                  A privacy-preserving order book where intent is hidden inside attested hardware and every fill settles trustlessly on Solana - verified, never trusted.
                 </p>
                 <p style={{ margin: 0, fontSize: "11px", color: "var(--chalk-mute)", lineHeight: 1.75 }}>
                   Built for active traders, market makers, and institutions that need discretion without giving up custody or auditability.
@@ -293,7 +293,7 @@ export default function Home() {
         <div className="line"></div>
       </div>
 
-      {/* ===================== SECTION 1 — THE THIRD OPTION ===================== */}
+      {/* ===================== SECTION 1 - THE THIRD OPTION ===================== */}
       <section className="section" id="third-option">
         <div className="layout-line-left"></div>
         <div className="layout-line-right"></div>
@@ -308,7 +308,7 @@ export default function Home() {
               have to trust.
             </h2>
             <p className="lede">
-              Public order books leak every intention to bots and competitors. Off-chain dark pools take your custody. Darknyx is neither — orders meet inside an attested enclave the operator cannot read, and funds only ever move under a proof verified on Solana.
+              Public order books leak every intention to bots and competitors. Off-chain dark pools take your custody. Darknyx is neither - orders meet inside an attested enclave the operator cannot read, and funds only ever move under a proof verified on Solana.
             </p>
           </div>
 
@@ -321,7 +321,7 @@ export default function Home() {
                 until they clear.
               </h3>
               <p>
-                Side, size, and limit price are visible only to the enclave — never in a mempool, log, or account an observer can read before settlement.
+                Side, size, and limit price are visible only to the enclave - never in a mempool, log, or account an observer can read before settlement.
               </p>
               <div className="rule"></div>
             </div>
@@ -345,7 +345,7 @@ export default function Home() {
                 be checked.
               </h3>
               <p>
-                Every fill lands on-chain bound to a validity proof and the attested TEE signature — auditable by anyone, without exposing your strategy.
+                Every fill lands on-chain bound to a validity proof and the attested TEE signature - auditable by anyone, without exposing your strategy.
               </p>
               <div className="rule"></div>
             </div>
@@ -581,7 +581,6 @@ export default function Home() {
                 <tr>
                   <th>Dimension</th>
                   <th>Darknyx</th>
-                  <th>MPC Pools (e.g. Renegade)</th>
                   <th>Public DEXs / CLOBs</th>
                   <th>Centralized Exchanges</th>
                 </tr>
@@ -590,35 +589,30 @@ export default function Home() {
                 <tr>
                   <td><b>Order Privacy</b></td>
                   <td><span className="highlight">Hidden (In-TEE)</span></td>
-                  <td>Hidden (MPC matches)</td>
                   <td>Public (Front-runnable)</td>
                   <td>Visible to operator</td>
                 </tr>
                 <tr>
                   <td><b>Custody Risk</b></td>
-                  <td><span className="highlight">Zero (Solana Vault)</span></td>
-                  <td>Zero (On-chain Vault)</td>
+                  <td><span className="highlight">Zero (ZK proofs)</span></td>
                   <td>Zero (On-chain)</td>
                   <td>Total operator custody</td>
                 </tr>
                 <tr>
                   <td><b>Matching Speed</b></td>
                   <td><span className="highlight">Sub-millisecond</span></td>
-                  <td>Slow (100ms - 1s MPC overhead)</td>
                   <td>Block-level delay</td>
                   <td>Sub-millisecond</td>
                 </tr>
                 <tr>
                   <td><b>Liquidity Access</b></td>
                   <td><span className="highlight">Direct (Solana assets)</span></td>
-                  <td>Isolated / Bridged</td>
                   <td>Direct L1 liquidity</td>
                   <td>Deep custodian book</td>
                 </tr>
                 <tr>
                   <td><b>Moat / Defensibility</b></td>
                   <td><span className="highlight">Batched private settlement</span></td>
-                  <td>MPC cryptography</td>
                   <td>Network effects</td>
                   <td>Brand & licensing</td>
                 </tr>

@@ -27,7 +27,7 @@ export function WithdrawProofPanel({ scenario }: WithdrawProofPanelProps) {
   return (
     <section className="w-full rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
       <div className="mb-5">
-        <h2 className="text-xl font-semibold text-zinc-900">Panel C — Withdraw Proof + Replay Guard</h2>
+        <h2 className="text-xl font-semibold text-zinc-900">Panel C - Withdraw Proof + Replay Guard</h2>
         <p className="mt-1 text-sm text-zinc-600">
           Interactive demo mode using pre-recorded devnet evidence from the over-collateralised scenario.
         </p>
@@ -79,7 +79,7 @@ export function WithdrawProofPanel({ scenario }: WithdrawProofPanelProps) {
           ) : (
             <div>
               <p className="text-sm font-semibold text-rose-700">
-                {scenario.withdrawReplay.replayErrorCode} — {scenario.withdrawReplay.replayErrorMessage}
+                {scenario.withdrawReplay.replayErrorCode} - {scenario.withdrawReplay.replayErrorMessage}
               </p>
               <p className="mt-2 text-xs text-zinc-600">
                 Nullifier: {scenario.withdrawReplay.nullifierHex}

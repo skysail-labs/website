@@ -10,7 +10,7 @@ const NOT_YET = [
   { title: "On-chain TDX quote verification (v3)", body: "v2 uses admin multisig + dstack-verifier off-chain. On-chain dcap-qvl BPF port deferred to v3." },
   { title: "Real Phase-2 Groth16 trusted setup", body: "All circuits use a deterministic dev contribution; a real MPC ceremony with ≥3 contributors is required before mainnet." },
   { title: "Browser prover (WebProverSuite)", body: "Replace snarkjs shell-out with an in-process WASM prover for VALID_WALLET_CREATE + VALID_SPEND in the browser." },
-  { title: "Light Protocol compressed nullifiers", body: "Replace NullifierEntry + ConsumedNoteEntry PDAs with compressed accounts — ~60× cheaper per settle at scale." },
+  { title: "Light Protocol compressed nullifiers", body: "Replace NullifierEntry + ConsumedNoteEntry PDAs with compressed accounts - ~60× cheaper per settle at scale." },
   { title: "Real protocol-owner keypair for fee withdrawal", body: "Fee notes accumulate but can't be spent until a real protocol-owner key is wired in." },
 ];
 
@@ -26,7 +26,7 @@ export function SecurityAndRoadmap() {
         </div>
       </div>
 
-      {/* Body — two equal columns */}
+      {/* Body - two equal columns */}
       <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
         {/* Security */}
         <div style={{ flex: 1, borderRight: "1px solid rgba(255,255,255,0.04)", display: "flex", flexDirection: "column", overflow: "hidden" }}>

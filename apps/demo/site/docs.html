@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Darknyx Docs — Introduction</title>
+<title>Darknyx Docs - Introduction</title>
 <link rel="stylesheet" href="site.css">
 </head>
 <body>
@@ -87,12 +87,12 @@
 
     <div class="tldr">
       <div class="l">TL;DR</div>
-      <p>Darknyx is a privacy-preserving central-limit-order-book darkpool on Solana. Hidden orders meet inside an attested Intel TDX confidential VM; settlement happens trustlessly on Solana with zero-knowledge proofs binding every transfer to a verified note commitment. The on-chain footprint is custody and proofs — matching is invisible to mempools, sequencers, and validators.</p>
+      <p>Darknyx is a privacy-preserving central-limit-order-book darkpool on Solana. Hidden orders meet inside an attested Intel TDX confidential VM; settlement happens trustlessly on Solana with zero-knowledge proofs binding every transfer to a verified note commitment. The on-chain footprint is custody and proofs - matching is invisible to mempools, sequencers, and validators.</p>
     </div>
 
     <div class="prose">
       <h2 id="problem">The problem Darknyx solves</h2>
-      <p>Public order books bleed information. Every limit order resting on a DEX is a free signal to a sandwich bot, a market maker rebalancing inventory against you, or a counterparty looking to wait you out. The literature calls it <strong>informational alpha leakage</strong>; on-chain order books make this worse, not better, than centralized venues — because the leak is permanent, public, and indexed.</p>
+      <p>Public order books bleed information. Every limit order resting on a DEX is a free signal to a sandwich bot, a market maker rebalancing inventory against you, or a counterparty looking to wait you out. The literature calls it <strong>informational alpha leakage</strong>; on-chain order books make this worse, not better, than centralized venues - because the leak is permanent, public, and indexed.</p>
       <p>The traditional response is to take the order off-chain entirely: quote-driven RFQ venues, off-chain matching engines, or dark pools operated by a custodian. These solutions cost custody risk. The operator can see every order, every fill, and every position. They can front-run, they can leak, they can be subpoenaed, they can be hacked. The Mt. Gox shape never goes away.</p>
       <p><strong>Darknyx is the third option.</strong> Orders enter an enclave whose code is attested and whose key material is cryptographically gated to a specific compiled image. The operator cannot read order intent inside the enclave; the enclave cannot exit funds without a zero-knowledge proof verified on Solana.</p>
 
@@ -103,10 +103,10 @@
       <p>Order side, size, and limit price are visible only to the TEE. They are not in any Solana transaction, log, or account an external observer can read. The hardware attestation prevents code substitution, and the on-chain verifier rejects any settlement that doesn't come from the attested binary.</p>
 
       <h3><span class="num">2</span>Trader privacy</h3>
-      <p>A user's Solana wallet pubkey is never a parameter in any Darknyx API request. Users authenticate to the TEE with a separate trading-key keypair — freshly generated client-side. On-chain settlement instructions carry only the trading key; the link to the wallet exists only in the user's own withdraw-time proof, where the spending key never leaves their device.</p>
+      <p>A user's Solana wallet pubkey is never a parameter in any Darknyx API request. Users authenticate to the TEE with a separate trading-key keypair - freshly generated client-side. On-chain settlement instructions carry only the trading key; the link to the wallet exists only in the user's own withdraw-time proof, where the spending key never leaves their device.</p>
 
       <h3><span class="num">3</span>Position privacy</h3>
-      <p>Notes — the UTXO-style commitments Darknyx uses for assets — are stored on-chain only as Poseidon hashes. Owner, value, and token are bound inside the hash; nothing about them is observable on-chain until the user themselves spends the note via a zero-knowledge proof.</p>
+      <p>Notes - the UTXO-style commitments Darknyx uses for assets - are stored on-chain only as Poseidon hashes. Owner, value, and token are bound inside the hash; nothing about them is observable on-chain until the user themselves spends the note via a zero-knowledge proof.</p>
 
       <h2 id="who">Who Darknyx is for</h2>
       <table class="doc-table">
@@ -125,7 +125,7 @@
       <div class="code-panel">
         <div class="bar"><i></i><i></i><i></i><span>three-layer model</span></div>
 <pre>┌──────────────────────────────────────────────────────────┐
-│  <b>CUSTODY LAYER</b>  — Solana program (vault)              │
+│  <b>CUSTODY LAYER</b> - Solana program (vault)              │
 │  Holds funds. Owns the Merkle tree of note commitments.  │
 │  Verifies every withdraw with a <b>VALID_SPEND</b> proof and  │
 │  every settlement with a <b>VALID_MATCH_BATCH</b> proof.       │
@@ -134,7 +134,7 @@
                         ▲   signed settle tx (attested TEE)
                         │
 ┌──────────────────────────────────────────────────────────┐
-│  <b>MATCHING LAYER</b>  — Intel TDX Confidential VM           │
+│  <b>MATCHING LAYER</b> - Intel TDX Confidential VM           │
 │  Runs the order book, the matching engine, the in-TEE    │
 │  prover, and the settle scheduler. A <span class="g">frequent-batch</span>    │
 │  <span class="g">auction</span> clears every 2s. Only the compiled image whose │
@@ -143,7 +143,7 @@
                         ▲   signed order intents (Ed25519)
                         │
 ┌──────────────────────────────────────────────────────────┐
-│  <b>CLIENT LAYER</b>  — TypeScript SDK                        │
+│  <b>CLIENT LAYER</b> - TypeScript SDK                        │
 │  Generates ZK proofs locally, signs canonical orders,    │
 │  attests the TEE before trusting it, and manages three   │
 │  identities: wallet · trading key · API credentials.     │

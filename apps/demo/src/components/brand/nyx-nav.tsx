@@ -10,7 +10,7 @@ interface NyxNavProps {
    * Set to null to show a non-clickable status badge.
    */
   launchHref?: string | null;
-  /** Active page hint — applied to nav links for subtle emphasis. */
+  /** Active page hint - applied to nav links for subtle emphasis. */
   active?: "home" | "docs" | "dapp" | null;
 }
 

@@ -4,12 +4,12 @@ interface NyxMarkProps {
   size?: number;
   className?: string;
   style?: CSSProperties;
-  /** Render the half-moon as if rising — clip starts below the horizon and slides up. */
+  /** Render the half-moon as if rising - clip starts below the horizon and slides up. */
   rising?: boolean;
 }
 
 /**
- * The DarkNyx "Horizon" mark — half-moon settling onto two horizon lines.
+ * The DarkNyx "Horizon" mark - half-moon settling onto two horizon lines.
  * Inherits `currentColor` so callers can `text-nyx-chalk` / `text-nyx-ink`.
  *
  * Source: apps/demo/design-system/svg/nyx-mark.svg
