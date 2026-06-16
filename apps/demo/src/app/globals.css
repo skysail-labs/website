@@ -895,11 +895,33 @@ body {
   display: block;
   margin: 0 auto;
 }
+
+/* Align text rendering properties to guarantee no clipping or wrapping mismatches */
+.nyx-doc-mermaid svg text,
+.nyx-doc-mermaid svg foreignObject,
+.nyx-doc-mermaid svg foreignObject *,
+.nyx-doc-mermaid svg span,
+.nyx-doc-mermaid svg div {
+  font-family: var(--font-space-grotesk), 'Inter', system-ui, -apple-system, sans-serif !important;
+  line-height: 1.25 !important;
+  font-size: 13.5px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 .nyx-doc-mermaid :is(.node rect, .node polygon, .node circle, .node path) {
   stroke: rgb(214, 211, 209) !important;
 }
 .nyx-doc-mermaid .node .label {
   color: rgb(41, 37, 36) !important;
+}
+
+/* Dark mode overrides */
+.docs-dark .nyx-doc-mermaid :is(.node rect, .node polygon, .node circle, .node path) {
+  stroke: rgba(243, 239, 252, 0.2) !important;
+}
+.docs-dark .nyx-doc-mermaid .node .label {
+  color: var(--nyx-chalk) !important;
 }
 
 /* ---------------------------------------------------------------------------
@@ -1080,4 +1102,17 @@ button.wallet-adapter-button-trigger .wallet-adapter-button-start-icon {
 }
 [style*="fill: rgba(217, 104, 32"], [style*="fill: rgba(217,104,32"] {
   fill: var(--nyx-accent-soft) !important;
+}
+
+/* Category cards rounded corners */
+.card,
+.theme-doc-card,
+[class*='docCard_'] {
+  border-radius: 12px !important;
+}
+
+/* Admonitions rounded corners */
+.admonition,
+.alert {
+  border-radius: 12px !important;
 }

@@ -27,18 +27,18 @@ final authority on whether a settlement is correct.
 
 Settlement runs as a short sequence of on-chain transactions per batch:
 
-```text
-   ┌─ A ─ lock ─────────┐  pin the input notes of every match in the batch
-   │                     │  (a per-note lock blocks any double-commit)
-   ▼                     │
-   ┌─ B ─ verify ───────┐│  verify the batch's zero-knowledge match proof
-   │                     ││  on-chain (one proof covers all matches in the batch)
-   ▼                     ▼│
-   ┌─ C ─ settle ───────┐ │  execute the atomic transfers: nullify inputs,
-   │   (per match)       │ │  append output notes (filled asset, change, fees)
-   ▼                     ▼ │
-   ┌─ D ─ close ────────┐  │  reclaim the batch marker once every match settled
-   └─────────────────────┘ ┘
+```mermaid
+flowchart TD
+    A["A. LOCK<br/>(pins input notes of every match in the batch)"]
+    B["B. VERIFY<br/>(verifies batch's ZK match proof on-chain)"]
+    C["C. SETTLE (per match)<br/>(nullifies inputs, appends outputs)"]
+    D["D. CLOSE<br/>(reclaims batch marker & releases lock state)"]
+
+    A -->|"pins notes"| B
+    B -->|"verifies proof"| C
+    C -->|"completes matches"| D
+    
+    A -.->|"locks active until settled"| C
 ```
 
 | Stage | What it does |

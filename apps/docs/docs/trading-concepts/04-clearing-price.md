@@ -21,19 +21,15 @@ cross and computes a **single clearing price** for that batch, anchored to the
 market's oracle reference. Every match in the batch — both sides — settles at that
 one price.
 
-```text
-        bids                     asks
-   ┌──────────────┐         ┌──────────────┐
-   │ resting bids │         │ resting asks │
-   │ that cross   │         │ that cross   │
-   └──────┬───────┘         └──────┬───────┘
-          │                        │
-          └────────────┬───────────┘
-                       ▼
-        clearing price = oracle-anchored, within the circuit-breaker band
-                       │
-                       ▼
-        every match in the batch settles at this single price
+```mermaid
+flowchart TD
+    BIDS["resting bids that cross"]
+    ASKS["resting asks that cross"]
+    CLEARING["clearing price = oracle-anchored<br/>(within the circuit-breaker band)"]
+    SETTLE["every match in the batch settles at this single price"]
+
+    BIDS & ASKS --> CLEARING
+    CLEARING --> SETTLE
 ```
 
 A trader's `price_limit` is a *bound*, not the execution price: a bid fills only

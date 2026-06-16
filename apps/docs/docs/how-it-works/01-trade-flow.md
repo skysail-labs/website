@@ -16,26 +16,27 @@ Solana transaction; only the *result* settles.
 
 ## Order-to-settlement lifecycle
 
-```text
- ┌────────┐   deposit    ┌───────────────┐   sign+submit    ┌───────────────┐
- │ Wallet │ ───────────► │  Vault (L1)   │                  │   Client/SDK  │
- └────────┘  funds→note  │  custody +    │ ◄─── input proof │  build note,  │
-                         │  note tree    │      + signature │  proof, order │
-                         └───────┬───────┘                  └───────┬───────┘
-                                 │ note exists in tree              │ order (private)
-                                 │                                  ▼
-                                 │                          ┌───────────────┐
-                                 │                          │   Enclave     │
-                                 │                          │  (matching)   │
-                                 │                          │  batch auction│
-                                 │   settle txs + ZK proof  │  prove matches│
-                                 └◄─────────────────────────┤  settle on L1 │
-                                                            └───────┬───────┘
-                                                                    │ fill memos
-                                                                    ▼ + order events
-                                                              ┌───────────┐
-                                                              │  Client   │
-                                                              └───────────┘
+```mermaid
+flowchart TD
+    subgraph L1 ["Solana L1 (On-Chain)"]
+        VAULT["Vault (L1)<br/>- Custody of funds<br/>- Note tree / commitments"]
+    end
+
+    subgraph TEE ["TEE Enclave (Confidential VM)"]
+        ENCLAVE["Enclave (matching)<br/>- Batch auction<br/>- Prove matches<br/>- Settle on L1"]
+    end
+
+    subgraph ClientSpace ["Client / SDK"]
+        WALLET["Wallet"]
+        SDK["Client / SDK<br/>- Build note & proof<br/>- Sign order"]
+        CLIENT["Client<br/>- Receive fill memos & events"]
+    end
+
+    WALLET -->|"deposit (funds → note)"| VAULT
+    SDK -->|"signed order + input proof<br/>(via RA-TLS HTTPS/WS)"| ENCLAVE
+    VAULT -->|"verify note exists in tree"| ENCLAVE
+    ENCLAVE -->|"settle txs + ZK proof"| VAULT
+    ENCLAVE -->|"fill memos + order events"| CLIENT
 ```
 
 ## Step by step

@@ -53,26 +53,10 @@ sees enough to deanonymize your trading.
 
 Nyx is three layers that compose into one trust chain.
 
-```text
-┌──────────────────────────────────────────────────────────────┐
-│  CUSTODY — the Solana "vault" program                         │
-│  Holds funds. Owns the Merkle tree of note commitments,       │
-│  the nullifier set, and the Groth16 verifier. The only        │
-│  layer that can move tokens — and only against a proof.       │
-└──────────────────────────────────────────────────────────────┘
-                         ▲  attested, signed settle txs + ZK proofs
-┌──────────────────────────────────────────────────────────────┐
-│  MATCHING — the in-enclave engine (the "CVM")                 │
-│  Takes hidden orders, runs a uniform-clearing-price batch     │
-│  auction, and drives the settlement transactions directly.    │
-│  Never sees your spending key; cannot move funds itself.      │
-└──────────────────────────────────────────────────────────────┘
-                         ▲  signed orders + ZK input proofs over HTTPS/WS
-┌──────────────────────────────────────────────────────────────┐
-│  CLIENT — your wallet + the SDK                               │
-│  Builds notes, generates the input proofs, signs orders with  │
-│  a trading key, and verifies the enclave's attestation.       │
-└──────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    CLIENT["Client<br/>(Wallet + SDK)"] -->|"signed orders & ZK input proofs<br/>(HTTPS/WS)"| MATCHING["Matching<br/>(Confidential VM)"]
+    MATCHING -->|"attested settle txs & ZK proofs"| CUSTODY["Custody<br/>(Solana Vault)"]
 ```
 
 - **Custody (Solana).** A single program owns custody: the incremental Merkle

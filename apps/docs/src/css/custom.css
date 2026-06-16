@@ -48,7 +48,7 @@
   --ifm-global-shadow-lw: none;         /* system avoids drop shadows */
   --ifm-global-shadow-md: none;
   --ifm-global-shadow-tl: none;
-  --ifm-card-border-radius: var(--nyx-r-xs);
+  --ifm-card-border-radius: 12px;
 
   --docusaurus-highlighted-code-line-bg: oklch(0.62 0.14 260 / 0.12);
 }
@@ -277,7 +277,8 @@ article header h1 {
 }
 
 /* ─── Admonitions ──────────────────────────────────────── */
-.admonition {
+.admonition,
+.alert {
   border-radius: 12px !important;
   border: 1px solid transparent !important;
   padding: 16px 20px;
@@ -687,4 +688,75 @@ div:has(> .prism-code.language-text) .codeBlockTitle_Ktv7 {
     animation-duration: 1ms !important;
     transition-duration: 1ms !important;
   }
+}
+
+/* ─── Mermaid overrides and resets ─────────────────────── */
+.nyx-doc-mermaid,
+.docusaurus-mermaid-container,
+.mermaid {
+  overflow-x: auto;
+  padding: 14px;
+}
+.nyx-doc-mermaid svg,
+.docusaurus-mermaid-container svg,
+.mermaid svg {
+  width: 100%;
+  max-width: 620px;
+  min-width: min(520px, 100%);
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Align text rendering properties to guarantee no clipping or wrapping mismatches */
+.nyx-doc-mermaid svg text,
+.nyx-doc-mermaid svg foreignObject,
+.nyx-doc-mermaid svg foreignObject *,
+.nyx-doc-mermaid svg span,
+.nyx-doc-mermaid svg div,
+.docusaurus-mermaid-container svg text,
+.docusaurus-mermaid-container svg foreignObject,
+.docusaurus-mermaid-container svg foreignObject *,
+.docusaurus-mermaid-container svg span,
+.docusaurus-mermaid-container svg div,
+.mermaid svg text,
+.mermaid svg foreignObject,
+.mermaid svg foreignObject *,
+.mermaid svg span,
+.mermaid svg div {
+  font-family: "Space Grotesk", 'Inter', system-ui, -apple-system, sans-serif !important;
+  line-height: 1.25 !important;
+  font-size: 13.5px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.nyx-doc-mermaid :is(.node rect, .node polygon, .node circle, .node path),
+.docusaurus-mermaid-container :is(.node rect, .node polygon, .node circle, .node path),
+.mermaid :is(.node rect, .node polygon, .node circle, .node path) {
+  stroke: rgb(214, 211, 209) !important;
+}
+.nyx-doc-mermaid .node .label,
+.docusaurus-mermaid-container .node .label,
+.mermaid .node .label {
+  color: rgb(41, 37, 36) !important;
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] .nyx-doc-mermaid :is(.node rect, .node polygon, .node circle, .node path),
+[data-theme="dark"] .docusaurus-mermaid-container :is(.node rect, .node polygon, .node circle, .node path),
+[data-theme="dark"] .mermaid :is(.node rect, .node polygon, .node circle, .node path) {
+  stroke: rgba(245, 243, 238, 0.2) !important;
+}
+[data-theme="dark"] .nyx-doc-mermaid .node .label,
+[data-theme="dark"] .docusaurus-mermaid-container .node .label,
+[data-theme="dark"] .mermaid .node .label {
+  color: var(--nyx-chalk) !important;
+}
+
+/* Category cards rounded corners */
+.card,
+.theme-doc-card,
+[class*='docCard_'] {
+  border-radius: 12px !important;
 }

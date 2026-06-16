@@ -39,19 +39,17 @@ certificate key, the Ed25519 key it signs settlements with — are derived throu
 key-management flow that ties them to the enclave's measurement. A different
 image produces different keys.
 
-```text
-   measured image (compose hash)
-            │  key derivation bound to the measurement
-            ▼
-   ┌──────────────────────────────────────────┐
-   │  enclave keys                              │
-   │   • TLS cert key (terminates TLS inside)   │
-   │   • Ed25519 settlement signer (on-chain)   │
-   └──────────────────────────────────────────┘
-            │
-   swap the code → different measurement → different keys →
-   can't decrypt the TLS channel, can't sign a settlement the
-   on-chain program accepts
+```mermaid
+flowchart TD
+    subgraph ValidFlow ["Valid Path"]
+        IMAGE["measured image (compose hash)"] -->|"key derivation bound to measurement"| KEYS["enclave keys<br/>- TLS cert key (terminates TLS inside)<br/>- Ed25519 settlement signer (on-chain)"]
+    end
+
+    subgraph InvalidFlow ["Tampered Path"]
+        SWAP["swap the code"] --> MEASUREMENT["different measurement"]
+        MEASUREMENT -->|"produces"| DIFF_KEYS["different keys"]
+        DIFF_KEYS --> CONSEQUENCE["can't decrypt TLS channel<br/>&<br/>can't sign settlement the on-chain program accepts"]
+    end
 ```
 
 This is what makes attestation actionable. It is not enough to *measure* the code;

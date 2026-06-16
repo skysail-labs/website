@@ -60,11 +60,15 @@ and produces no further events.
 
 ## Event flow
 
-```text
-order.place ──► (rests) ──► partially_filled ──► partially_filled ──► fully_filled
-                                                                       └── terminal
-            └──► (rests) ──► expired            (terminal)
-            └──► (rests) ──► cancelled          (terminal)
+```mermaid
+flowchart TD
+    PLACE["order.place"] --> RESTS1["(rests)"]
+    PLACE --> RESTS2["(rests)"]
+    PLACE --> RESTS3["(rests)"]
+
+    RESTS1 --> PF1["partially_filled"] --> PF2["partially_filled"] --> FF["fully_filled (terminal)"]
+    RESTS2 --> EXPIRED["expired (terminal)"]
+    RESTS3 --> CANCELLED["cancelled (terminal)"]
 ```
 
 A partial fill carries the residual size so you always know how much is still

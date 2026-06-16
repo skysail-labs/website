@@ -230,9 +230,6 @@ export default function Home() {
               <Link className="btn" href="/docs">
                 How Darknyx works <span className="arr">→</span>
               </Link>
-              <a className="btn ghost" href="#third-option">
-                The idea
-              </a>
             </div>
           </div>
         </div>
@@ -480,8 +477,8 @@ export default function Home() {
             </div>
 
             <div style={{ marginTop: "clamp(30px,4vw,40px)" }}>
-              <Link className="btn ghost" href="/docs/architecture-overview">
-                Read the architecture <span className="arr">→</span>
+              <Link className="btn ghost" href="/docs/category/how-it-works">
+                Learn how it works <span className="arr">→</span>
               </Link>
             </div>
           </div>

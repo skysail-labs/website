@@ -19,6 +19,7 @@ const config: Config = {
 
   onBrokenLinks: "warn",
   markdown: {
+    mermaid: true,
     hooks: {
       onBrokenMarkdownLinks: "warn",
     },
@@ -47,6 +48,7 @@ const config: Config = {
   ],
 
   themes: [
+    "@docusaurus/theme-mermaid",
     [
       "@easyops-cn/docusaurus-search-local",
       {

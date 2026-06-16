@@ -29,14 +29,21 @@ require handing the enclave the one secret the whole design keeps out of it.
 
 Instead, you reconstruct account state yourself:
 
-```text
-your spending key  +  the public Merkle tree of note commitments
-        │
-        ▼
-the notes you own  →  their amounts  →  your spendable balance
-        │
-        ▼
-which are unspent (no nullifier published)  →  what you can trade or withdraw
+```mermaid
+flowchart TD
+    KEY["your spending key"]
+    TREE["public Merkle tree of note commitments"]
+    OWN["the notes you own"]
+    AMOUNTS["their amounts"]
+    BALANCE["your spendable balance"]
+    UNSPENT["which are unspent (no nullifier published)"]
+    ACTION["what you can trade or withdraw"]
+
+    KEY & TREE --> OWN
+    OWN --> AMOUNTS
+    AMOUNTS --> BALANCE
+    OWN --> UNSPENT
+    UNSPENT --> ACTION
 ```
 
 This is the trustless design: the data you need is public, and only your keys
@@ -63,13 +70,15 @@ SDK method, not the raw tree endpoints. See
 A note moves through a small set of states, each enforced on-chain by a distinct
 record so a note can never be used twice:
 
-```text
- deposit            place order            settle / withdraw
-   │                    │                        │
-   ▼                    ▼                        ▼
- SPENDABLE  ───────►  LOCKED  ───────►  CONSUMED (and new notes created)
- (in tree,           (pinned by a       (nullified; its value now lives
-  no nullifier)       per-order lock)    in the output notes you own)
+```mermaid
+flowchart LR
+    DEPOSIT["deposit"] --> SPENDABLE
+    SPENDABLE -->|"place order"| LOCKED
+    LOCKED -->|"settle / withdraw"| CONSUMED
+
+    SPENDABLE["SPENDABLE<br/>(in tree, no nullifier)"]
+    LOCKED["LOCKED<br/>(pinned by a per-order lock)"]
+    CONSUMED["CONSUMED (and new notes created)<br/>(nullified; value lives in output notes)"]
 ```
 
 - **Spendable** — the note has an inclusion path in the current Merkle root and

@@ -35,14 +35,24 @@ tree's root is a single hash summarizing every note that exists. To use a note y
 prove, in zero knowledge, that it is a leaf under the current root — without
 revealing *which* leaf.
 
-```text
-                       root  (one hash over all notes)
-                      /    \
-                   …          …
-                 /   \      /   \
-              leaf  leaf  leaf  leaf …      ← each leaf is a note commitment
-               │
-               └─ your note: you hold a secret opening + an inclusion path
+```mermaid
+graph TD
+    ROOT["root (one hash over all notes)"]
+    L1["…"]
+    L2["…"]
+    LEAF1["leaf (note commitment)"]
+    LEAF2["leaf"]
+    LEAF3["leaf"]
+    LEAF4["leaf …"]
+
+    ROOT --> L1
+    ROOT --> L2
+    L1 --> LEAF1
+    L1 --> LEAF2
+    L2 --> LEAF3
+    L2 --> LEAF4
+
+    NOTE["your note: you hold a secret opening + an inclusion path"] -.-> LEAF1
 ```
 
 The tree is **sharded** for settlement throughput — several independent subtrees,
@@ -62,10 +72,11 @@ derived from it is published on-chain. The nullifier is computed so that:
   nullifier, and the second spend is rejected because the nullifier already
   exists.
 
-```text
-spend note ──► publish nullifier(note)
-                     │
-   try to spend it again ──► same nullifier already on-chain ──► rejected
+```mermaid
+flowchart TD
+    SPEND["spend note"] --> PUB["publish nullifier(note)"]
+    RETRY["try to spend it again"] --> COLLISION{"same nullifier already on-chain?"}
+    COLLISION -->|Yes| REJECTED["rejected (prevent double-spend)"]
 ```
 
 This is the double-spend guard, and it is enforced on-chain independently of the
@@ -98,17 +109,21 @@ much beyond what a withdrawal necessarily reveals.
 
 ## The lifecycle, end to end
 
-```text
- deposit ──► note appended to the tree (SPENDABLE)
-                │
- place order ──► note pinned by a per-order lock (LOCKED)
-                │
- settle ──────► input nullified (CONSUMED); outputs appended:
-                  • your filled asset (a new note)
-                  • a change note for any unfilled remainder
-                  • fee notes
-                │
- withdraw ────► note nullified; tokens released to your wallet
+```mermaid
+flowchart TD
+    deposit(["deposit"]) --> SPENDABLE["SPENDABLE<br/>(note appended to tree)"]
+    SPENDABLE -->|"place order"| LOCKED["LOCKED<br/>(pinned by per-order lock)"]
+    LOCKED -->|"settle"| CONSUMED["CONSUMED<br/>(input nullified)"]
+    SPENDABLE -->|"withdraw"| WITHDRAWN["WITHDRAWN<br/>(note nullified; tokens released to wallet)"]
+
+    subgraph Outputs ["New Output Notes Appended"]
+        filled["filled asset (new note)"]
+        change["change note (unfilled remainder)"]
+        fee["fee notes"]
+    end
+
+    CONSUMED --> Outputs
+    Outputs -->|"become"| SPENDABLE
 ```
 
 Every transition is gated on-chain by a distinct record — a wallet entry, a

@@ -27,13 +27,12 @@ TLS therefore terminates *inside* the confidential VM — the same boundary that
 runs the matching engine. There is no intermediate hop that sees plaintext, so
 there is no need for a second encryption layer:
 
-```text
-        TLS (key generated inside the enclave, never exported)
-client ───────────────────────────────────────────────► ┌───────────────┐
-                                                         │  Confidential │
-                  plaintext exists ONLY here ──────────► │  VM (enclave) │
-                                                         └───────────────┘
-        no gateway / load balancer in the trust path
+```mermaid
+flowchart LR
+    CLIENT["client"]
+    ENCLAVE["Confidential VM (enclave)<br/>plaintext exists ONLY here"]
+
+    CLIENT -->|"TLS (key generated inside enclave, never exported)<br/>(no gateway/load balancer in trust path)"| ENCLAVE
 ```
 
 What this gives you:
