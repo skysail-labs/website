@@ -164,7 +164,7 @@ img.scene-art { object-fit: cover; object-position: bottom; }
 }
 .nav.scrolled { top: 0; background: rgba(20, 18, 29, 0.72); backdrop-filter: blur(14px) saturate(1.2); border-bottom-color: var(--line); }
 .nav .lock { display: flex; align-items: center; gap: 11px; flex: 1; }
-.nav .lock .mark { width: 26px; height: 26px; }
+.nav .lock .mark { width: 26px; height: 26px; transform: translateY(4px); }
 .nav .lock b { font-weight: 600; font-size: 18px; letter-spacing: -0.04em; }
 .nav .links { display: flex; align-items: center; gap: 30px; }
 .nav .links a { font: 500 11px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--chalk-dim); transition: color .2s; }
@@ -383,7 +383,7 @@ img.scene-art { object-fit: cover; object-position: bottom; }
 .docs { display: grid; grid-template-columns: 280px minmax(0,1fr) 240px; min-height: 100vh; }
 .docs-side { position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto; border-right: 1px solid var(--line); background: var(--ink-1); padding: 0 0 40px; }
 .docs-side .brand { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 11px; padding: 20px 26px; background: var(--ink-1); border-bottom: 1px solid var(--line); }
-.docs-side .brand .mark { width: 24px; height: 24px; }
+.docs-side .brand .mark { width: 24px; height: 24px; transform: translateY(4px); }
 .docs-side .brand b { font-weight: 600; font-size: 16px; letter-spacing: -0.04em; }
 .docs-side .brand small { font: 500 9px/1 var(--mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--cobalt-bright); padding: 3px 7px; border: 1px solid var(--cobalt-line); border-radius: 3px; margin-left: auto; }
 .docs-search { margin: 18px 22px; }
