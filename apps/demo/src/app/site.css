@@ -164,7 +164,7 @@ img.scene-art { object-fit: cover; object-position: bottom; }
 }
 .nav.scrolled { top: 0; background: rgba(20, 18, 29, 0.72); backdrop-filter: blur(14px) saturate(1.2); border-bottom-color: var(--line); }
 .nav .lock { display: flex; align-items: center; gap: 11px; flex: 1; }
-.nav .lock .mark { width: 26px; height: 26px; }
+.nav .lock .mark { width: 26px; height: 26px; transform: translateY(4px); }
 .nav .lock b { font-weight: 600; font-size: 18px; letter-spacing: -0.04em; }
 .nav .links { display: flex; align-items: center; gap: 30px; }
 .nav .links a { font: 500 11px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--chalk-dim); transition: color .2s; }
@@ -175,14 +175,16 @@ img.scene-art { object-fit: cover; object-position: bottom; }
 /* ============================================================
    LANDING - HERO
    ============================================================ */
-.hero { position: relative; min-height: 100svh; display: flex; align-items: center; overflow: hidden; }
+.hero { position: relative; min-height: 100svh; display: flex; align-items: center; }
 .hero-bg { position: absolute; inset: 0; z-index: 0; }
 .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center; mix-blend-mode: screen; opacity: 0.75; filter: brightness(1.2) contrast(1.1); }
+.hero-parallax { background-attachment: fixed; background-size: cover; background-position: center; }
+@media (prefers-reduced-motion: reduce) { .hero-parallax { background-attachment: scroll; } }
 .hero-scrim {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
     radial-gradient(120% 90% at 50% 38%, transparent 0%, rgba(20, 18, 29, 0.30) 48%, rgba(20, 18, 29, 0.92) 100%),
-    linear-gradient(180deg, rgba(20, 18, 29, 0.55) 0%, transparent 22%, transparent 55%, rgba(20, 18, 29, 0.95) 100%);
+    linear-gradient(180deg, rgba(20, 18, 29, 0.55) 0%, transparent 22%, transparent 80%, rgba(20, 18, 29, 0.75) 100%);
 }
 .hero-glow { position: absolute; z-index: 1; top: 26%; left: 50%; width: 520px; height: 520px; transform: translate(-50%,-50%);
   background: radial-gradient(circle, oklch(0.64 0.15 262 / 0.22), transparent 62%); pointer-events: none; filter: blur(8px); }
@@ -225,10 +227,10 @@ img.scene-art { object-fit: cover; object-position: bottom; }
    LANDING - SECTIONS
    ============================================================ */
 .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(20px, 5vw, 56px); }
-.section { position: relative; padding: clamp(72px, 11vw, 132px) 0; background: #08080c; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+.section { position: relative; z-index: 1; padding: clamp(72px, 11vw, 132px) 0; background: #08080c; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
 #third-option { background: var(--ink); }
 #architecture { background: #08080c; }
-#how { background: var(--ink); }
+#how { background: var(--ink); overflow: hidden; }
 #differentiation { background: #08080c; }
 
 /* faint scene cresting a horizon between sections */
@@ -330,6 +332,8 @@ img.scene-art { object-fit: cover; object-position: bottom; }
   width: 100%;
   padding: 0 clamp(20px, 5vw, 56px);
   background: #08080c;
+  position: relative;
+  z-index: 1;
 }
 .section-divider .line {
   flex: 1;
@@ -379,7 +383,7 @@ img.scene-art { object-fit: cover; object-position: bottom; }
 .docs { display: grid; grid-template-columns: 280px minmax(0,1fr) 240px; min-height: 100vh; }
 .docs-side { position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto; border-right: 1px solid var(--line); background: var(--ink-1); padding: 0 0 40px; }
 .docs-side .brand { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 11px; padding: 20px 26px; background: var(--ink-1); border-bottom: 1px solid var(--line); }
-.docs-side .brand .mark { width: 24px; height: 24px; }
+.docs-side .brand .mark { width: 24px; height: 24px; transform: translateY(4px); }
 .docs-side .brand b { font-weight: 600; font-size: 16px; letter-spacing: -0.04em; }
 .docs-side .brand small { font: 500 9px/1 var(--mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--cobalt-bright); padding: 3px 7px; border: 1px solid var(--cobalt-line); border-radius: 3px; margin-left: auto; }
 .docs-search { margin: 18px 22px; }

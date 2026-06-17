@@ -13,7 +13,7 @@
   --nyx-slate:    #6b6b74;
   --nyx-fog:      #aeacb0;
   --nyx-graphite: #1a1a20;
-  --nyx-accent:   oklch(0.62 0.14 260);
+  --nyx-accent:   oklch(0.72 0.10 82.35);
 
   /* Borders (from tokens: hairline = dark surface, rule = light surface) */
   --nyx-hairline: 1px solid rgba(245, 243, 238, 0.08);
@@ -29,13 +29,13 @@
   --nyx-ease:     cubic-bezier(0.2, 0, 0, 1);
 
   /* ── Docusaurus / Infima overrides — light mode ── */
-  --ifm-color-primary:          oklch(0.55 0.14 260);
-  --ifm-color-primary-dark:     oklch(0.48 0.14 260);
-  --ifm-color-primary-darker:   oklch(0.43 0.14 260);
-  --ifm-color-primary-darkest:  oklch(0.35 0.14 260);
-  --ifm-color-primary-light:    oklch(0.62 0.14 260);
-  --ifm-color-primary-lighter:  oklch(0.68 0.14 260);
-  --ifm-color-primary-lightest: oklch(0.76 0.14 260);
+  --ifm-color-primary:          oklch(0.72 0.10 82.35);
+  --ifm-color-primary-dark:     oklch(0.65 0.10 82.35);
+  --ifm-color-primary-darker:   oklch(0.60 0.10 82.35);
+  --ifm-color-primary-darkest:  oklch(0.52 0.10 82.35);
+  --ifm-color-primary-light:    oklch(0.79 0.10 82.35);
+  --ifm-color-primary-lighter:  oklch(0.84 0.10 82.35);
+  --ifm-color-primary-lightest: oklch(0.90 0.10 82.35);
 
   --ifm-font-family-base: Arial, "Helvetica Neue", Helvetica, sans-serif;
   --ifm-font-family-monospace: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -50,18 +50,18 @@
   --ifm-global-shadow-tl: none;
   --ifm-card-border-radius: 12px;
 
-  --docusaurus-highlighted-code-line-bg: oklch(0.62 0.14 260 / 0.12);
+  --docusaurus-highlighted-code-line-bg: oklch(0.72 0.10 82.35 / 0.12);
 }
 
 /* ─── Dark mode overrides ──────────────────────────────── */
 [data-theme="dark"] {
-  --ifm-color-primary:          oklch(0.72 0.12 260);
-  --ifm-color-primary-dark:     oklch(0.65 0.13 260);
-  --ifm-color-primary-darker:   oklch(0.60 0.14 260);
-  --ifm-color-primary-darkest:  oklch(0.52 0.14 260);
-  --ifm-color-primary-light:    oklch(0.79 0.11 260);
-  --ifm-color-primary-lighter:  oklch(0.84 0.09 260);
-  --ifm-color-primary-lightest: oklch(0.90 0.06 260);
+  --ifm-color-primary:          oklch(0.81 0.07 85.57);
+  --ifm-color-primary-dark:     oklch(0.74 0.08 85.57);
+  --ifm-color-primary-darker:   oklch(0.69 0.09 85.57);
+  --ifm-color-primary-darkest:  oklch(0.61 0.09 85.57);
+  --ifm-color-primary-light:    oklch(0.88 0.06 85.57);
+  --ifm-color-primary-lighter:  oklch(0.93 0.04 85.57);
+  --ifm-color-primary-lightest: oklch(0.99 0.01 85.57);
 
   --ifm-background-color:         #0a0a0d;  /* nyx-ink */
   --ifm-background-surface-color: #1a1a20;  /* nyx-graphite */
@@ -76,13 +76,13 @@
 
   --ifm-menu-color:                    rgba(174, 172, 176, 0.72);
   --ifm-menu-color-active:             rgba(245, 243, 238, 0.95);
-  --ifm-menu-color-background-active:  oklch(0.62 0.14 260 / 0.12);
+  --ifm-menu-color-background-active:  oklch(0.81 0.07 85.57 / 0.12);
   --ifm-menu-color-background-hover:   rgba(245, 243, 238, 0.04);
 
   --ifm-code-background: rgba(245, 243, 238, 0.06);
   --ifm-pre-background:  #0d0d11;
 
-  --docusaurus-highlighted-code-line-bg: oklch(0.62 0.14 260 / 0.15);
+  --docusaurus-highlighted-code-line-bg: oklch(0.81 0.07 85.57 / 0.15);
 
   color-scheme: dark;
 }
@@ -121,6 +121,7 @@ h1, h2, h3, h4, h5, h6 {
 .navbar__logo {
   width: 26px;
   height: 26px;
+  transform: translateY(4px);
 }
 
 .navbar__brand {
@@ -476,8 +477,8 @@ div[class*='codeBlockContainer_'] {
 }
 
 div[class*='codeBlockContainer_']:hover {
-  border-color: oklch(0.62 0.14 260 / 0.4);
-  box-shadow: 0 8px 40px oklch(0.62 0.14 260 / 0.15);
+  border-color: oklch(0.81 0.07 85.57 / 0.4);
+  box-shadow: 0 8px 40px oklch(0.81 0.07 85.57 / 0.15);
 }
 
 [data-theme="light"] div[class*='codeBlockContainer_'] {
@@ -486,8 +487,8 @@ div[class*='codeBlockContainer_']:hover {
 }
 
 [data-theme="light"] div[class*='codeBlockContainer_']:hover {
-  border-color: oklch(0.62 0.14 260 / 0.3);
-  box-shadow: 0 8px 30px oklch(0.62 0.14 260 / 0.08);
+  border-color: oklch(0.72 0.10 82.35 / 0.3);
+  box-shadow: 0 8px 30px oklch(0.72 0.10 82.35 / 0.08);
 }
 
 .prism-code {
@@ -632,8 +633,8 @@ pre code {
 }
 
 [data-theme="dark"] .pagination-nav__link:hover {
-  border-color: oklch(0.62 0.14 260 / 0.4);
-  background: oklch(0.62 0.14 260 / 0.06);
+  border-color: oklch(0.81 0.07 85.57 / 0.4);
+  background: oklch(0.81 0.07 85.57 / 0.06);
 }
 
 .pagination-nav__sublabel {
