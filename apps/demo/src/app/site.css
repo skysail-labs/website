@@ -175,14 +175,16 @@ img.scene-art { object-fit: cover; object-position: bottom; }
 /* ============================================================
    LANDING - HERO
    ============================================================ */
-.hero { position: relative; min-height: 100svh; display: flex; align-items: center; overflow: hidden; }
+.hero { position: relative; min-height: 100svh; display: flex; align-items: center; }
 .hero-bg { position: absolute; inset: 0; z-index: 0; }
 .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center; mix-blend-mode: screen; opacity: 0.75; filter: brightness(1.2) contrast(1.1); }
+.hero-parallax { background-attachment: fixed; background-size: cover; background-position: center; }
+@media (prefers-reduced-motion: reduce) { .hero-parallax { background-attachment: scroll; } }
 .hero-scrim {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
     radial-gradient(120% 90% at 50% 38%, transparent 0%, rgba(20, 18, 29, 0.30) 48%, rgba(20, 18, 29, 0.92) 100%),
-    linear-gradient(180deg, rgba(20, 18, 29, 0.55) 0%, transparent 22%, transparent 55%, rgba(20, 18, 29, 0.95) 100%);
+    linear-gradient(180deg, rgba(20, 18, 29, 0.55) 0%, transparent 22%, transparent 80%, rgba(20, 18, 29, 0.75) 100%);
 }
 .hero-glow { position: absolute; z-index: 1; top: 26%; left: 50%; width: 520px; height: 520px; transform: translate(-50%,-50%);
   background: radial-gradient(circle, oklch(0.64 0.15 262 / 0.22), transparent 62%); pointer-events: none; filter: blur(8px); }
@@ -225,10 +227,10 @@ img.scene-art { object-fit: cover; object-position: bottom; }
    LANDING - SECTIONS
    ============================================================ */
 .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(20px, 5vw, 56px); }
-.section { position: relative; padding: clamp(72px, 11vw, 132px) 0; background: #08080c; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+.section { position: relative; z-index: 1; padding: clamp(72px, 11vw, 132px) 0; background: #08080c; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
 #third-option { background: var(--ink); }
 #architecture { background: #08080c; }
-#how { background: var(--ink); }
+#how { background: var(--ink); overflow: hidden; }
 #differentiation { background: #08080c; }
 
 /* faint scene cresting a horizon between sections */
@@ -330,6 +332,8 @@ img.scene-art { object-fit: cover; object-position: bottom; }
   width: 100%;
   padding: 0 clamp(20px, 5vw, 56px);
   background: #08080c;
+  position: relative;
+  z-index: 1;
 }
 .section-divider .line {
   flex: 1;

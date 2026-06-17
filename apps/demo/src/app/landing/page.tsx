@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 interface Star {
@@ -65,72 +65,24 @@ function Starfield({ count = 40 }: { count?: number }) {
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [activeTab, setActiveTab] = useState("custody");
-  const howCompletedRef = useRef(false);
-  const isLockedRef = useRef(false);
-
   useEffect(() => {
-    let lastScrollY = window.scrollY;
-
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const direction = currentScrollY > lastScrollY ? "down" : "up";
-      lastScrollY = currentScrollY;
-
-      setScrolled(currentScrollY > 10);
-
-      const howSection = document.getElementById("how");
-      if (!howSection) return;
-
-      const rect = howSection.getBoundingClientRect();
-      const sectionTop = currentScrollY + rect.top;
-      const sectionHeight = rect.height;
-      const targetScrollY = Math.round(sectionTop + (sectionHeight / 2) - (window.innerHeight / 2));
-
-      // Reset completed flag if they scroll far above the section
-      if (currentScrollY < targetScrollY - window.innerHeight) {
-        howCompletedRef.current = false;
-        howSection.classList.remove("in-view");
-      }
-
-      // If scrolling down, not completed yet, and not already locked
-      if (direction === "down" && !howCompletedRef.current && !isLockedRef.current) {
-        // Capture range around targetScrollY
-        if (currentScrollY >= targetScrollY - 80 && currentScrollY < targetScrollY + 80) {
-          // Snap scroll to target position
-          window.scrollTo(0, targetScrollY);
-
-          isLockedRef.current = true;
-
-          const prevent = (e: Event) => e.preventDefault();
-          const preventKey = (e: KeyboardEvent) => {
-            if ([32, 33, 34, 35, 36, 37, 38, 39, 40].includes(e.keyCode)) {
-              e.preventDefault();
-            }
-          };
-
-          window.addEventListener("wheel", prevent, { passive: false });
-          window.addEventListener("touchmove", prevent, { passive: false });
-          window.addEventListener("keydown", preventKey, { passive: false });
-
-          // Trigger card slide up animation
-          howSection.classList.add("in-view");
-
-          setTimeout(() => {
-            window.removeEventListener("wheel", prevent);
-            window.removeEventListener("touchmove", prevent);
-            window.removeEventListener("keydown", preventKey);
-            isLockedRef.current = false;
-            howCompletedRef.current = true;
-          }, 1500);
-        }
-      }
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll, { passive: true });
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    const howSection = document.getElementById("how");
+    if (howSection) {
+      const observer = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) howSection.classList.add("in-view"); },
+        { threshold: 0.2 }
+      );
+      observer.observe(howSection);
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+        observer.disconnect();
+      };
+    }
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -199,13 +151,9 @@ export default function Home() {
       </nav>
 
       {/* ===================== HERO ===================== */}
-      <header className="hero">
+      <header className="hero hero-parallax" style={{ backgroundImage: "url('/assets/v2.png')" }}>
         <div className="layout-node left" style={{ top: "30px" }}></div>
         <div className="layout-node right" style={{ top: "30px" }}></div>
-        <div className="hero-bg">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/v2.png" alt="Ancient Greek city in white line-art under a starfield" />
-        </div>
         <div className="hero-scrim"></div>
         <div className="hero-glow"></div>
 
@@ -690,11 +638,11 @@ export default function Home() {
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                 </svg>
               </a>
-              <a href="https://github.com/skysail-labs/darknyx" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="GitHub">
+              {/* <a href="https://github.com/skysail-labs/darknyx" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="GitHub">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
                 </svg>
-              </a>
+              </a> */}
             </div>
           </div>
         </div>
