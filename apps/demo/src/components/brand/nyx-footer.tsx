@@ -18,14 +18,14 @@ export function NyxFooter({ tone = "ink" }: { tone?: "ink" | "chalk" }) {
         </div>
 
         <div className="flex flex-wrap gap-x-6 gap-y-2 text-[12px]">
-          <a
+          {/* <a
             className="hover:text-nyx-accent"
             href="https://github.com/skysail-labs/darknyx"
             target="_blank"
             rel="noreferrer"
           >
             GitHub
-          </a>
+          </a> */}
           <a
             className="hover:text-nyx-accent"
             href="https://x.com/DarkNyxProtocol"
