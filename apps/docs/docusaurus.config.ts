@@ -1,6 +1,7 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
+import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 
 const config: Config = {
   title: "Darknyx Docs",
@@ -47,7 +48,29 @@ const config: Config = {
     ],
   ],
 
+  plugins: [
+    [
+      "docusaurus-plugin-openapi-docs",
+      {
+        id: "api",
+        docsPluginId: "classic",
+        config: {
+          nyxApi: {
+            specPath: "../../docs/tee-api-openapi.yaml",
+            outputDir: "docs/api-reference",
+            sidebarOptions: {
+              groupPathsBy: "tag",
+              categoryLinkSource: "tag",
+            },
+            showSchemas: true,
+          } satisfies OpenApiPlugin.Options,
+        },
+      },
+    ],
+  ],
+
   themes: [
+    "docusaurus-theme-openapi-docs",
     "@docusaurus/theme-mermaid",
     [
       "@easyops-cn/docusaurus-search-local",
@@ -92,6 +115,12 @@ const config: Config = {
           label: "Docs",
         },
         {
+          type: "docSidebar",
+          sidebarId: "apiSidebar",
+          position: "left",
+          label: "API Reference",
+        },
+        {
           href: "https://github.com/Nyx-Privacy/nyx",
           position: "right",
           className: "header-github-link",
@@ -113,9 +142,9 @@ const config: Config = {
         {
           title: "Build",
           items: [
-            { label: "Place Order", to: "/orders/place-order" },
-            { label: "API", to: "/api/base-urls" },
+            { label: "API Reference", to: "/api-reference/" },
             { label: "TypeScript SDK", to: "/sdk/typescript-client" },
+            { label: "Transport & Security", to: "/api/transport-and-attestation" },
           ],
         },
         {
