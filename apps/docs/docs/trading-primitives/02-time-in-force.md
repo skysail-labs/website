@@ -35,7 +35,7 @@ resting order.
 ### GTT - Good-til-Time
 
 A **limit** order with an `expiry_slot` chosen to match a wall-clock deadline. To
-place "good for the next ten minutes," read [`/time`](../api/base-urls) for the
+place "good for the next ten minutes," read [`/time`](/api-reference) for the
 current slot and project your deadline onto a slot (Solana targets roughly 400 ms
 per slot). The SDK does this conversion for you:
 
@@ -44,7 +44,7 @@ expiry_slot = current_slot + ceil((deadline_ms - now_ms) / slot_ms)
 ```
 
 When the chain passes `expiry_slot`, the order is swept and an `expired` event is
-emitted on the [Orders Channel](../websocket/orders-channel).
+emitted on the orders WebSocket channel.
 
 ### IOC - Immediate-or-Cancel
 

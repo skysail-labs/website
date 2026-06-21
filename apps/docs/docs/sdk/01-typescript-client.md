@@ -18,7 +18,7 @@ the anchor pool - so your code works in economic terms.
 
 The hard part of a Darknyx order is its cryptographic backing: the collateral-note
 commitment, the zero-knowledge input proof, the owner-commitment opening, and the
-continuation anchor pool (see [Place Order](../orders/place-order)). The SDK
+continuation anchor pool (see [Place Order](/api-reference)). The SDK
 derives all of it from your seed and a spendable note, and signs the canonical
 body with your trading key. You supply the *intent* - side, amount, price,
 time-in-force - and get back a ready-to-send order.
@@ -179,8 +179,8 @@ const fills = subscribeFills({
 
 ## Submitting over the trading socket
 
-For a high-frequency client, submit orders over the [WebSocket trading
-socket](../websocket/ws-trading) instead of REST - one warm connection, plus
+For a high-frequency client, submit orders over the WebSocket trading
+socket (`wss://<gateway>/ws/trading`) instead of REST — one warm connection, plus
 cancel-on-disconnect.
 
 ```typescript
@@ -211,6 +211,6 @@ console.log(markets.instruments.map((m) => m.symbol));
 :::tip[Verify the engine first]
 For the full trust guarantee, verify the enclave's attestation against an
 expected measurement before sending order intent - the SDK ships a helper that
-runs the [attestation chain](../api/transport-and-attestation) for you. Skipping it
+runs the attestation chain for you. Skipping it
 gives you a private channel to *a* machine, not a verified one.
 :::

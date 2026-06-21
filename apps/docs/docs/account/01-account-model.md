@@ -56,8 +56,8 @@ turn it into a balance.
 | The current state of the on-chain tree | `GET /tree/root` | [Merkle Proofs](./merkle-proofs) |
 | An inclusion proof for one of your notes | `GET /tree/inclusion` | [Merkle Proofs](./merkle-proofs) |
 | A page of raw leaves (to rebuild a local mirror) | `GET /tree/leaves` | [Merkle Proofs](./merkle-proofs) |
-| Your open orders | `GET /orders/{order_id}` (per order), the orders stream | [Get Order](../orders/get-order), [Orders Channel](../websocket/orders-channel) |
-| Your continuation fills | the fills stream / your durable history | [Fills Channel](../websocket/fills-channel) |
+| Your open orders | `GET /orders/{order_id}` (per order), the orders stream | [Get Order](/api-reference) |
+| Your continuation fills | the fills stream / your durable history | WebSocket fills channel |
 | Venue-wide solvency | `GET /transparency` | [Transparency](./transparency) |
 
 The **SDK** wraps this: from your seed it derives your keys, scans the tree, and

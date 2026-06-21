@@ -94,5 +94,5 @@ trade independently:
 The new notes created by settlement - your filled asset, any change note for an
 unfilled remainder - appear as fresh leaves in the tree, which the SDK picks up
 when it follows tree updates. See [Settlement](../how-it-works/settlement) for the
-full pipeline and [Fills Channel](../websocket/fills-channel) for the per-fill
+full pipeline and the WebSocket fills channel for the per-fill
 notifications that let you recover the change notes.

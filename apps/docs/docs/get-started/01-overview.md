@@ -93,7 +93,6 @@ margin, funding) simply are not part of the model.
 
 - [Programmatic Access](./programmatic-access) - the API surface, the auth
   model, and a quick start.
-- [Base URLs](../api/base-urls) - where the endpoints live and the common
-  response conventions.
+- [API Reference](/api-reference) - full endpoint reference with request/response schemas.
 - [Trade Flow](../how-it-works/trade-flow) - the end-to-end lifecycle of an
   order, from submission to on-chain settlement.

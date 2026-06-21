@@ -47,7 +47,7 @@ flowchart TD
 The hash of the pool is bound into your order signature, so the engine cannot
 substitute its own anchors - it can only use the ones you authorized. After each
 fill, the engine sends you a **fill memo** (see
-[Fills Channel](../websocket/fills-channel)) naming which anchor it consumed, so
+the fills channel) naming which anchor it consumed, so
 you can recover and later spend the change note.
 
 ## Deterministic, not stored
@@ -63,7 +63,7 @@ rest.
 A pool is finite (ten anchors per order). An order that fills in many small
 increments can drain it. When it does, the engine **pauses** the order's
 continuation rather than guess at material it does not have, and you replenish the
-pool with [`POST /orders/{order_id}/anchors`](../orders/anchor-topup) - five fresh
+pool with `POST /orders/{order_id}/anchors` — five fresh
 anchors, signed, continuing the sequence. The order resumes immediately.
 
 ```mermaid

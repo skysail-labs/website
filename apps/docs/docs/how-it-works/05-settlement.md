@@ -85,7 +85,7 @@ Solana explorer (see [Settlement Status](../account/settlement-status)).
 
 Settlement appends new notes to the tree: your filled asset, a change note for any
 unfilled remainder, and the protocol fee notes. The
-[Fills Channel](../websocket/fills-channel) delivers the secret material to recover
+The fills channel delivers the secret material to recover
 your change note; the SDK picks up the rest by following tree updates. Your new
 spendable balance is simply the notes you now own - see
 [Account Model](../account/account-model).

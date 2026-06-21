@@ -8,11 +8,11 @@
 /* ─── Design tokens ────────────────────────────────────── */
 :root {
   /* Colors */
-  --nyx-ink:      #0a0a0d;
-  --nyx-chalk:    #f5f3ee;
+  --nyx-ink:      #0d0e12;
+  --nyx-chalk:    #f3effc;
   --nyx-slate:    #6b6b74;
   --nyx-fog:      #aeacb0;
-  --nyx-graphite: #1a1a20;
+  --nyx-graphite: #12131a;
   --nyx-accent:   oklch(0.72 0.10 82.35);
 
   /* Borders (from tokens: hairline = dark surface, rule = light surface) */
@@ -54,6 +54,7 @@
 }
 
 /* ─── Dark mode overrides ──────────────────────────────── */
+html[data-theme="dark"],
 [data-theme="dark"] {
   --ifm-color-primary:          oklch(0.81 0.07 85.57);
   --ifm-color-primary-dark:     oklch(0.74 0.08 85.57);
@@ -63,9 +64,10 @@
   --ifm-color-primary-lighter:  oklch(0.93 0.04 85.57);
   --ifm-color-primary-lightest: oklch(0.99 0.01 85.57);
 
-  --ifm-background-color:         #0a0a0d;  /* nyx-ink */
-  --ifm-background-surface-color: #1a1a20;  /* nyx-graphite */
-  --ifm-navbar-background-color:  rgba(10, 10, 13, 0.92);
+  --ifm-background-color:         #0d0e12;  /* nyx-ink */
+  background-color:               #0d0e12;
+  --ifm-background-surface-color: #12131a;  /* nyx-graphite */
+  --ifm-navbar-background-color:  rgba(13, 14, 18, 0.92);
   --ifm-toc-border-color:         rgba(245, 243, 238, 0.08);
   --ifm-color-emphasis-300:       rgba(245, 243, 238, 0.08);
   --ifm-hr-border-color:          rgba(245, 243, 238, 0.08);
@@ -80,7 +82,7 @@
   --ifm-menu-color-background-hover:   rgba(245, 243, 238, 0.04);
 
   --ifm-code-background: rgba(245, 243, 238, 0.06);
-  --ifm-pre-background:  #0d0d11;
+  --ifm-pre-background:  #050608;
 
   --docusaurus-highlighted-code-line-bg: oklch(0.81 0.07 85.57 / 0.15);
 
@@ -88,10 +90,15 @@
 }
 
 /* ─── Base ─────────────────────────────────────────────── */
-html {
+html,
+body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "ss01";
+}
+
+[data-theme="dark"] body {
+  background-color: #0d0e12;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -114,7 +121,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 [data-theme="dark"] .navbar {
-  background: rgba(10, 10, 13, 0.9);
+  background: rgba(13, 14, 18, 0.9);
 }
 
 /* Logo sizing — match the landing page */
@@ -165,7 +172,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 [data-theme="dark"] .theme-doc-sidebar-container {
-  background: rgba(10, 10, 13, 0.55);
+  background: rgba(13, 14, 18, 0.55);
 }
 
 .menu {
@@ -723,6 +730,7 @@ pre code {
 
 /* ─── Dot-grid background (dark mode only) ─────────────── */
 [data-theme="dark"] .main-wrapper {
+  background-color: #0d0e12;
   background-image: radial-gradient(
     rgba(245, 243, 238, 0.02) 1px,
     transparent 1px
@@ -867,4 +875,301 @@ div:has(> .prism-code.language-text) .codeBlockTitle_Ktv7 {
 .theme-doc-card,
 [class*='docCard_'] {
   border-radius: 12px !important;
+}
+
+/* ─── OpenAPI reference theme overrides ────────────────── */
+
+/* ═══════════════════════════════════════════════════════════
+   OpenAPI two-column layout
+   ═══════════════════════════════════════════════════════════ */
+
+/* Break out of the 75% docItemCol constraint for API pages.
+   The plugin renders: .row > .col.docItemCol > .docItemContainer > article > .row.theme-api-markdown
+   We target any col that contains a .theme-api-markdown descendant. */
+.theme-api-markdown {
+  max-width: none !important;
+}
+
+/* Override the hashed CSS-module max-width: 75% on the outer column */
+@media (min-width: 997px) {
+  .col:has(.theme-api-markdown) {
+    max-width: 100% !important;
+  }
+}
+
+/* Ensure the inner .row is a proper flex row with no wrapping */
+.theme-api-markdown.row {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: flex-start !important;
+  gap: 0 !important;
+  width: 100% !important;
+}
+
+/* Also remove :has() selector since CSS modules hash the class name */
+@media (min-width: 997px) {
+  .col:has(.theme-api-markdown) {
+    max-width: 100% !important;
+  }
+}
+
+.openapi-left-panel__container {
+  padding-right: 40px;
+  min-width: 0;
+}
+
+.openapi-right-panel__container {
+  position: sticky;
+  top: calc(var(--ifm-navbar-height) + 24px);
+  align-self: flex-start;
+  min-width: 0;
+  /* DEBUG: make visible */
+  outline: 2px solid red;
+  min-height: 100px;
+  background: rgba(255,0,0,0.05);
+}
+
+/* ── Method endpoint bar ── */
+.openapi__method-endpoint {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 0 16px 0 !important;
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.openapi__method-endpoint-path {
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+  margin: 0 !important;
+  color: var(--ifm-font-color-base) !important;
+  border: none !important;
+  padding: 0 !important;
+  display: inline !important;
+}
+
+.openapi__divider {
+  border: none;
+  border-top: 1px solid rgba(245, 243, 238, 0.08);
+  margin: 20px 0;
+}
+[data-theme="light"] .openapi__divider {
+  border-top-color: rgba(10, 10, 13, 0.08);
+}
+
+/* ── Method badges ── */
+.openapi__method-endpoint .badge {
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  border-radius: 4px !important;
+  padding: 2px 7px !important;
+  flex-shrink: 0;
+}
+.openapi__method-endpoint .badge--primary  { background: #16a34a !important; color: #fff !important; border: none !important; } /* GET  — green like margin.trade */
+.openapi__method-endpoint .badge--success  { background: #2563eb !important; color: #fff !important; border: none !important; } /* POST — blue */
+.openapi__method-endpoint .badge--danger   { background: #dc2626 !important; color: #fff !important; border: none !important; } /* DELETE */
+.openapi__method-endpoint .badge--info     { background: #7c3aed !important; color: #fff !important; border: none !important; } /* PUT */
+.openapi__method-endpoint .badge--warning  { background: #d97706 !important; color: #fff !important; border: none !important; } /* PATCH */
+.openapi__method-endpoint .badge--secondary{ background: #475569 !important; color: #fff !important; border: none !important; }
+
+/* ── MimeTabs (APPLICATION/JSON pill) ── */
+.openapi-tabs__mime-list-container {
+  border-bottom: none !important;
+  margin-bottom: 8px !important;
+  padding: 0 !important;
+}
+.openapi-tabs__mime-item {
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  padding: 4px 10px !important;
+  border-radius: 4px !important;
+  border: 1px solid rgba(245, 243, 238, 0.15) !important;
+  color: rgba(245, 243, 238, 0.6) !important;
+  background: transparent !important;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.openapi-tabs__mime-item.active,
+.openapi-tabs__mime-item[aria-selected="true"] {
+  color: rgba(245, 243, 238, 0.95) !important;
+  border-color: rgba(245, 243, 238, 0.4) !important;
+  background: rgba(245, 243, 238, 0.06) !important;
+}
+[data-theme="light"] .openapi-tabs__mime-item {
+  border-color: rgba(10, 10, 13, 0.15) !important;
+  color: rgba(10, 10, 13, 0.5) !important;
+}
+[data-theme="light"] .openapi-tabs__mime-item.active,
+[data-theme="light"] .openapi-tabs__mime-item[aria-selected="true"] {
+  color: rgba(10, 10, 13, 0.9) !important;
+  border-color: rgba(10, 10, 13, 0.35) !important;
+  background: rgba(10, 10, 13, 0.04) !important;
+}
+
+/* ── Operation tabs (request/response) ── */
+.openapi-tabs__operation-container {
+  border-bottom: 1px solid rgba(245, 243, 238, 0.08);
+  margin-bottom: 16px;
+}
+[data-theme="light"] .openapi-tabs__operation-container {
+  border-bottom-color: rgba(10, 10, 13, 0.08);
+}
+.openapi-tabs__operation-list-container {
+  gap: 0 !important;
+  border-bottom: none !important;
+}
+.openapi-tabs__operation-item {
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em !important;
+  padding: 6px 14px !important;
+  border-radius: 4px 4px 0 0 !important;
+  border-bottom: 2px solid transparent !important;
+  color: rgba(174, 172, 176, 0.65) !important;
+  background: transparent !important;
+  transition: color 0.15s, border-color 0.15s !important;
+}
+.openapi-tabs__operation-item:hover { color: rgba(245, 243, 238, 0.85) !important; }
+.openapi-tabs__operation-item[aria-selected="true"] {
+  color: rgba(245, 243, 238, 0.96) !important;
+  border-bottom-color: #16a34a !important;
+}
+
+/* ── Schema panel ── */
+.openapi-schema__container {
+  font-size: 14px !important;
+  font-family: inherit !important;
+  background: rgba(245, 243, 238, 0.03) !important;
+  border: 1px solid rgba(245, 243, 238, 0.08) !important;
+  border-radius: 6px !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+[data-theme="light"] .openapi-schema__container {
+  background: rgba(10, 10, 13, 0.02) !important;
+  border-color: rgba(10, 10, 13, 0.08) !important;
+}
+.openapi-schema__name {
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #f0c060 !important;
+}
+.openapi-schema__property {
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  font-size: 12px !important;
+  color: rgba(245, 243, 238, 0.55) !important;
+}
+.openapi-schema__divider {
+  border-color: rgba(245, 243, 238, 0.06) !important;
+}
+[data-theme="light"] .openapi-schema__divider {
+  border-color: rgba(10, 10, 13, 0.06) !important;
+}
+.openapi-schema__required {
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: #f87171 !important;
+}
+
+/* ── Response status row ── */
+.openapi-response__dot--success { background: #34d399 !important; }
+.openapi-response__dot--danger  { background: #f87171 !important; }
+.openapi-response__dot--info    { background: #60a5fa !important; }
+
+/* ── Details/summary collapsible rows ── */
+.openapi-markdown__details {
+  border: 1px solid rgba(245, 243, 238, 0.08) !important;
+  border-radius: 6px !important;
+  margin: 4px 0 !important;
+  background: rgba(245, 243, 238, 0.02) !important;
+}
+[data-theme="light"] .openapi-markdown__details {
+  border-color: rgba(10, 10, 13, 0.08) !important;
+  background: rgba(10, 10, 13, 0.01) !important;
+}
+.openapi-markdown__details-summary-response {
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
+
+/* ── Right-panel explorer ── */
+.openapi-explorer__request-title {
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: rgba(174, 172, 176, 0.55) !important;
+}
+.openapi-explorer__request-btn {
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  border-radius: 4px !important;
+}
+
+/* ── Body text & headings ── */
+.theme-api-markdown p,
+.theme-api-markdown li {
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+}
+.theme-api-markdown h1 {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.2 !important;
+  margin-bottom: 8px !important;
+}
+.theme-api-markdown h2 {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  margin-top: 40px !important;
+  margin-bottom: 12px !important;
+  padding-bottom: 0 !important;
+  border-bottom: none !important;
+}
+.theme-api-markdown h3 {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  margin-top: 24px !important;
+}
+.theme-api-markdown table {
+  font-size: 13px !important;
+}
+
+/* ── MIME / Schema tabs ── */
+.openapi-tabs__mime,
+.openapi-tabs__schema {
+  border-bottom: var(--nyx-hairline) !important;
+  margin-bottom: 12px !important;
+}
+
+[data-theme="light"] .openapi-tabs__mime,
+[data-theme="light"] .openapi-tabs__schema {
+  border-bottom: var(--nyx-rule) !important;
 }

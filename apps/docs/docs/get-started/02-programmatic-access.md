@@ -30,8 +30,8 @@ the cryptographic identity** that authorizes settlement. The bearer token only
 enables operational controls; it cannot, by itself, move or cancel another key's
 orders.
 
-See [Authentication](../api/authentication) for the full credential model and
-[Place Order](../orders/place-order) for how the order signature is constructed.
+See [Authentication](/api-reference) for the full credential model and
+[Place Order](/api-reference) for how the order signature is constructed.
 
 ## Available APIs
 

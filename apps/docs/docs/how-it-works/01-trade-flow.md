@@ -49,7 +49,7 @@ flowchart TD
 | **4. Match** | Enclave | Each batch, the engine collects crossing orders and clears them at a single **oracle-anchored price** (see [Clearing Price](../trading-primitives/clearing-price)). Orders from the same trading key never match each other. |
 | **5. Prove** | Enclave | The engine generates a zero-knowledge proof that the batch of matches is conservation-correct and bound to the committed notes, within the circuit-breaker band. |
 | **6. Settle** | Enclave → Vault (L1) | The engine submits the settlement transactions to Solana itself: it locks the input notes, verifies the batch proof on-chain, executes the atomic transfers, and reclaims the batch marker. Funds move; new notes appear in the tree. |
-| **7. Notify** | Enclave → Client | The engine pushes order-lifecycle events ([Orders Channel](../websocket/orders-channel)) and fill memos ([Fills Channel](../websocket/fills-channel)) so you can recover and spend your change and output notes. |
+| **7. Notify** | Enclave → Client | The engine pushes order-lifecycle events (orders channel) and fill memos (fills channel) so you can recover and spend your change and output notes. |
 
 ## What is on-chain and what is not
 

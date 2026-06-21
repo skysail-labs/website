@@ -8,9 +8,6 @@ const config: Config = {
   tagline: "Settle in the dark, prove in the light.",
   favicon: "img/favicon.svg",
 
-  future: {
-    v4: true,
-  },
 
   url: "https://darknyx.xyz",
   baseUrl: "/docs/",
@@ -49,6 +46,7 @@ const config: Config = {
   ],
 
   plugins: [
+    "docusaurus-plugin-sass",
     [
       "docusaurus-plugin-openapi-docs",
       {
@@ -115,8 +113,7 @@ const config: Config = {
           label: "Docs",
         },
         {
-          type: "docSidebar",
-          sidebarId: "apiSidebar",
+          to: "/api-reference",
           position: "left",
           label: "API Reference",
         },
@@ -142,9 +139,8 @@ const config: Config = {
         {
           title: "Build",
           items: [
-            { label: "API Reference", to: "/api-reference/" },
+            { label: "API Reference", to: "/api-reference" },
             { label: "TypeScript SDK", to: "/sdk/typescript-client" },
-            { label: "Transport & Security", to: "/api/transport-and-attestation" },
           ],
         },
         {
@@ -167,6 +163,10 @@ const config: Config = {
       theme: prismThemes.oneDark,
       darkTheme: prismThemes.oneDark,
       additionalLanguages: ["json", "bash", "yaml", "rust", "typescript"],
+    },
+    api: {
+      authPersistance: "localStorage",
+      serverVariablesPersistance: "localStorage",
     },
     algolia: undefined,
   } satisfies Preset.ThemeConfig,

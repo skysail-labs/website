@@ -76,7 +76,7 @@ than read a transient `0` as insolvency.
 | Field | Description |
 |---|---|
 | `tee.app_id` | The deployment's application id. |
-| `tee.compose_hash` | The measured image hash - the same value you pin in attestation (see [Transport & Attestation](../api/transport-and-attestation)). |
+| `tee.compose_hash` | The measured image hash - the same value you pin in attestation (see [Transport & Attestation](/api-reference)). |
 | `tee.mrtd` | The TDX measurement of the running VM. |
 | `tee.signer_pubkey` | The enclave's on-chain settlement signer (base58). |
 

@@ -66,7 +66,7 @@ price you will accept, and let the uniform clearing price do the rest.
 
 Each instrument names a `circuit_breaker_bps` - the maximum deviation, in basis
 points, of the clearing price from the oracle reference (see
-[Instruments](../reference-data/instruments)). This bound is enforced **inside the
+[Instruments](/api-reference)). This bound is enforced **inside the
 zero-knowledge settlement proof**, not merely as a server-side policy: a batch
 whose clearing price falls outside the band cannot produce a valid settlement
 proof and is rejected on-chain.
