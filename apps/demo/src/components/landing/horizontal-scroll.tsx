@@ -3,10 +3,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, Variants } from "framer-motion";
-import { useRef } from "react";
+import { RefObject, useRef } from "react";
 
-export function HorizontalScroll() {
-  const containerRef = useRef<HTMLDivElement>(null);
+interface HorizontalScrollProps {
+  containerRef?: RefObject<HTMLDivElement | null>;
+  darkPoolSlotRef?: RefObject<HTMLSpanElement | null>;
+}
+
+export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolSlotRef }: HorizontalScrollProps) {
+  const internalContainerRef = useRef<HTMLDivElement>(null);
+  const containerRef = externalContainerRef ?? internalContainerRef;
   const [activeTab, setActiveTab] = useState("custody");
 
   // We track the scroll of the outer container
@@ -62,7 +68,13 @@ export function HorizontalScroll() {
               viewport={{ once: false, amount: 0.25 }}
             >
               <motion.div variants={childVariants} className="hscroll-badge">The third option</motion.div>
-              <motion.h2 variants={childVariants} className="hscroll-title">A dark pool you don&apos;t have to trust.</motion.h2>
+              <motion.h2
+                variants={childVariants}
+                className="hscroll-title"
+                aria-label="A dark pool you don't have to trust."
+              >
+                A <span ref={darkPoolSlotRef} className="hscroll-morph-slot" aria-hidden="true">dark pool</span> you don&apos;t have to trust.
+              </motion.h2>
               <motion.p variants={childVariants} className="hscroll-lede">
                 Traditional dark pools take custody. Public order books leak intentions. Darknyx is neither—private execution inside TEEs, trustless settlement on Solana.
               </motion.p>

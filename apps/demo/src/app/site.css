@@ -993,6 +993,72 @@ img.scene-art { object-fit: cover; object-position: bottom; }
   margin: 0 0 16px;
 }
 
+.hscroll-morph-slot {
+  display: inline-block;
+  min-width: 8.5ch;
+  visibility: hidden;
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.morphing-wordmark {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 95;
+  pointer-events: none;
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: rgba(214, 179, 106, 0.66);
+  text-shadow: 0 0 18px rgba(214, 179, 106, 0.12);
+  will-change: transform, opacity, font-size, letter-spacing;
+}
+
+.morphing-wordmark-tail {
+  position: relative;
+  display: inline-block;
+}
+
+.morphing-wordmark-dark {
+  text-transform: uppercase;
+}
+
+.morphing-wordmark-pool,
+.morphing-wordmark-glitch {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.morphing-wordmark-pool {
+  color: var(--chalk);
+  text-transform: none;
+}
+
+.morphing-wordmark-glitch {
+  color: var(--cobalt-bright);
+  clip-path: inset(18% 0 24% 0);
+  text-transform: uppercase;
+  transform: translateX(0.08em);
+  animation: word-glitch 0.16s steps(2, end) infinite;
+}
+
+@keyframes word-glitch {
+  0% { transform: translateX(-0.08em); filter: drop-shadow(0.08em 0 rgba(197, 160, 89, 0.55)); }
+  50% { transform: translateX(0.12em); filter: drop-shadow(-0.08em 0 rgba(243, 239, 252, 0.32)); }
+  100% { transform: translateX(0.02em); filter: drop-shadow(0.04em 0 rgba(197, 160, 89, 0.45)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .morphing-wordmark-glitch {
+    animation: none;
+  }
+}
+
 .hscroll-lede {
   font-size: clamp(13px, 1.1vw, 15px);
   line-height: 1.65;

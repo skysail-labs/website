@@ -7,6 +7,7 @@ import { EngravedLogo } from "@/components/landing/engraved-logo";
 import { EngravedText } from "@/components/landing/engraved-text";
 import { HorizontalScroll } from "@/components/landing/horizontal-scroll";
 import { MorphingLogo } from "@/components/landing/morphing-logo";
+import { MorphingWordmark } from "@/components/landing/morphing-wordmark";
 import { DocsGateway } from "@/components/landing/docs-gateway";
 
 interface Star {
@@ -72,6 +73,9 @@ export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
   const placeholderRef = useRef<HTMLDivElement>(null);
+  const heroWordmarkRef = useRef<HTMLDivElement>(null);
+  const darkPoolSlotRef = useRef<HTMLSpanElement>(null);
+  const horizontalScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -192,7 +196,14 @@ export default function Home() {
           <div ref={placeholderRef} style={{ width: 120, height: 120, display: "inline-block", opacity: mounted ? 0 : 1 }}>
             <EngravedLogo />
           </div>
-          <div className="hero-wordmark" aria-hidden="true">darknyx</div>
+          <div
+            ref={heroWordmarkRef}
+            className="hero-wordmark"
+            aria-hidden="true"
+            style={{ opacity: mounted ? 0 : 1 }}
+          >
+            darknyx
+          </div>
           <EngravedText />
 <div className="hero-obsidian-cta">
             <Link className="btn" href="/docs">
@@ -214,7 +225,7 @@ export default function Home() {
         <div className="line"></div>
       </div>
 
-      <HorizontalScroll />
+      <HorizontalScroll containerRef={horizontalScrollRef} darkPoolSlotRef={darkPoolSlotRef} />
 
       <div className="section-divider">
         <div className="line"></div>
@@ -286,8 +297,15 @@ export default function Home() {
               </a> */}
             </div>
           </div>
-        </div>
+      </div>
       {mounted && <MorphingLogo placeholderRef={placeholderRef} />}
+      {mounted && (
+        <MorphingWordmark
+          sourceRef={heroWordmarkRef}
+          targetRef={darkPoolSlotRef}
+          sectionRef={horizontalScrollRef}
+        />
+      )}
     </>
   );
 }
