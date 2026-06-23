@@ -1,6 +1,6 @@
 {
   "framework": "nextjs",
-  "installCommand": "npm ci",
-  "buildCommand": "cd ../docs && npm ci && npm run build && mkdir -p ../demo/public/docs && cp -r build/* ../demo/public/docs/ && cd ../demo && npm run build",
+  "installCommand": "bun install",
+  "buildCommand": "next build",
   "outputDirectory": ".next"
 }
