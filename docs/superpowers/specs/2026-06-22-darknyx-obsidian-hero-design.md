@@ -106,7 +106,7 @@ Ordered by importance. Architecture carries the composition. Texture is the last
 | 3 | Directional beam | Angled `linear-gradient` + `conic-gradient` haze, `mix-blend-mode: screen` | Primary visual event — see Spotlight section |
 | 4 | Depth system | Corner/edge vignette radial gradient, junction shadow verticals | Creates chamber depth |
 | 5 | Stone surface bands | 3–4 very low-contrast vertical `linear-gradient` bands | Wall face has mass, not flatness |
-| 6 | Gold veins | 2 CSS `linear-gradient` lines, originating near pillar edges, ~25–35° angle | `#d6b36a`, opacity 0.08–0.10 |
+| 6 | Gold veins | 1–2 CSS `linear-gradient` lines, originating near pillar edges, ~25–35° angle | `#d6b36a`, opacity 0.04–0.06. Geological, not decorative. Discovered, not designed. |
 | 7 | Roughness grain | SVG `feTurbulence` overlay div, opacity 0.04–0.06 | Nearly invisible. Supports, never dominates. |
 | 8 | Engraving (logo + text) | SVG filter pipeline — see Engraving section | Most important technical feature |
 | 9 | Dust particles | 4–6 absolute divs, upper-left quadrant only | opacity 0.12–0.20 |
@@ -267,15 +267,9 @@ The sill is the base of the institution.
 
 ## Dust Particles
 
-4–6 particles. Upper-left quadrant only (where beam enters).
+**V1: none.**
 
-- Size: 1–2px, `border-radius: 50%`
-- Color: `rgba(214,179,106,0.18)`
-- Opacity range: 0.12–0.20
-- Motion: slow upward drift + slight horizontal wander, `@keyframes`, staggered delays
-- `prefers-reduced-motion`: particles static, opacity 0.08
-
-If a user notices them consciously, opacity is too high.
+Dust is polish. Architecture is not. Ship the chamber first. Add dust in a later pass only if the scene feels sterile after the architectural language is confirmed.
 
 ---
 
@@ -293,25 +287,39 @@ If a user notices them consciously, opacity is too high.
 
 ## Typography
 
-The headline remains large, monumental, left-aligned. No changes to font choice (Space Grotesk) or sizing (`clamp(32px, 4.2vw, 62px)`). Letter-spacing increases to `0.02em` to reinforce inscription quality.
+The headline is **center-aligned**. The chamber architecture is already asymmetric due to the pillars; centering the inscription treats it as text carved into a monument face, not as startup marketing copy.
 
-The lede and CTA below the headline are unchanged in copy. Visual weight reduced slightly — the engraved headline must dominate.
+```
+      [engraved mark]
+
+ SETTLE IN THE DARK
+ PROVE IN THE LIGHT
+```
+
+not:
+
+```
+[mark]
+
+SETTLE IN THE DARK
+PROVE IN THE LIGHT
+```
+
+Font choice (Space Grotesk) and sizing (`clamp(32px, 4.2vw, 62px)`) unchanged. Letter-spacing increases to `0.02em` to reinforce inscription quality.
+
+The lede and CTA below the headline follow the same center alignment. Visual weight reduced — the engraved headline dominates.
 
 ---
 
 ## Parallax
 
-On `mousemove`, three layers shift at different rates:
+**V1: none.**
 
-| Layer | Travel |
-|---|---|
-| Background image | ~2% |
-| Engraved content | ~1% |
-| Dust particles | ~3% |
+Architecture is static. Light moves. Nothing else moves.
 
-Implemented via `useRef` + `requestAnimationFrame` with throttling. `transform: translate3d` only — no layout reflow.
+A temple does not react to your cursor. A vault does not shift when you move. The moment the chamber responds to mouse movement, the subconscious model changes from "I am inside a place" to "I am interacting with a website."
 
-Disabled entirely under `prefers-reduced-motion`.
+Parallax can be added in a later pass. The feeling of "interactive landing page" cannot be easily removed once present.
 
 ---
 
@@ -330,6 +338,31 @@ Nav, all sections below hero, footer, `globals.css`, design tokens, `NyxMark`, `
 
 ---
 
+## Silence Test
+
+The hero must feel complete when viewed as a static screenshot — no animation, no hover states, no motion, no scrolling.
+
+If the screenshot alone feels atmospheric, monumental, and institutional, the architecture is carrying the experience.
+
+Motion must enhance architecture. Motion must never be required to create architecture.
+
+If the hero only works when the spotlight is drifting, the architecture has failed. Fix the architecture, not the motion.
+
+---
+
+## Art Direction Note: Pillar Scale
+
+The `~130% width` scale for `hero-columns.png` is an art direction value, not a hard number. Start at 125%, test, then try 130%, then 135%.
+
+The correct value is the point where:
+- Pillars feel oversized and structurally dominant
+- Chamber feels larger than the viewport
+- Architectural detail in the pillar capitals remains readable
+
+It may end up being 127% or 134%. Treat it as a judgment call during implementation, not a specification.
+
+---
+
 ## Acceptance Criteria
 
 1. **Grayscale/blur test passes** — chamber reads as monumental with color and texture removed
@@ -339,3 +372,4 @@ Nav, all sections below hero, footer, `globals.css`, design tokens, `NyxMark`, `
 5. **Pillar test passes** — viewer perceives one chamber, not [image] + [wall] + [image]
 6. **Motion test passes** — motion is noticed only on second viewing, never on first
 7. **Sill test passes** — foundation line visible even in grayscale
+8. **Screenshot recognition test** — crop out logo, headline, and CTA; blur slightly; show to someone unfamiliar with the project and ask "what does this feel like?" Desired answers: institution, monument, temple, vault, chamber, foundation. Undesired answers: crypto, trading platform, dashboard, SaaS, landing page.

@@ -1,7 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import { LandingHero } from "@/components/landing/hero";
+import { EngravedLogo } from "@/components/landing/engraved-logo";
+import { EngravedText } from "@/components/landing/engraved-text";
+import { HorizontalScroll } from "@/components/landing/horizontal-scroll";
+import { MorphingLogo } from "@/components/landing/morphing-logo";
+import { DocsGateway } from "@/components/landing/docs-gateway";
 
 interface Star {
   id: number;
@@ -51,7 +57,7 @@ function Starfield({ count = 40 }: { count?: number }) {
             opacity: parseFloat(s.o1),
             animation: "twinkle var(--tw, 4s) ease-in-out infinite alternate",
             animationDelay: s.delay,
-            // @ts-ignore
+            // @ts-expect-error: Custom CSS variable keys not typed in standard style prop
             "--o0": s.o0,
             "--o1": s.o1,
             "--tw": s.tw,
@@ -64,9 +70,12 @@ function Starfield({ count = 40 }: { count?: number }) {
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
-  const [activeTab, setActiveTab] = useState("custody");
+  const [mounted, setMounted] = useState(false);
+  const placeholderRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
+    setMounted(true);
+    const handleScroll = () => setScrolled(window.scrollY > window.innerHeight - 80);
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     const howSection = document.getElementById("how");
@@ -150,101 +159,51 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* ===================== HERO ===================== */}
-      <header className="hero hero-parallax" style={{ backgroundImage: "url('/assets/v2.png')" }}>
-        <div className="layout-node left" style={{ top: "30px" }}></div>
-        <div className="layout-node right" style={{ top: "30px" }}></div>
-        <div className="hero-scrim"></div>
-        <div className="hero-glow"></div>
+      {/* ===================== HERO — OBSIDIAN CHAMBER ===================== */}
+      <header className="hero-obsidian">
 
-        <div className="hero-inner">
-          <div
-            className="rise d2"
-            style={{
-              position: "relative",
-              width: "100%",
-              maxWidth: "760px",
-              background: "#14121d",
-              border: "2px solid #000",
-              padding: "clamp(1.5rem, 3vw, 2rem)",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              boxShadow: "12px 12px 0px rgba(0,0,0,0.95)",
-              overflow: "hidden",
-            }}
-          >
+        {/* Layer 1: architectural form — image provides structure, material system provides identity */}
+        <div className="hero-chamber-img">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/assets/hero-columns.png" alt="" aria-hidden="true" fetchPriority="high" />
+        </div>
 
-            {/* Brand Header */}
-            <div className="rise d1" style={{ position: "relative", zIndex: 10, marginBottom: "0.75rem" }}>
-              <div style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "10px"
-              }}>
-                <svg style={{ width: "60px", height: "60px", color: "var(--cobalt)", transform: "translateY(9px)" }} viewBox="0 0 120 120">
-                  <use href="#nyx-mark"/>
-                </svg>
-                <b style={{
-                  fontFamily: "var(--font-space-grotesk)",
-                  fontSize: "40px",
-                  fontWeight: 600,
-                  letterSpacing: "-0.04em",
-                  color: "var(--chalk)"
-                }}>darknyx</b>
-              </div>
-            </div>
+        {/* Layer 2: obsidian base tint */}
+        <div className="hero-obsidian-tint" aria-hidden="true" />
 
-            {/* Headline */}
-            <div style={{ position: "relative", zIndex: 10, flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", margin: "0.5rem 0 1.5rem" }}>
-              <h1 className="display" style={{ marginTop: 0, fontSize: "clamp(32px, 4.2vw, 62px)", whiteSpace: "nowrap" }}>
-                <span style={{ display: "block", color: "var(--cobalt)" }}>Settle in the <span className="tag-lo">dark</span></span>
-                <span style={{ display: "block", color: "var(--cobalt-bright)" }}>Prove in the <span className="tag-hi">light</span></span>
-              </h1>
-            </div>
+        {/* Layer 3: directional beam — light entering from upper-left through unseen opening */}
+        <div className="hero-beam" aria-hidden="true" />
 
-            {/* Bottom row */}
-            <div
-              className="rise d3"
-              style={{
-                position: "relative",
-                zIndex: 10,
-                display: "flex",
-                flexWrap: "nowrap",
-                justifyContent: "space-between",
-                alignItems: "flex-end",
-                gap: "2rem",
-                borderTop: "1px solid rgba(255,255,255,0.08)",
-                paddingTop: "2rem",
-                marginTop: "1rem",
-              }}
-            >
-              <div style={{ maxWidth: "28rem" }}>
-                <p style={{ margin: "0 0 0.75rem", fontSize: "13px", color: "var(--chalk-dim)", lineHeight: 1.7 }}>
-                  A privacy-preserving order book where intent is hidden inside attested hardware and every fill settles trustlessly on Solana - verified, never trusted.
-                </p>
-                <p style={{ margin: 0, fontSize: "11px", color: "var(--chalk-mute)", lineHeight: 1.75 }}>
-                  Built for active traders, market makers, and institutions that need discretion without giving up custody or auditability.
-                </p>
-              </div>
-              <div className="hero-actions">
-                <Link className="btn" href="/docs">
-                  How Darknyx works <span className="arr">→</span>
-                </Link>
-              </div>
-            </div>
+        {/* Layer 4: depth system — vignette + pillar-wall junction shadows */}
+        <div className="hero-depth" aria-hidden="true" />
+
+        {/* Layer 5: stone surface bands — wall face has mass */}
+        <div className="hero-stone-bands" aria-hidden="true" />
+
+        {/* Layer 6: gold veins — geological, discovered not designed */}
+        <div className="hero-vein" aria-hidden="true" />
+
+        {/* Layer 7: roughness grain — nearly invisible, supports material */}
+        <div className="hero-grain" aria-hidden="true" />
+
+
+        {/* Layer 9: content — engraved into the chamber face */}
+        <div className="hero-obsidian-content">
+          <div ref={placeholderRef} style={{ width: 120, height: 120, display: "inline-block", opacity: mounted ? 0 : 1 }}>
+            <EngravedLogo />
+          </div>
+          <div className="hero-wordmark" aria-hidden="true">darknyx</div>
+          <EngravedText />
+<div className="hero-obsidian-cta">
+            <Link className="btn" href="/docs">
+              How Darknyx works <span className="arr">→</span>
+            </Link>
           </div>
         </div>
 
-        <div className="hero-meta rise d5">
-          {/* <div className="net">
-            Network · <b>Solana</b>
-            <br />
-            Matching · <b>Intel TDX</b>
-            <br />
-            Status · <b>TDX rollout</b>
-          </div> */}
-        </div>
+        {/* Basalt sill — PILLAR → SILL → PILLAR, the foundation of the institution */}
+        <div className="hero-sill" aria-hidden="true" />
+
       </header>
 
       <div className="section-divider" style={{ background: "var(--ink)" }}>
@@ -255,65 +214,7 @@ export default function Home() {
         <div className="line"></div>
       </div>
 
-      {/* ===================== SECTION 1 - THE THIRD OPTION ===================== */}
-      <section className="section" id="third-option">
-        <div className="layout-line-left"></div>
-        <div className="layout-line-right"></div>
-        <div className="layout-node left"></div>
-        <div className="layout-node right"></div>
-        <div className="wrap">
-          <div className="section-head">
-            <span className="badge">The third option</span>
-            <h2 className="display h-lg" style={{ marginTop: "16px", fontWeight: 300, fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif", letterSpacing: "-0.01em" }}>
-              A dark pool you don't
-              <br />
-              have to trust.
-            </h2>
-            <p className="lede">
-              Public order books leak every intention to bots and competitors. Off-chain dark pools take your custody. Darknyx is neither - orders meet inside an attested enclave the operator cannot read, and funds only ever move under a proof verified on Solana.
-            </p>
-          </div>
-
-          <div className="pillars">
-            <div className="pillar">
-              <div className="ix">01</div>
-              <h3>
-                Orders stay dark
-                <br />
-                until they clear.
-              </h3>
-              <p>
-                Side, size, and limit price are visible only to the enclave - never in a mempool, log, or account an observer can read before settlement.
-              </p>
-              <div className="rule"></div>
-            </div>
-            <div className="pillar">
-              <div className="ix">02</div>
-              <h3>
-                Custody risk
-                <br />
-                is zero.
-              </h3>
-              <p>
-                Funds rest in a non-upgradeable Solana vault. The matcher can propose fills, but only your zero-knowledge proof can move assets out.
-              </p>
-              <div className="rule"></div>
-            </div>
-            <div className="pillar">
-              <div className="ix">03</div>
-              <h3>
-                Settlement can
-                <br />
-                be checked.
-              </h3>
-              <p>
-                Every fill lands on-chain bound to a validity proof and the attested TEE signature - auditable by anyone, without exposing your strategy.
-              </p>
-              <div className="rule"></div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HorizontalScroll />
 
       <div className="section-divider">
         <div className="line"></div>
@@ -323,266 +224,7 @@ export default function Home() {
         <div className="line"></div>
       </div>
 
-      {/* ===================== NEW: ARCHITECTURE SECTION ===================== */}
-      <section className="section" id="architecture">
-        <div className="layout-line-left"></div>
-        <div className="layout-line-right"></div>
-        <div className="layout-node left"></div>
-        <div className="layout-node right"></div>
-
-        <div className="wrap">
-          <div className="section-head">
-            <span className="badge">System design</span>
-            <h2 className="display h-lg" style={{ marginTop: "16px", fontWeight: 300, fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif", letterSpacing: "-0.01em" }}>
-              Three layers,
-              <br />
-              one chain of trust.
-            </h2>
-            <p className="lede">
-              Whatever needs to be trusted goes on-chain; whatever needs to be private goes in-TEE; whatever must remain a secret stays on your device.
-            </p>
-          </div>
-
-          <div className="arch-grid">
-            <div className="arch-nav">
-              <button
-                className={`arch-tab-btn ${activeTab === "custody" ? "active" : ""}`}
-                onMouseEnter={() => setActiveTab("custody")}
-                onClick={() => setActiveTab("custody")}
-              >
-                <span className="num">LAYER 1</span>
-                <span className="title">Custody Layer</span>
-              </button>
-              <button
-                className={`arch-tab-btn ${activeTab === "matching" ? "active" : ""}`}
-                onMouseEnter={() => setActiveTab("matching")}
-                onClick={() => setActiveTab("matching")}
-              >
-                <span className="num">LAYER 2</span>
-                <span className="title">Matching Layer</span>
-              </button>
-              <button
-                className={`arch-tab-btn ${activeTab === "client" ? "active" : ""}`}
-                onMouseEnter={() => setActiveTab("client")}
-                onClick={() => setActiveTab("client")}
-              >
-                <span className="num">LAYER 3</span>
-                <span className="title">Client / SDK</span>
-              </button>
-            </div>
-
-            <div className="arch-pane">
-              {activeTab === "custody" && (
-                <div className="arch-pane-content">
-                  <div>
-                    <h3 className="arch-pane-title">On-Chain Solana Vault Program</h3>
-                    <p className="arch-pane-desc">
-                      The foundation of the trust model. Records note commitments, spent-note nullifiers, and verifies match validity proofs. Since it is non-upgradeable, no operator or TEE can touch or exit your funds without a valid zero-knowledge spend proof signed by your key.
-                    </p>
-                  </div>
-                  <div className="arch-features">
-                    <div className="arch-feature">
-                      <span className="label">Location</span>
-                      <span className="val">On-Chain (Solana RPC)</span>
-                    </div>
-                    <div className="arch-feature">
-                      <span className="label">Responsibility</span>
-                      <span className="val">Deposits, Withdrawals, Nullifiers</span>
-                    </div>
-                    <div className="arch-feature">
-                      <span className="label">Trust Assumption</span>
-                      <span className="val">Cryptography + L1 Validators</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === "matching" && (
-                <div className="arch-pane-content">
-                  <div>
-                    <h3 className="arch-pane-title">In-TEE Private Matching Engine</h3>
-                    <p className="arch-pane-desc">
-                      A single process running inside an attested Intel TDX confidential VM. It manages the private order intake, conducts uniform-clearing-price matching loops on fixed intervals to eliminate front-running, and submits signed batch settlements directly to Solana.
-                    </p>
-                  </div>
-                  <div className="arch-features">
-                    <div className="arch-feature">
-                      <span className="label">Location</span>
-                      <span className="val">Intel TDX Enclave</span>
-                    </div>
-                    <div className="arch-feature">
-                      <span className="label">Responsibility</span>
-                      <span className="val">FBA Matching, Order Book Privacy</span>
-                    </div>
-                    <div className="arch-feature">
-                      <span className="label">Trust Assumption</span>
-                      <span className="val">Intel TDX Hardware Attestation</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === "client" && (
-                <div className="arch-pane-content">
-                  <div>
-                    <h3 className="arch-pane-title">Local Cryptographic Client (SDK)</h3>
-                    <p className="arch-pane-desc">
-                      Runs locally on the user's machine. It generates client-side zero-knowledge spend proofs for deposits and withdrawals, verifiably measures and checks TEE attestation before submitting orders, and signs order intents using a dedicated, isolated trading key.
-                    </p>
-                  </div>
-                  <div className="arch-features">
-                    <div className="arch-feature">
-                      <span className="label">Location</span>
-                      <span className="val">User Device (Local JS/TS)</span>
-                    </div>
-                    <div className="arch-feature">
-                      <span className="label">Responsibility</span>
-                      <span className="val">ZK Proof Gen, TEE Measurement Check</span>
-                    </div>
-                    <div className="arch-feature">
-                      <span className="label">Trust Assumption</span>
-                      <span className="val">Zero (Self-generated proofs)</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="section-divider">
-        <div className="line"></div>
-        <svg className="divider-mark" viewBox="0 0 120 120">
-          <use href="#nyx-mark"/>
-        </svg>
-        <div className="line"></div>
-      </div>
-
-      <section className="section" id="how">
-        <div className="layout-line-left"></div>
-        <div className="layout-line-right"></div>
-        <div className="layout-node left"></div>
-        <div className="layout-node right"></div>
-        <div className="wrap how-container">
-          <div className="how-left">
-            <div className="section-head">
-              <span className="badge">How it works</span>
-              <h2 className="display h-lg" style={{ marginTop: "16px", fontWeight: 300, fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif", letterSpacing: "-0.01em" }}>
-                From private intent
-                <br />
-                to verified settlement.
-              </h2>
-              <p className="lede">
-                You sign custody actions with your wallet and orders with a separate trading key. The sensitive path stays private inside the enclave; the money path stays verifiable on-chain.
-              </p>
-            </div>
-
-            <div style={{ marginTop: "clamp(30px,4vw,40px)" }}>
-              <Link className="btn ghost" href="/docs/category/how-it-works">
-                Learn how it works <span className="arr">→</span>
-              </Link>
-            </div>
-          </div>
-
-          <div className="steps">
-            <div className="step">
-              <span className="n">01</span>
-              <div className="stage">Fund privately</div>
-              <h3>Deposit into the vault.</h3>
-              <p>Funds become private note commitments instead of a public, trackable trading balance.</p>
-              <span className="tech">Solana vault</span>
-            </div>
-            <div className="step">
-              <span className="n">02</span>
-              <div className="stage">Match in batches</div>
-              <h3>Orders clear in the dark.</h3>
-              <p>Signed intent meets inside an attested TDX enclave. Compatible orders clear every two seconds at one uniform price.</p>
-              <span className="tech">Intel TDX · FBA</span>
-            </div>
-            <div className="step">
-              <span className="n">03</span>
-              <div className="stage">Settle on-chain</div>
-              <h3>Fills land verifiably.</h3>
-              <p>Settlement posts to Solana with proof material and the registered TEE signature. Withdrawals stay user-controlled.</p>
-              <span className="tech">ZK proofs</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="section-divider">
-        <div className="line"></div>
-        <svg className="divider-mark" viewBox="0 0 120 120">
-          <use href="#nyx-mark"/>
-        </svg>
-        <div className="line"></div>
-      </div>
-
-      {/* ===================== NEW: DIFFERENTIATION SECTION ===================== */}
-      <section className="section" id="differentiation">
-        <div className="layout-line-left"></div>
-        <div className="layout-line-right"></div>
-        <div className="layout-node left"></div>
-        <div className="layout-node right"></div>
-
-        <div className="wrap">
-          <div className="section-head">
-            <span className="badge">Comparison</span>
-            <h2 className="display h-lg" style={{ marginTop: "16px", fontWeight: 300, fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif", letterSpacing: "-0.01em" }}>
-              How Darknyx compares
-            </h2>
-            <p className="lede">
-              Honest trade-offs across order privacy, custody risk, matching speed, and L1 compatibility.
-            </p>
-          </div>
-
-          <div className="diff-table-wrapper">
-            <table className="diff-table">
-              <thead>
-                <tr>
-                  <th>Dimension</th>
-                  <th>Darknyx</th>
-                  <th>Public DEXs / CLOBs</th>
-                  <th>Centralized Exchanges</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><b>Order Privacy</b></td>
-                  <td><span className="highlight">Hidden (In-TEE)</span></td>
-                  <td>Public (Front-runnable)</td>
-                  <td>Visible to operator</td>
-                </tr>
-                <tr>
-                  <td><b>Custody Risk</b></td>
-                  <td><span className="highlight">Zero (ZK proofs)</span></td>
-                  <td>Zero (On-chain)</td>
-                  <td>Total operator custody</td>
-                </tr>
-                <tr>
-                  <td><b>Matching Speed</b></td>
-                  <td><span className="highlight">Sub-millisecond</span></td>
-                  <td>Block-level delay</td>
-                  <td>Sub-millisecond</td>
-                </tr>
-                <tr>
-                  <td><b>Liquidity Access</b></td>
-                  <td><span className="highlight">Direct (Solana assets)</span></td>
-                  <td>Direct L1 liquidity</td>
-                  <td>Deep custodian book</td>
-                </tr>
-                <tr>
-                  <td><b>Moat / Defensibility</b></td>
-                  <td><span className="highlight">Batched private settlement</span></td>
-                  <td>Network effects</td>
-                  <td>Brand & licensing</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+      <DocsGateway />
 
       <div className="section-divider">
         <div className="line"></div>
@@ -610,9 +252,9 @@ export default function Home() {
           </svg>
           <p className="eyebrow" style={{ fontSize: "16px", letterSpacing: "0.2em" }}>Privacy without sacrificing auditability</p>
           <div className="footer-cta">
-            <Link className="btn" href="/docs">
-              Read the docs <span className="arr">→</span>
-            </Link>
+            <span className="btn ghost status" style={{ display: "inline-flex", alignItems: "center" }}>
+              <span className="pdot"></span>Private beta soon
+            </span>
           </div>
         </div>
 
@@ -645,6 +287,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+      {mounted && <MorphingLogo placeholderRef={placeholderRef} />}
     </>
   );
 }

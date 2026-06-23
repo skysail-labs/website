@@ -1,0 +1,3 @@
+- never commit on your own
+- never co author or mention Codex in any commits
+- always review the commit message from me

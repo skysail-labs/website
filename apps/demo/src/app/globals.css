@@ -98,7 +98,7 @@
   --font-sans: var(--nyx-font-body);
 }
 
-html, body { margin: 0; padding: 0; overflow-x: hidden; }
+html, body { margin: 0; padding: 0; overflow-x: clip; }
 
 * { scrollbar-width: none !important; }
 *::-webkit-scrollbar { display: none !important; width: 0 !important; }

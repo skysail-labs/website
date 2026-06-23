@@ -8,11 +8,16 @@
 
 :root {
   /* surfaces - true brand ink, layered */
-  --ink:      #14121d;
-  --ink-1:    #1d1b28;
-  --ink-2:    #272436;
-  --ink-3:    #322e45;
-  --ink-card: #14121d;
+  --ink:      #0a0a0a;
+  --ink-1:    #111111;
+  --ink-2:    #1a1a1a;
+  --ink-3:    #222222;
+  --ink-card: #0a0a0a;
+  /* saved purple shades — may use later */
+  --purple-ink:   #14121d;
+  --purple-ink-1: #1d1b28;
+  --purple-ink-2: #272436;
+  --purple-ink-3: #322e45;
 
   /* chalk */
   --chalk:      #f3effc;
@@ -51,7 +56,7 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 a { color: inherit; text-decoration: none; }
 ::selection { background: var(--cobalt-soft); color: var(--chalk); }
@@ -156,13 +161,20 @@ img.scene-art { object-fit: cover; object-position: bottom; }
    NAV
    ============================================================ */
 .nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 80;
+  position: fixed; top: -80px; left: 0; right: 0; z-index: 80;
   display: flex; align-items: center; justify-content: space-between;
   padding: 18px clamp(20px, 4vw, 48px);
-  transition: top .3s, background .3s, border-color .3s, backdrop-filter .3s;
+  transition: top .35s cubic-bezier(0.16, 1, 0.3, 1), background .3s, border-color .3s, backdrop-filter .3s;
   border-bottom: 1px solid transparent;
+  pointer-events: none;
 }
-.nav.scrolled { top: 0; background: rgba(20, 18, 29, 0.72); backdrop-filter: blur(14px) saturate(1.2); border-bottom-color: var(--line); }
+.nav.scrolled { 
+  top: 0; 
+  background: rgba(20, 18, 29, 0.72); 
+  backdrop-filter: blur(14px) saturate(1.2); 
+  border-bottom-color: var(--line); 
+  pointer-events: auto;
+}
 .nav .lock { display: flex; align-items: center; gap: 11px; flex: 1; }
 .nav .lock .mark { width: 26px; height: 26px; transform: translateY(4px); }
 .nav .lock b { font-weight: 600; font-size: 18px; letter-spacing: -0.04em; }
@@ -331,7 +343,7 @@ img.scene-art { object-fit: cover; object-position: bottom; }
   justify-content: center;
   width: 100%;
   padding: 0 clamp(20px, 5vw, 56px);
-  background: #08080c;
+  background: var(--ink);
   position: relative;
   z-index: 1;
 }
@@ -376,6 +388,233 @@ img.scene-art { object-fit: cover; object-position: bottom; }
 .footer-foot .fl a { font: 500 11px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--chalk-dim); transition: color .2s; }
 .footer-foot .fl a:hover { color: var(--cobalt-bright); }
 .footer-foot .fl a.social-link { display: inline-flex; align-items: center; }
+
+/* ============================================================
+   DOCS GATEWAY (fabric.vc style)
+   ============================================================ */
+.docs-gateway-section {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  overflow: hidden;
+  background: #040404;
+  border-top: 1px solid var(--line-2);
+  border-bottom: 1px solid var(--line-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gateway-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+  grid-template-rows: repeat(15, 36px);
+  width: 105%;
+  height: 105%;
+  top: -2.5%;
+  left: -2.5%;
+  pointer-events: auto;
+}
+
+.gateway-grid-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-direction: normal;
+}
+
+.gateway-grid-cell-box {
+  background: #060606;
+  border: 1px solid rgba(214, 179, 106, 0.04);
+  color: #6e5e42;
+  opacity: 0.06;
+  /* animation-name: grid-blink; */
+}
+
+.gateway-grid-cell-box:hover {
+  opacity: 1 !important;
+  background: rgba(214, 179, 106, 0.12);
+  border-color: rgba(214, 179, 106, 0.3);
+  transform: scale(1.08);
+  z-index: 10;
+  box-shadow: 0 0 12px rgba(214, 179, 106, 0.2);
+  animation-play-state: paused;
+}
+
+.gateway-grid-cell-dot {
+  background: transparent;
+  color: rgba(214, 179, 106, 0.08);
+  opacity: 0.2;
+  /* animation-name: grid-dot-blink; */
+}
+
+
+
+.gateway-cell-logo {
+  width: 13px;
+  height: 13px;
+}
+
+.gateway-cell-logo-dot {
+  width: 5px;
+  height: 5px;
+}
+
+@keyframes grid-blink {
+  0%, 85%, 100% {
+    opacity: 0.05;
+    color: #6e5e42;
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  92.5% {
+    opacity: 0.85;
+    color: #ffd880;
+    filter: drop-shadow(0 0 6px rgba(255, 216, 128, 0.4));
+  }
+}
+
+@keyframes grid-dot-blink {
+  0%, 85%, 100% {
+    opacity: 0.15;
+  }
+  92.5% {
+    opacity: 0.45;
+  }
+}
+
+.gateway-fade-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 35%, #040404 95%);
+  z-index: 1;
+}
+
+.gateway-content-wrap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 56px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
+/* Base Light Card design styles */
+.gateway-card-small {
+  background: #ffffff;
+  border: 1px solid #111111;
+  color: #111111;
+  font: 600 13px var(--mono);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 10px 18px;
+  width: fit-content;
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.15);
+  margin-bottom: 16px;
+}
+
+.gateway-card-main {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #111111;
+  color: #111111;
+  padding: clamp(24px, 5vw, 42px);
+  width: 100%;
+  max-width: 580px;
+  box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.15);
+}
+
+.gateway-card-header {
+  font: 600 clamp(16px, 2vw, 20px) var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+}
+
+.bracket-highlight {
+  color: #d6b36a;
+  font-weight: 700;
+}
+
+.gateway-card-desc {
+  font-size: clamp(14px, 1.8vw, 15px);
+  line-height: 1.6;
+  color: #444444;
+  margin-bottom: 24px;
+}
+
+.gateway-tech-row {
+  display: flex;
+  gap: 28px;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 18px;
+  margin-bottom: 26px;
+  flex-wrap: wrap;
+}
+
+.gateway-tech-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gateway-tech-label {
+  font: 600 8.5px/1.2 var(--mono);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888888;
+}
+
+.gateway-tech-val {
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #222222;
+}
+
+.gateway-cta .gateway-btn {
+  background: #111111;
+  border: 1px solid #111111;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 12px 24px;
+  width: fit-content;
+}
+
+.gateway-cta .gateway-btn:hover {
+  background: #d6b36a;
+  border-color: #d6b36a;
+  color: #111111;
+}
+
+/* Overlapping layouts on desktop */
+@media (min-width: 900px) {
+  .gateway-content-wrap {
+    /* Offset the parent slightly to account for the absolute small card */
+    transform: translate(60px, 30px);
+  }
+  .gateway-card-small {
+    position: absolute;
+    right: 100%;
+    bottom: 100%;
+    margin-right: -1px;
+    margin-bottom: -1px;
+    z-index: 5;
+  }
+}
 
 /* ============================================================
    DOCS PORTAL (retained for backward compatibility and general docs routes)
@@ -681,4 +920,536 @@ img.scene-art { object-fit: cover; object-position: bottom; }
 }
 .diff-table tbody tr:hover {
   background: rgba(255, 255, 255, 0.015);
+}
+
+/* ============================================================
+   HORIZONTAL SCROLL — Taiko-style sticky scroll through 4 panels
+   ============================================================ */
+
+.hscroll-outer {
+  height: 400vh;
+  position: relative;
+}
+
+.hscroll-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.hscroll-track {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 400vw;
+  will-change: transform;
+}
+
+.hscroll-panel {
+  width: 100vw;
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hscroll-panel-inner {
+  width: 100%;
+  max-width: 1100px;
+  padding: 0 48px;
+}
+
+.hscroll-wheel-wrap {
+  position: absolute;
+  bottom: clamp(20px, 3vh, 36px);
+  left: clamp(20px, 3vw, 36px);
+  width: clamp(60px, 8vw, 90px);
+  height: clamp(60px, 8vw, 90px);
+  z-index: 50;
+  pointer-events: none;
+  filter: drop-shadow(0 0 12px rgba(197, 160, 89, 0.15));
+}
+
+.hscroll-badge {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cobalt);
+  margin-bottom: 20px;
+}
+
+.hscroll-title {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(28px, 3vw, 42px);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--chalk);
+  margin: 0 0 16px;
+}
+
+.hscroll-lede {
+  font-size: clamp(13px, 1.1vw, 15px);
+  line-height: 1.65;
+  color: var(--chalk-dim);
+  max-width: 60ch;
+  margin: 0 0 28px;
+}
+
+/* Panel 1: pillars */
+.hscroll-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+}
+
+.hscroll-pillar-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--cobalt);
+  margin-bottom: 10px;
+}
+
+.hscroll-pillar h3 {
+  font-size: clamp(14px, 1.2vw, 16px);
+  font-weight: 500;
+  color: var(--chalk);
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+.hscroll-pillar p {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--chalk-dim);
+  margin: 0;
+}
+
+/* Panel 2: architecture */
+.hscroll-arch {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 32px;
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+}
+
+.hscroll-arch-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hscroll-arch-btn {
+  background: none;
+  border: none;
+  border-left: 2px solid var(--line);
+  padding: 8px 12px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.hscroll-arch-btn .num {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--chalk-mute);
+}
+
+.hscroll-arch-btn .title {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--chalk-dim);
+}
+
+.hscroll-arch-btn.active {
+  border-left-color: var(--cobalt);
+  background: var(--cobalt-soft);
+}
+
+.hscroll-arch-btn.active .num { color: var(--cobalt); }
+.hscroll-arch-btn.active .title { color: var(--chalk); }
+
+.hscroll-arch-pane h3 {
+  font-size: clamp(14px, 1.2vw, 16px);
+  font-weight: 500;
+  color: var(--chalk);
+  margin: 0 0 10px;
+}
+
+.hscroll-arch-pane p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--chalk-dim);
+  margin: 0 0 16px;
+}
+
+.hscroll-arch-features {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+
+.hscroll-arch-features > div {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+}
+
+.hscroll-arch-features > div span:first-child {
+  color: var(--chalk-mute);
+  font-family: var(--mono);
+  letter-spacing: 0.06em;
+}
+
+.hscroll-arch-features > div span:last-child {
+  color: var(--chalk-dim);
+}
+
+/* Panel 3: steps */
+.hscroll-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+  margin-bottom: 24px;
+}
+
+.hscroll-step {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hscroll-step .n {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--cobalt);
+}
+
+.hscroll-step .stage {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--chalk-mute);
+}
+
+.hscroll-step h3 {
+  font-size: clamp(13px, 1.2vw, 15px);
+  font-weight: 500;
+  color: var(--chalk);
+  margin: 2px 0 6px;
+}
+
+.hscroll-step p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--chalk-dim);
+  margin: 0 0 8px;
+}
+
+.hscroll-step .tech {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--cobalt);
+  border: 1px solid var(--cobalt-line);
+  padding: 2px 6px;
+  border-radius: 3px;
+  align-self: flex-start;
+}
+
+/* Panel 4: table */
+.hscroll-table-wrap {
+  overflow-x: auto;
+  border-top: 1px solid var(--line);
+  padding-top: 0;
+}
+
+.hscroll-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.hscroll-table th {
+  padding: 10px 12px;
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--chalk-mute);
+  border-bottom: 1px solid var(--line);
+}
+
+.hscroll-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--chalk-dim);
+  vertical-align: middle;
+}
+
+.hscroll-table td b { color: var(--chalk); font-weight: 500; }
+
+.hscroll-table .hl {
+  color: var(--cobalt-bright);
+  font-weight: 500;
+}
+
+.hscroll-table tbody tr:hover { background: rgba(255,255,255,0.015); }
+
+
+/* ============================================================
+   OBSIDIAN HERO — Darknyx Monumental Chamber
+   Layer order: form → tint → beam → depth → bands → veins → grain → content → sill
+   ============================================================ */
+
+@property --beam-x {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 26%;
+}
+@property --beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 143deg;
+}
+
+@keyframes hero-beam-drift {
+  from { --beam-x: 26%; --beam-angle: 143deg; }
+  to   { --beam-x: 36%; --beam-angle: 148deg; }
+}
+
+/* Root container */
+.hero-obsidian {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65 0.70' numOctaves='4' seed='12' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23g)' opacity='1'/%3E%3C/svg%3E"),
+    linear-gradient(170deg, #3a3530 0%, #2a2520 40%, #222018 70%, #2e2a22 100%);
+  background-blend-mode: overlay, normal;
+}
+
+/* Layer 1: architectural form */
+.hero-chamber-img {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-chamber-img img {
+  width: 135%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  filter: brightness(0.85) contrast(1.05) saturate(0.75);
+}
+
+/* Layer 2: obsidian base tint — unifies color temperature, lets pillars show through */
+.hero-obsidian-tint {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: rgba(5, 5, 5, 0.10);
+}
+
+/* Layer 3: directional beam — @property animation lives here so vars are in scope */
+.hero-beam {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  animation: hero-beam-drift 24s ease-in-out infinite alternate;
+  background: transparent;
+}
+
+/* Layer 4: depth — vignette + junction shadows + floor */
+.hero-depth {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    /* Lighter centre vignette — don't crush the wall face */
+    radial-gradient(ellipse 80% 80% at 50% 50%,
+      transparent 45%,
+      rgba(5, 5, 5, 0.35) 80%,
+      rgba(5, 5, 5, 0.65) 100%
+    ),
+    /* Left junction — pillar-wall edge, implies depth beyond */
+    linear-gradient(90deg,
+      rgba(5, 5, 5, 0.45) 0%,
+      rgba(5, 5, 5, 0.18) 8%,
+      transparent 18%
+    ),
+    /* Right junction */
+    linear-gradient(270deg,
+      rgba(5, 5, 5, 0.45) 0%,
+      rgba(5, 5, 5, 0.18) 8%,
+      transparent 18%
+    ),
+    /* Floor depth */
+    linear-gradient(180deg,
+      transparent 60%,
+      rgba(5, 5, 5, 0.55) 100%
+    );
+}
+
+/* Layer 5: stone surface bands — wall face has mass */
+.hero-stone-bands {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(20, 18, 14, 0.06) 28%,
+    transparent 34%,
+    rgba(10, 9, 7, 0.04) 52%,
+    transparent 58%,
+    rgba(18, 16, 12, 0.05) 74%,
+    transparent 82%
+  );
+}
+
+/* Layer 6: gold veins — removed */
+.hero-vein {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: transparent;
+}
+
+/* Layer 7: roughness grain — opacity 0.05, never the first thing noticed */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 300px 300px;
+  mix-blend-mode: overlay;
+}
+
+
+/* Layer 9: content — engraved into the chamber face */
+.hero-obsidian-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 clamp(24px, 5vw, 80px);
+  max-width: 780px;
+  width: 100%;
+}
+
+.hero-wordmark {
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-size: clamp(14px, 1.6vw, 18px);
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(214, 179, 106, 0.55);
+  margin-top: 14px;
+  margin-bottom: 36px;
+}
+
+.hero-obsidian-lede {
+  margin: 28px 0 0;
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-size: clamp(13px, 1.3vw, 15px);
+  line-height: 1.75;
+  color: rgba(214, 179, 106, 0.38);
+  max-width: 38ch;
+  text-align: center;
+}
+
+.hero-obsidian-cta {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Layer 9: basalt sill — PILLAR → SILL → PILLAR, structural foundation */
+.hero-sill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9;
+  pointer-events: none;
+}
+.hero-sill::before {
+  content: "";
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(214, 179, 106, 0.18) 20%,
+    rgba(214, 179, 106, 0.22) 50%,
+    rgba(214, 179, 106, 0.18) 80%,
+    transparent 100%
+  );
+}
+.hero-sill::after {
+  content: "";
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg,
+    #050505 0%,
+    #1a1a1a 15%,
+    #1a1a1a 85%,
+    #050505 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-beam {
+    animation: none;
+    --beam-x: 30%;
+    --beam-angle: 145deg;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero-chamber-img img {
+    width: 180%;
+    object-position: center top;
+  }
 }
