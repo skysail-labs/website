@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { RefObject, useEffect, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 
 interface MorphingWordmarkProps {
   sourceRef: RefObject<HTMLDivElement | null>;
@@ -43,6 +43,7 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
   const [layout, setLayout] = useState<WordmarkLayout>(defaultLayout);
   const [viewportHeight, setViewportHeight] = useState(800);
   const { scrollY } = useScroll();
+  const hasLockedRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
@@ -122,6 +123,27 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
     };
   }, [sectionRef, sourceRef, targetRef]);
 
+  // Lock scroll for 0.5s the first time the wordmark lands in position
+  useEffect(() => {
+    if (!layout.endScroll || layout.endScroll <= 1) return;
+    const unsubscribe = scrollY.on("change", (latest) => {
+      if (!hasLockedRef.current && latest >= layout.endScroll) {
+        hasLockedRef.current = true;
+        const lockAt = latest;
+        const onWheel = (e: Event) => e.preventDefault();
+        const onTouch = (e: Event) => e.preventDefault();
+        window.scrollTo({ top: lockAt });
+        window.addEventListener("wheel", onWheel, { passive: false });
+        window.addEventListener("touchmove", onTouch, { passive: false });
+        setTimeout(() => {
+          window.removeEventListener("wheel", onWheel);
+          window.removeEventListener("touchmove", onTouch);
+        }, 500);
+      }
+    });
+    return () => unsubscribe();
+  }, [scrollY, layout.endScroll]);
+
   const {
     startX,
     startY,
@@ -136,14 +158,15 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
   const glitchStart = endScroll * 0.58;
   const glitchEnd = endScroll * 0.82;
 
+  const holdDistance = sectionScrollDistance * 0.15;
+
   const x = useTransform(scrollY, (latest) => {
     if (latest < endScroll) {
       const progress = latest / endScroll;
       return startX + (endX - startX) * progress;
     }
-
-    const sectionProgress = Math.min(1, (latest - endScroll) / sectionScrollDistance);
-    return endX - viewportWidth * 2 * sectionProgress;
+    const sectionProgress = Math.min(1, (latest - endScroll) / (sectionScrollDistance * (200 / 150)));
+    return endX - viewportWidth * sectionProgress;
   });
   const y = useTransform(scrollY, (latest) => {
     if (latest >= endScroll) return endY;
@@ -162,8 +185,8 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
   );
   const opacity = useTransform(
     scrollY,
-    [0, endScroll, endScroll + viewportHeight * 0.7],
-    [1, 1, 0]
+    [0, endScroll, endScroll + holdDistance],
+    [1, 1, 1]
   );
 
   if (!mounted) return null;

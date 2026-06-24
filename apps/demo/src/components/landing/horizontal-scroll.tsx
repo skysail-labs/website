@@ -23,8 +23,8 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
     offset: ["start start", "end end"],
   });
 
-  // Since we have exactly 2 panels, we translate by 100vw (which is 50% of a 200vw track)
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
+  // 2 panels over 200vh of a 250vh outer — translation completes at 0.8, then holds for the remaining 50vh buffer
+  const x = useTransform(scrollYProgress, [0, 0.8, 1], ["0%", "-50%", "-50%"]);
 
 
 
@@ -135,7 +135,7 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
               <LaserFlow
                 color="#d6be8b" // Gold theme accent
                 horizontalBeamOffset={0.25} // Shift to the right
-                verticalBeamOffset={-0.05} // Align flare exactly on the top edge of bottom container (45% height)
+                verticalBeamOffset={-0.12} // Align flare on the top edge of bottom container (38% height box)
                 wispIntensity={7.0}
                 fogIntensity={0.6}
                 flowSpeed={0.35}

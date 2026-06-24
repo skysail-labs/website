@@ -2258,7 +2258,7 @@ img.scene-art {
    ============================================================ */
 
 .hscroll-outer {
-  height: 200vh;
+  height: 250vh;
   position: relative;
 }
 
@@ -2573,9 +2573,9 @@ img.scene-art {
 .panel-bottom-card {
   position: absolute;
   bottom: 0;
-  left: 5%;
+  left: clamp(130px, 12vw, 150px);
   right: 0;
-  height: 45%;
+  height: 38%;
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
   border: 1.5px solid var(--cobalt-bright);
