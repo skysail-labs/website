@@ -40,6 +40,7 @@ function readFontSize(element: Element, fallback: number) {
 
 export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingWordmarkProps) {
   const [mounted, setMounted] = useState(false);
+  const [ready, setReady] = useState(false);
   const [layout, setLayout] = useState<WordmarkLayout>(defaultLayout);
   const [viewportHeight, setViewportHeight] = useState(800);
   const { scrollY } = useScroll();
@@ -87,11 +88,16 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
     measure();
     window.addEventListener("resize", measure);
 
-    // Remeasure when fonts are loaded
+    // Remeasure at multiple points to catch font/layout shifts on first load
     if (typeof document !== "undefined" && "fonts" in document) {
       document.fonts.ready.then(() => {
+        measure();
+        setReady(true);
         setTimeout(measure, 100);
+        setTimeout(measure, 500);
       });
+    } else {
+      setReady(true);
     }
 
     // Remeasure once during scroll to catch late layout shifts
@@ -114,12 +120,14 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
 
     const timer = window.setTimeout(measure, 180);
     const timer2 = window.setTimeout(measure, 1000);
+    const timer3 = window.setTimeout(measure, 2500);
 
     return () => {
       window.removeEventListener("resize", measure);
       window.removeEventListener("scroll", handleScroll);
       window.clearTimeout(timer);
       window.clearTimeout(timer2);
+      window.clearTimeout(timer3);
     };
   }, [sectionRef, sourceRef, targetRef]);
 
@@ -189,7 +197,7 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
     [1, 1, 1]
   );
 
-  if (!mounted) return null;
+  if (!mounted || !ready) return null;
 
   return (
     <motion.div
