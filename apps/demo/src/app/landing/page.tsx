@@ -73,6 +73,7 @@ function Starfield({ count = 40 }: { count?: number }) {
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [initializing, setInitializing] = useState(true);
   const [activePhase, setActivePhase] = useState("P1");
   const placeholderRef = useRef<HTMLDivElement>(null);
   const heroWordmarkRef = useRef<HTMLDivElement>(null);
@@ -81,6 +82,18 @@ export default function Home() {
 
   useEffect(() => {
     setMounted(true);
+    document.body.style.overflow = "hidden";
+    const releaseTimer = setTimeout(() => {
+      setInitializing(false);
+      document.body.style.overflow = "";
+    }, 2000);
+    return () => {
+      clearTimeout(releaseTimer);
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  useEffect(() => {
     const roadmapSection = document.querySelector(".roadmap-section") as HTMLElement;
 
     const handleScroll = () => {
@@ -448,6 +461,42 @@ export default function Home() {
           sectionRef={horizontalScrollRef}
         />
       )}
+
+      <AnimatePresence>
+        {initializing && (
+          <motion.div
+            key="init-overlay"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 9999,
+              background: "#000",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              pointerEvents: "all",
+            }}
+          >
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 1, 0.6, 1] }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+              style={{
+                fontFamily: "var(--mono)",
+                fontSize: "11px",
+                letterSpacing: "0.25em",
+                textTransform: "uppercase",
+                color: "var(--cobalt)",
+              }}
+            >
+              initializing
+            </motion.span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
