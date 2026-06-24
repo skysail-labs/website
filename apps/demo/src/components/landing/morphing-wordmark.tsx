@@ -40,17 +40,13 @@ function readFontSize(element: Element, fallback: number) {
 
 export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingWordmarkProps) {
   const [mounted, setMounted] = useState(false);
-  const [ready, setReady] = useState(false);
   const [layout, setLayout] = useState<WordmarkLayout>(defaultLayout);
-  const measuredRef = useRef(false);
   const [viewportHeight, setViewportHeight] = useState(800);
   const { scrollY } = useScroll();
   const hasLockedRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
-    let measured100 = false;
-    let measuredNear = false;
 
     const measure = () => {
       setViewportHeight(window.innerHeight);
@@ -64,74 +60,33 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
       const sourceRect = source.getBoundingClientRect();
       const targetRect = target.getBoundingClientRect();
       const sectionRect = section.getBoundingClientRect();
-
-      const stickyContainer = section.querySelector(".hscroll-sticky");
-      const track = section.querySelector(".hscroll-track");
-      const stickyRect = stickyContainer ? stickyContainer.getBoundingClientRect() : sectionRect;
-      const trackRect = track ? track.getBoundingClientRect() : stickyRect;
-
       const sectionTop = sectionRect.top + window.scrollY;
       const endFontSize = readFontSize(target, 42);
 
+      // endX: slot's viewport-left at the moment the section is pinned (sectionRect.left === 0 at that point)
+      // For split-panel layout the slot is inside panel-split-left; targetRect.left is already correct.
+      // endY: when scrollY === endScroll, sectionRect.top === 0, so targetRect.top is the viewport Y.
+      //       Subtract ~90% of font size to align cap-height (same formula as the working fa1e171 version).
       setLayout({
         startX: sourceRect.left + window.scrollX,
         startY: sourceRect.top + window.scrollY,
-        endX: targetRect.left - trackRect.left + stickyRect.left,
-        endY: targetRect.top - stickyRect.top + 3,
+        endX: targetRect.left,
+        endY: targetRect.top + window.scrollY - sectionTop - endFontSize * 0.9 + 2,
         endScroll: Math.max(1, sectionTop),
         sectionScrollDistance: Math.max(1, section.offsetHeight - window.innerHeight),
         startFontSize: readFontSize(source, 18),
         endFontSize,
         viewportWidth: window.innerWidth,
       });
-
-      // Only mark ready after fonts have settled (first call from fonts.ready or later)
-      if (measuredRef.current) setReady(true);
     };
 
+    measure();
     window.addEventListener("resize", measure);
-
-    // Remeasure at multiple points to catch font/layout shifts on first load
-    if (typeof document !== "undefined" && "fonts" in document) {
-      document.fonts.ready.then(() => {
-        measuredRef.current = true;
-        measure();
-        setTimeout(measure, 100);
-        setTimeout(measure, 500);
-      });
-    } else {
-      measuredRef.current = true;
-      measure();
-    }
-
-    // Remeasure once during scroll to catch late layout shifts
-    const handleScroll = () => {
-      const currentScroll = window.scrollY;
-      if (!measured100 && currentScroll > 100) {
-        measured100 = true;
-        measure();
-      }
-      const section = sectionRef.current;
-      if (section) {
-        const sectionTop = section.getBoundingClientRect().top + currentScroll;
-        if (!measuredNear && currentScroll > sectionTop - 600) {
-          measuredNear = true;
-          measure();
-        }
-      }
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
     const timer = window.setTimeout(measure, 180);
-    const timer2 = window.setTimeout(measure, 1000);
-    const timer3 = window.setTimeout(measure, 2500);
 
     return () => {
       window.removeEventListener("resize", measure);
-      window.removeEventListener("scroll", handleScroll);
       window.clearTimeout(timer);
-      window.clearTimeout(timer2);
-      window.clearTimeout(timer3);
     };
   }, [sectionRef, sourceRef, targetRef]);
 
@@ -202,7 +157,7 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
     [1, 1, 1]
   );
 
-  if (!mounted || !ready) return null;
+  if (!mounted) return null;
 
   return (
     <motion.div
@@ -220,7 +175,7 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
       <span className="morphing-wordmark-tail">
         <motion.span style={{ opacity: nyxOpacity }}>NYX</motion.span>
         <motion.span className="morphing-wordmark-pool" style={{ opacity: poolOpacity }}>
-          {"\u00a0"}pool
+          {" "}pool
         </motion.span>
         <motion.span className="morphing-wordmark-glitch" style={{ opacity: glitchOpacity }}>
           nyx
