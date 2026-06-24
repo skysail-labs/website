@@ -1,133 +1,146 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 
 export function DocsGateway() {
-  const [mounted, setMounted] = useState(false);
-  const [coords, setCoords] = useState({ x: -1000, y: -1000 });
+  const [inView, setInView] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setMounted(true);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+    return () => observer.disconnect();
   }, []);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setCoords({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
+  const [isMobile, setIsMobile] = useState(false);
 
-  const handleMouseLeave = () => {
-    setCoords({ x: -1000, y: -1000 });
-  };
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 900);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const BAR_COUNT = 220;
+  // Jagged, peaky math formula to resemble the reference screenshot
+  const barHeights = Array.from({ length: BAR_COUNT }).map((_, i) => {
+    const progress = i / BAR_COUNT;
+    
+    // Base upward slope
+    const base = 8 + progress * 40; 
+    
+    // Jagged wave fluctuations (combining multiple frequencies)
+    const w1 = Math.sin(progress * Math.PI * 6.5) * 16;  // medium frequency
+    const w2 = Math.cos(progress * Math.PI * 18.2) * 12; // high frequency (creates jagged peaks)
+    const w3 = Math.sin(progress * Math.PI * 34.5) * 6;  // very high frequency (micro peaks)
+    
+    // Custom sharp spikes/peaks in specific regions
+    let spike = 0;
+    if (progress > 0.12 && progress < 0.18) {
+      spike = (1 - Math.abs((progress - 0.15) / 0.03)) * 28;
+    } else if (progress > 0.42 && progress < 0.52) {
+      spike = (1 - Math.abs((progress - 0.47) / 0.05)) * 32;
+    } else if (progress > 0.78 && progress < 0.88) {
+      spike = (1 - Math.abs((progress - 0.83) / 0.05)) * 42;
+    } else if (progress > 0.88) {
+      spike = (1 - Math.abs((progress - 1.0) / 0.12)) * 12;
+    }
+    
+    const val = base + w1 + w2 + w3 + spike;
+
+    // Minimum height to cover the space below the white card
+    // On mobile, the card covers the whole width, so we need a high minimum height everywhere.
+    // On desktop, the card covers the middle region (approx 0.25 to 0.85).
+    let minH = 4;
+    if (isMobile) {
+      const noise = (w2 * 0.6 + w3 * 0.6);
+      minH = Math.max(52, 54 + noise);
+    } else {
+      if (progress >= 0.2 && progress <= 0.88) {
+        let rampBase = 4;
+        let noiseScale = 0;
+        if (progress < 0.35) {
+          const t = (progress - 0.2) / 0.15;
+          rampBase = 4 + t * 50; // ramp from 4 to 54
+          noiseScale = t;
+        } else if (progress > 0.75) {
+          const t = (0.88 - progress) / 0.13;
+          rampBase = 4 + t * 50; // ramp from 54 to 4
+          noiseScale = t;
+        } else {
+          rampBase = 54;
+          noiseScale = 1;
+        }
+        const noise = (w2 * 0.6 + w3 * 0.6) * noiseScale;
+        minH = Math.max(4, rampBase + noise);
+      }
+    }
+
+    const maxH = progress > 0.75 ? 98 : 92;
+    return Math.min(maxH, Math.max(minH, val));
+  });
 
   return (
     <section 
-      className="docs-gateway-section"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        "--mouse-x": `${coords.x}px`,
-        "--mouse-y": `${coords.y}px`
-      } as React.CSSProperties}
+      ref={containerRef}
+      className={`docs-gateway-section ${inView ? "in-view" : ""}`}
     >
-      {/* 1. Cryptographic / Mathematical Vector Blueprints */}
-      <div className="gateway-blueprints" aria-hidden="true">
-        <svg width="100%" height="100%" viewBox="0 0 1400 600" preserveAspectRatio="none" className="blueprint-svg">
-          {/* Blueprint Grid Patterns */}
-          <defs>
-            <pattern id="blueprint-grid" width="50" height="50" patternUnits="userSpaceOnUse">
-              <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(197, 160, 89, 0.025)" strokeWidth="1"/>
-            </pattern>
-            <pattern id="blueprint-subgrid" width="10" height="10" patternUnits="userSpaceOnUse">
-              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(197, 160, 89, 0.008)" strokeWidth="0.5"/>
-            </pattern>
-          </defs>
-          
-          <rect width="100%" height="100%" fill="url(#blueprint-grid)" />
-          <rect width="100%" height="100%" fill="url(#blueprint-subgrid)" />
-
-          {/* Cryptographic Curve / Waves */}
-          <path 
-            d="M 50,300 C 250,120 350,480 550,300 C 750,120 850,480 1050,300 C 1250,120 1350,480 1500,300" 
-            fill="none" 
-            stroke="rgba(197, 160, 89, 0.04)" 
-            strokeWidth="1.5" 
-            strokeDasharray="4,6" 
+      {/* 1. Animated Graph Bars at bottom */}
+      <div className="gateway-graph-wrap" aria-hidden="true">
+        {barHeights.map((h, i) => (
+          <div 
+            key={i}
+            className="gateway-bar"
+            style={{
+              // @ts-expect-error: Custom CSS variable keys not typed in standard style prop
+              "--h": `${h}%`,
+              "--delay": `${i * 0.0035}s`,
+            }}
           />
-          
-          {/* Merkle Tree Structural Network */}
-          <g stroke="rgba(197, 160, 89, 0.03)" strokeWidth="1" fill="none">
-            {/* Tree connections */}
-            <line x1="700" y1="70" x2="400" y2="180" />
-            <line x1="700" y1="70" x2="1000" y2="180" />
-            
-            <line x1="400" y1="180" x2="250" y2="290" />
-            <line x1="400" y1="180" x2="550" y2="290" />
-            
-            <line x1="1000" y1="180" x2="850" y2="290" />
-            <line x1="1000" y1="180" x2="1150" y2="290" />
-            
-            <line x1="250" y1="290" x2="180" y2="400" />
-            <line x1="250" y1="290" x2="320" y2="400" />
-            <line x1="550" y1="290" x2="480" y2="400" />
-            <line x1="550" y1="290" x2="620" y2="400" />
-
-            {/* Tree Nodes */}
-            <circle cx="700" cy="70" r="12" fill="#020202" stroke="rgba(197, 160, 89, 0.15)" strokeWidth="2" />
-            <circle cx="400" cy="180" r="9" fill="#020202" stroke="rgba(197, 160, 89, 0.1)" strokeWidth="1.5" />
-            <circle cx="1000" cy="180" r="9" fill="#020202" stroke="rgba(197, 160, 89, 0.1)" strokeWidth="1.5" />
-            
-            <circle cx="250" cy="290" r="7" fill="#020202" stroke="rgba(197, 160, 89, 0.08)" strokeWidth="1" />
-            <circle cx="550" cy="290" r="7" fill="#020202" stroke="rgba(197, 160, 89, 0.08)" strokeWidth="1" />
-            <circle cx="850" cy="290" r="7" fill="#020202" stroke="rgba(197, 160, 89, 0.08)" strokeWidth="1" />
-            <circle cx="1150" cy="290" r="7" fill="#020202" stroke="rgba(197, 160, 89, 0.08)" strokeWidth="1" />
-
-            <circle cx="180" cy="400" r="5" fill="#020202" stroke="rgba(197, 160, 89, 0.06)" />
-            <circle cx="320" cy="400" r="5" fill="#020202" stroke="rgba(197, 160, 89, 0.06)" />
-            <circle cx="480" cy="400" r="5" fill="#020202" stroke="rgba(197, 160, 89, 0.06)" />
-            <circle cx="620" cy="400" r="5" fill="#020202" stroke="rgba(197, 160, 89, 0.06)" />
-          </g>
-
-          {/* Elliptic Curve Grid / Targets */}
-          <g stroke="rgba(197, 160, 89, 0.02)" fill="none">
-            <circle cx="150" cy="150" r="100" />
-            <circle cx="150" cy="150" r="150" strokeDasharray="3,3" />
-            <circle cx="1200" cy="400" r="120" />
-            <circle cx="1200" cy="400" r="180" strokeDasharray="4,4" />
-          </g>
-
-          {/* Cryptographic Blueprint Text Labels */}
-          {mounted && (
-            <g fill="rgba(197, 160, 89, 0.22)" fontFamily="var(--mono)" fontSize="9" letterSpacing="0.1em">
-              {/* Math / zk proofs notes */}
-              <text x="725" y="74" fill="rgba(197, 160, 89, 0.35)">ROOT: POSEIDON_HASH(L, R)</text>
-              <text x="420" y="184">H(Node_Left)</text>
-              <text x="1020" y="184">H(Node_Right)</text>
-              
-              <text x="80" y="80" fill="rgba(197, 160, 89, 0.08)">y² = x³ + ax + b (secp256k1 / alt_bn128)</text>
-              <text x="1100" y="220" fill="rgba(197, 160, 89, 0.08)">e(g₁, g₂) = e(h₁, h₂)</text>
-              <text x="80" y="520" fill="rgba(197, 160, 89, 0.08)">TFHE CONFIDENTIAL COMPUTATION GRID</text>
-              <text x="1050" y="540" fill="rgba(197, 160, 89, 0.08)">GROTH16 VALID_SPEND PROVER</text>
-            </g>
-          )}
-        </svg>
+        ))}
       </div>
 
-      {/* 2. Radial Gradient Overlay to fade grid edges */}
-      <div className="gateway-fade-overlay" aria-hidden="true" />
-
-      {/* 3. Dynamic Floating Aura Blobs & Spotlight */}
-      <div className="gateway-aurora-wrap" aria-hidden="true">
-        <div className="gateway-aurora-blob aura-1"></div>
-        <div className="gateway-aurora-blob aura-2"></div>
-        <div className="gateway-aurora-blob aura-3"></div>
+      {/* 2. Concentric Target & Question Mark on Right */}
+      <div className="gateway-target-wrap" aria-hidden="true">
+        <div className="gateway-target-glow" />
+        <div className="gateway-target-ring-1" />
+        <div className="gateway-target-ring-2" />
+        <div className="gateway-target-ring-3" />
+        <div className="gateway-target-center">
+          <svg 
+            width="28" 
+            height="28" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2.2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            {/* Left Bracket */}
+            <path d="M 6 7 L 2 12 L 6 17" />
+            {/* Forward Slash */}
+            <path d="M 14.5 4.5 L 9.5 19.5" />
+            {/* Right Bracket */}
+            <path d="M 18 7 L 22 12 L 18 17" />
+          </svg>
+        </div>
+        <div className="gateway-target-line" />
       </div>
-      <div className="gateway-spotlight" aria-hidden="true" />
 
-      {/* 4. Overlay Content Cards */}
+      {/* 3. Overlay Content Cards */}
       <div className="gateway-content-wrap">
         <div className="gateway-card-main">
           <div className="gateway-card-small">
@@ -146,11 +159,11 @@ export function DocsGateway() {
           <div className="gateway-tech-row">
             <div className="gateway-tech-item">
               <span className="gateway-tech-label">Core Architecture</span>
-              <span className="gateway-tech-val">fhEVM · ZK-Proofs</span>
+              <span className="gateway-tech-val">Intel TDX enclave</span>
             </div>
             <div className="gateway-tech-item">
               <span className="gateway-tech-label">Cryptographic Engine</span>
-              <span className="gateway-tech-val">TFHE · Halo2</span>
+              <span className="gateway-tech-val">ZK validated</span>
             </div>
           </div>
 

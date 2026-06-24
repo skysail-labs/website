@@ -607,162 +607,119 @@ img.scene-art { object-fit: cover; object-position: bottom; }
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Monad-style dot grid background */
+  background-image: radial-gradient(rgba(197, 160, 89, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
-.gateway-grid {
+.gateway-graph-wrap {
   position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
-  grid-template-rows: repeat(15, 36px);
-  width: 105%;
-  height: 105%;
-  top: -2.5%;
-  left: -2.5%;
-  pointer-events: auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 220px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.gateway-grid-cell {
-  position: relative;
+.gateway-bar {
+  flex: 1;
+  max-width: 4.5px;
+  margin: 0 1px;
+  height: 0%;
+  background: rgba(197, 160, 89, 0.06);
+  border-radius: 1px 1px 0 0;
+  transition: height 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--delay);
+}
+
+.docs-gateway-section.in-view .gateway-bar {
+  height: var(--h);
+  background: linear-gradient(to top, rgba(197, 160, 89, 0.04) 0%, rgba(197, 160, 89, 0.22) 100%);
+}
+
+/* Question Mark Target on Right */
+.gateway-target-wrap {
+  position: absolute;
+  right: 4.5%;
+  top: 5%;
+  width: 320px;
+  height: 320px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.5s ease, background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
-  animation-direction: normal;
-}
-
-.gateway-grid-cell-box {
-  background: rgba(255, 255, 255, 0.003);
-  border: 1px solid rgba(255, 255, 255, 0.012);
-  color: rgba(214, 179, 106, 0.08);
-  opacity: 0.15;
-}
-
-.gateway-grid-cell-box:hover {
-  opacity: 1 !important;
-  background: rgba(214, 179, 106, 0.15);
-  border-color: rgba(214, 179, 106, 0.35);
-  transform: scale(1.05);
-  z-index: 10;
-  box-shadow: 0 0 16px rgba(214, 179, 106, 0.25);
-  animation-play-state: paused;
-}
-
-.gateway-grid-cell-dot {
-  background: transparent;
-  color: rgba(214, 179, 106, 0.08);
-  opacity: 0.2;
-  /* animation-name: grid-dot-blink; */
-}
-
-
-
-.gateway-cell-logo {
-  width: 13px;
-  height: 13px;
-}
-
-.gateway-cell-logo-dot {
-  width: 5px;
-  height: 5px;
-}
-
-@keyframes grid-blink {
-  0%, 85%, 100% {
-    opacity: 0.05;
-    color: #6e5e42;
-    filter: drop-shadow(0 0 0 transparent);
-  }
-  92.5% {
-    opacity: 0.85;
-    color: #ffd880;
-    filter: drop-shadow(0 0 6px rgba(255, 216, 128, 0.4));
-  }
-}
-
-@keyframes grid-dot-blink {
-  0%, 85%, 100% {
-    opacity: 0.15;
-  }
-  92.5% {
-    opacity: 0.45;
-  }
-}
-
-.gateway-fade-overlay {
-  position: absolute;
-  inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle at center, transparent 30%, #020202 95%);
+  z-index: 1;
+}
+
+.gateway-target-glow {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(197, 160, 89, 0.16) 0%, rgba(94, 75, 108, 0.06) 50%, transparent 75%);
+  filter: blur(25px);
+  animation: target-glow-pulse 4s infinite alternate ease-in-out;
+}
+
+.gateway-target-ring-1 {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  border: 1px solid rgba(197, 160, 89, 0.04);
+}
+
+.gateway-target-ring-2 {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 1px solid rgba(197, 160, 89, 0.08);
+}
+
+.gateway-target-ring-3 {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px solid rgba(197, 160, 89, 0.18);
+}
+
+.gateway-target-center {
+  position: absolute;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 1px solid var(--cobalt-line);
+  background: #020202;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cobalt-bright);
+  font: 500 24px var(--mono);
+  box-shadow: 0 0 16px rgba(197, 160, 89, 0.25);
   z-index: 2;
 }
 
-.gateway-aurora-wrap {
+.gateway-target-line {
   position: absolute;
-  inset: 0;
+  width: 1px;
+  height: 290px;
+  background: linear-gradient(to bottom, var(--cobalt-line), rgba(197, 160, 89, 0.02));
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-  filter: blur(130px);
-  opacity: 0.75;
 }
 
-.gateway-aurora-blob {
-  position: absolute;
-  border-radius: 50%;
-  mix-blend-mode: screen;
-}
-
-.gateway-aurora-blob.aura-1 {
-  width: 380px;
-  height: 380px;
-  background: radial-gradient(circle, rgba(197, 160, 89, 0.16) 0%, transparent 70%);
-  top: -15%;
-  left: 15%;
-  animation: aura-drift-1 22s infinite alternate ease-in-out;
-}
-
-.gateway-aurora-blob.aura-2 {
-  width: 420px;
-  height: 420px;
-  background: radial-gradient(circle, rgba(94, 75, 108, 0.2) 0%, transparent 70%);
-  bottom: -20%;
-  right: 10%;
-  animation: aura-drift-2 28s infinite alternate ease-in-out;
-}
-
-.gateway-aurora-blob.aura-3 {
-  width: 320px;
-  height: 320px;
-  background: radial-gradient(circle, rgba(163, 116, 130, 0.16) 0%, transparent 70%);
-  top: 25%;
-  left: 55%;
-  animation: aura-drift-3 18s infinite alternate ease-in-out;
-}
-
-@keyframes aura-drift-1 {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(80px, 40px) scale(1.1); }
-}
-
-@keyframes aura-drift-2 {
-  0% { transform: translate(0, 0) scale(1.05); }
-  100% { transform: translate(-60px, -50px) scale(0.95); }
-}
-
-@keyframes aura-drift-3 {
-  0% { transform: translate(0, 0) scale(0.95); }
-  100% { transform: translate(-30px, 60px) scale(1.05); }
-}
-
-.gateway-spotlight {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(380px circle at var(--mouse-x) var(--mouse-y), rgba(214, 190, 139, 0.08) 0%, rgba(163, 116, 130, 0.02) 40%, transparent 80%);
-  z-index: 1;
+@keyframes target-glow-pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  100% { transform: scale(1.05); opacity: 1.2; }
 }
 
 .gateway-content-wrap {
@@ -777,6 +734,20 @@ img.scene-art { object-fit: cover; object-position: bottom; }
   align-items: center;
   justify-content: center;
   gap: 30px;
+}
+
+@media (max-width: 900px) {
+  .gateway-target-wrap {
+    display: none;
+  }
+  .gateway-graph-wrap {
+    padding: 0;
+    height: 140px;
+  }
+  .gateway-bar {
+    margin: 0 1px;
+    max-width: 1.5px;
+  }
 }
 
 /* Base Light Card design styles */
