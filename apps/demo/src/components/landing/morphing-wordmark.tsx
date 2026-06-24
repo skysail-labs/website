@@ -42,6 +42,7 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
   const [mounted, setMounted] = useState(false);
   const [ready, setReady] = useState(false);
   const [layout, setLayout] = useState<WordmarkLayout>(defaultLayout);
+  const measuredRef = useRef(false);
   const [viewportHeight, setViewportHeight] = useState(800);
   const { scrollY } = useScroll();
   const hasLockedRef = useRef(false);
@@ -83,21 +84,24 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
         endFontSize,
         viewportWidth: window.innerWidth,
       });
+
+      // Only mark ready after fonts have settled (first call from fonts.ready or later)
+      if (measuredRef.current) setReady(true);
     };
 
-    measure();
     window.addEventListener("resize", measure);
 
     // Remeasure at multiple points to catch font/layout shifts on first load
     if (typeof document !== "undefined" && "fonts" in document) {
       document.fonts.ready.then(() => {
+        measuredRef.current = true;
         measure();
-        setReady(true);
         setTimeout(measure, 100);
         setTimeout(measure, 500);
       });
     } else {
-      setReady(true);
+      measuredRef.current = true;
+      measure();
     }
 
     // Remeasure once during scroll to catch late layout shifts
