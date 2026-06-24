@@ -106,7 +106,7 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
     }
 
     const sectionProgress = Math.min(1, (latest - endScroll) / sectionScrollDistance);
-    return endX - viewportWidth * 3 * sectionProgress;
+    return endX - viewportWidth * 2 * sectionProgress;
   });
   const y = useTransform(scrollY, (latest) => {
     if (latest >= endScroll) return endY;

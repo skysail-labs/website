@@ -1163,11 +1163,11 @@ img.scene-art { object-fit: cover; object-position: bottom; }
 }
 
 /* ============================================================
-   HORIZONTAL SCROLL — Taiko-style sticky scroll through 4 panels
+   HORIZONTAL SCROLL — Taiko-style sticky scroll through 3 panels
    ============================================================ */
 
 .hscroll-outer {
-  height: 400vh;
+  height: 300vh;
   position: relative;
 }
 
@@ -1183,7 +1183,7 @@ img.scene-art { object-fit: cover; object-position: bottom; }
   display: flex;
   align-items: center;
   height: 100%;
-  width: 400vw;
+  width: 300vw;
   will-change: transform;
 }
 

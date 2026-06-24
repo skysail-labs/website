@@ -21,8 +21,8 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
     offset: ["start start", "end end"],
   });
 
-  // Since we have exactly 4 panels, we translate by 300vw (which is 75% of a 400vw track)
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]);
+  // Since we have exactly 3 panels, we translate by 200vw (which is 66.6667% of a 300vw track)
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-66.6667%"]);
 
   // Entrance animations for panels
   const panelVariants: Variants = {
@@ -236,41 +236,7 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
             </motion.div>
           </div>
 
-          {/* Panel 4 */}
-          <div className="hscroll-panel" id="differentiation">
-            <motion.div 
-              className="hscroll-panel-inner"
-              variants={panelVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.25 }}
-            >
-              <motion.div variants={childVariants} className="hscroll-badge">Comparison</motion.div>
-              <motion.h2 variants={childVariants} className="hscroll-title">How Darknyx compares</motion.h2>
-              <motion.p variants={childVariants} className="hscroll-lede">
-                Honest trade-offs across order privacy, custody risk, matching speed, and L1 compatibility.
-              </motion.p>
-              <motion.div variants={childVariants} className="hscroll-table-wrap">
-                <table className="hscroll-table">
-                  <thead>
-                    <tr><th>Dimension</th><th>Darknyx</th><th>Public DEXs</th><th>CEXs</th></tr>
-                  </thead>
-                  <motion.tbody
-                    variants={{
-                      hidden: {},
-                      visible: { transition: { staggerChildren: 0.04 } }
-                    }}
-                  >
-                    <motion.tr variants={childVariants}><td><b>Order Privacy</b></td><td><span className="hl">Private (TEE)</span></td><td>Public</td><td>Visible to operator</td></motion.tr>
-                    <motion.tr variants={childVariants}><td><b>Custody Risk</b></td><td><span className="hl">Zero (ZK Proofs)</span></td><td>Zero (On-chain)</td><td>Full operator custody</td></motion.tr>
-                    <motion.tr variants={childVariants}><td><b>Matching Speed</b></td><td><span className="hl">Sub-millisecond</span></td><td>Block-level delay</td><td>Sub-millisecond</td></motion.tr>
-                    <motion.tr variants={childVariants}><td><b>Liquidity Access</b></td><td><span className="hl">Direct (Solana)</span></td><td>Direct L1</td><td>Deep custodian book</td></motion.tr>
-                    <motion.tr variants={childVariants}><td><b>Defensibility</b></td><td><span className="hl">Batched settlement</span></td><td>Network effects</td><td>Brand & licensing</td></motion.tr>
-                  </motion.tbody>
-                </table>
-              </motion.div>
-            </motion.div>
-          </div>
+
 
         </motion.div>
       </div>
