@@ -81,8 +81,31 @@ export default function Home() {
 
   useEffect(() => {
     setMounted(true);
-    const handleScroll = () => setScrolled(window.scrollY > window.innerHeight - 80);
+    const roadmapSection = document.querySelector(".roadmap-section") as HTMLElement;
+
+    const handleScroll = () => {
+      setScrolled(window.scrollY > window.innerHeight - 80);
+
+      if (roadmapSection) {
+        const rect = roadmapSection.getBoundingClientRect();
+        const vh = window.innerHeight;
+        
+        // Progress starts when the top of the section is 80% down the viewport
+        // and completes when the bottom of the section is 20% down the viewport
+        const startOffset = vh * 0.8;
+        const endOffset = vh * 0.2;
+        
+        const total = rect.height + startOffset - endOffset;
+        const current = startOffset - rect.top;
+        
+        const progress = Math.max(0, Math.min(1, current / total));
+        roadmapSection.style.setProperty("--roadmap-scroll-progress", progress.toFixed(4));
+      }
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
+    // Initialize immediately on mount
+    handleScroll();
 
     // Roadmap intersection observer
     const phaseElements = document.querySelectorAll(".roadmap-phase-item");
