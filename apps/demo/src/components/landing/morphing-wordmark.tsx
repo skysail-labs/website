@@ -46,6 +46,8 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
 
   useEffect(() => {
     setMounted(true);
+    let measured100 = false;
+    let measuredNear = false;
 
     const measure = () => {
       setViewportHeight(window.innerHeight);
@@ -59,14 +61,20 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
       const sourceRect = source.getBoundingClientRect();
       const targetRect = target.getBoundingClientRect();
       const sectionRect = section.getBoundingClientRect();
+
+      const stickyContainer = section.querySelector(".hscroll-sticky");
+      const track = section.querySelector(".hscroll-track");
+      const stickyRect = stickyContainer ? stickyContainer.getBoundingClientRect() : sectionRect;
+      const trackRect = track ? track.getBoundingClientRect() : stickyRect;
+
       const sectionTop = sectionRect.top + window.scrollY;
       const endFontSize = readFontSize(target, 42);
 
       setLayout({
         startX: sourceRect.left + window.scrollX,
         startY: sourceRect.top + window.scrollY,
-        endX: targetRect.left,
-        endY: targetRect.top + window.scrollY - sectionTop - endFontSize * 0.9 + 2,
+        endX: targetRect.left - trackRect.left + stickyRect.left,
+        endY: targetRect.top - stickyRect.top + 3,
         endScroll: Math.max(1, sectionTop),
         sectionScrollDistance: Math.max(1, section.offsetHeight - window.innerHeight),
         startFontSize: readFontSize(source, 18),
@@ -77,11 +85,40 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
 
     measure();
     window.addEventListener("resize", measure);
+
+    // Remeasure when fonts are loaded
+    if (typeof document !== "undefined" && "fonts" in document) {
+      document.fonts.ready.then(() => {
+        setTimeout(measure, 100);
+      });
+    }
+
+    // Remeasure once during scroll to catch late layout shifts
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+      if (!measured100 && currentScroll > 100) {
+        measured100 = true;
+        measure();
+      }
+      const section = sectionRef.current;
+      if (section) {
+        const sectionTop = section.getBoundingClientRect().top + currentScroll;
+        if (!measuredNear && currentScroll > sectionTop - 600) {
+          measuredNear = true;
+          measure();
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
     const timer = window.setTimeout(measure, 180);
+    const timer2 = window.setTimeout(measure, 1000);
 
     return () => {
       window.removeEventListener("resize", measure);
+      window.removeEventListener("scroll", handleScroll);
       window.clearTimeout(timer);
+      window.clearTimeout(timer2);
     };
   }, [sectionRef, sourceRef, targetRef]);
 
