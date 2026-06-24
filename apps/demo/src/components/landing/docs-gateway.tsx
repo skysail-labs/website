@@ -105,8 +105,8 @@ export function DocsGateway() {
             className="gateway-bar"
             style={{
               // @ts-expect-error: Custom CSS variable keys not typed in standard style prop
-              "--h": `${h}%`,
-              "--delay": `${i * 0.0035}s`,
+              "--h": `${h.toFixed(4)}%`,
+              "--delay": `${(i * 0.0035).toFixed(4)}s`,
             }}
           />
         ))}
