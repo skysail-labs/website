@@ -37,15 +37,15 @@ export function DocsGateway() {
   // Jagged, peaky math formula to resemble the reference screenshot
   const barHeights = Array.from({ length: BAR_COUNT }).map((_, i) => {
     const progress = i / BAR_COUNT;
-    
+
     // Base upward slope
-    const base = 8 + progress * 40; 
-    
+    const base = 8 + progress * 40;
+
     // Jagged wave fluctuations (combining multiple frequencies)
     const w1 = Math.sin(progress * Math.PI * 6.5) * 16;  // medium frequency
     const w2 = Math.cos(progress * Math.PI * 18.2) * 12; // high frequency (creates jagged peaks)
     const w3 = Math.sin(progress * Math.PI * 34.5) * 6;  // very high frequency (micro peaks)
-    
+
     // Custom sharp spikes/peaks in specific regions
     let spike = 0;
     if (progress > 0.12 && progress < 0.18) {
@@ -57,7 +57,7 @@ export function DocsGateway() {
     } else if (progress > 0.88) {
       spike = (1 - Math.abs((progress - 1.0) / 0.12)) * 12;
     }
-    
+
     const val = base + w1 + w2 + w3 + spike;
 
     // Minimum height to cover the space below the white card
@@ -93,14 +93,14 @@ export function DocsGateway() {
   });
 
   return (
-    <section 
+    <section
       ref={containerRef}
       className={`docs-gateway-section ${inView ? "in-view" : ""}`}
     >
       {/* 1. Animated Graph Bars at bottom */}
       <div className="gateway-graph-wrap" aria-hidden="true">
         {barHeights.map((h, i) => (
-          <div 
+          <div
             key={i}
             className="gateway-bar"
             style={{
@@ -119,14 +119,14 @@ export function DocsGateway() {
         <div className="gateway-target-ring-2" />
         <div className="gateway-target-ring-3" />
         <div className="gateway-target-center">
-          <svg 
-            width="28" 
-            height="28" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2.2" 
-            strokeLinecap="round" 
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
             strokeLinejoin="round"
           >
             {/* Left Bracket */}
@@ -150,7 +150,7 @@ export function DocsGateway() {
           <div className="gateway-card-header">
             DOCS × ARCHITECTURE
           </div>
-          
+
           <p className="gateway-card-desc">
             Curious how it works? Refer to our docs for in-depth architecture, protocols, and cryptographic specifications.
           </p>
