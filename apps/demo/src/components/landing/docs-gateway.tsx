@@ -1,202 +1,136 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export function DocsGateway() {
   const [mounted, setMounted] = useState(false);
-  const [cols, setCols] = useState(36);
-  const [cells, setCells] = useState<{ id: number }[]>([]);
-  const [coveredCellIds, setCoveredCellIds] = useState<Set<number>>(new Set());
-
-  const gridRef = useRef<HTMLDivElement>(null);
-  const cardMainRef = useRef<HTMLDivElement>(null);
-  const cardSmallRef = useRef<HTMLDivElement>(null);
+  const [coords, setCoords] = useState({ x: -1000, y: -1000 });
 
   useEffect(() => {
     setMounted(true);
-
-    const handleResize = () => {
-      const isMobile = window.innerWidth < 900;
-      const currentCols = isMobile ? 18 : 36;
-      setCols(currentCols);
-      
-      // Keep grid dimensions consistent: 15 rows
-      const totalCells = currentCols * 15;
-      const newCells = Array.from({ length: totalCells }).map((_, i) => ({ id: i }));
-      setCells(newCells);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Calculate grid cells covered by the white content cards
-  useEffect(() => {
-    if (!mounted || cells.length === 0) return;
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCoords({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
 
-    const checkIntersections = () => {
-      const grid = gridRef.current;
-      const cardMain = cardMainRef.current;
-      const cardSmall = cardSmallRef.current;
-      if (!grid) return;
-
-      const mainRect = cardMain ? cardMain.getBoundingClientRect() : null;
-      const smallRect = cardSmall ? cardSmall.getBoundingClientRect() : null;
-
-      const newCovered = new Set<number>();
-      const children = grid.children;
-
-      // 4px buffer around content cards to ensure edges don't blink
-      const buffer = 4;
-
-      for (let i = 0; i < children.length; i++) {
-        const child = children[i] as HTMLElement;
-        const cellIdAttr = child.getAttribute("data-cell-id");
-        if (!cellIdAttr) continue;
-        const cellId = parseInt(cellIdAttr, 10);
-        const cellRect = child.getBoundingClientRect();
-
-        const overlaps = (rect: DOMRect) => {
-          return !(
-            cellRect.right - buffer < rect.left ||
-            cellRect.left + buffer > rect.right ||
-            cellRect.bottom - buffer < rect.top ||
-            cellRect.top + buffer > rect.bottom
-          );
-        };
-
-        let isOverlapped = false;
-        if (mainRect && overlaps(mainRect)) {
-          isOverlapped = true;
-        }
-        if (smallRect && overlaps(smallRect)) {
-          isOverlapped = true;
-        }
-
-        if (isOverlapped) {
-          newCovered.add(cellId);
-        }
-      }
-
-      setCoveredCellIds(newCovered);
-    };
-
-    // Wait slightly for layout/fonts to settle before measuring
-    const timeoutId = setTimeout(checkIntersections, 100);
-
-    window.addEventListener("resize", checkIntersections);
-    return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener("resize", checkIntersections);
-    };
-  }, [cells, cols, mounted]);
+  const handleMouseLeave = () => {
+    setCoords({ x: -1000, y: -1000 });
+  };
 
   return (
-    <section className="docs-gateway-section">
-      {/* 1. Interactive Blinking Checkerboard Grid Background */}
-      <div 
-        ref={gridRef}
-        className="gateway-grid"
-        style={{
-          gridTemplateColumns: `repeat(${cols}, 1fr)`,
-        }}
-      >
-        {cells.map((cell) => {
-          const col = cell.id % cols;
-          const row = Math.floor(cell.id / cols);
-          const isEven = (col + row) % 2 === 0;
-
-          let cellStyle: React.CSSProperties = {};
+    <section 
+      className="docs-gateway-section"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        "--mouse-x": `${coords.x}px`,
+        "--mouse-y": `${coords.y}px`
+      } as React.CSSProperties}
+    >
+      {/* 1. Cryptographic / Mathematical Vector Blueprints */}
+      <div className="gateway-blueprints" aria-hidden="true">
+        <svg width="100%" height="100%" viewBox="0 0 1400 600" preserveAspectRatio="none" className="blueprint-svg">
+          {/* Blueprint Grid Patterns */}
+          <defs>
+            <pattern id="blueprint-grid" width="50" height="50" patternUnits="userSpaceOnUse">
+              <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(197, 160, 89, 0.025)" strokeWidth="1"/>
+            </pattern>
+            <pattern id="blueprint-subgrid" width="10" height="10" patternUnits="userSpaceOnUse">
+              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(197, 160, 89, 0.008)" strokeWidth="0.5"/>
+            </pattern>
+          </defs>
           
-          if (mounted) {
-            const isCovered = coveredCellIds.has(cell.id);
+          <rect width="100%" height="100%" fill="url(#blueprint-grid)" />
+          <rect width="100%" height="100%" fill="url(#blueprint-subgrid)" />
 
-            if (isCovered) {
-              cellStyle = {
-                animation: "none",
-                opacity: 0.02,
-                color: "#2a2216",
-                borderColor: "rgba(214, 179, 106, 0.005)",
-                background: "transparent",
-              };
-            } else {
-              // Sparse check: Only a fraction of cells should blink
-              const isBlinkingCell = isEven 
-                ? (cell.id % 4 === 0) 
-                : (cell.id % 6 === 0);
+          {/* Cryptographic Curve / Waves */}
+          <path 
+            d="M 50,300 C 250,120 350,480 550,300 C 750,120 850,480 1050,300 C 1250,120 1350,480 1500,300" 
+            fill="none" 
+            stroke="rgba(197, 160, 89, 0.04)" 
+            strokeWidth="1.5" 
+            strokeDasharray="4,6" 
+          />
+          
+          {/* Merkle Tree Structural Network */}
+          <g stroke="rgba(197, 160, 89, 0.03)" strokeWidth="1" fill="none">
+            {/* Tree connections */}
+            <line x1="700" y1="70" x2="400" y2="180" />
+            <line x1="700" y1="70" x2="1000" y2="180" />
+            
+            <line x1="400" y1="180" x2="250" y2="290" />
+            <line x1="400" y1="180" x2="550" y2="290" />
+            
+            <line x1="1000" y1="180" x2="850" y2="290" />
+            <line x1="1000" y1="180" x2="1150" y2="290" />
+            
+            <line x1="250" y1="290" x2="180" y2="400" />
+            <line x1="250" y1="290" x2="320" y2="400" />
+            <line x1="550" y1="290" x2="480" y2="400" />
+            <line x1="550" y1="290" x2="620" y2="400" />
 
-              if (isBlinkingCell) {
-                // Slower random durations (6s to 10s) and wider delays
-                const delay = ((cell.id * 23) % 47) * 0.2;
-                const duration = 6.0 + ((cell.id * 11) % 5) * 0.8;
-                
-                cellStyle = {
-                  animationName: isEven ? "grid-blink" : "grid-dot-blink",
-                  animationDuration: `${duration}s`,
-                  animationDelay: `${delay}s`,
-                  animationIterationCount: "infinite",
-                  animationTimingFunction: "ease-in-out",
-                };
-              } else {
-                // Static idle state
-                cellStyle = {
-                  animation: "none",
-                  opacity: isEven ? 0.05 : 0.15,
-                };
-              }
-            }
-          } else {
-            // Default server-render styles
-            cellStyle = {
-              opacity: isEven ? 0.05 : 0.15,
-            };
-          }
+            {/* Tree Nodes */}
+            <circle cx="700" cy="70" r="12" fill="#020202" stroke="rgba(197, 160, 89, 0.15)" strokeWidth="2" />
+            <circle cx="400" cy="180" r="9" fill="#020202" stroke="rgba(197, 160, 89, 0.1)" strokeWidth="1.5" />
+            <circle cx="1000" cy="180" r="9" fill="#020202" stroke="rgba(197, 160, 89, 0.1)" strokeWidth="1.5" />
+            
+            <circle cx="250" cy="290" r="7" fill="#020202" stroke="rgba(197, 160, 89, 0.08)" strokeWidth="1" />
+            <circle cx="550" cy="290" r="7" fill="#020202" stroke="rgba(197, 160, 89, 0.08)" strokeWidth="1" />
+            <circle cx="850" cy="290" r="7" fill="#020202" stroke="rgba(197, 160, 89, 0.08)" strokeWidth="1" />
+            <circle cx="1150" cy="290" r="7" fill="#020202" stroke="rgba(197, 160, 89, 0.08)" strokeWidth="1" />
 
-          if (isEven) {
-            // Box cell
-            return (
-              <div
-                key={cell.id}
-                data-cell-id={cell.id}
-                className="gateway-grid-cell gateway-grid-cell-box"
-                style={cellStyle}
-              >
-                <svg viewBox="0 0 120 120" className="gateway-cell-logo" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M 24,60 A 36,36 0 0 1 96,60 Z" fill="currentColor" />
-                  <rect x="18" y="66" width="84" height="4" fill="currentColor" />
-                  <rect x="18" y="78" width="60" height="4" fill="currentColor" opacity="0.6" />
-                </svg>
-              </div>
-            );
-          } else {
-            // Dot cell
-            return (
-              <div
-                key={cell.id}
-                data-cell-id={cell.id}
-                className="gateway-grid-cell gateway-grid-cell-dot"
-                style={cellStyle}
-              >
-                <svg viewBox="0 0 20 20" className="gateway-cell-logo-dot" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="10" cy="10" r="2.5" fill="currentColor" />
-                </svg>
-              </div>
-            );
-          }
-        })}
+            <circle cx="180" cy="400" r="5" fill="#020202" stroke="rgba(197, 160, 89, 0.06)" />
+            <circle cx="320" cy="400" r="5" fill="#020202" stroke="rgba(197, 160, 89, 0.06)" />
+            <circle cx="480" cy="400" r="5" fill="#020202" stroke="rgba(197, 160, 89, 0.06)" />
+            <circle cx="620" cy="400" r="5" fill="#020202" stroke="rgba(197, 160, 89, 0.06)" />
+          </g>
+
+          {/* Elliptic Curve Grid / Targets */}
+          <g stroke="rgba(197, 160, 89, 0.02)" fill="none">
+            <circle cx="150" cy="150" r="100" />
+            <circle cx="150" cy="150" r="150" strokeDasharray="3,3" />
+            <circle cx="1200" cy="400" r="120" />
+            <circle cx="1200" cy="400" r="180" strokeDasharray="4,4" />
+          </g>
+
+          {/* Cryptographic Blueprint Text Labels */}
+          {mounted && (
+            <g fill="rgba(197, 160, 89, 0.22)" fontFamily="var(--mono)" fontSize="9" letterSpacing="0.1em">
+              {/* Math / zk proofs notes */}
+              <text x="725" y="74" fill="rgba(197, 160, 89, 0.35)">ROOT: POSEIDON_HASH(L, R)</text>
+              <text x="420" y="184">H(Node_Left)</text>
+              <text x="1020" y="184">H(Node_Right)</text>
+              
+              <text x="80" y="80" fill="rgba(197, 160, 89, 0.08)">y² = x³ + ax + b (secp256k1 / alt_bn128)</text>
+              <text x="1100" y="220" fill="rgba(197, 160, 89, 0.08)">e(g₁, g₂) = e(h₁, h₂)</text>
+              <text x="80" y="520" fill="rgba(197, 160, 89, 0.08)">TFHE CONFIDENTIAL COMPUTATION GRID</text>
+              <text x="1050" y="540" fill="rgba(197, 160, 89, 0.08)">GROTH16 VALID_SPEND PROVER</text>
+            </g>
+          )}
+        </svg>
       </div>
 
       {/* 2. Radial Gradient Overlay to fade grid edges */}
       <div className="gateway-fade-overlay" aria-hidden="true" />
 
-      {/* 3. Overlay Content Cards */}
+      {/* 3. Dynamic Floating Aura Blobs & Spotlight */}
+      <div className="gateway-aurora-wrap" aria-hidden="true">
+        <div className="gateway-aurora-blob aura-1"></div>
+        <div className="gateway-aurora-blob aura-2"></div>
+        <div className="gateway-aurora-blob aura-3"></div>
+      </div>
+      <div className="gateway-spotlight" aria-hidden="true" />
+
+      {/* 4. Overlay Content Cards */}
       <div className="gateway-content-wrap">
-        {/* Main Docs Card */}
-        <div ref={cardMainRef} className="gateway-card-main">
-          {/* Small Intro Card (nested inside main card to anchor absolute coordinates on desktop) */}
-          <div ref={cardSmallRef} className="gateway-card-small">
+        <div className="gateway-card-main">
+          <div className="gateway-card-small">
             Curious?
           </div>
 

@@ -9,6 +9,7 @@ import { HorizontalScroll } from "@/components/landing/horizontal-scroll";
 import { MorphingLogo } from "@/components/landing/morphing-logo";
 import { MorphingWordmark } from "@/components/landing/morphing-wordmark";
 import { DocsGateway } from "@/components/landing/docs-gateway";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Star {
   id: number;
@@ -72,6 +73,7 @@ function Starfield({ count = 40 }: { count?: number }) {
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [activePhase, setActivePhase] = useState("P1");
   const placeholderRef = useRef<HTMLDivElement>(null);
   const heroWordmarkRef = useRef<HTMLDivElement>(null);
   const darkPoolSlotRef = useRef<HTMLSpanElement>(null);
@@ -82,6 +84,25 @@ export default function Home() {
     const handleScroll = () => setScrolled(window.scrollY > window.innerHeight - 80);
     window.addEventListener("scroll", handleScroll, { passive: true });
 
+    // Roadmap intersection observer
+    const phaseElements = document.querySelectorAll(".roadmap-phase-item");
+    const roadmapObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const phase = entry.target.getAttribute("data-phase");
+            if (phase) {
+              setActivePhase(phase);
+            }
+          }
+        });
+      },
+      {
+        rootMargin: "-45% 0px -45% 0px", // Trigger when phase crosses vertical center
+      }
+    );
+    phaseElements.forEach((el) => roadmapObserver.observe(el));
+
     const howSection = document.getElementById("how");
     if (howSection) {
       const observer = new IntersectionObserver(
@@ -91,11 +112,15 @@ export default function Home() {
       observer.observe(howSection);
       return () => {
         window.removeEventListener("scroll", handleScroll);
+        roadmapObserver.disconnect();
         observer.disconnect();
       };
     }
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      roadmapObserver.disconnect();
+    };
   }, []);
 
   return (
@@ -226,6 +251,98 @@ export default function Home() {
       </div>
 
       <HorizontalScroll containerRef={horizontalScrollRef} darkPoolSlotRef={darkPoolSlotRef} />
+
+      <div className="section-divider">
+        <div className="line"></div>
+        <svg className="divider-mark" viewBox="0 0 120 120">
+          <use href="#nyx-mark"/>
+        </svg>
+        <div className="line"></div>
+      </div>
+
+
+
+
+
+      {/* ===== ROADMAP (STICKY SPLIT SECTION) ===== */}
+      <section className="roadmap-section">
+        <div className="roadmap-inner wrap">
+          {/* Left Column (Sticky Panel - 50% width) */}
+          <div className="roadmap-left">
+            <div className="roadmap-sticky-box">
+              <svg className="roadmap-logo" viewBox="0 0 120 120">
+                <use href="#nyx-mark"/>
+              </svg>
+              <h2 className="roadmap-title">Roadmap</h2>
+            </div>
+          </div>
+
+          {/* Right Column (Scrolling Phases - 50% width) */}
+          <div className="roadmap-right">
+            <div className="roadmap-phase-item" data-phase="P1">
+              <div className="roadmap-phase-header">
+                <span className="roadmap-phase-num">PHASE 01</span>
+                <span className="roadmap-status-badge complete">Active</span>
+              </div>
+              <h3 className="roadmap-phase-title">Stabilize</h3>
+              <p className="roadmap-phase-text">
+                Lock the API surface. No breaking changes past this point.
+              </p>
+            </div>
+
+            <div className="roadmap-phase-item" data-phase="P2">
+              <div className="roadmap-phase-header">
+                <span className="roadmap-phase-num">PHASE 02</span>
+                <span className="roadmap-status-badge in-progress">In Progress</span>
+              </div>
+              <h3 className="roadmap-phase-title">Attested Execution</h3>
+              <p className="roadmap-phase-text">
+                Validate the matching engine on attested H200 GPU hardware. First production proof that confidential compute scales beyond CPU enclaves.
+              </p>
+            </div>
+
+            <div className="roadmap-phase-item" data-phase="P3">
+              <div className="roadmap-phase-header">
+                <span className="roadmap-phase-num">PHASE 03</span>
+                <span className="roadmap-status-badge planned">Planned</span>
+              </div>
+              <h3 className="roadmap-phase-title">Client Wallet & Relayer</h3>
+              <p className="roadmap-phase-text">
+                Ship the first production-grade client-side wallet relayer. Full ZK proof generation on the client, no operator key exposure.
+              </p>
+            </div>
+
+            <div className="roadmap-phase-item" data-phase="P4">
+              <div className="roadmap-phase-header">
+                <span className="roadmap-phase-num">PHASE 04</span>
+                <span className="roadmap-status-badge planned">Planned</span>
+              </div>
+              <h3 className="roadmap-phase-title">Scalable Settlement Layer</h3>
+              <p className="roadmap-phase-text">
+                Migrate fills to a hybrid SSE indexer. Partial fill notes indexed per-account on-chain. TEE scope narrows to order ingestion and matching only — settlement becomes stateless and horizontally scalable.
+              </p>
+            </div>
+          </div>
+
+          {/* Central Vertical Line (Absolutely positioned at 50%) */}
+          <div className="roadmap-center-line" aria-hidden="true">
+            <div className="roadmap-badge-sticky">
+              <AnimatePresence mode="popLayout">
+                <motion.span
+                  key={activePhase}
+                  initial={{ opacity: 0, y: 12, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -12, scale: 0.9 }}
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  className="roadmap-badge-text"
+                >
+                  {activePhase}
+                </motion.span>
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <div className="section-divider">
         <div className="line"></div>
