@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, useScroll, useTransform, Variants } from "framer-motion";
 import { RefObject, useRef } from "react";
 import { Hyperspeed } from "./hyperspeed";
+import { LaserFlow } from "./laser-flow";
 
 interface HorizontalScrollProps {
   containerRef?: RefObject<HTMLDivElement | null>;
@@ -22,8 +23,10 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
     offset: ["start start", "end end"],
   });
 
-  // Since we have exactly 3 panels, we translate by 200vw (which is 66.6667% of a 300vw track)
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-66.6667%"]);
+  // Since we have exactly 2 panels, we translate by 100vw (which is 50% of a 200vw track)
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
+
+
 
   const hyperspeedOptions = useMemo(() => ({
     distortion: 'turbulentDistortion',
@@ -126,117 +129,54 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
           </div>
 
           {/* Panel 2 */}
-          <div className="hscroll-panel" id="architecture">
-            <motion.div
-              className="hscroll-panel-inner"
-              variants={panelVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.25 }}
-            >
-              <motion.div variants={childVariants} className="hscroll-badge">Architecture</motion.div>
-              <motion.h2 variants={childVariants} className="hscroll-title">Three layers. One chain of trust.</motion.h2>
-              <motion.p variants={childVariants} className="hscroll-lede">
-                Decoupled logic executing locally,<br />
-                matching confidentially,<br />
-                and settling on-chain.
-              </motion.p>
-              <motion.div
-                className="hscroll-stack-flow"
-                variants={{
-                  hidden: {},
-                  visible: { transition: { staggerChildren: 0.06 } }
-                }}
-                onMouseMove={(e) => {
-                  const cards = e.currentTarget.getElementsByClassName('hscroll-stack-card');
-                  for (let i = 0; i < cards.length; i++) {
-                    const card = cards[i] as HTMLElement;
-                    const rect = card.getBoundingClientRect();
-                    card.style.setProperty('--x', `${e.clientX - rect.left}px`);
-                    card.style.setProperty('--y', `${e.clientY - rect.top}px`);
-                  }
-                }}
-              >
-                <motion.div
-                  variants={childVariants}
-                  className={`hscroll-stack-card${activeTab === "client" ? " active" : ""}`}
-                  onMouseEnter={() => setActiveTab("client")}
-                >
-                  <span className="num">Layer 1</span>
-                  <h4>Local SDK</h4>
-                  <p>Generates client-side zero-knowledge spend proofs and verifies enclaves locally.</p>
-                </motion.div>
-                <motion.div
-                  variants={childVariants}
-                  className={`hscroll-stack-card${activeTab === "matching" ? " active" : ""}`}
-                  onMouseEnter={() => setActiveTab("matching")}
-                >
-                  <span className="num">Layer 2</span>
-                  <h4>TEE Matcher</h4>
-                  <p>Executes uniform-clearing-price matches inside attested Intel TDX enclaves.</p>
-                </motion.div>
-                <motion.div
-                  variants={childVariants}
-                  className={`hscroll-stack-card${activeTab === "vault" ? " active" : ""}`}
-                  onMouseEnter={() => setActiveTab("vault")}
-                >
-                  <span className="num">Layer 3</span>
-                  <h4>On-Chain Vault</h4>
-                  <p>Smart contracts on Solana enforcing balance preservation and verifying proofs.</p>
-                </motion.div>
-              </motion.div>
+          <div className="hscroll-panel" id="architecture" style={{ position: "relative" }}>
+            {/* Laser flow background overlay for Panel 2 only */}
+            <div className="laser-flow-overlay">
+              <LaserFlow
+                color="#d6be8b" // Gold theme accent
+                horizontalBeamOffset={0.25} // Shift to the right
+                verticalBeamOffset={-0.05} // Align flare exactly on the top edge of bottom container (45% height)
+                wispIntensity={7.0}
+                fogIntensity={0.6}
+                flowSpeed={0.35}
+                verticalSizing={2.0}
+                horizontalSizing={0.6}
+              />
+            </div>
 
-            </motion.div>
-          </div>
-
-          {/* Panel 3 */}
-          <div className="hscroll-panel" id="how">
-            <motion.div
-              className="hscroll-panel-inner"
-              variants={panelVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.25 }}
-            >
-              <motion.div variants={childVariants} className="hscroll-badge">Lifecycle</motion.div>
-              <motion.h2 variants={childVariants} className="hscroll-title">From intent to verified settlement.</motion.h2>
-              <motion.p variants={childVariants} className="hscroll-lede">
-                A simple three-step lifecycle ensures execution privacy and cryptographic security.
-              </motion.p>
-              <motion.div
-                className="hscroll-pipeline"
-                variants={{
-                  hidden: {},
-                  visible: { transition: { staggerChildren: 0.08 } }
-                }}
-              >
-                <motion.div variants={childVariants} className="hscroll-pipeline-step">
+            {/* Dotted grid card at the bottom */}
+            <div className="panel-bottom-card">
+              {/* Row of 3 step cards inside the main box */}
+              <div className="panel-inner-cards-row">
+                <div className="small-step-card">
                   <span className="step-num">01</span>
-                  <h4>Deposit</h4>
+                  <h3>Deposit</h3>
                   <p>Lock assets into the Solana vault to receive encrypted private commitments.</p>
-                </motion.div>
-                <div className="hscroll-pipeline-arrow">→</div>
-                <motion.div variants={childVariants} className="hscroll-pipeline-step">
+                </div>
+
+                <div className="small-step-card">
                   <span className="step-num">02</span>
-                  <h4>Match</h4>
+                  <h3>Match</h3>
                   <p>Batch orders clear confidentially inside enclaves at a uniform clearing price.</p>
-                </motion.div>
-                <div className="hscroll-pipeline-arrow">→</div>
-                <motion.div variants={childVariants} className="hscroll-pipeline-step">
+                </div>
+
+                <div className="small-step-card">
                   <span className="step-num">03</span>
-                  <h4>Settle</h4>
+                  <h3>Settle</h3>
                   <p>Matches post on-chain bound to zero-knowledge validity proofs.</p>
-                </motion.div>
-              </motion.div>
-              <motion.div variants={childVariants} className="hscroll-action">
-                <Link className="btn ghost" href="/docs/category/how-it-works">
-                  Read Specifications <span className="arr">→</span>
-                </Link>
-              </motion.div>
-            </motion.div>
+                </div>
+              </div>
+
+              {/* Bottom text strip spanning all 3 cards width */}
+              <div className="panel-bottom-strip">
+                <span className="hscroll-badge">Lifecycle</span>
+                <h2 className="panel-bottom-title">From intent to verified settlement.</h2>
+                <p className="panel-bottom-lede">
+                  A simple three-step lifecycle ensures execution privacy and cryptographic security.
+                </p>
+              </div>
+            </div>
           </div>
-
-
 
         </motion.div>
       </div>

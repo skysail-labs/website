@@ -2258,7 +2258,7 @@ img.scene-art {
    ============================================================ */
 
 .hscroll-outer {
-  height: 300vh;
+  height: 200vh;
   position: relative;
 }
 
@@ -2274,7 +2274,7 @@ img.scene-art {
   display: flex;
   align-items: center;
   height: 100%;
-  width: 300vw;
+  width: 200vw;
   will-change: transform;
 }
 
@@ -2434,6 +2434,7 @@ img.scene-art {
   .panel-split-right {
     display: none;
   }
+
   .panel-split-left {
     max-width: 100%;
   }
@@ -2483,18 +2484,18 @@ img.scene-art {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  border-top: 1px solid var(--line);
-  padding-top: 32px;
+  width: 100%;
 }
 
 .hscroll-stack-card {
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.01);
-  padding: 24px;
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.015);
+  padding: 32px;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  justify-content: flex-start;
+  min-height: 240px;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
@@ -2526,30 +2527,150 @@ img.scene-art {
 
 .hscroll-stack-card.active {
   border-color: var(--cobalt);
-  background: rgba(197, 160, 89, 0.04);
+  background: rgba(197, 160, 89, 0.05);
+  box-shadow: 
+    0 0 2px 1px rgba(197, 160, 89, 0.2) inset,
+    0 0 16px 2px rgba(197, 160, 89, 0.08);
 }
 
 .hscroll-stack-card .num {
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.14em;
   color: var(--cobalt);
   text-transform: uppercase;
+  margin-bottom: 12px;
 }
 
 .hscroll-stack-card h4 {
   font-family: var(--font-space-grotesk), system-ui, sans-serif;
-  font-size: clamp(14px, 1.2vw, 17px);
-  font-weight: 500;
+  font-size: clamp(16px, 1.3vw, 20px);
+  font-weight: 600;
   color: var(--chalk);
-  margin: 0;
+  margin: 0 0 8px 0;
 }
 
 .hscroll-stack-card p {
-  font-size: 12.5px;
+  font-size: clamp(12px, 1.1vw, 14px);
   line-height: 1.6;
   color: var(--chalk-dim);
   margin: 0;
+}
+
+/* Laser flow background overlay for Panel 2 */
+.laser-flow-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  overflow: hidden;
+}
+
+/* Card at the bottom of Panel 2 with rounded top corners, gold theme glow, and dotted grid background */
+.panel-bottom-card {
+  position: absolute;
+  bottom: 0;
+  left: 5%;
+  right: 0;
+  height: 45%;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  border: 1.5px solid var(--cobalt-bright);
+  border-bottom: none;
+  background-color: var(--ink-1);
+  background-image: radial-gradient(rgba(214, 190, 139, 0.15) 1.2px, transparent 1.2px);
+  background-size: 16px 16px;
+  background-position: center top;
+  box-shadow: 
+    0 -10px 30px rgba(214, 190, 139, 0.25),
+    inset 0 1px 20px rgba(214, 190, 139, 0.1);
+  z-index: 5;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Horizontal row of step cards nested inside bottom container */
+.panel-inner-cards-row {
+  display: flex;
+  gap: 20px;
+  padding: 20px 24px 12px 24px;
+}
+
+/* Individual small step card styling */
+.small-step-card {
+  flex: 1;
+  background-color: #000000;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.small-step-card:hover {
+  border-color: var(--cobalt-bright);
+  transform: translateY(-2px);
+}
+
+.small-step-card .step-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--cobalt-bright);
+  display: block;
+  margin-bottom: 12px;
+}
+
+.small-step-card h3 {
+  font-size: clamp(16px, 1.5vw, 18px);
+  font-weight: 500;
+  margin: 0 0 10px 0;
+  color: var(--chalk);
+}
+
+.small-step-card p {
+  font-size: clamp(12px, 1.1vw, 13px);
+  line-height: 1.5;
+  color: var(--chalk-dim);
+  margin: 0;
+}
+
+/* Horizontal bottom text strip inside bottom card */
+.panel-bottom-strip {
+  padding: 16px 24px;
+  border-top: 1.5px solid var(--line);
+  background-color: #000000;
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+
+.panel-bottom-title {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(22px, 2.2vw, 32px);
+  font-weight: 300;
+  margin: 0 0 8px 0;
+  color: var(--chalk);
+  line-height: 1.2;
+}
+
+.panel-bottom-lede {
+  font-size: clamp(12px, 1vw, 14px);
+  line-height: 1.6;
+  color: var(--chalk-dim);
+  margin: 0;
+  max-width: 800px;
+}
+
+/* Ensure track runs on top of the background flow */
+.hscroll-track {
+  position: relative;
+  z-index: 2;
 }
 
 /* Panel 3: Pipeline (Lifecycle) */
