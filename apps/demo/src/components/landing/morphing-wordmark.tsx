@@ -180,7 +180,8 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
     if (latest >= endScroll) return endY;
     const progress = latest / endScroll;
     const currentStart = startY - latest;
-    return currentStart + (endY - currentStart) * progress;
+    const computed = currentStart + (endY - currentStart) * progress;
+    return Math.min(computed, endY);
   });
   const fontSize = useTransform(scrollY, [0, endScroll], [startFontSize, endFontSize]);
   const letterSpacing = useTransform(scrollY, [0, endScroll * 0.5], ["0.32em", "0.02em"]);
