@@ -5,12 +5,38 @@ import { useEffect, useState, RefObject } from "react";
 
 interface MorphingLogoProps {
   placeholderRef: RefObject<HTMLDivElement | null>;
+  roadmapPlaceholderRef: RefObject<HTMLDivElement | null>;
 }
 
-export function MorphingLogo({ placeholderRef }: MorphingLogoProps) {
+const getStaticCoords = (el: HTMLElement) => {
+  let offsetTop = 0;
+  let offsetLeft = 0;
+  let current: HTMLElement | null = el;
+
+  const section = el.closest(".roadmap-section") as HTMLElement;
+  if (!section) return { x: 0, y: 0 };
+
+  while (current && current !== section && current !== document.body) {
+    offsetTop += current.offsetTop;
+    offsetLeft += current.offsetLeft;
+    current = current.offsetParent as HTMLElement;
+  }
+
+  const sectionRect = section.getBoundingClientRect();
+  const sectionX = sectionRect.left + window.scrollX;
+  const sectionY = sectionRect.top + window.scrollY;
+
+  return {
+    x: sectionX + offsetLeft,
+    y: sectionY + offsetTop,
+  };
+};
+
+export function MorphingLogo({ placeholderRef, roadmapPlaceholderRef }: MorphingLogoProps) {
   const [dimensions, setDimensions] = useState({ width: 1200, height: 800 });
   const [mounted, setMounted] = useState(false);
   const [startCoords, setStartCoords] = useState({ x: 0, y: 0 });
+  const [endCoords, setEndCoords] = useState({ x: 0, y: 0 });
 
   const { scrollY } = useScroll();
 
@@ -31,6 +57,11 @@ export function MorphingLogo({ placeholderRef }: MorphingLogoProps) {
           y: rect.top + window.scrollY,
         });
       }
+
+      if (roadmapPlaceholderRef.current) {
+        const coords = getStaticCoords(roadmapPlaceholderRef.current);
+        setEndCoords(coords);
+      }
     };
 
     handleResize();
@@ -43,7 +74,7 @@ export function MorphingLogo({ placeholderRef }: MorphingLogoProps) {
       window.removeEventListener("resize", handleResize);
       clearTimeout(timer);
     };
-  }, [placeholderRef]);
+  }, [placeholderRef, roadmapPlaceholderRef]);
 
   const H = dimensions.height;
 
@@ -69,28 +100,98 @@ export function MorphingLogo({ placeholderRef }: MorphingLogoProps) {
   const finalY = H - finalCenter - 60;
   const finalScale = wheelSize / 120;
 
-  // Coordinate interpolations
-  const x = useTransform(scrollY, [0, H], [startCoords.x, finalX]);
+  // site.css roadmap logo size: clamp(72px, 8vw, 96px)
+  const getClampedRoadmapSize = (w: number) => {
+    const vwSize = w * 0.08;
+    return Math.max(72, Math.min(96, vwSize));
+  };
 
-  // y moves from scrolling page position (startCoords.y - scrollY) to fixed screen target (finalY)
-  const y = useTransform(scrollY, (latest) => {
-    if (latest >= H) return finalY;
-    const progress = latest / H;
-    const currentStart = startCoords.y - latest;
-    return currentStart + (finalY - currentStart) * progress;
+  const roadmapSize = getClampedRoadmapSize(dimensions.width);
+  const endScale = roadmapSize / 120;
+
+  // Coordinate interpolations: Hero -> Bottom Left Wheel -> Roadmap Sticky Logo
+  const x = useTransform(scrollY, (latest) => {
+    if (latest <= H) {
+      const progress = latest / H;
+      return startCoords.x + (finalX - startCoords.x) * progress;
+    }
+    if (latest <= 3 * H) {
+      return finalX;
+    }
+    const endXVal = endCoords.x || (finalX + 60 * (1 - endScale));
+    const targetEndX = endXVal - 60 * (1 - endScale);
+    if (latest <= 4 * H) {
+      const progress = (latest - 3 * H) / H;
+      return finalX + (targetEndX - finalX) * progress;
+    }
+    return targetEndX;
   });
 
-  const scale = useTransform(scrollY, [0, H], [1.0, finalScale]);
-  
-  // Rotate during the slide and then continue rotating as we scroll horizontally
-  const rotate = useTransform(scrollY, [0, H, H * 4], [0, 360, 1440]);
-  
-  // Fade out when scrolling towards the footer
-  const opacity = useTransform(scrollY, [0, H * 4, H * 4 + 150], [1, 1, 0]);
+  const y = useTransform(scrollY, (latest) => {
+    if (latest <= H) {
+      const progress = latest / H;
+      const currentStart = startCoords.y - latest;
+      return currentStart + (finalY - currentStart) * progress;
+    }
+    if (latest <= 3 * H) {
+      return finalY;
+    }
+    const endYVal = endCoords.y || (finalY + latest + 60 * (1 - endScale));
+    
+    // finalTargetViewportY is the final stuck/resting location in the viewport.
+    // On desktop (> 900px width), it is 180. On mobile/tablet, it is endYVal - 4 * H.
+    const finalTargetViewportY = dimensions.width > 900
+      ? 180
+      : endYVal - 4 * H;
 
-  // Cross-fade shapes in flight
-  const logoOpacity = useTransform(scrollY, [0, H * 0.45], [1, 0]);
-  const wheelOpacity = useTransform(scrollY, [H * 0.25, H * 0.75], [0, 1]);
+    const targetEndY = finalTargetViewportY - 60 * (1 - endScale);
+
+    if (latest <= 4 * H) {
+      const progress = (latest - 3 * H) / H;
+      return finalY + (targetEndY - finalY) * progress;
+    }
+
+    // Beyond 4 * H, track the placeholder's actual viewport Y (handles scrolling on mobile, sticky on desktop)
+    const currentViewportY = dimensions.width > 900
+      ? Math.max(180, endYVal - latest)
+      : endYVal - latest;
+
+    return currentViewportY - 60 * (1 - endScale);
+  });
+
+  const scale = useTransform(scrollY, (latest) => {
+    if (latest <= H) {
+      const progress = latest / H;
+      return 1.0 + (finalScale - 1.0) * progress;
+    }
+    if (latest <= 3 * H) {
+      return finalScale;
+    }
+    if (latest <= 4 * H) {
+      const progress = (latest - 3 * H) / H;
+      return finalScale + (endScale - finalScale) * progress;
+    }
+    return endScale;
+  });
+
+  // Rotate during the slide, rotate as we scroll horizontally, then lock upright on Panel 3
+  const rotate = useTransform(scrollY, [0, H, 3 * H, 4 * H], [0, 360, 1080, 1080]);
+
+  // Fade out overall container when handoff to inline logo completes
+  const opacity = useTransform(scrollY, (latest) => {
+    if (latest < 3.9 * H) return 1;
+    if (latest > 4.1 * H) return 0;
+    return 1 - (latest - 3.9 * H) / (0.2 * H);
+  });
+
+  // Cross-fade shapes: Start Logo -> Wheel -> End Logo
+  const startLogoOpacity = useTransform(scrollY, [0, H * 0.45], [1, 0]);
+  const endLogoOpacity = useTransform(scrollY, [3 * H, H * 3.6], [0, 1]);
+  const wheelOpacity = useTransform(
+    scrollY,
+    [H * 0.25, H * 0.75, 3 * H, H * 3.6],
+    [0, 1, 1, 0]
+  );
 
   if (!mounted) return null;
 
@@ -111,12 +212,12 @@ export function MorphingLogo({ placeholderRef }: MorphingLogoProps) {
         pointerEvents: "none",
       }}
     >
-      {/* 1. Logo Shape */}
+      {/* 1. Start Logo Shape (Engraved) */}
       <motion.div
         style={{
           position: "absolute",
           inset: 0,
-          opacity: logoOpacity,
+          opacity: startLogoOpacity,
           filter: "url(#engrave-mark)",
         }}
       >
@@ -126,19 +227,39 @@ export function MorphingLogo({ placeholderRef }: MorphingLogoProps) {
               <rect x="0" y="0" width="120" height="66" />
             </clipPath>
           </defs>
-          <circle cx="60" cy="60" r="36" fill="#6e5e42" clipPath="url(#engrave-logo-clip-morph)" />
-          <rect x="18" y="66" width="84" height="4" fill="#6e5e42" />
-          <rect x="18" y="78" width="60" height="4" fill="#4a3e2a" opacity="0.8" />
+          <circle cx="60" cy="60" r="36" fill="#a68249" clipPath="url(#engrave-logo-clip-morph)" />
+          <rect x="18" y="66" width="84" height="4" fill="#a68249" />
+          <rect x="18" y="78" width="60" height="4" fill="#6b5128" opacity="0.8" />
         </svg>
       </motion.div>
 
-      {/* 2. Wheel Shape */}
+      {/* 2. End Logo Shape (Clean Brand Gold, morphs back on Panel 3) */}
+      <motion.div
+        style={{
+          position: "absolute",
+          inset: 0,
+          opacity: endLogoOpacity,
+        }}
+      >
+        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="end-logo-clip-morph">
+              <rect x="0" y="0" width="120" height="66" />
+            </clipPath>
+          </defs>
+          <circle cx="60" cy="60" r="36" fill="var(--cobalt)" clipPath="url(#end-logo-clip-morph)" />
+          <rect x="18" y="66" width="84" height="4" fill="var(--cobalt)" />
+          <rect x="18" y="78" width="60" height="4" fill="var(--cobalt)" opacity="0.5" />
+        </svg>
+      </motion.div>
+
+      {/* 3. Wheel Shape */}
       <motion.div
         style={{
           position: "absolute",
           inset: 0,
           opacity: wheelOpacity,
-          filter: "drop-shadow(0 0 12px rgba(197, 160, 89, 0.15))",
+          filter: "drop-shadow(0 0 12px rgba(201, 158, 85, 0.15))",
         }}
       >
         <svg viewBox="0 0 200 200" width="120" height="120" fill="none" xmlns="http://www.w3.org/2000/svg">

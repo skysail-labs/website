@@ -23,20 +23,67 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
     offset: ["start start", "end end"],
   });
 
-  // Horizontal translation completes at 0.5, locking Panel 2 on screen
-  const x = useTransform(scrollYProgress, [0, 0.5, 1], ["0%", "-50%", "-50%"]);
-
-  // Vertical merge animation: cards slide up together from 0.5 to 0.7, lock from 0.7 to 0.95, and then unstick
-  const mergeY = useTransform(
+  // Horizontal translation over 3 panels (0%, -33.3333%, -66.6667%)
+  const x = useTransform(
     scrollYProgress,
-    [0, 0.5, 0.7, 0.95, 1],
-    ["0px", "0px", "-330px", "-330px", "-330px"]
+    [0, 0.22, 0.78, 0.95, 1.0],
+    ["0%", "-33.3333%", "-33.3333%", "-66.6667%", "-66.6667%"]
   );
 
   // Synchronized fade-out for Panel 1 text
-  const panel1Opacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
+  const panel1Opacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
 
+  // Vertical scroll translation of Panel 2's right column content
+  const verticalY = useTransform(
+    scrollYProgress,
+    [0.3, 0.7],
+    ["0%", "-50%"]
+  );
 
+  // Dynamic styling for bottom-left indicators (Tab 1: How It Works, Tab 2: Trust Model)
+  const tab1Color = useTransform(
+    scrollYProgress,
+    [0.22, 0.48, 0.52, 0.78],
+    ["#dbb885", "#dbb885", "#f3effc", "#f3effc"]
+  );
+  const tab1Opacity = useTransform(
+    scrollYProgress,
+    [0.22, 0.48, 0.52, 0.78],
+    [1, 1, 0.4, 0.4]
+  );
+  const tab1LineWidth = useTransform(
+    scrollYProgress,
+    [0.22, 0.48, 0.52, 0.78],
+    ["100px", "100px", "40px", "40px"]
+  );
+
+  const tab2Color = useTransform(
+    scrollYProgress,
+    [0.22, 0.48, 0.52, 0.78],
+    ["#f3effc", "#f3effc", "#dbb885", "#dbb885"]
+  );
+  const tab2Opacity = useTransform(
+    scrollYProgress,
+    [0.22, 0.48, 0.52, 0.78],
+    [0.4, 0.4, 1, 1]
+  );
+  const tab2LineWidth = useTransform(
+    scrollYProgress,
+    [0.22, 0.48, 0.52, 0.78],
+    ["40px", "40px", "100px", "100px"]
+  );
+
+  // Dynamic cross-fade for left-column titles and descriptions
+  const content1Opacity = useTransform(
+    scrollYProgress,
+    [0.22, 0.46, 0.54, 0.78],
+    [1, 1, 0, 0]
+  );
+  const content2Opacity = useTransform(
+    scrollYProgress,
+    [0.22, 0.46, 0.54, 0.78],
+    [0, 0, 1, 1]
+  );
 
   const hyperspeedOptions = useMemo(() => ({
     distortion: 'turbulentDistortion',
@@ -68,9 +115,9 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
       background: 0x0a0a0a,
       shoulderLines: 0x1a1a1a,
       brokenLines: 0x1a1a1a,
-      leftCars: [0xd6be8b, 0xffffff, 0xe5d0a6],
-      rightCars: [0xd856bf, 0x9d4edd, 0xffffff],
-      sticks: 0xd6be8b
+      leftCars: [0xc99e55, 0xfcecd7, 0xa68249],
+      rightCars: [0xd856bf, 0x9d4edd, 0xfcecd7],
+      sticks: 0xc99e55
     }
   }), []);
 
@@ -138,14 +185,150 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
             </div>
           </div>
 
-          {/* Panel 2 */}
-          <div className="hscroll-panel" id="architecture" style={{ position: "relative" }}>
-            {/* Laser flow background overlay for Panel 2 only */}
+          {/* Panel 2: Monad-style Split Section */}
+          <div className="hscroll-panel" id="how-it-works-split" style={{ position: "relative" }}>
+            <div className="monad-layout">
+              {/* Left Column */}
+              <div className="monad-left-col">
+                {/* Upper Left Box */}
+                <div className="monad-upper-left">
+                  <div className="monad-badge-wrap">
+                    <motion.span className="hscroll-badge" style={{ opacity: content1Opacity, position: "absolute", left: 0, top: 0 }}>HOW IT WORKS</motion.span>
+                    <motion.span className="hscroll-badge" style={{ opacity: content2Opacity, position: "absolute", left: 0, top: 0 }}>TRUST MODEL</motion.span>
+                  </div>
+                  
+                  <div style={{ position: "relative", flex: 1, marginTop: "24px" }}>
+                    <motion.div style={{ opacity: content1Opacity, position: "absolute", top: 0, left: 0, right: 0 }}>
+                      <h2 className="monad-main-title">
+                        From private intent to verified settlement.
+                      </h2>
+                      <p className="monad-main-desc" style={{ marginTop: "16px" }}>
+                        You sign custody actions with your wallet and orders with a separate trading key. The sensitive path stays private inside the enclave; the money path stays verifiable on-chain.
+                      </p>
+                    </motion.div>
+                    
+                    <motion.div style={{ opacity: content2Opacity, position: "absolute", top: 0, left: 0, right: 0 }}>
+                      <h2 className="monad-main-title">
+                        No custodial black box.
+                      </h2>
+                      <p className="monad-main-desc" style={{ marginTop: "16px" }}>
+                        Public order books leak every intention to bots and competitors. Off-chain dark pools take your custody. Darknyx is neither — orders meet inside an attested enclave the operator cannot read, and funds only ever move under a proof verified on Solana.
+                      </p>
+                    </motion.div>
+                  </div>
+                  
+                  <div className="monad-cta-wrap">
+                    <Link href="/docs" className="btn ghost">
+                      Read The Documentation <span className="arr">→</span>
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Bottom Left Box */}
+                <div className="monad-bottom-left">
+                  <motion.div className="monad-tab" style={{ color: tab1Color, opacity: tab1Opacity }}>
+                    <span className="tab-num">1</span>
+                    <motion.div className="tab-line" style={{ width: tab1LineWidth, backgroundColor: tab1Color, flexGrow: 0 }} />
+                    <span className="tab-text">HOW IT WORKS</span>
+                  </motion.div>
+                  
+                  <motion.div className="monad-tab" style={{ color: tab2Color, opacity: tab2Opacity }}>
+                    <span className="tab-num">2</span>
+                    <motion.div className="tab-line" style={{ width: tab2LineWidth, backgroundColor: tab2Color, flexGrow: 0 }} />
+                    <span className="tab-text">TRUST MODEL</span>
+                  </motion.div>
+                </div>
+              </div>
+
+              {/* Right Column */}
+              <div className="monad-right-col">
+                {/* Corner Frame Accents */}
+                <div className="monad-corner-frame">
+                  <div className="monad-corner-frame-inner" />
+                </div>
+                
+                {/* Aligned Scrolling Viewport */}
+                <div className="monad-right-inner-viewport">
+                  <motion.div className="monad-vertical-scroll-content" style={{ y: verticalY }}>
+                    {/* Section 1: How It Works content */}
+                    <div className="monad-vertical-section">
+                      <div className="monad-step-card-stack">
+                        {/* Step 1 */}
+                        <div className="monad-step-card">
+                          <div className="m-card-header">
+                            <span className="m-card-label">FUND PRIVATELY</span>
+                            <span className="m-card-num">01</span>
+                          </div>
+                          <h3>Deposit into the vault.</h3>
+                          <p>Funds become private note commitments instead of a public, trackable trading balance.</p>
+                        </div>
+                        {/* Step 2 */}
+                        <div className="monad-step-card">
+                          <div className="m-card-header">
+                            <span className="m-card-label">MATCH IN BATCHES</span>
+                            <span className="m-card-num">02</span>
+                          </div>
+                          <h3>Orders clear in the dark.</h3>
+                          <p>Signed intent meets inside an attested TDX enclave. Compatible orders clear every two seconds at one uniform price.</p>
+                        </div>
+                        {/* Step 3 */}
+                        <div className="monad-step-card">
+                          <div className="m-card-header">
+                            <span className="m-card-label">SETTLE ON-CHAIN</span>
+                            <span className="m-card-num">03</span>
+                          </div>
+                          <h3>Fills land verifiably.</h3>
+                          <p>Settlement posts to Solana with proof material and the registered TEE signature. Withdrawals stay user-controlled.</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Section 2: Trust Model content */}
+                    <div className="monad-vertical-section">
+                      <div className="monad-step-card-stack">
+                        {/* Step 1 */}
+                        <div className="monad-step-card">
+                          <div className="m-card-header">
+                            <span className="m-card-label">PRIVACY</span>
+                            <span className="m-card-num">01</span>
+                          </div>
+                          <h3>Orders stay dark until they clear.</h3>
+                          <p>Side, size, and limit price are visible only to the enclave — never in a mempool, log, or account an observer can read before settlement.</p>
+                        </div>
+                        {/* Step 2 */}
+                        <div className="monad-step-card">
+                          <div className="m-card-header">
+                            <span className="m-card-label">CUSTODY</span>
+                            <span className="m-card-num">02</span>
+                          </div>
+                          <h3>Custody risk is zero.</h3>
+                          <p>Funds rest in a non-upgradeable Solana vault. The matcher can propose fills, but only your zero-knowledge proof can move assets out.</p>
+                        </div>
+                        {/* Step 3 */}
+                        <div className="monad-step-card">
+                          <div className="m-card-header">
+                            <span className="m-card-label">VERIFIABILITY</span>
+                            <span className="m-card-num">03</span>
+                          </div>
+                          <h3>Settlement can be checked.</h3>
+                          <p>Every fill lands on-chain bound to a validity proof and the attested TEE signature — auditable by anyone, without exposing your strategy.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Panel 3: Slogan */}
+          <div className="hscroll-panel" id="vision" style={{ position: "relative" }}>
+            {/* Laser flow background overlay */}
             <div className="laser-flow-overlay">
               <LaserFlow
-                color="#d6be8b" // Gold theme accent
+                color="#c99e55" // Gold theme accent
                 horizontalBeamOffset={0.25} // Shift to the right
-                verticalBeamOffset={-0.12} // Align flare on the top edge of bottom container (38% height box)
+                verticalBeamOffset={-0.12} // Align flare on the top edge of bottom container
                 wispIntensity={7.0}
                 fogIntensity={0.6}
                 flowSpeed={0.35}
@@ -155,78 +338,12 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
             </div>
 
             {/* Dotted grid card at the bottom */}
-            <motion.div className="panel-bottom-card" style={{ y: mergeY }}>
-              {/* Row of 3 step cards inside the main box */}
-              <div className="panel-inner-cards-row">
-                <div className="small-step-card">
-                  <span className="step-num">01</span>
-                  <h3>Orders stay dark until they clear</h3>
-                  <p>Side, size, and limit price can never be read before settlement.</p>
-                </div>
-
-                <div className="small-step-card">
-                  <span className="step-num">02</span>
-                  <h3>Custody risk is zero</h3>
-                  <p>Funds stay in a non-upgradeable Solana vault, only your ZK proof can unlock them.</p>
-                </div>
-
-                <div className="small-step-card">
-                  <span className="step-num">03</span>
-                  <h3>Settlement can be checked</h3>
-                  <p>Every settlement includes a ZK proof and TEE signature—publicly verifiable, privately executed.</p>
-                </div>
-              </div>
-
-              {/* Bottom text strip spanning all 3 cards width */}
-              <div className="panel-bottom-strip">
-                <span className="hscroll-badge">Trust Model</span>
-                <h2 className="panel-bottom-title">Three layers, one chain of trust</h2>
-                <p className="panel-bottom-lede">
-                  Whatever needs to be trusted goes on-chain; whatever needs to be private goes in-TEE; whatever must remain a secret stays on your device.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Inverted card positioned below the viewport (top: 100%) */}
-            <motion.div className="panel-top-card-inverted" style={{ y: mergeY }}>
-              {/* Top text strip spanning all 3 cards width */}
-              <div className="panel-top-strip">
-                <span className="hscroll-badge">Flow</span>
-                <h2 className="panel-bottom-title" style={{ margin: '0 0 6px 0' }}>
-                  From private intent to verified settlement.
-                </h2>
-                <p className="panel-bottom-lede">
-                  You sign custody actions with your wallet and orders with a separate trading key. The sensitive path stays private inside the enclave; the money path stays verifiable on-chain.
-                </p>
-              </div>
-
-              {/* Row of 3 step cards inside the main box */}
-              <div className="panel-inner-cards-row">
-                <div className="small-step-card-inverted">
-                  <div className="card-badge-wrap">
-                    <span className="card-badge">SOLANA VAULT</span>
-                  </div>
-                  <h3>FUND PRIVATELY</h3>
-                  <p>Deposit into the vault.</p>
-                </div>
-
-                <div className="small-step-card-inverted">
-                  <div className="card-badge-wrap">
-                    <span className="card-badge">INTEL TDX · FBA</span>
-                  </div>
-                  <h3>MATCH IN BATCHES</h3>
-                  <p>Orders clear in the dark.</p>
-                </div>
-
-                <div className="small-step-card-inverted">
-                  <div className="card-badge-wrap">
-                    <span className="card-badge">ZK PROOFS</span>
-                  </div>
-                  <h3>SETTLE ON-CHAIN</h3>
-                  <p>Fills land verifiably.</p>
-                </div>
-              </div>
-            </motion.div>
+            <div className="panel-bottom-card" style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "48px 24px" }}>
+              <span className="hscroll-badge" style={{ marginBottom: "16px" }}>The Vision</span>
+              <h2 className="panel-bottom-title" style={{ fontSize: "clamp(24px, 3.5vw, 44px)", textAlign: "center", maxWidth: "800px", margin: 0, lineHeight: 1.2 }}>
+                The infrastructure the internet has been waiting for
+              </h2>
+            </div>
           </div>
 
         </motion.div>

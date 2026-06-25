@@ -43,7 +43,7 @@ export function EngravedLogo() {
               surfaceScale="2"
               specularConstant="0.8"
               specularExponent="20"
-              lightingColor="#d6b36a"
+              lightingColor="#ffbe54"
               result="specular"
             >
               <fePointLight x="120" y="80" z="180" />
@@ -87,7 +87,7 @@ export function EngravedLogo() {
               surfaceScale="3.5"
               specularConstant="0.6"
               specularExponent="14"
-              lightingColor="#d6b36a"
+              lightingColor="#ffbe54"
               result="specular"
             >
               <fePointLight x="120" y="80" z="180" />
@@ -117,11 +117,11 @@ export function EngravedLogo() {
             cx="60"
             cy="60"
             r="36"
-            fill="#6e5e42"
+            fill="#a68249"
             clipPath="url(#engrave-logo-clip)"
           />
-          <rect x="18" y="66" width="84" height="4" fill="#6e5e42" />
-          <rect x="18" y="78" width="60" height="4" fill="#4a3e2a" opacity="0.8" />
+          <rect x="18" y="66" width="84" height="4" fill="#a68249" />
+          <rect x="18" y="78" width="60" height="4" fill="#6b5128" opacity="0.8" />
         </svg>
       </div>
     </>

@@ -24,7 +24,7 @@ export function EngravedText() {
            * The engraving filter adds shadow/bevel depth on top of this.
            */
           backgroundImage:
-            "linear-gradient(175deg, #c8b898 0%, #9a8a6a 35%, #6e5e42 70%, #3a3020 100%)",
+            "linear-gradient(175deg, #ebdcb9 0%, #cfa863 35%, #a68249 70%, #594321 100%)",
           WebkitBackgroundClip: "text",
           backgroundClip: "text",
           WebkitTextFillColor: "transparent",

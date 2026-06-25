@@ -76,10 +76,12 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [initializing, setInitializing] = useState(true);
   const [activePhase, setActivePhase] = useState("P1");
+  const [showRoadmapLogo, setShowRoadmapLogo] = useState(false);
   const placeholderRef = useRef<HTMLDivElement>(null);
   const heroWordmarkRef = useRef<HTMLDivElement>(null);
   const darkPoolSlotRef = useRef<HTMLSpanElement>(null);
   const horizontalScrollRef = useRef<HTMLDivElement>(null);
+  const roadmapPlaceholderRef = useRef<HTMLDivElement>(null);
 
 
   useEffect(() => {
@@ -99,20 +101,22 @@ export default function Home() {
     const roadmapSection = document.querySelector(".roadmap-section") as HTMLElement;
 
     const handleScroll = () => {
-      setScrolled(window.scrollY > window.innerHeight - 80);
+      const H = window.innerHeight;
+      setScrolled(window.scrollY > H - 80);
+      setShowRoadmapLogo(window.scrollY >= 4 * H - 10);
 
       if (roadmapSection) {
         const rect = roadmapSection.getBoundingClientRect();
         const vh = window.innerHeight;
-        
+
         // Progress starts when the top of the section is 80% down the viewport
         // and completes when the bottom of the section is 20% down the viewport
         const startOffset = vh * 0.8;
         const endOffset = vh * 0.2;
-        
+
         const total = rect.height + startOffset - endOffset;
         const current = startOffset - rect.top;
-        
+
         const progress = Math.max(0, Math.min(1, current / total));
         roadmapSection.style.setProperty("--roadmap-scroll-progress", progress.toFixed(4));
       }
@@ -242,7 +246,7 @@ export default function Home() {
         <div className="hero-beam" aria-hidden="true">
           <SideRays
             speed={2.0}
-            rayColor1="#d6be8b"
+            rayColor1="#dbb885"
             rayColor2="#96c8ff"
             intensity={2.2}
             spread={3.5}
@@ -322,9 +326,29 @@ export default function Home() {
           {/* Left Column (Sticky Panel - 50% width) */}
           <div className="roadmap-left">
             <div className="roadmap-sticky-box">
-              <svg className="roadmap-logo" viewBox="0 0 120 120">
-                <use href="#nyx-mark" />
-              </svg>
+              <div 
+                ref={roadmapPlaceholderRef} 
+                className="roadmap-logo-container"
+                style={{ 
+                  width: "clamp(72px, 8vw, 96px)", 
+                  height: "clamp(72px, 8vw, 96px)",
+                  position: "relative"
+                }} 
+              >
+                <svg 
+                  className="roadmap-logo" 
+                  viewBox="0 0 120 120"
+                  style={{ 
+                    width: "100%", 
+                    height: "100%", 
+                    color: "var(--cobalt)",
+                    opacity: showRoadmapLogo ? 1 : 0,
+                    transition: "opacity 0.15s ease"
+                  }}
+                >
+                  <use href="#nyx-mark" />
+                </svg>
+              </div>
               <h2 className="roadmap-title">Roadmap</h2>
             </div>
           </div>
@@ -467,7 +491,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {mounted && <MorphingLogo placeholderRef={placeholderRef} />}
+      {mounted && <MorphingLogo placeholderRef={placeholderRef} roadmapPlaceholderRef={roadmapPlaceholderRef} />}
       {mounted && (
         <MorphingWordmark
           sourceRef={heroWordmarkRef}
