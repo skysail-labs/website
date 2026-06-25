@@ -224,9 +224,18 @@ export default function Home() {
           <Link href="/docs">Docs</Link>
         </div>
         <div className="end">
-          <span className="btn ghost status">
-            <span className="pdot"></span>Private beta soon
-          </span>
+          <button
+            onClick={() => {
+              const gatewaySection = document.querySelector(".docs-gateway-section");
+              if (gatewaySection) {
+                gatewaySection.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+            className="btn ghost status waitlist-trigger"
+            type="button"
+          >
+            <span className="pdot"></span>Join waitlist
+          </button>
         </div>
       </nav>
 
