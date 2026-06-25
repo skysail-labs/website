@@ -31,3 +31,4 @@ suggestions.md
 # keypairs
 .demo-keypairs/
 .DS_Store	
+apps/demo/.env.local
