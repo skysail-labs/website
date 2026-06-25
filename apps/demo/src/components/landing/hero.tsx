@@ -1,150 +1,269 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-
-import { LandingHeroCopy } from "@/components/landing/hero-copy";
-
-function PerspectiveGrid() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current!;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d")!;
-    const DPR = window.devicePixelRatio || 1;
-
-    const resize = () => {
-      const w = canvas.parentElement?.offsetWidth ?? window.innerWidth;
-      const h = 180;
-      canvas.width = w * DPR;
-      canvas.height = h * DPR;
-      canvas.style.width = `${w}px`;
-      canvas.style.height = `${h}px`;
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      draw(w, h);
-    };
-
-    function draw(w: number, h: number) {
-      ctx.clearRect(0, 0, w, h);
-
-      const vpX = w / 2;
-      const vpY = 0;
-      const LINE_COUNT = 18;
-      // origin row: 1px above canvas bottom so lines sit on top of the section border
-      const originY = h - 1;
-
-      // horizontal line at the origin - merges visually with the section's border-b
-      ctx.beginPath();
-      ctx.moveTo(0, originY);
-      ctx.lineTo(w, originY);
-      ctx.strokeStyle = "rgba(255,255,255,0.08)";
-      ctx.lineWidth = 1;
-      ctx.stroke();
-
-      for (let i = 0; i <= LINE_COUNT; i++) {
-        const t = i / LINE_COUNT;
-        const baseX = t * w;
-
-        const grad = ctx.createLinearGradient(baseX, originY, vpX, vpY);
-        grad.addColorStop(0,    "rgba(245,243,238,0.18)");
-        grad.addColorStop(0.25, "rgba(245,243,238,0.08)");
-        grad.addColorStop(0.65, "rgba(245,243,238,0)");
-        grad.addColorStop(1,    "rgba(245,243,238,0)");
-
-        ctx.beginPath();
-        ctx.moveTo(baseX, originY);
-        ctx.lineTo(vpX, vpY);
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 0.8;
-        ctx.stroke();
-      }
-    }
-
-    resize();
-    window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="pointer-events-none block w-full"
-      style={{ display: "block" }}
-    />
-  );
-}
-
-function ScrollDownButton() {
-  return (
-    <button
-      onClick={() => {
-        document.getElementById("landing-content")?.scrollIntoView({ behavior: "smooth" });
-      }}
-      aria-label="Scroll down"
-      className="flex items-center justify-center transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--nyx-accent)] focus-visible:ring-offset-4"
-      style={{
-        width: 40,
-        height: 40,
-        borderRadius: "50%",
-        border: "1px solid oklch(0.62 0.14 260 / 0.45)",
-        background: "var(--nyx-accent-soft)",
-        color: "var(--nyx-accent)",
-        cursor: "pointer",
-      }}
-    >
-      <svg width="16" height="22" viewBox="0 0 16 22" fill="none" aria-hidden="true">
-        <defs>
-          <linearGradient id="scroll-btn-trail" x1="8" y1="0" x2="8" y2="14" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="var(--nyx-accent)" stopOpacity="0" />
-            <stop offset="100%" stopColor="var(--nyx-accent)" stopOpacity="1" />
-          </linearGradient>
-        </defs>
-        <line x1="8" y1="0" x2="8" y2="14" stroke="url(#scroll-btn-trail)" strokeWidth="1.5" strokeLinecap="round" />
-        <path d="M3 12l5 6 5-6" stroke="var(--nyx-accent)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-      </svg>
-    </button>
-  );
-}
+import Link from "next/link";
+import { NyxMark } from "@/components/brand/nyx-mark";
+import { hero } from "@/components/landing/landing-copy";
 
 export function LandingHero() {
   return (
     <section
-      className="relative isolate overflow-hidden border-b"
+      className="relative isolate overflow-hidden"
       style={{
-        borderColor: "rgba(255,255,255,0.08)",
-        height: "calc(100dvh - 44px)",
+        height: "calc(100dvh - 52px)",
+        minHeight: "580px",
         display: "flex",
-        flexDirection: "column",
-        background:
-          "radial-gradient(circle at 18% 24%, oklch(0.62 0.14 260 / 0.28), transparent 28%), radial-gradient(circle at 84% 70%, rgba(95,184,95,0.18), transparent 30%), #050608",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <div
-        className="pointer-events-none absolute inset-0 opacity-30"
+      {/* Full-bleed column image */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/assets/hero-columns.png"
+        alt=""
+        aria-hidden="true"
         style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          objectPosition: "center",
+          pointerEvents: "none",
+          userSelect: "none",
         }}
-        aria-hidden
       />
 
-      <div className="nyx-rise nyx-rise-delay-1 relative flex w-full flex-1 min-h-0 flex-col justify-center pr-5 pl-12 sm:pr-7 sm:pl-16 lg:pr-12 lg:pl-24 xl:pl-32">
+      {/* Subtle vignette to deepen the center darkness and ground the text */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "radial-gradient(ellipse 55% 70% at 50% 50%, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.55) 100%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Bottom fade into the next section */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: "160px",
+          background: "linear-gradient(to bottom, transparent, #14121d)",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Hero content — centred between the columns */}
+      <div
+        className="relative z-10 flex flex-col items-center text-center"
+        style={{
+          maxWidth: "560px",
+          padding: "0 24px",
+          gap: "0",
+        }}
+      >
+        {/* Mark */}
+        <div className="nyx-rise mb-6" style={{ opacity: 0, animationFillMode: "forwards" }}>
+          <NyxMark
+            size={44}
+            style={{ color: "var(--nyx-chalk)", margin: "0 auto" }}
+          />
+        </div>
+
+        {/* Wordmark */}
         <div
-          className="pointer-events-none absolute inset-0 nyx-pixel-grid opacity-70"
-          aria-hidden
-        />
-        <div className="relative pt-8 pb-24 sm:pt-12">
-          <LandingHeroCopy />
+          className="nyx-rise nyx-rise-delay-1 mb-8"
+          style={{ opacity: 0, animationFillMode: "forwards" }}
+        >
+          <span
+            style={{
+              fontFamily: "var(--nyx-font-display)",
+              fontSize: "clamp(13px, 1.4vw, 15px)",
+              fontWeight: 600,
+              letterSpacing: "0.28em",
+              textTransform: "uppercase",
+              color: "rgba(245,243,238,0.45)",
+            }}
+          >
+            darknyx
+          </span>
+        </div>
+
+        {/* Headline */}
+        <h1
+          className="nyx-rise nyx-rise-delay-2"
+          style={{
+            opacity: 0,
+            animationFillMode: "forwards",
+            fontFamily: "var(--nyx-font-display)",
+            fontSize: "clamp(36px, 5.5vw, 64px)",
+            fontWeight: 700,
+            letterSpacing: "-0.03em",
+            lineHeight: 1.05,
+            margin: "0 0 24px",
+          }}
+        >
+          <span style={{ display: "block", color: "var(--nyx-chalk)" }}>
+            Settle in the{" "}
+            <span style={{ color: "var(--nyx-accent)" }}>dark</span>.
+          </span>
+          <span style={{ display: "block", color: "var(--nyx-accent)" }}>
+            Prove in the{" "}
+            <span style={{ color: "var(--nyx-chalk)" }}>light</span>.
+          </span>
+        </h1>
+
+        {/* Lede */}
+        <p
+          className="nyx-rise nyx-rise-delay-3"
+          style={{
+            opacity: 0,
+            animationFillMode: "forwards",
+            fontFamily: "var(--nyx-font-body)",
+            fontSize: "clamp(13px, 1.5vw, 15px)",
+            lineHeight: 1.75,
+            color: "rgba(245,243,238,0.58)",
+            margin: "0 0 36px",
+            maxWidth: "420px",
+          }}
+        >
+          {hero.lede}
+        </p>
+
+        {/* CTAs */}
+        <div
+          className="nyx-rise nyx-rise-delay-4"
+          style={{
+            opacity: 0,
+            animationFillMode: "forwards",
+            display: "flex",
+            alignItems: "center",
+            gap: "16px",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
+          <Link
+            href="/docs/architecture-overview"
+            style={{
+              fontFamily: "var(--nyx-font-mono)",
+              fontSize: "11px",
+              fontWeight: 600,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              padding: "10px 22px",
+              background: "var(--nyx-accent-soft)",
+              border: "1px solid oklch(0.62 0.14 260 / 0.45)",
+              color: "var(--nyx-accent)",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              transition: "opacity 0.15s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+          >
+            How it works
+            <span style={{ opacity: 0.7 }}>→</span>
+          </Link>
+
+          <Link
+            href="/docs"
+            style={{
+              fontFamily: "var(--nyx-font-mono)",
+              fontSize: "11px",
+              fontWeight: 600,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              padding: "10px 22px",
+              background: "transparent",
+              border: "1px solid rgba(245,243,238,0.15)",
+              color: "rgba(245,243,238,0.55)",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              transition: "border-color 0.15s, color 0.15s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "rgba(245,243,238,0.35)";
+              e.currentTarget.style.color = "rgba(245,243,238,0.85)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "rgba(245,243,238,0.15)";
+              e.currentTarget.style.color = "rgba(245,243,238,0.55)";
+            }}
+          >
+            Read the docs
+          </Link>
+        </div>
+
+        {/* Status badge */}
+        <div
+          className="nyx-rise nyx-rise-delay-5"
+          style={{
+            opacity: 0,
+            animationFillMode: "forwards",
+            marginTop: "40px",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+          }}
+        >
+          <span
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: "50%",
+              background: "var(--nyx-signal-green)",
+              boxShadow: "0 0 8px var(--nyx-signal-green)",
+              display: "inline-block",
+              animation: "nyx-pulse-soft 2.4s ease-in-out infinite",
+            }}
+          />
+          <span
+            style={{
+              fontFamily: "var(--nyx-font-mono)",
+              fontSize: "10px",
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: "rgba(245,243,238,0.35)",
+            }}
+          >
+            Testnet · Solana · Intel TDX
+          </span>
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
-        <PerspectiveGrid />
-      </div>
-
-      <div className="absolute bottom-17 left-0 right-0 flex justify-center">
-        <ScrollDownButton />
+      {/* Scroll indicator */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "32px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "6px",
+          opacity: 0.35,
+          pointerEvents: "none",
+        }}
+        aria-hidden="true"
+      >
+        <div
+          style={{
+            width: 1,
+            height: 40,
+            background: "linear-gradient(to bottom, transparent, rgba(245,243,238,0.6))",
+          }}
+        />
       </div>
     </section>
   );

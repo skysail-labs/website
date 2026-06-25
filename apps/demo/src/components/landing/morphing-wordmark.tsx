@@ -1,0 +1,168 @@
+"use client";
+
+import { motion, useScroll, useTransform } from "framer-motion";
+import { RefObject, useEffect, useRef, useState } from "react";
+
+interface MorphingWordmarkProps {
+  sourceRef: RefObject<HTMLDivElement | null>;
+  targetRef: RefObject<HTMLSpanElement | null>;
+  sectionRef: RefObject<HTMLDivElement | null>;
+}
+
+interface WordmarkLayout {
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+  endScroll: number;
+  sectionScrollDistance: number;
+  startFontSize: number;
+  endFontSize: number;
+  viewportWidth: number;
+}
+
+const defaultLayout: WordmarkLayout = {
+  startX: 0,
+  startY: 0,
+  endX: 0,
+  endY: 0,
+  endScroll: 1,
+  sectionScrollDistance: 1,
+  startFontSize: 18,
+  endFontSize: 42,
+  viewportWidth: 1200,
+};
+
+function readFontSize(element: Element, fallback: number) {
+  const value = Number.parseFloat(window.getComputedStyle(element).fontSize);
+  return Number.isFinite(value) ? value : fallback;
+}
+
+export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingWordmarkProps) {
+  const [mounted, setMounted] = useState(false);
+  const [layout, setLayout] = useState<WordmarkLayout>(defaultLayout);
+  const [viewportHeight, setViewportHeight] = useState(800);
+  const { scrollY } = useScroll();
+  const hasLockedRef = useRef(false);
+
+  useEffect(() => {
+    setMounted(true);
+
+    const measure = () => {
+      setViewportHeight(window.innerHeight);
+
+      const source = sourceRef.current;
+      const target = targetRef.current;
+      const section = sectionRef.current;
+
+      if (!source || !target || !section) return;
+
+      const sourceRect = source.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const sectionRect = section.getBoundingClientRect();
+      const sectionTop = sectionRect.top + window.scrollY;
+      const endFontSize = readFontSize(target, 42);
+
+      // endX: slot's viewport-left at the moment the section is pinned (sectionRect.left === 0 at that point)
+      // For split-panel layout the slot is inside panel-split-left; targetRect.left is already correct.
+      // endY: when scrollY === endScroll, sectionRect.top === 0, so targetRect.top is the viewport Y.
+      //       Subtract ~90% of font size to align cap-height (same formula as the working fa1e171 version).
+      setLayout({
+        startX: sourceRect.left + window.scrollX,
+        startY: sourceRect.top + window.scrollY,
+        endX: targetRect.left,
+        endY: targetRect.top + window.scrollY - sectionTop - endFontSize * 0.9 + 2,
+        endScroll: Math.max(1, sectionTop),
+        sectionScrollDistance: Math.max(1, section.offsetHeight - window.innerHeight),
+        startFontSize: readFontSize(source, 18),
+        endFontSize,
+        viewportWidth: window.innerWidth,
+      });
+    };
+
+    measure();
+    window.addEventListener("resize", measure);
+    const timer = window.setTimeout(measure, 180);
+
+    return () => {
+      window.removeEventListener("resize", measure);
+      window.clearTimeout(timer);
+    };
+  }, [sectionRef, sourceRef, targetRef]);
+
+  const {
+    startX,
+    startY,
+    endX,
+    endY,
+    endScroll,
+    sectionScrollDistance,
+    startFontSize,
+    endFontSize,
+    viewportWidth,
+  } = layout;
+  const glitchStart = endScroll * 0.58;
+  const glitchEnd = endScroll * 0.82;
+
+  const holdDistance = sectionScrollDistance * 0.15;
+
+  const x = useTransform(scrollY, (latest) => {
+    if (latest < endScroll) {
+      const progress = latest / endScroll;
+      return startX + (endX - startX) * progress;
+    }
+    const progress = (latest - endScroll) / sectionScrollDistance;
+    if (progress <= 0.20) {
+      return endX - viewportWidth * (progress / 0.20);
+    }
+    return endX - viewportWidth;
+  });
+  const y = useTransform(scrollY, (latest) => {
+    if (latest >= endScroll) return endY;
+    const progress = latest / endScroll;
+    const currentStart = startY - latest;
+    const computed = currentStart + (endY - currentStart) * progress;
+    return Math.min(computed, endY);
+  });
+  const fontSize = useTransform(scrollY, [0, endScroll], [startFontSize, endFontSize]);
+  const letterSpacing = useTransform(scrollY, [0, endScroll * 0.5], ["0.32em", "0.02em"]);
+  const nyxOpacity = useTransform(scrollY, [glitchStart, glitchEnd], [1, 0]);
+  const poolOpacity = useTransform(scrollY, [glitchStart, glitchEnd], [0, 1]);
+  const glitchOpacity = useTransform(
+    scrollY,
+    [glitchStart, endScroll * 0.7, glitchEnd],
+    [0, 1, 0]
+  );
+  const opacity = useTransform(
+    scrollY,
+    [0, endScroll, endScroll + sectionScrollDistance * 0.35],
+    [1, 1, 0]
+  );
+
+  if (!mounted) return null;
+
+  return (
+    <motion.div
+      aria-hidden="true"
+      className="morphing-wordmark"
+      style={{
+        x,
+        y,
+        fontSize,
+        letterSpacing,
+        opacity,
+      }}
+    >
+      <span className="morphing-wordmark-dark">dark</span>
+      <span className="morphing-wordmark-tail">
+        <motion.span style={{ opacity: nyxOpacity }}>NYX</motion.span>
+        <motion.span className="morphing-wordmark-pool" style={{ opacity: poolOpacity }}>
+          {" "}pool
+        </motion.span>
+        <motion.span className="morphing-wordmark-glitch" style={{ opacity: glitchOpacity }}>
+          nyx
+        </motion.span>
+      </span>
+    </motion.div>
+  );
+}

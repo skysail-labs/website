@@ -1,4 +1,5 @@
 import { NyxLockup } from "./nyx-mark";
+import Link from "next/link";
 
 export function NyxFooter({ tone = "ink" }: { tone?: "ink" | "chalk" }) {
   const isInk = tone === "ink";
@@ -13,8 +14,10 @@ export function NyxFooter({ tone = "ink" }: { tone?: "ink" | "chalk" }) {
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 sm:px-7 md:flex-row md:items-end md:justify-between">
         <NyxLockup size={28} tone={isInk ? "chalk" : "ink"} />
 
-        <div className="font-mono text-[10px] uppercase tracking-[0.16em] opacity-50">
-          private beta soon
+        <div className="gateway-cta">
+          <Link href="/docs" className="btn gateway-btn">
+            EXPLORE THE DOCS <span className="arr">→</span>
+          </Link>
         </div>
 
         <div className="flex flex-wrap gap-x-6 gap-y-2 text-[12px]">

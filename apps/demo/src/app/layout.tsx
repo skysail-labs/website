@@ -29,7 +29,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Darknyx - settle in the dark, prove in the light",
+  title: "Darknyx",
   description:
     "A privacy-preserving darkpool on Solana with TEE-attested execution and zero-knowledge settlement.",
   icons: {
