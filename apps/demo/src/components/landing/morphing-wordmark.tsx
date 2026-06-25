@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { RefObject, useEffect, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 
 interface MorphingWordmarkProps {
   sourceRef: RefObject<HTMLDivElement | null>;
@@ -43,6 +43,7 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
   const [layout, setLayout] = useState<WordmarkLayout>(defaultLayout);
   const [viewportHeight, setViewportHeight] = useState(800);
   const { scrollY } = useScroll();
+  const hasLockedRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
@@ -62,6 +63,10 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
       const sectionTop = sectionRect.top + window.scrollY;
       const endFontSize = readFontSize(target, 42);
 
+      // endX: slot's viewport-left at the moment the section is pinned (sectionRect.left === 0 at that point)
+      // For split-panel layout the slot is inside panel-split-left; targetRect.left is already correct.
+      // endY: when scrollY === endScroll, sectionRect.top === 0, so targetRect.top is the viewport Y.
+      //       Subtract ~90% of font size to align cap-height (same formula as the working fa1e171 version).
       setLayout({
         startX: sourceRect.left + window.scrollX,
         startY: sourceRect.top + window.scrollY,
@@ -85,6 +90,27 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
     };
   }, [sectionRef, sourceRef, targetRef]);
 
+  // Lock scroll for 0.5s the first time the wordmark lands in position
+  useEffect(() => {
+    if (!layout.endScroll || layout.endScroll <= 1) return;
+    const unsubscribe = scrollY.on("change", (latest) => {
+      if (!hasLockedRef.current && latest >= layout.endScroll) {
+        hasLockedRef.current = true;
+        const lockAt = latest;
+        const onWheel = (e: Event) => e.preventDefault();
+        const onTouch = (e: Event) => e.preventDefault();
+        window.scrollTo({ top: lockAt });
+        window.addEventListener("wheel", onWheel, { passive: false });
+        window.addEventListener("touchmove", onTouch, { passive: false });
+        setTimeout(() => {
+          window.removeEventListener("wheel", onWheel);
+          window.removeEventListener("touchmove", onTouch);
+        }, 500);
+      }
+    });
+    return () => unsubscribe();
+  }, [scrollY, layout.endScroll]);
+
   const {
     startX,
     startY,
@@ -99,20 +125,22 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
   const glitchStart = endScroll * 0.58;
   const glitchEnd = endScroll * 0.82;
 
+  const holdDistance = sectionScrollDistance * 0.15;
+
   const x = useTransform(scrollY, (latest) => {
     if (latest < endScroll) {
       const progress = latest / endScroll;
       return startX + (endX - startX) * progress;
     }
-
-    const sectionProgress = Math.min(1, (latest - endScroll) / sectionScrollDistance);
-    return endX - viewportWidth * 3 * sectionProgress;
+    const sectionProgress = Math.min(1, (latest - endScroll) / (sectionScrollDistance * 0.5));
+    return endX - viewportWidth * sectionProgress;
   });
   const y = useTransform(scrollY, (latest) => {
     if (latest >= endScroll) return endY;
     const progress = latest / endScroll;
     const currentStart = startY - latest;
-    return currentStart + (endY - currentStart) * progress;
+    const computed = currentStart + (endY - currentStart) * progress;
+    return Math.min(computed, endY);
   });
   const fontSize = useTransform(scrollY, [0, endScroll], [startFontSize, endFontSize]);
   const letterSpacing = useTransform(scrollY, [0, endScroll * 0.5], ["0.32em", "0.02em"]);
@@ -125,8 +153,8 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
   );
   const opacity = useTransform(
     scrollY,
-    [0, endScroll, endScroll + viewportHeight * 0.7],
-    [1, 1, 0]
+    [0, endScroll, endScroll + holdDistance],
+    [1, 1, 1]
   );
 
   if (!mounted) return null;
@@ -147,7 +175,7 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
       <span className="morphing-wordmark-tail">
         <motion.span style={{ opacity: nyxOpacity }}>NYX</motion.span>
         <motion.span className="morphing-wordmark-pool" style={{ opacity: poolOpacity }}>
-          {"\u00a0"}pool
+          {" "}pool
         </motion.span>
         <motion.span className="morphing-wordmark-glitch" style={{ opacity: glitchOpacity }}>
           nyx
