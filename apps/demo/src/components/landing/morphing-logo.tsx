@@ -115,13 +115,13 @@ export function MorphingLogo({ placeholderRef, roadmapPlaceholderRef }: Morphing
       const progress = latest / H;
       return startCoords.x + (finalX - startCoords.x) * progress;
     }
-    if (latest <= 3 * H) {
+    if (latest <= 4 * H) {
       return finalX;
     }
     const endXVal = endCoords.x || (finalX + 60 * (1 - endScale));
     const targetEndX = endXVal - 60 * (1 - endScale);
-    if (latest <= 4 * H) {
-      const progress = (latest - 3 * H) / H;
+    if (latest <= 5 * H) {
+      const progress = (latest - 4 * H) / H;
       return finalX + (targetEndX - finalX) * progress;
     }
     return targetEndX;
@@ -133,25 +133,25 @@ export function MorphingLogo({ placeholderRef, roadmapPlaceholderRef }: Morphing
       const currentStart = startCoords.y - latest;
       return currentStart + (finalY - currentStart) * progress;
     }
-    if (latest <= 3 * H) {
+    if (latest <= 4 * H) {
       return finalY;
     }
     const endYVal = endCoords.y || (finalY + latest + 60 * (1 - endScale));
     
     // finalTargetViewportY is the final stuck/resting location in the viewport.
-    // On desktop (> 900px width), it is 180. On mobile/tablet, it is endYVal - 4 * H.
+    // On desktop (> 900px width), it is 180. On mobile/tablet, it is endYVal - 5 * H.
     const finalTargetViewportY = dimensions.width > 900
       ? 180
-      : endYVal - 4 * H;
+      : endYVal - 5 * H;
 
     const targetEndY = finalTargetViewportY - 60 * (1 - endScale);
 
-    if (latest <= 4 * H) {
-      const progress = (latest - 3 * H) / H;
+    if (latest <= 5 * H) {
+      const progress = (latest - 4 * H) / H;
       return finalY + (targetEndY - finalY) * progress;
     }
 
-    // Beyond 4 * H, track the placeholder's actual viewport Y (handles scrolling on mobile, sticky on desktop)
+    // Beyond 5 * H, track the placeholder's actual viewport Y (handles scrolling on mobile, sticky on desktop)
     const currentViewportY = dimensions.width > 900
       ? Math.max(180, endYVal - latest)
       : endYVal - latest;
@@ -164,32 +164,32 @@ export function MorphingLogo({ placeholderRef, roadmapPlaceholderRef }: Morphing
       const progress = latest / H;
       return 1.0 + (finalScale - 1.0) * progress;
     }
-    if (latest <= 3 * H) {
+    if (latest <= 4 * H) {
       return finalScale;
     }
-    if (latest <= 4 * H) {
-      const progress = (latest - 3 * H) / H;
+    if (latest <= 5 * H) {
+      const progress = (latest - 4 * H) / H;
       return finalScale + (endScale - finalScale) * progress;
     }
     return endScale;
   });
 
   // Rotate during the slide, rotate as we scroll horizontally, then lock upright on Panel 3
-  const rotate = useTransform(scrollY, [0, H, 3 * H, 4 * H], [0, 360, 1080, 1080]);
+  const rotate = useTransform(scrollY, [0, H, 4 * H, 5 * H], [0, 360, 1080, 1080]);
 
   // Fade out overall container when handoff to inline logo completes
   const opacity = useTransform(scrollY, (latest) => {
-    if (latest < 3.9 * H) return 1;
-    if (latest > 4.1 * H) return 0;
-    return 1 - (latest - 3.9 * H) / (0.2 * H);
+    if (latest < 4.9 * H) return 1;
+    if (latest > 5.1 * H) return 0;
+    return 1 - (latest - 4.9 * H) / (0.2 * H);
   });
 
   // Cross-fade shapes: Start Logo -> Wheel -> End Logo
   const startLogoOpacity = useTransform(scrollY, [0, H * 0.45], [1, 0]);
-  const endLogoOpacity = useTransform(scrollY, [3 * H, H * 3.6], [0, 1]);
+  const endLogoOpacity = useTransform(scrollY, [4 * H, H * 4.6], [0, 1]);
   const wheelOpacity = useTransform(
     scrollY,
-    [H * 0.25, H * 0.75, 3 * H, H * 3.6],
+    [H * 0.25, H * 0.75, 4 * H, H * 4.6],
     [0, 1, 1, 0]
   );
 

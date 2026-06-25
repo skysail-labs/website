@@ -103,7 +103,7 @@ export default function Home() {
     const handleScroll = () => {
       const H = window.innerHeight;
       setScrolled(window.scrollY > H - 80);
-      setShowRoadmapLogo(window.scrollY >= 4 * H - 10);
+      setShowRoadmapLogo(window.scrollY >= 5 * H - 10);
 
       if (roadmapSection) {
         const rect = roadmapSection.getBoundingClientRect();

@@ -26,62 +26,62 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
   // Horizontal translation over 3 panels (0%, -33.3333%, -66.6667%)
   const x = useTransform(
     scrollYProgress,
-    [0, 0.22, 0.78, 0.95, 1.0],
+    [0, 0.20, 0.70, 0.82, 1.0],
     ["0%", "-33.3333%", "-33.3333%", "-66.6667%", "-66.6667%"]
   );
 
   // Synchronized fade-out for Panel 1 text
-  const panel1Opacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  const panel1Opacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
 
   // Vertical scroll translation of Panel 2's right column content
   const verticalY = useTransform(
     scrollYProgress,
-    [0.3, 0.7],
+    [0.24, 0.66],
     ["0%", "-50%"]
   );
 
   // Dynamic styling for bottom-left indicators (Tab 1: How It Works, Tab 2: Trust Model)
   const tab1Color = useTransform(
     scrollYProgress,
-    [0.22, 0.48, 0.52, 0.78],
+    [0.20, 0.42, 0.48, 0.70],
     ["#dbb885", "#dbb885", "#f3effc", "#f3effc"]
   );
   const tab1Opacity = useTransform(
     scrollYProgress,
-    [0.22, 0.48, 0.52, 0.78],
+    [0.20, 0.42, 0.48, 0.70],
     [1, 1, 0.4, 0.4]
   );
   const tab1LineWidth = useTransform(
     scrollYProgress,
-    [0.22, 0.48, 0.52, 0.78],
+    [0.20, 0.42, 0.48, 0.70],
     ["100px", "100px", "40px", "40px"]
   );
 
   const tab2Color = useTransform(
     scrollYProgress,
-    [0.22, 0.48, 0.52, 0.78],
+    [0.20, 0.42, 0.48, 0.70],
     ["#f3effc", "#f3effc", "#dbb885", "#dbb885"]
   );
   const tab2Opacity = useTransform(
     scrollYProgress,
-    [0.22, 0.48, 0.52, 0.78],
+    [0.20, 0.42, 0.48, 0.70],
     [0.4, 0.4, 1, 1]
   );
   const tab2LineWidth = useTransform(
     scrollYProgress,
-    [0.22, 0.48, 0.52, 0.78],
+    [0.20, 0.42, 0.48, 0.70],
     ["40px", "40px", "100px", "100px"]
   );
 
   // Dynamic cross-fade for left-column titles and descriptions
   const content1Opacity = useTransform(
     scrollYProgress,
-    [0.22, 0.46, 0.54, 0.78],
+    [0.20, 0.42, 0.48, 0.70],
     [1, 1, 0, 0]
   );
   const content2Opacity = useTransform(
     scrollYProgress,
-    [0.22, 0.46, 0.54, 0.78],
+    [0.20, 0.42, 0.48, 0.70],
     [0, 0, 1, 1]
   );
 

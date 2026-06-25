@@ -90,27 +90,6 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
     };
   }, [sectionRef, sourceRef, targetRef]);
 
-  // Lock scroll for 0.5s the first time the wordmark lands in position
-  useEffect(() => {
-    if (!layout.endScroll || layout.endScroll <= 1) return;
-    const unsubscribe = scrollY.on("change", (latest) => {
-      if (!hasLockedRef.current && latest >= layout.endScroll) {
-        hasLockedRef.current = true;
-        const lockAt = latest;
-        const onWheel = (e: Event) => e.preventDefault();
-        const onTouch = (e: Event) => e.preventDefault();
-        window.scrollTo({ top: lockAt });
-        window.addEventListener("wheel", onWheel, { passive: false });
-        window.addEventListener("touchmove", onTouch, { passive: false });
-        setTimeout(() => {
-          window.removeEventListener("wheel", onWheel);
-          window.removeEventListener("touchmove", onTouch);
-        }, 2000);
-      }
-    });
-    return () => unsubscribe();
-  }, [scrollY, layout.endScroll]);
-
   const {
     startX,
     startY,
@@ -133,8 +112,8 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
       return startX + (endX - startX) * progress;
     }
     const progress = (latest - endScroll) / sectionScrollDistance;
-    if (progress <= 0.22) {
-      return endX - viewportWidth * (progress / 0.22);
+    if (progress <= 0.20) {
+      return endX - viewportWidth * (progress / 0.20);
     }
     return endX - viewportWidth;
   });
