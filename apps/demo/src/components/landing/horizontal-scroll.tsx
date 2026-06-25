@@ -150,29 +150,29 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
               <div className="panel-inner-cards-row">
                 <div className="small-step-card">
                   <span className="step-num">01</span>
-                  <h3>Deposit</h3>
-                  <p>Lock assets into the Solana vault to receive encrypted private commitments.</p>
+                  <h3>Orders stay dark until they clear</h3>
+                  <p>Side, size, and limit price can never be read before settlement.</p>
                 </div>
 
                 <div className="small-step-card">
                   <span className="step-num">02</span>
-                  <h3>Match</h3>
-                  <p>Batch orders clear confidentially inside enclaves at a uniform clearing price.</p>
+                  <h3>Custody risk is zero</h3>
+                  <p>Funds stay in a non-upgradeable Solana vault, only your ZK proof can unlock them.</p>
                 </div>
 
                 <div className="small-step-card">
                   <span className="step-num">03</span>
-                  <h3>Settle</h3>
-                  <p>Matches post on-chain bound to zero-knowledge validity proofs.</p>
+                  <h3>Settlement can be checked</h3>
+                  <p>Every settlement includes a ZK proof and TEE signature—publicly verifiable, privately executed.</p>
                 </div>
               </div>
 
               {/* Bottom text strip spanning all 3 cards width */}
               <div className="panel-bottom-strip">
-                <span className="hscroll-badge">Lifecycle</span>
-                <h2 className="panel-bottom-title">From intent to verified settlement.</h2>
+                <span className="hscroll-badge">Trust Model</span>
+                <h2 className="panel-bottom-title">Three layers, one chain of trust</h2>
                 <p className="panel-bottom-lede">
-                  A simple three-step lifecycle ensures execution privacy and cryptographic security.
+                  Whatever needs to be trusted goes on-chain; whatever needs to be private goes in-TEE; whatever must remain a secret stays on your device.
                 </p>
               </div>
             </div>
