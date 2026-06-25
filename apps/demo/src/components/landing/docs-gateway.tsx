@@ -168,9 +168,9 @@ export function DocsGateway() {
           </div>
 
           <div className="gateway-cta">
-            <Link href="/docs" className="btn gateway-btn">
-              JOIN THE WAITLIST <span className="arr">→</span>
-            </Link>
+            <div className="btn gateway-btn">
+              WAITLIST OPEN SOON
+            </div>
           </div>
         </div>
       </div>
