@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from: "darknyx <welcome@darknyx.trade>",
       to: email,
-      subject: "You're on the DARKnyx waitlist",
+      subject: "You're on the Darknyx waitlist",
       html: `
         <!DOCTYPE html>
         <html>
