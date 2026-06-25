@@ -9,6 +9,7 @@ import { HorizontalScroll } from "@/components/landing/horizontal-scroll";
 import { MorphingLogo } from "@/components/landing/morphing-logo";
 import { MorphingWordmark } from "@/components/landing/morphing-wordmark";
 import { DocsGateway } from "@/components/landing/docs-gateway";
+import { SideRays } from "@/components/landing/side-rays";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 
 interface Star {
@@ -237,8 +238,22 @@ export default function Home() {
         {/* Layer 2: obsidian base tint */}
         <div className="hero-obsidian-tint" aria-hidden="true" />
 
-        {/* Layer 3: directional beam — light entering from upper-left through unseen opening */}
-        <div className="hero-beam" aria-hidden="true" />
+        {/* Layer 3: directional beam — WebGL SideRays animation inside the color-dodge container */}
+        <div className="hero-beam" aria-hidden="true">
+          <SideRays
+            speed={2.0}
+            rayColor1="#d6be8b"
+            rayColor2="#96c8ff"
+            intensity={2.2}
+            spread={3.5}
+            origin="top-right"
+            tilt={0}
+            saturation={1.2}
+            blend={0.5}
+            falloff={1.1}
+            opacity={0.9}
+          />
+        </div>
 
         {/* Layer 4: depth system — vignette + pillar-wall junction shadows */}
         <div className="hero-depth" aria-hidden="true" />
