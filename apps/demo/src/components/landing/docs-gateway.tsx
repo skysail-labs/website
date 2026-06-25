@@ -148,28 +148,28 @@ export function DocsGateway() {
           </div>
 
           <div className="gateway-card-header">
-            DOCS × ARCHITECTURE
+            PRIVATE MAINNET BETA
           </div>
 
           <p className="gateway-card-desc">
-            Curious how it works? Refer to our docs for in-depth architecture, protocols, and cryptographic specifications.
+            Join the first cohort of traders to experience confidential execution on Solana. Early access is limited while we validate the protocol in production.
           </p>
 
           {/* Badges / Tech Row */}
           <div className="gateway-tech-row">
             <div className="gateway-tech-item">
-              <span className="gateway-tech-label">Core Architecture</span>
-              <span className="gateway-tech-val">Intel TDX enclave</span>
+              <span className="gateway-tech-label">ACCESS</span>
+              <span className="gateway-tech-val">Invite only</span>
             </div>
             <div className="gateway-tech-item">
-              <span className="gateway-tech-label">Cryptographic Engine</span>
-              <span className="gateway-tech-val">ZK validated</span>
+              <span className="gateway-tech-label">STATUS</span>
+              <span className="gateway-tech-val">Q3 2026</span>
             </div>
           </div>
 
           <div className="gateway-cta">
             <Link href="/docs" className="btn gateway-btn">
-              Explore the docs <span className="arr">→</span>
+              JOIN THE WAITLIST <span className="arr">→</span>
             </Link>
           </div>
         </div>

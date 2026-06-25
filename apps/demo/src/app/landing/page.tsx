@@ -326,21 +326,21 @@ export default function Home() {
           {/* Left Column (Sticky Panel - 50% width) */}
           <div className="roadmap-left">
             <div className="roadmap-sticky-box">
-              <div 
-                ref={roadmapPlaceholderRef} 
+              <div
+                ref={roadmapPlaceholderRef}
                 className="roadmap-logo-container"
-                style={{ 
-                  width: "clamp(72px, 8vw, 96px)", 
+                style={{
+                  width: "clamp(72px, 8vw, 96px)",
                   height: "clamp(72px, 8vw, 96px)",
                   position: "relative"
-                }} 
+                }}
               >
-                <svg 
-                  className="roadmap-logo" 
+                <svg
+                  className="roadmap-logo"
                   viewBox="0 0 120 120"
-                  style={{ 
-                    width: "100%", 
-                    height: "100%", 
+                  style={{
+                    width: "100%",
+                    height: "100%",
                     color: "var(--cobalt)",
                     opacity: showRoadmapLogo ? 1 : 0,
                     transition: "opacity 0.15s ease"
@@ -357,45 +357,34 @@ export default function Home() {
           <div className="roadmap-right">
             <div className="roadmap-phase-item" data-phase="P1">
               <div className="roadmap-phase-header">
-                <span className="roadmap-phase-num">PHASE 01</span>
-                <span className="roadmap-status-badge complete">Active</span>
+                <span className="roadmap-phase-num">PHASE 01 · 26 Q3</span>
+                <span className="roadmap-status-badge planned">Coming Soon</span>
               </div>
-              <h3 className="roadmap-phase-title">Stabilize</h3>
+              <h3 className="roadmap-phase-title">Private Mainnet Beta</h3>
               <p className="roadmap-phase-text">
-                Lock the API surface. No breaking changes past this point.
+                Private mainnet beta launch. Waitlist link coming soon.
               </p>
             </div>
 
             <div className="roadmap-phase-item" data-phase="P2">
               <div className="roadmap-phase-header">
-                <span className="roadmap-phase-num">PHASE 02</span>
+                <span className="roadmap-phase-num">PHASE 02 · 26 Q4</span>
                 <span className="roadmap-status-badge in-progress">In Progress</span>
               </div>
-              <h3 className="roadmap-phase-title">Attested Execution</h3>
+              <h3 className="roadmap-phase-title">Public Mainnet</h3>
               <p className="roadmap-phase-text">
-                Validate the matching engine on attested H200 GPU hardware. First production proof that confidential compute scales beyond CPU enclaves.
+                Public mainnet launch on Solana.
               </p>
             </div>
 
             <div className="roadmap-phase-item" data-phase="P3">
               <div className="roadmap-phase-header">
-                <span className="roadmap-phase-num">PHASE 03</span>
-                <span className="roadmap-status-badge planned">Planned</span>
+                <span className="roadmap-phase-num">PHASE 03 · 27 Q1</span>
+                <span className="roadmap-status-badge in-progress">In Progress</span>
               </div>
-              <h3 className="roadmap-phase-title">Client Wallet & Relayer</h3>
+              <h3 className="roadmap-phase-title">Perpetuals integration</h3>
               <p className="roadmap-phase-text">
-                Ship the first production-grade client-side wallet relayer. Full ZK proof generation on the client, no operator key exposure.
-              </p>
-            </div>
-
-            <div className="roadmap-phase-item" data-phase="P4">
-              <div className="roadmap-phase-header">
-                <span className="roadmap-phase-num">PHASE 04</span>
-                <span className="roadmap-status-badge planned">Planned</span>
-              </div>
-              <h3 className="roadmap-phase-title">Scalable Settlement Layer</h3>
-              <p className="roadmap-phase-text">
-                Migrate fills to a hybrid SSE indexer. Partial fill notes indexed per-account on-chain. TEE scope narrows to order ingestion and matching only — settlement becomes stateless and horizontally scalable.
+                Public darknyx perp darkpool launch.
               </p>
             </div>
           </div>
