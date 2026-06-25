@@ -153,8 +153,8 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
   );
   const opacity = useTransform(
     scrollY,
-    [0, endScroll, endScroll + holdDistance],
-    [1, 1, 1]
+    [0, endScroll, endScroll + sectionScrollDistance * 0.35],
+    [1, 1, 0]
   );
 
   if (!mounted) return null;

@@ -33,6 +33,9 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
     ["0px", "0px", "-330px", "-330px", "-330px"]
   );
 
+  // Synchronized fade-out for Panel 1 text
+  const panel1Opacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
+
 
 
   const hyperspeedOptions = useMemo(() => ({
@@ -114,7 +117,7 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
               whileInView="visible"
               viewport={{ once: false, amount: 0.25 }}
             >
-              <div className="panel-split-left">
+              <motion.div className="panel-split-left" style={{ opacity: panel1Opacity }}>
                 <motion.div variants={childVariants} className="hscroll-badge">Concept</motion.div>
                 <motion.h2
                   variants={childVariants}
@@ -128,7 +131,7 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
                   matching confidentially,<br />
                   and settling on-chain.
                 </motion.p>
-              </div>
+              </motion.div>
             </motion.div>
             <div className="panel-split-right">
               <Hyperspeed effectOptions={hyperspeedOptions} />
