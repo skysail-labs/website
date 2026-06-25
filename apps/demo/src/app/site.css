@@ -72,8 +72,7 @@ a {
 }
 
 ::selection {
-  background: var(--cobalt-soft);
-  color: var(--chalk);
+  background: rgba(201, 158, 85, 0.25);
 }
 
 /* grain / star helpers ------------------------------------------------- */
