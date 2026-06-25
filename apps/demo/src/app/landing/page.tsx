@@ -9,7 +9,7 @@ import { HorizontalScroll } from "@/components/landing/horizontal-scroll";
 import { MorphingLogo } from "@/components/landing/morphing-logo";
 import { MorphingWordmark } from "@/components/landing/morphing-wordmark";
 import { DocsGateway } from "@/components/landing/docs-gateway";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 
 interface Star {
   id: number;
@@ -79,6 +79,7 @@ export default function Home() {
   const heroWordmarkRef = useRef<HTMLDivElement>(null);
   const darkPoolSlotRef = useRef<HTMLSpanElement>(null);
   const horizontalScrollRef = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
     setMounted(true);
@@ -290,13 +291,11 @@ export default function Home() {
         <HorizontalScroll containerRef={horizontalScrollRef} darkPoolSlotRef={darkPoolSlotRef} />
       </div>
 
-      <div className="section-divider">
-        <div className="line"></div>
-        <svg className="divider-mark" viewBox="0 0 120 120">
-          <use href="#nyx-mark" />
-        </svg>
-        <div className="line"></div>
-      </div>
+
+
+
+
+
 
 
 

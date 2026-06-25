@@ -1093,7 +1093,7 @@ img.scene-art {
   width: 100%;
   background: radial-gradient(circle at 75% 50%, rgba(197, 160, 89, 0.06) 0%, rgba(94, 75, 108, 0.04) 40%, var(--ink) 100%);
   border-top: 1px solid var(--line);
-  z-index: 2;
+  z-index: 5;
 }
 
 .roadmap-inner {
@@ -2258,7 +2258,7 @@ img.scene-art {
    ============================================================ */
 
 .hscroll-outer {
-  height: 250vh;
+  height: 300vh;
   position: relative;
 }
 
@@ -2268,6 +2268,7 @@ img.scene-art {
   height: 100vh;
   overflow: hidden;
   background: var(--ink);
+  z-index: 4;
 }
 
 .hscroll-track {
@@ -2581,9 +2582,6 @@ img.scene-art {
   border: 1.5px solid var(--cobalt-bright);
   border-bottom: none;
   background-color: var(--ink-1);
-  background-image: radial-gradient(rgba(214, 190, 139, 0.15) 1.2px, transparent 1.2px);
-  background-size: 16px 16px;
-  background-position: center top;
   box-shadow: 
     0 -10px 30px rgba(214, 190, 139, 0.25),
     inset 0 1px 20px rgba(214, 190, 139, 0.1);
@@ -2965,4 +2963,98 @@ img.scene-art {
     width: 180%;
     object-position: center top;
   }
+}
+
+/* ============================================================
+   INVERTED TRADE FLOW SECTION (COMPLEMENTING PANEL 2 BOTTOM CARD)
+   ============================================================ */
+.trade-flow-inverted-section {
+  position: relative;
+  width: 100%;
+  height: auto;
+  background: var(--ink);
+  z-index: 4;
+  margin-top: -2px;
+  margin-bottom: 0;
+}
+
+.panel-top-card-inverted {
+  position: absolute;
+  top: 100%;
+  left: clamp(130px, 12vw, 150px);
+  right: 0;
+  height: 330px;
+  border-left: 1.5px solid var(--cobalt-bright);
+  border-right: 1.5px solid var(--cobalt-bright);
+  border-bottom: 1.5px solid var(--line);
+  border-top: none;
+  background-color: var(--ink-1);
+  box-shadow: 
+    0 15px 30px rgba(0, 0, 0, 0.5),
+    inset 0 -1px 20px rgba(214, 190, 139, 0.05);
+  z-index: 5;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel-top-strip {
+  padding: 16px 24px;
+  border-top: 1.5px solid var(--line);
+  border-bottom: 1.5px solid var(--line);
+  background-color: #000000;
+  margin-top: 24px;
+}
+
+.panel-top-card-inverted .panel-inner-cards-row {
+  padding: 12px 24px 20px 24px;
+}
+
+.small-step-card-inverted {
+  flex: 1;
+  background-color: #000000;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.small-step-card-inverted:hover {
+  border-color: var(--cobalt-bright);
+  transform: translateY(2px);
+}
+
+.small-step-card-inverted .card-badge-wrap {
+  margin-bottom: 12px;
+}
+
+.small-step-card-inverted .card-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--cobalt-bright);
+  border: 1px solid rgba(214, 190, 139, 0.25);
+  border-radius: 4px;
+  padding: 2px 6px;
+  display: inline-block;
+  background: rgba(214, 190, 139, 0.05);
+}
+
+.small-step-card-inverted h3 {
+  font-size: clamp(14px, 1.3vw, 16px);
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: var(--chalk);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.small-step-card-inverted p {
+  font-size: clamp(12px, 1.1vw, 13px);
+  line-height: 1.5;
+  color: var(--chalk-dim);
+  margin: 0;
 }

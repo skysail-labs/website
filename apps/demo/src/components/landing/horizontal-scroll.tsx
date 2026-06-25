@@ -23,8 +23,15 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
     offset: ["start start", "end end"],
   });
 
-  // 2 panels over 200vh of a 250vh outer — translation completes at 0.8, then holds for the remaining 50vh buffer
-  const x = useTransform(scrollYProgress, [0, 0.8, 1], ["0%", "-50%", "-50%"]);
+  // Horizontal translation completes at 0.5, locking Panel 2 on screen
+  const x = useTransform(scrollYProgress, [0, 0.5, 1], ["0%", "-50%", "-50%"]);
+
+  // Vertical merge animation: cards slide up together from 0.5 to 0.7, lock from 0.7 to 0.95, and then unstick
+  const mergeY = useTransform(
+    scrollYProgress,
+    [0, 0.5, 0.7, 0.95, 1],
+    ["0px", "0px", "-330px", "-330px", "-330px"]
+  );
 
 
 
@@ -145,7 +152,7 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
             </div>
 
             {/* Dotted grid card at the bottom */}
-            <div className="panel-bottom-card">
+            <motion.div className="panel-bottom-card" style={{ y: mergeY }}>
               {/* Row of 3 step cards inside the main box */}
               <div className="panel-inner-cards-row">
                 <div className="small-step-card">
@@ -175,7 +182,48 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
                   Whatever needs to be trusted goes on-chain; whatever needs to be private goes in-TEE; whatever must remain a secret stays on your device.
                 </p>
               </div>
-            </div>
+            </motion.div>
+
+            {/* Inverted card positioned below the viewport (top: 100%) */}
+            <motion.div className="panel-top-card-inverted" style={{ y: mergeY }}>
+              {/* Top text strip spanning all 3 cards width */}
+              <div className="panel-top-strip">
+                <span className="hscroll-badge">Flow</span>
+                <h2 className="panel-bottom-title" style={{ margin: '0 0 6px 0' }}>
+                  From private intent to verified settlement.
+                </h2>
+                <p className="panel-bottom-lede">
+                  You sign custody actions with your wallet and orders with a separate trading key. The sensitive path stays private inside the enclave; the money path stays verifiable on-chain.
+                </p>
+              </div>
+
+              {/* Row of 3 step cards inside the main box */}
+              <div className="panel-inner-cards-row">
+                <div className="small-step-card-inverted">
+                  <div className="card-badge-wrap">
+                    <span className="card-badge">SOLANA VAULT</span>
+                  </div>
+                  <h3>FUND PRIVATELY</h3>
+                  <p>Deposit into the vault.</p>
+                </div>
+
+                <div className="small-step-card-inverted">
+                  <div className="card-badge-wrap">
+                    <span className="card-badge">INTEL TDX · FBA</span>
+                  </div>
+                  <h3>MATCH IN BATCHES</h3>
+                  <p>Orders clear in the dark.</p>
+                </div>
+
+                <div className="small-step-card-inverted">
+                  <div className="card-badge-wrap">
+                    <span className="card-badge">ZK PROOFS</span>
+                  </div>
+                  <h3>SETTLE ON-CHAIN</h3>
+                  <p>Fills land verifiably.</p>
+                </div>
+              </div>
+            </motion.div>
           </div>
 
         </motion.div>
