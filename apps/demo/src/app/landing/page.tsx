@@ -220,7 +220,7 @@ export default function Home() {
           <b>darknyx</b>
         </Link>
         <div className="links">
-          <a href="#third-option">Overview</a>
+          <a href="#features">Overview</a>
           <Link href="/docs">Docs</Link>
         </div>
         <div className="end">
