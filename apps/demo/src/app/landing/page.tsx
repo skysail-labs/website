@@ -445,9 +445,9 @@ export default function Home() {
           </svg>
           <p className="eyebrow" style={{ fontSize: "16px", letterSpacing: "0.2em" }}>Privacy without sacrificing auditability</p>
           <div className="footer-cta">
-            <span className="btn ghost status" style={{ display: "inline-flex", alignItems: "center" }}>
-              <span className="pdot"></span>Private beta soon
-            </span>
+            <Link href="/docs" className="btn">
+              EXPLORE THE DOCS <span className="arr">→</span>
+            </Link>
           </div>
         </div>
 
