@@ -163,8 +163,8 @@ void main() {
 
   vec4 color = rays1 * (1.0 - iBlend) * 0.9 + rays2 * iBlend * 0.9;
 
-  float distanceToLight = length(fragCoord.xy - vec2(rayPos.x, iResolution.y - rayPos.y)) / iResolution.y;
-  float brightness = iIntensity * 0.4 / pow(max(distanceToLight, 0.001), iFalloff);
+  float distanceToLight = length(fragCoord.xy - vec2(rayPos.x, iResolution.y - rayPos.y)) / max(iResolution.y, 1.0);
+  float brightness = iIntensity * 0.4 / pow(max(distanceToLight, 0.05), iFalloff);
   color.rgb *= brightness;
 
   float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
@@ -200,8 +200,9 @@ void main() {
 
       const updateSize = () => {
         if (!containerRef.current || !renderer) return;
-        renderer.dpr = Math.min(window.devicePixelRatio, 2);
         const { clientWidth: w, clientHeight: h } = containerRef.current;
+        if (w === 0 || h === 0) return;
+        renderer.dpr = Math.min(window.devicePixelRatio, 2);
         renderer.setSize(w, h);
         uniforms.iResolution.value = [w * renderer.dpr, h * renderer.dpr];
       };

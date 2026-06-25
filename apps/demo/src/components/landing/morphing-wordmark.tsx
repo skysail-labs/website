@@ -105,7 +105,7 @@ export function MorphingWordmark({ sourceRef, targetRef, sectionRef }: MorphingW
         setTimeout(() => {
           window.removeEventListener("wheel", onWheel);
           window.removeEventListener("touchmove", onTouch);
-        }, 500);
+        }, 2000);
       }
     });
     return () => unsubscribe();

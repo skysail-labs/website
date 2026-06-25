@@ -339,9 +339,9 @@ export function HorizontalScroll({ containerRef: externalContainerRef, darkPoolS
 
             {/* Dotted grid card at the bottom */}
             <div className="panel-bottom-card" style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "48px 24px" }}>
-              <span className="hscroll-badge" style={{ marginBottom: "16px" }}>The Vision</span>
+              <span className="hscroll-badge" style={{ marginBottom: "16px" }}>THE MISSING LAYER</span>
               <h2 className="panel-bottom-title" style={{ fontSize: "clamp(24px, 3.5vw, 44px)", textAlign: "center", maxWidth: "800px", margin: 0, lineHeight: 1.2 }}>
-                The infrastructure the internet has been waiting for
+                The private execution layer Web3 has been waiting for.
               </h2>
             </div>
           </div>
