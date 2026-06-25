@@ -6,6 +6,36 @@ import Link from "next/link";
 export function DocsGateway() {
   const [inView, setInView] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  useEffect(() => {
+    if (isWaitlistOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isWaitlistOpen]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isWaitlistOpen) {
+        setIsWaitlistOpen(false);
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setEmail("");
+        }, 300);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isWaitlistOpen]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -158,20 +188,158 @@ export function DocsGateway() {
           {/* Badges / Tech Row */}
           <div className="gateway-tech-row">
             <div className="gateway-tech-item">
-              <span className="gateway-tech-label">ACCESS</span>
-              <span className="gateway-tech-val">Invite only</span>
-            </div>
-            <div className="gateway-tech-item">
-              <span className="gateway-tech-label">STATUS</span>
-              <span className="gateway-tech-val">Q3 2026</span>
+              <span className="gateway-tech-label">OPPORTUNITY</span>
+              <span className="gateway-tech-val">Become part of the next big thing on SOLANA</span>
             </div>
           </div>
 
           <div className="gateway-cta">
-            <div className="btn gateway-btn">
-              WAITLIST OPEN SOON
-            </div>
+            <button
+              className="btn gateway-btn"
+              onClick={() => setIsWaitlistOpen(true)}
+              type="button"
+            >
+              JOIN WAITLIST
+            </button>
           </div>
+        </div>
+      </div>
+
+      {/* Waitlist Modal Overlay */}
+      <div
+        className={`waitlist-overlay ${isWaitlistOpen ? "open" : ""}`}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) {
+            setIsWaitlistOpen(false);
+            setTimeout(() => {
+              setIsSubmitted(false);
+              setEmail("");
+            }, 300);
+          }
+        }}
+      >
+        <div className="waitlist-modal" role="dialog" aria-modal="true" aria-labelledby="waitlist-title">
+          <button
+            className="waitlist-close-btn"
+            onClick={() => {
+              setIsWaitlistOpen(false);
+              setTimeout(() => {
+                setIsSubmitted(false);
+                setEmail("");
+              }, 300);
+            }}
+            aria-label="Close modal"
+            type="button"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+
+          {!isSubmitted ? (
+            <>
+              <div className="waitlist-kicker">
+                Join Waitlist
+              </div>
+              <h3 id="waitlist-title" className="waitlist-title">
+                SECURE PRIVATE BETA ACCESS
+              </h3>
+              <p className="waitlist-desc">
+                Early access is limited. Enter your email to secure your spot for the next trading cohort on Solana.
+              </p>
+              <form
+                className="waitlist-form"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  if (!email.trim()) return;
+                  setIsLoading(true);
+                  setSubmitError("");
+                  try {
+                    const res = await fetch("/api/waitlist", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ email }),
+                    });
+                    if (res.status === 409) {
+                      setSubmitError("This email is already on the waitlist.");
+                      return;
+                    }
+                    if (!res.ok) throw new Error("Failed");
+                    setIsSubmitted(true);
+                  } catch {
+                    setSubmitError("Something went wrong. Please try again.");
+                  } finally {
+                    setIsLoading(false);
+                  }
+                }}
+              >
+                <div className="waitlist-input-group">
+                  <label htmlFor="waitlist-email" className="waitlist-label">
+                    Email Address
+                  </label>
+                  <input
+                    id="waitlist-email"
+                    type="email"
+                    required
+                    placeholder="trader@darknyx.xyz"
+                    className="waitlist-input"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                {submitError && (
+                  <p style={{ color: "var(--rose)", fontSize: 13, margin: 0 }}>{submitError}</p>
+                )}
+                <button type="submit" className="waitlist-submit-btn" disabled={isLoading}>
+                  {isLoading ? "Submitting..." : "Submit Request"}
+                </button>
+              </form>
+            </>
+          ) : (
+            <div className="waitlist-success">
+              <div className="waitlist-success-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+              <h3 className="waitlist-success-title">YOU'RE ON THE LIST</h3>
+              <p className="waitlist-success-desc">
+                Thank you for your interest. We will email you at <strong>{email}</strong> when a spot becomes available in the next cohort.
+              </p>
+              <button
+                type="button"
+                className="waitlist-done-btn"
+                onClick={() => {
+                  setIsWaitlistOpen(false);
+                  setTimeout(() => {
+                    setIsSubmitted(false);
+                    setEmail("");
+                  }, 300);
+                }}
+              >
+                Done
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>
