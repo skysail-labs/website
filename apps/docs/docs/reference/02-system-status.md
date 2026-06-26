@@ -1,12 +1,12 @@
 ---
 sidebar_position: 2
 title: System Status
-description: How Darknyx signals readiness and degraded mode - check it before trading and back off when subsystems are down.
+description: How Nyx signals readiness and degraded mode, so you can check it before trading and back off when subsystems are down.
 ---
 
 # System Status
 
-:::info
+:::info TL;DR
 `GET /system/status` is a public readiness snapshot: is matching running, is
 settlement wired, is an oracle attached, and what slot the engine is on. A
 `degraded` flag tells you, in one boolean, whether to back off before you hit a
@@ -19,7 +19,7 @@ write failure.
 GET /system/status
 ```
 
-Public - no authentication.
+Public, with no authentication.
 
 ### Response
 
@@ -30,7 +30,7 @@ Public - no authentication.
   "settle_enabled": true,
   "oracle_configured": true,
   "current_slot": 309482113,
-  "darknyx_version": "…"
+  "nyx_version": "…"
 }
 ```
 
@@ -41,11 +41,11 @@ Public - no authentication.
 | `settle_enabled` | boolean | The on-chain settlement pipeline is wired (matches will settle). |
 | `oracle_configured` | boolean | A price oracle is attached (the clearing-price reference). |
 | `current_slot` | integer | The engine's current view of the Solana slot. |
-| `darknyx_version` | string | The running engine's build version. |
+| `nyx_version` | string | The running engine's build version. |
 
 ## When degradation occurs
 
-The venue is `degraded` when a core subsystem is not available - for example, the
+The venue is `degraded` when a core subsystem is not available, for example, the
 matching tick is not running, or the settlement pipeline is not wired. While
 degraded, order submission may fail with `503 Service Unavailable`.
 
@@ -55,7 +55,7 @@ degraded, order submission may fail with `503 Service Unavailable`.
 |---|---|
 | REST order management | May return `503`; reads (`/instruments`, `/transparency`, `/tree/*`) generally remain available. |
 | WebSocket trading | An `order.place` / `order.cancel` / `order.modify` frame may return an `error` with `code: 503`. |
-| `/health` | Still returns `200` (the gateway process is up) - which is why `/system/status` is the better readiness signal for a trading client. |
+| `/health` | Still returns `200` (the gateway process is up), which is why `/system/status` is the better readiness signal for a trading client. |
 
 ## Best practices
 

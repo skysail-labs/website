@@ -20,6 +20,9 @@ const config: Config = {
   onBrokenLinks: "warn",
   markdown: {
     mermaid: true,
+    mdx1Compat: {
+      admonitions: true,
+    },
     hooks: {
       onBrokenMarkdownLinks: "warn",
     },

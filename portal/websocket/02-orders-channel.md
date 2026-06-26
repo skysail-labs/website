@@ -1,14 +1,14 @@
 ---
 sidebar_position: 2
 title: Orders Channel
-description: A per-account push stream of order-lifecycle events — partial fills, full fills, cancellations, and expiries.
+description: "A per-account push stream of order-lifecycle events: partial fills, full fills, cancellations, and expiries."
 ---
 
 # Orders Channel
 
 :::info TL;DR
 `/ws/orders` streams **order-lifecycle events** for your account: each time one
-of your orders changes state — partial fill, full fill, cancellation, expiry — the
+of your orders changes state (partial fill, full fill, cancellation, expiry), the
 engine pushes an event. The stream is per-account: you only ever see your own
 orders. Use it instead of polling `GET /orders/{id}`.
 :::
@@ -30,6 +30,7 @@ Each message is a JSON object describing one state transition:
 
 ```json
 {
+  "seq": 12,
   "order_id": "aa00000000000000000000000000000001",
   "kind": "partially_filled",
   "filled_quantity": 3000000,
@@ -40,6 +41,7 @@ Each message is a JSON object describing one state transition:
 
 | Field | Type | Present when | Description |
 |---|---|---|---|
+| `seq` | integer | always | Per-connection monotonic sequence, starting at 1. A gap means missed events. |
 | `order_id` | string | always | The 16-byte order id, hex. |
 | `kind` | string | always | The transition: `partially_filled`, `fully_filled`, `cancelled`, or `expired`. |
 | `filled_quantity` | integer | on fills | Cumulative filled quantity. |
@@ -52,7 +54,7 @@ Each message is a JSON object describing one state transition:
 |---|---|---|
 | `partially_filled` | No | Part of the order filled; the remainder keeps resting (re-locked into a new note). |
 | `fully_filled` | Yes | The order filled completely. |
-| `cancelled` | Yes | The order was cancelled — by you, by a modify, or on session disconnect. |
+| `cancelled` | Yes | The order was cancelled, whether by you, by a modify, or on session disconnect. |
 | `expired` | Yes | The order reached its `expiry_slot` without fully filling. |
 
 A **terminal** event is the order's last; after it, the order has left the book
@@ -60,11 +62,15 @@ and produces no further events.
 
 ## Event flow
 
-```text
-order.place ──► (rests) ──► partially_filled ──► partially_filled ──► fully_filled
-                                                                       └── terminal
-            └──► (rests) ──► expired            (terminal)
-            └──► (rests) ──► cancelled          (terminal)
+```mermaid
+flowchart TD
+    PLACE["order.place"] --> RESTS1["(rests)"]
+    PLACE --> RESTS2["(rests)"]
+    PLACE --> RESTS3["(rests)"]
+
+    RESTS1 --> PF1["partially_filled"] --> PF2["partially_filled"] --> FF["fully_filled (terminal)"]
+    RESTS2 --> EXPIRED["expired (terminal)"]
+    RESTS3 --> CANCELLED["cancelled (terminal)"]
 ```
 
 A partial fill carries the residual size so you always know how much is still
@@ -73,10 +79,14 @@ the [Fills Channel](./fills-channel).
 
 ## Gap recovery
 
-If a slow consumer falls behind the per-account buffer, the server closes the
-socket with code **1011**. On a 1011 close, reconnect and reconcile any orders you
-care about with `GET /orders/{order_id}` — the channel is a low-latency notifier,
-not a durable log.
+Every event carries a per-connection monotonic `seq` (starting at 1). Track the
+last `seq` you processed; if the next event's `seq` is not exactly one greater,
+you missed events in between, so reconcile the orders you care about with
+`GET /orders/{order_id}`.
+
+If a slow consumer falls behind the per-account buffer, the server also closes the
+socket with code **1011**. On a 1011 close, reconnect and reconcile. The channel
+is a low-latency notifier, not a durable log.
 
 ## Example
 

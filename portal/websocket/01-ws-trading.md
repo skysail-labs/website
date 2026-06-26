@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 title: WebSocket Trading
-description: Submit orders over a single warm, pre-authenticated socket — framed place / cancel / modify, with optional cancel-on-disconnect.
+description: Submit orders over a single warm, pre-authenticated socket using framed place / cancel / modify, with optional cancel-on-disconnect.
 ---
 
 # WebSocket Trading
@@ -9,7 +9,7 @@ description: Submit orders over a single warm, pre-authenticated socket — fram
 :::info TL;DR
 `/ws/trading` is a bidirectional socket for order submission. Stream framed
 `order.place` / `order.cancel` / `order.modify` requests and receive one reply
-per frame — dispatched to the **same** intake and verification the REST endpoints
+per frame, dispatched to the **same** intake and verification the REST endpoints
 use. The wins over REST: one warm, pre-authenticated connection (no TLS + bearer
 round-trip per request) and **cancel-on-disconnect** for market makers.
 :::
@@ -47,7 +47,7 @@ reply echoes so a client can correlate responses on the multiplexed socket.
 | `order.place` | `request_id?`, `params` (a full [Place Order](../orders/place-order) body) | `POST /orders` |
 | `order.cancel` | `request_id?`, `order_id`, `params` (`trading_key`, `cancel_nonce`, `trading_key_signature`) | `DELETE /orders/{id}` |
 | `order.modify` | `request_id?`, `order_id`, `params` (a [Modify Order](../orders/modify-order) body) | `PUT /orders/{id}` |
-| `ping` | `request_id?` | — |
+| `ping` | `request_id?` | none |
 
 ```json
 { "op": "order.place", "request_id": "r1", "params": { "symbol": "SOL-USDC", "side": "bid", "…": "…" } }
@@ -55,20 +55,23 @@ reply echoes so a client can correlate responses on the multiplexed socket.
 
 ### Reply frames
 
+Every reply carries a per-connection monotonic `seq` (starting at 1) so a client
+can detect a dropped frame.
+
 | `op` | Fields | Meaning |
 |---|---|---|
-| `order.place` | `request_id?`, `result` | Order accepted; `result` mirrors the REST place response. |
-| `order.cancel` | `request_id?`, `result` | Order cancelled. |
-| `order.modify` | `request_id?`, `result` | Order modified. |
-| `pong` | `request_id?` | Heartbeat reply. |
-| `error` | `request_id?`, `code`, `message` | A frame failed. `code` is the HTTP-equivalent status (`400`, `403`, `404`, `409`, `503`) and `message` the same reason the REST path would have returned. |
+| `order.place` | `seq`, `request_id?`, `result` | Order accepted; `result` mirrors the REST place response. |
+| `order.cancel` | `seq`, `request_id?`, `result` | Order cancelled. |
+| `order.modify` | `seq`, `request_id?`, `result` | Order modified. |
+| `pong` | `seq`, `request_id?` | Heartbeat reply. |
+| `error` | `seq`, `request_id?`, `code`, `message` | A frame failed. `code` is the stable numeric [error code](../reference/error-codes); `message` is the same reason the REST path would have returned. |
 
 ```json
-{ "op": "order.place", "request_id": "r1", "result": { "order_id": "aa…01", "status": "accepted", "arrival_slot": 309482113 } }
+{ "op": "order.place", "seq": 1, "request_id": "r1", "result": { "order_id": "aa…01", "status": "accepted", "arrival_slot": 309482113 } }
 ```
 
 ```json
-{ "op": "error", "request_id": "r2", "code": 403, "message": "trading_key_signature does not verify against the canonical body" }
+{ "op": "error", "seq": 2, "request_id": "r2", "code": 1102, "message": "trading_key_signature does not verify against the canonical body" }
 ```
 
 ## Cancel-on-disconnect
@@ -78,15 +81,19 @@ placed on **this** socket and, when the socket closes, cancels the ones still
 resting. This protects a market maker that loses connectivity from leaving stale
 quotes crossing.
 
-The teardown is a server-initiated cancel using each order's own booked key — it
+You can also set an **account-wide default** so every socket gets the behavior
+without the query param: `PUT /account/settings` with
+`{ "cancel_on_disconnect_default": true }`. An explicit `?cancel_on_disconnect=`
+on a socket always overrides the account default for that connection.
+
+The teardown is a server-initiated cancel using each order's own booked key. It
 needs no client signature, because the order was placed on this authenticated
 session and a cancel only un-rests an order (it never settles or moves funds).
 
-```text
-socket opens  ──►  order.place ×N  ──►  (connectivity lost / socket closes)
-                                              │
-                                              ▼
-                          engine cancels this session's still-resting orders
+```mermaid
+flowchart LR
+    A["socket opens"] --> B["order.place ×N"] --> C["(connectivity lost / socket closes)"]
+    C --> D["engine cancels this session's still-resting orders"]
 ```
 
 Orders that have already filled, expired, or been cancelled are left as-is; only

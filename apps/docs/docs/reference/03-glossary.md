@@ -1,12 +1,12 @@
 ---
 sidebar_position: 3
 title: Glossary
-description: Terms and acronyms used across the Darknyx documentation.
+description: Terms and acronyms used across the Nyx documentation.
 ---
 
 # Glossary
 
-:::info
+:::info TL;DR
 A quick reference for the terms that recur across these docs. Most link back to
 the page that explains them in depth.
 :::
@@ -15,7 +15,7 @@ the page that explains them in depth.
 Pre-supplied secret material for an order's future change notes. Each anchor is an
 `{ inner_hash, nullifier }` pair; the pool lets the engine settle partial fills and
 re-lock the remainder without a per-fill round-trip. See
-[The Anchor Pool](../trading-primitives/anchor-pool).
+[The Anchor Pool](../trading-concepts/anchor-pool).
 
 ### Attestation
 A hardware-signed measurement of the running enclave that a client verifies to
@@ -25,7 +25,7 @@ confirm it is talking to the genuine, expected engine. See
 ### Batch auction
 The matching model: each tick, crossing orders clear together at a single uniform
 price rather than continuously, pairwise. See
-[Clearing Price](../trading-primitives/clearing-price).
+[Clearing Price](../trading-concepts/clearing-price).
 
 ### Bearer token
 The account-layer credential from `POST /auth/token`, sent as `Authorization:
@@ -44,7 +44,7 @@ cannot settle. See [Instruments](../reference-data/instruments).
 
 ### Clearing price
 The single, oracle-anchored price at which every match in a batch settles. See
-[Clearing Price](../trading-primitives/clearing-price).
+[Clearing Price](../trading-concepts/clearing-price).
 
 ### Compose hash
 The measurement of the enclave's deployed image. A client pins an expected value
