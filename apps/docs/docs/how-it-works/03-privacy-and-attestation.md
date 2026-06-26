@@ -1,13 +1,13 @@
 ---
 sidebar_position: 3
 title: Privacy & Attestation
-description: Who can see your orders on Nyx (no one), and how you verify the engine cryptographically rather than trusting it.
+description: Who can see your orders on Darknyx (no one), and how you verify the engine cryptographically rather than trusting it.
 ---
 
 # Privacy & Attestation
 
 :::info TL;DR
-On Nyx, **no party, not even the operator, can see your orders, balances, or
+On Darknyx, **no party, not even the operator, can see your orders, balances, or
 strategy**. Order intent lives only inside an attested enclave; balances are
 sealed inside on-chain note commitments. You do not take this on trust: you
 **verify** the running engine against an expected measurement, and confirm it is
@@ -21,9 +21,9 @@ the same engine that settles on-chain.
 | **Centralized exchange** | The operator | Can front-run, trade against you, or leak data. |
 | **On-chain order book** | The sequencer / validators, and anyone indexing the chain | Reorder, censor, sandwich (MEV); the leak is permanent and public. |
 | **Off-chain dark desk** | The operator | Custody and order intent both exposed to one party. |
-| **Nyx** | **No party.** Order intent lives only inside a hardware-isolated, attested enclave; it is never a transaction | No party can read or replay your orders; an observer of Solana learns nothing about them. |
+| **Darknyx** | **No party.** Order intent lives only inside a hardware-isolated, attested enclave; it is never a transaction | No party can read or replay your orders; an observer of Solana learns nothing about them. |
 
-The difference from "encrypted on-chain orders" is that on Nyx your order is
+The difference from "encrypted on-chain orders" is that on Darknyx your order is
 **never a transaction at all** (see [Trade Flow](./trade-flow)). What lands on
 Solana is the settled *result*, with a zero-knowledge proof, never the order.
 

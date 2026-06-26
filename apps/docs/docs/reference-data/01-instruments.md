@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 title: Get Instruments
-description: "List the markets Nyx supports and read a single market's parameters: mints, tick size, minimum order size, and the price oracle."
+description: "List the markets Darknyx supports and read a single market's parameters: mints, tick size, minimum order size, and the price oracle."
 ---
 
 # Get Instruments
@@ -12,8 +12,8 @@ the price increment, the minimum order size, and the **oracle** that anchors the
 clearing price. Both endpoints are public.
 :::
 
-Each Nyx market is a pair of SPL token mints (a base and a quote) together with
-the parameters the matching engine needs to clear it. Because Nyx clears each
+Each Darknyx market is a pair of SPL token mints (a base and a quote) together with
+the parameters the matching engine needs to clear it. Because Darknyx clears each
 batch at a single oracle-anchored price (see
 [Clearing Price](../trading-concepts/clearing-price)), every instrument names the
 oracle that provides its reference price.

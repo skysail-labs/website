@@ -13,7 +13,7 @@ transaction signatures and tells you which stage of the settlement pipeline it i
 in. Use it to confirm finality and to get a Solana explorer link for your trade.
 :::
 
-A fill on Nyx is not final the instant the engine matches it. It is final when
+A fill on Darknyx is not final the instant the engine matches it. It is final when
 the settlement transaction lands on Solana. Settlement runs as a short on-chain
 pipeline per batch (lock the notes, verify the batch proof, execute the atomic
 transfers, then reclaim the batch marker). This endpoint surfaces where a batch is

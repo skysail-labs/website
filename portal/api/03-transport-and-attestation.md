@@ -1,7 +1,7 @@
 ---
 sidebar_position: 3
 title: Transport & Attestation
-description: How the Nyx transport is secured (RA-TLS terminating inside the enclave) and how a client verifies it is talking to the real, measured engine.
+description: How the Darknyx transport is secured (RA-TLS terminating inside the enclave) and how a client verifies it is talking to the real, measured engine.
 ---
 
 # Transport & Attestation
@@ -19,10 +19,10 @@ image measurement.
 
 On many private venues, your connection terminates at a gateway or load balancer
 that sits *outside* the system's trust zone, and a separate in-band encryption
-handshake is layered inside TLS to defend against that gateway. Nyx does not have
+handshake is layered inside TLS to defend against that gateway. Darknyx does not have
 that gap.
 
-The TLS certificate Nyx serves is bound to a key the enclave generated and holds.
+The TLS certificate Darknyx serves is bound to a key the enclave generated and holds.
 TLS therefore terminates *inside* the confidential VM, the same boundary that
 runs the matching engine. There is no intermediate hop that sees plaintext, so
 there is no need for a second encryption layer:
@@ -45,7 +45,7 @@ What this gives you:
 ## Verifying the engine
 
 TLS proves you have a private channel to *something*. Attestation proves that
-something is the **specific, measured Nyx engine** and not a substituted binary.
+something is the **specific, measured Darknyx engine** and not a substituted binary.
 Verification is a client-side step you run once at connect (or whenever you want
 the strong guarantee).
 
@@ -63,7 +63,7 @@ GET /info
   "instance_id": "…",
   "compose_hash": "…",
   "tee_pubkey": "…",
-  "nyx_version": "…"
+  "darknyx_version": "…"
 }
 ```
 
@@ -73,7 +73,7 @@ GET /info
 | `instance_id` | Identifier of this specific VM instance. |
 | `compose_hash` | SHA-256 of the canonicalised deployment manifest. **This is the value a client pins**; it must equal the measurement the client expects for a trusted build. |
 | `tee_pubkey` | The enclave's Ed25519 signer (base58); the key that signs settlement payloads on-chain. |
-| `nyx_version` | Build version tag of the engine. |
+| `darknyx_version` | Build version tag of the engine. |
 
 ### GET /attestation
 

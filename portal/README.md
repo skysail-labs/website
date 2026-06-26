@@ -1,7 +1,7 @@
-# Nyx documentation portal (content source)
+# Darknyx documentation portal (content source)
 
 This directory holds the **public-facing, reference-grade documentation** for
-the Nyx protocol: the verbose, grouped API + concepts + "how it works" portal a
+the Darknyx protocol: the verbose, grouped API + concepts + "how it works" portal a
 trader, integrator, or engineer reads to build against the venue.
 
 It is written to drop into a **Docusaurus** site. Each group is a directory with
@@ -14,7 +14,7 @@ blocks (no Mermaid, for zero-friction conversion).
 ## Sidebar groups
 
 ```text
-Get Started        - what Nyx is, the network, programmatic access
+Get Started        - what Darknyx is, the network, programmatic access
 API                - base URLs, authentication, transport & attestation
 Reference Data     - instruments
 Account            - account model, Merkle proofs, transparency, settlement status

@@ -7,7 +7,7 @@ description: The matching engine runs inside a single attested Intel TDX confide
 # Confidential VM Architecture
 
 :::info TL;DR
-Nyx matches orders inside a single **Intel TDX Confidential VM**, a hardware-
+Darknyx matches orders inside a single **Intel TDX Confidential VM**, a hardware-
 isolated enclave whose memory the operator cannot read and whose signing keys are
 **derived from its measured image**. Change the code and the keys no longer
 derive, so a substituted engine cannot sign settlements or decrypt order intent.
@@ -19,7 +19,7 @@ verification, not from trusting the operator.
 
 A dark pool's central problem is: who runs the matching engine, and why can't they
 cheat? Most private venues answer "an operator you have to trust" or "a committee
-of operators, most of whom you have to trust." Nyx answers with hardware: the
+of operators, most of whom you have to trust." Darknyx answers with hardware: the
 engine runs inside an Intel TDX confidential VM (a "CVM"), an enclave the CPU
 isolates from everything else on the host, including the operator, the
 hypervisor, and other tenants.
@@ -53,7 +53,7 @@ flowchart TD
 ```
 
 This is what makes attestation actionable. It is not enough to *measure* the code;
-the measurement has to *gate* the capability. On Nyx:
+the measurement has to *gate* the capability. On Darknyx:
 
 - The TLS key is bound to the image, so a substituted engine cannot terminate your
   encrypted channel. You would be talking to a different key, detectable at
@@ -80,7 +80,7 @@ the measured image.
 ## Single enclave vs. a committee
 
 Some private venues split the matching engine across a committee of operators so
-no single one sees an order. Nyx takes a different route: a single enclave, but one
+no single one sees an order. Darknyx takes a different route: a single enclave, but one
 whose operator sees *nothing* and whose integrity is hardware-attested and
 on-chain-enforced. The trust assumption is the CPU vendor's attestation and the
 soundness of the zero-knowledge proofs, not the honesty of a quorum of operators.

@@ -7,7 +7,7 @@ description: How balances are held privately, as UTXO-style notes committed on-c
 # Shielded Pool
 
 :::info TL;DR
-Your balance on Nyx is a set of **notes**, UTXO-style values committed on-chain as
+Your balance on Darknyx is a set of **notes**, UTXO-style values committed on-chain as
 Poseidon hashes that seal the owner, amount, and token. The commitments live in a
 Merkle tree; spending a note publishes a **nullifier** that prevents reuse. You
 prove ownership and inclusion in zero knowledge, so the chain enforces correctness
@@ -16,7 +16,7 @@ without ever learning what you hold.
 
 ## Notes, not balances
 
-A custodial venue stores your balance as a number in a database. Nyx stores it as
+A custodial venue stores your balance as a number in a database. Darknyx stores it as
 a set of **notes**. A note is a commitment, a Poseidon hash, to four things:
 
 ```text
@@ -137,6 +137,7 @@ flowchart TD
 
 Every transition is gated on-chain by a distinct record (a wallet entry, a
 nullifier, a consumed-note marker, a note lock), so a note can never be used twice
-regardless of what the engine does. See [Account Model](../account/account-model)
-for how you reconstruct your spendable set from this, and
-[Settlement](./settlement) for the on-chain spend pipeline.
+regardless of what the engine does. See [Deposit](../account/deposit) and
+[Withdraw](../account/withdraw) for the on-ramp and off-ramp,
+[Account Model](../account/account-model) for how you reconstruct your spendable
+set, and [Settlement](./settlement) for the on-chain spend pipeline.

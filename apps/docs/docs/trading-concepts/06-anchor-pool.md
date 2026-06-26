@@ -17,7 +17,7 @@ round-trip.
 
 ## The problem it solves
 
-On Nyx an order is backed by a specific note. When a batch partially fills the
+On Darknyx an order is backed by a specific note. When a batch partially fills the
 order, that note is consumed and its value splits: part to your counterparty, the
 rest into a **change note** that should keep backing your still-resting order.
 

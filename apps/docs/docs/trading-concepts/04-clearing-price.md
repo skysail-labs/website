@@ -1,7 +1,7 @@
 ---
 sidebar_position: 4
 title: Clearing Price
-description: How Nyx prices a batch with one uniform, oracle-anchored clearing price for every match, plus a hard on-chain circuit breaker.
+description: How Darknyx prices a batch with one uniform, oracle-anchored clearing price for every match, plus a hard on-chain circuit breaker.
 ---
 
 # Clearing Price
@@ -16,7 +16,7 @@ from the oracle.
 
 ## One price per batch
 
-Nyx clears each tick as a batch auction. The engine collects the orders that
+Darknyx clears each tick as a batch auction. The engine collects the orders that
 cross and computes a **single clearing price** for that batch, anchored to the
 market's oracle reference. Every match in the batch, both sides, settles at that
 one price.
@@ -49,7 +49,7 @@ there is nothing for a counterparty to fade or sandwich.
 ## Why there is no "peg" order type
 
 On a continuous venue you peg an order to the mid (or bid/ask) and continuously
-reprice it so it tracks the market. Nyx does not need a peg order type, for two
+reprice it so it tracks the market. Darknyx does not need a peg order type, for two
 reasons:
 
 1. **A dark pool has no public bid/ask to peg to.** Resting orders are hidden;
@@ -60,7 +60,7 @@ reasons:
    trade with a `price_limit`, and the batch gives you the oracle-anchored
    clearing price whenever it is within your limit.
 
-So the honest analog of "peg to mid" on Nyx is simply: place a limit at the worst
+So the honest analog of "peg to mid" on Darknyx is simply: place a limit at the worst
 price you will accept, and let the uniform clearing price do the rest.
 
 ## The circuit breaker
@@ -72,7 +72,7 @@ zero-knowledge settlement proof**, not merely as a server-side policy: a batch
 whose clearing price falls outside the band cannot produce a valid settlement
 proof and is rejected on-chain.
 
-The practical effect: if the oracle is stale or the market gaps, Nyx **does not
+The practical effect: if the oracle is stale or the market gaps, Darknyx **does not
 clear** rather than clearing at a price far from fair. Your order waits for a batch
 that prices within the band.
 
