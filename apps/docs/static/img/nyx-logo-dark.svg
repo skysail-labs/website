@@ -1,0 +1,10 @@
+<svg width="80" height="28" viewBox="0 0 80 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- N mark: two vertical bars connected by a diagonal -->
+  <rect x="2" y="4" width="3" height="20" rx="1" fill="#f5f3ee"/>
+  <polygon points="5,4 8,4 17,20 14,20" fill="#f5f3ee"/>
+  <rect x="14" y="4" width="3" height="20" rx="1" fill="#f5f3ee"/>
+  <!-- Y X -->
+  <text x="22" y="21" font-family="'Space Grotesk', system-ui, sans-serif" font-size="16" font-weight="700" letter-spacing="-0.04em" fill="#f5f3ee">YX</text>
+  <!-- accent dot -->
+  <circle cx="53" cy="20" r="2.5" fill="#6875f5"/>
+</svg>
