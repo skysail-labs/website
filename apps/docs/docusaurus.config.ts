@@ -41,6 +41,7 @@ const config: Config = {
           sidebarPath: "./sidebars.ts",
           routeBasePath: "/",
           editUrl: undefined,
+          exclude: ["reference-data/**", "reference/**"],
         },
         blog: false,
         theme: {
