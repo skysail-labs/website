@@ -1,0 +1,987 @@
+{
+  "Anchor": {
+    "aliases": [
+      "anchor pool"
+    ],
+    "pages": [
+      "orders/anchor-topup",
+      "trading-concepts/anchor-pool",
+      "orders/place-order",
+      "sdk/typescript-client",
+      "websocket/fills-channel",
+      "get-started/programmatic-access"
+    ],
+    "keywords": [
+      "Programmatic Access",
+      "Authentication",
+      "Place Order",
+      "Anchor Top-Up",
+      "Fills Channel",
+      "The Anchor Pool",
+      "TypeScript Client"
+    ]
+  },
+  "Attestation": {
+    "aliases": [],
+    "pages": [
+      "api/transport-and-attestation",
+      "how-it-works/privacy-and-attestation",
+      "how-it-works/tee-architecture",
+      "account/transparency",
+      "api/base-urls",
+      "sdk/typescript-client"
+    ],
+    "keywords": [
+      "Transparency",
+      "TEE",
+      "Base URLs",
+      "Transport & Attestation",
+      "TypeScript Client",
+      "Confidential VM Architecture",
+      "Privacy & Attestation"
+    ]
+  },
+  "Batch auction": {
+    "aliases": [],
+    "pages": [
+      "how-it-works/trade-flow",
+      "trading-concepts/clearing-price",
+      "how-it-works/fee-structure",
+      "trading-concepts/order-types"
+    ],
+    "keywords": [
+      "Circuit breaker",
+      "Clearing price",
+      "Note",
+      "Settlement",
+      "Order Types",
+      "Trade Flow",
+      "Fee Structure"
+    ]
+  },
+  "Bearer token": {
+    "aliases": [],
+    "pages": [
+      "api/authentication",
+      "get-started/programmatic-access",
+      "api/base-urls",
+      "account/deposit",
+      "orders/anchor-topup",
+      "orders/cancel-order"
+    ],
+    "keywords": [
+      "Anchor",
+      "Note",
+      "Programmatic Access",
+      "Base URLs",
+      "Authentication",
+      "Deposit",
+      "Cancel Order",
+      "Anchor Top-Up"
+    ]
+  },
+  "Change note": {
+    "aliases": [],
+    "pages": [
+      "websocket/fills-channel",
+      "trading-concepts/anchor-pool",
+      "orders/place-order",
+      "how-it-works/fee-structure",
+      "how-it-works/settlement",
+      "sdk/typescript-client"
+    ],
+    "keywords": [
+      "Anchor",
+      "Note",
+      "Settlement",
+      "Place Order",
+      "Fills Channel",
+      "The Anchor Pool",
+      "TypeScript Client",
+      "Fee Structure"
+    ]
+  },
+  "Circuit breaker": {
+    "aliases": [],
+    "pages": [
+      "trading-concepts/clearing-price"
+    ],
+    "keywords": [
+      "Clearing price"
+    ]
+  },
+  "Clearing price": {
+    "aliases": [],
+    "pages": [
+      "trading-concepts/clearing-price",
+      "trading-concepts/order-types",
+      "how-it-works/fee-structure",
+      "how-it-works/settlement",
+      "trading-concepts/order-compatibility",
+      "how-it-works/privacy-and-attestation"
+    ],
+    "keywords": [
+      "Attestation",
+      "Circuit breaker",
+      "Note",
+      "Settlement",
+      "TEE",
+      "Order Types",
+      "Time in Force",
+      "Execution Attributes"
+    ]
+  },
+  "Compose hash": {
+    "aliases": [],
+    "pages": [
+      "api/transport-and-attestation",
+      "get-started/programmatic-access",
+      "how-it-works/tee-architecture"
+    ],
+    "keywords": [
+      "Attestation",
+      "TEE",
+      "Programmatic Access",
+      "Authentication",
+      "Transport & Attestation",
+      "Confidential VM Architecture"
+    ]
+  },
+  "Confidential VM (CVM)": {
+    "aliases": [
+      "enclave"
+    ],
+    "pages": [
+      "how-it-works/tee-architecture",
+      "api/transport-and-attestation",
+      "how-it-works/trade-flow",
+      "get-started/overview",
+      "how-it-works/privacy-and-attestation",
+      "account/account-model"
+    ],
+    "keywords": [
+      "Attestation",
+      "Note",
+      "Settlement",
+      "Spending key",
+      "Trading key",
+      "TEE",
+      "Overview",
+      "Transport & Attestation"
+    ]
+  },
+  "Inner hash": {
+    "aliases": [],
+    "pages": [
+      "how-it-works/shielded-pool",
+      "websocket/fills-channel",
+      "orders/place-order"
+    ],
+    "keywords": [
+      "Anchor",
+      "Merkle tree",
+      "Note",
+      "Nullifier",
+      "Place Order",
+      "Fills Channel",
+      "Shielded Pool"
+    ]
+  },
+  "Merkle tree": {
+    "aliases": [],
+    "pages": [
+      "how-it-works/shielded-pool",
+      "account/account-model",
+      "how-it-works/trade-flow",
+      "account/deposit",
+      "account/merkle-proofs"
+    ],
+    "keywords": [
+      "Inner hash",
+      "Note",
+      "Nullifier",
+      "Settlement",
+      "Spending key",
+      "Trading key",
+      "Account Model",
+      "Merkle Proofs"
+    ]
+  },
+  "Note": {
+    "aliases": [],
+    "pages": [
+      "account/account-model",
+      "how-it-works/shielded-pool",
+      "account/deposit",
+      "how-it-works/fee-structure",
+      "account/merkle-proofs",
+      "account/withdraw"
+    ],
+    "keywords": [
+      "Inner hash",
+      "Merkle tree",
+      "Nullifier",
+      "Spending key",
+      "Trading key",
+      "Account Model",
+      "Merkle Proofs",
+      "Deposit"
+    ]
+  },
+  "Note commitment": {
+    "aliases": [],
+    "pages": [
+      "account/merkle-proofs",
+      "how-it-works/shielded-pool",
+      "get-started/programmatic-access",
+      "how-it-works/privacy-and-attestation",
+      "how-it-works/trade-flow",
+      "sdk/typescript-client"
+    ],
+    "keywords": [
+      "Attestation",
+      "Inner hash",
+      "Merkle tree",
+      "Note",
+      "Nullifier",
+      "Settlement",
+      "TEE",
+      "Programmatic Access"
+    ]
+  },
+  "Nullifier": {
+    "aliases": [
+      "nullifiers"
+    ],
+    "pages": [
+      "how-it-works/shielded-pool",
+      "account/account-model",
+      "orders/place-order",
+      "account/withdraw",
+      "orders/anchor-topup",
+      "how-it-works/settlement"
+    ],
+    "keywords": [
+      "Anchor",
+      "Inner hash",
+      "Merkle tree",
+      "Note",
+      "Settlement",
+      "Spending key",
+      "Trading key",
+      "Account Model"
+    ]
+  },
+  "Order id": {
+    "aliases": [],
+    "pages": [
+      "api/base-urls",
+      "orders/cancel-order",
+      "orders/get-order",
+      "api/authentication",
+      "orders/place-order",
+      "trading-concepts/self-trade-prevention"
+    ],
+    "keywords": [
+      "Anchor",
+      "Bearer token",
+      "Base URLs",
+      "Authentication",
+      "Place Order",
+      "Cancel Order",
+      "Get Order",
+      "Self-Trade Prevention"
+    ]
+  },
+  "Settlement": {
+    "aliases": [
+      "settlement pipeline",
+      "on-chain settlement"
+    ],
+    "pages": [
+      "account/settlement-status",
+      "how-it-works/settlement",
+      "how-it-works/trade-flow",
+      "how-it-works/tee-architecture",
+      "get-started/overview",
+      "get-started/programmatic-access"
+    ],
+    "keywords": [
+      "TEE",
+      "Overview",
+      "Programmatic Access",
+      "Authentication",
+      "Settlement Status",
+      "Trade Flow",
+      "Confidential VM Architecture"
+    ]
+  },
+  "Spending key": {
+    "aliases": [],
+    "pages": [
+      "account/account-model",
+      "account/merkle-proofs",
+      "api/transport-and-attestation",
+      "how-it-works/privacy-and-attestation",
+      "how-it-works/shielded-pool",
+      "orders/place-order"
+    ],
+    "keywords": [
+      "Anchor",
+      "Attestation",
+      "Inner hash",
+      "Merkle tree",
+      "Note",
+      "Nullifier",
+      "Trading key",
+      "TEE"
+    ]
+  },
+  "Trading key": {
+    "aliases": [],
+    "pages": [
+      "api/authentication",
+      "trading-concepts/self-trade-prevention",
+      "account/account-model",
+      "orders/modify-order",
+      "get-started/overview",
+      "get-started/programmatic-access"
+    ],
+    "keywords": [
+      "Bearer token",
+      "Note",
+      "Spending key",
+      "TEE",
+      "Overview",
+      "Programmatic Access",
+      "Authentication",
+      "Account Model"
+    ]
+  },
+  "Transparency": {
+    "aliases": [],
+    "pages": [
+      "account/transparency",
+      "account/account-model",
+      "get-started/programmatic-access",
+      "how-it-works/fee-structure",
+      "api/authentication",
+      "how-it-works/privacy-and-attestation"
+    ],
+    "keywords": [
+      "Attestation",
+      "Bearer token",
+      "Note",
+      "Spending key",
+      "Trading key",
+      "TEE",
+      "Programmatic Access",
+      "Authentication"
+    ]
+  },
+  "VALIDINPUT proof": {
+    "aliases": [],
+    "pages": [],
+    "keywords": []
+  },
+  "Vault": {
+    "aliases": [],
+    "pages": [
+      "how-it-works/trade-flow",
+      "account/transparency",
+      "account/withdraw",
+      "account/deposit",
+      "how-it-works/tee-architecture",
+      "account/settlement-status"
+    ],
+    "keywords": [
+      "Note",
+      "Settlement",
+      "Transparency",
+      "TEE",
+      "Settlement Status",
+      "Deposit",
+      "Withdraw",
+      "Trade Flow"
+    ]
+  },
+  "TEE": {
+    "aliases": [
+      "Trusted Execution Environment",
+      "Intel TDX",
+      "TDX",
+      "Confidential VM",
+      "CVM",
+      "enclave"
+    ],
+    "pages": [
+      "how-it-works/tee-architecture",
+      "api/transport-and-attestation",
+      "get-started/overview",
+      "how-it-works/trade-flow",
+      "how-it-works/privacy-and-attestation",
+      "account/transparency"
+    ],
+    "keywords": [
+      "Attestation",
+      "Settlement",
+      "Transparency",
+      "Overview",
+      "Transport & Attestation",
+      "Trade Flow",
+      "Confidential VM Architecture",
+      "Privacy & Attestation"
+    ]
+  },
+  "Groth16": {
+    "aliases": [
+      "Groth proof",
+      "proof system",
+      "zero-knowledge proof",
+      "zk proof",
+      "zkp"
+    ],
+    "pages": [
+      "how-it-works/trade-flow",
+      "get-started/overview",
+      "how-it-works/privacy-and-attestation",
+      "how-it-works/settlement",
+      "how-it-works/tee-architecture",
+      "account/merkle-proofs"
+    ],
+    "keywords": [
+      "Attestation",
+      "Settlement",
+      "TEE",
+      "Overview",
+      "Merkle Proofs",
+      "Trade Flow",
+      "Confidential VM Architecture",
+      "Privacy & Attestation"
+    ]
+  },
+  "Overview": {
+    "aliases": [],
+    "pages": [
+      "get-started/overview"
+    ],
+    "keywords": [
+      "overview",
+      "darknyx",
+      "private",
+      "means",
+      "here",
+      "three"
+    ]
+  },
+  "Programmatic Access": {
+    "aliases": [],
+    "pages": [
+      "get-started/programmatic-access",
+      "get-started/overview"
+    ],
+    "keywords": [
+      "programmatic",
+      "access",
+      "authentication",
+      "model",
+      "available",
+      "apis"
+    ]
+  },
+  "MCP Server": {
+    "aliases": [],
+    "pages": [
+      "get-started/mcp"
+    ],
+    "keywords": [
+      "mcp",
+      "server",
+      "connect",
+      "claude",
+      "code",
+      "cursor"
+    ]
+  },
+  "Base URLs": {
+    "aliases": [],
+    "pages": [
+      "api/base-urls",
+      "get-started/overview"
+    ],
+    "keywords": [
+      "base",
+      "urls",
+      "gateway",
+      "common",
+      "headers",
+      "response"
+    ]
+  },
+  "Authentication": {
+    "aliases": [],
+    "pages": [
+      "api/authentication",
+      "get-started/programmatic-access",
+      "account/merkle-proofs",
+      "account/transparency",
+      "websocket/session-stream"
+    ],
+    "keywords": [
+      "authentication",
+      "credential",
+      "model",
+      "post",
+      "auth",
+      "token"
+    ]
+  },
+  "Transport & Attestation": {
+    "aliases": [],
+    "pages": [
+      "api/transport-and-attestation",
+      "account/transparency",
+      "api/base-urls"
+    ],
+    "keywords": [
+      "transport",
+      "attestation",
+      "trust",
+      "boundary",
+      "verifying",
+      "engine"
+    ]
+  },
+  "Account Model": {
+    "aliases": [],
+    "pages": [
+      "account/account-model",
+      "account/deposit",
+      "account/merkle-proofs",
+      "how-it-works/settlement",
+      "how-it-works/shielded-pool"
+    ],
+    "keywords": [
+      "account",
+      "model",
+      "there",
+      "balance",
+      "get",
+      "read"
+    ]
+  },
+  "Merkle Proofs": {
+    "aliases": [],
+    "pages": [
+      "account/merkle-proofs",
+      "account/account-model",
+      "account/withdraw",
+      "get-started/programmatic-access",
+      "how-it-works/shielded-pool"
+    ],
+    "keywords": [
+      "merkle",
+      "proofs",
+      "need",
+      "these",
+      "get",
+      "tree"
+    ]
+  },
+  "Settlement Status": {
+    "aliases": [],
+    "pages": [
+      "account/settlement-status",
+      "get-started/programmatic-access",
+      "how-it-works/settlement",
+      "orders/get-order",
+      "websocket/session-stream"
+    ],
+    "keywords": [
+      "settlement",
+      "status",
+      "get",
+      "123",
+      "batchid",
+      "125"
+    ]
+  },
+  "Deposit": {
+    "aliases": [],
+    "pages": [
+      "account/deposit",
+      "how-it-works/trade-flow",
+      "how-it-works/shielded-pool",
+      "account/withdraw",
+      "account/account-model"
+    ],
+    "keywords": [
+      "deposit",
+      "does",
+      "using",
+      "sdk",
+      "record",
+      "notes"
+    ]
+  },
+  "Withdraw": {
+    "aliases": [],
+    "pages": [
+      "account/withdraw",
+      "how-it-works/shielded-pool",
+      "account/account-model",
+      "account/merkle-proofs",
+      "account/deposit"
+    ],
+    "keywords": [
+      "withdraw",
+      "withdrawal",
+      "does",
+      "using",
+      "sdk",
+      "reveals"
+    ]
+  },
+  "Place Order": {
+    "aliases": [],
+    "pages": [
+      "orders/place-order",
+      "get-started/programmatic-access",
+      "orders/modify-order",
+      "websocket/session-stream",
+      "account/account-model"
+    ],
+    "keywords": [
+      "place",
+      "order",
+      "darknyx",
+      "differs",
+      "request",
+      "body"
+    ]
+  },
+  "Cancel Order": {
+    "aliases": [],
+    "pages": [
+      "orders/cancel-order",
+      "api/authentication",
+      "trading-concepts/order-compatibility"
+    ],
+    "keywords": [
+      "cancel",
+      "order",
+      "path",
+      "parameters",
+      "request",
+      "body"
+    ]
+  },
+  "Modify Order": {
+    "aliases": [],
+    "pages": [
+      "orders/modify-order",
+      "api/authentication",
+      "trading-concepts/order-compatibility",
+      "websocket/session-stream",
+      "websocket/ws-trading"
+    ],
+    "keywords": [
+      "modify",
+      "order",
+      "instead",
+      "cancel-then-place",
+      "path",
+      "parameters"
+    ]
+  },
+  "Get Order": {
+    "aliases": [],
+    "pages": [
+      "orders/get-order",
+      "account/account-model"
+    ],
+    "keywords": [
+      "get",
+      "order",
+      "path",
+      "parameters",
+      "example",
+      "response"
+    ]
+  },
+  "Anchor Top-Up": {
+    "aliases": [],
+    "pages": [
+      "orders/anchor-topup",
+      "trading-concepts/order-compatibility"
+    ],
+    "keywords": [
+      "anchor",
+      "top-up",
+      "background",
+      "pool",
+      "path",
+      "parameters"
+    ]
+  },
+  "WebSocket Trading": {
+    "aliases": [],
+    "pages": [
+      "websocket/ws-trading",
+      "get-started/programmatic-access",
+      "orders/place-order",
+      "sdk/typescript-client"
+    ],
+    "keywords": [
+      "websocket",
+      "trading",
+      "connect",
+      "message",
+      "format",
+      "request"
+    ]
+  },
+  "Orders Channel": {
+    "aliases": [],
+    "pages": [
+      "websocket/orders-channel",
+      "orders/get-order",
+      "account/account-model",
+      "how-it-works/trade-flow",
+      "orders/cancel-order"
+    ],
+    "keywords": [
+      "orders",
+      "channel",
+      "connect",
+      "event",
+      "shape",
+      "kinds"
+    ]
+  },
+  "Fills Channel": {
+    "aliases": [],
+    "pages": [
+      "websocket/fills-channel",
+      "account/account-model",
+      "how-it-works/settlement",
+      "trading-concepts/anchor-pool",
+      "account/deposit"
+    ],
+    "keywords": [
+      "fills",
+      "channel",
+      "separate",
+      "stream",
+      "connect",
+      "memo"
+    ]
+  },
+  "Session Stream": {
+    "aliases": [],
+    "pages": [
+      "websocket/session-stream",
+      "account/account-model"
+    ],
+    "keywords": [
+      "session",
+      "stream",
+      "use",
+      "connect",
+      "log",
+      "subscribe"
+    ]
+  },
+  "Order Types": {
+    "aliases": [],
+    "pages": [
+      "trading-concepts/order-types",
+      "get-started/overview",
+      "orders/place-order",
+      "trading-concepts/time-in-force"
+    ],
+    "keywords": [
+      "order",
+      "types",
+      "matching",
+      "works",
+      "here",
+      "native"
+    ]
+  },
+  "Time in Force": {
+    "aliases": [],
+    "pages": [
+      "trading-concepts/time-in-force",
+      "trading-concepts/order-compatibility",
+      "api/base-urls",
+      "orders/place-order"
+    ],
+    "keywords": [
+      "time",
+      "force",
+      "two",
+      "controls",
+      "available",
+      "behaviors"
+    ]
+  },
+  "Execution Attributes": {
+    "aliases": [],
+    "pages": [
+      "trading-concepts/execution-attributes",
+      "trading-concepts/order-compatibility",
+      "trading-concepts/order-types",
+      "get-started/overview",
+      "orders/place-order"
+    ],
+    "keywords": [
+      "execution",
+      "attributes",
+      "minimum",
+      "fill",
+      "size",
+      "all-or-none"
+    ]
+  },
+  "Self-Trade Prevention": {
+    "aliases": [],
+    "pages": [
+      "trading-concepts/self-trade-prevention"
+    ],
+    "keywords": [
+      "self-trade",
+      "prevention",
+      "rule",
+      "single",
+      "behavior",
+      "protects"
+    ]
+  },
+  "The Anchor Pool": {
+    "aliases": [],
+    "pages": [
+      "trading-concepts/anchor-pool",
+      "orders/anchor-topup",
+      "sdk/typescript-client",
+      "orders/place-order"
+    ],
+    "keywords": [
+      "anchor",
+      "pool",
+      "problem",
+      "solves",
+      "mechanism",
+      "deterministic"
+    ]
+  },
+  "Order Compatibility": {
+    "aliases": [],
+    "pages": [
+      "trading-concepts/order-compatibility",
+      "trading-concepts/execution-attributes",
+      "trading-concepts/order-types"
+    ],
+    "keywords": [
+      "order",
+      "compatibility",
+      "type",
+      "time",
+      "force",
+      "execution"
+    ]
+  },
+  "TypeScript Client": {
+    "aliases": [],
+    "pages": [
+      "sdk/typescript-client",
+      "account/account-model",
+      "get-started/programmatic-access"
+    ],
+    "keywords": [
+      "typescript",
+      "client",
+      "sdk",
+      "does",
+      "implementation",
+      "building"
+    ]
+  },
+  "Trade Flow": {
+    "aliases": [],
+    "pages": [
+      "how-it-works/trade-flow",
+      "get-started/overview",
+      "how-it-works/privacy-and-attestation"
+    ],
+    "keywords": [
+      "trade",
+      "flow",
+      "order-to-settlement",
+      "lifecycle",
+      "step",
+      "on-chain"
+    ]
+  },
+  "Confidential VM Architecture": {
+    "aliases": [],
+    "pages": [
+      "how-it-works/tee-architecture",
+      "how-it-works/privacy-and-attestation"
+    ],
+    "keywords": [
+      "confidential",
+      "architecture",
+      "keys",
+      "bound",
+      "image",
+      "operator"
+    ]
+  },
+  "Privacy & Attestation": {
+    "aliases": [],
+    "pages": [
+      "how-it-works/privacy-and-attestation",
+      "how-it-works/settlement",
+      "how-it-works/tee-architecture",
+      "how-it-works/trade-flow"
+    ],
+    "keywords": [
+      "privacy",
+      "attestation",
+      "who",
+      "can",
+      "see",
+      "orders"
+    ]
+  },
+  "Shielded Pool": {
+    "aliases": [],
+    "pages": [
+      "how-it-works/shielded-pool",
+      "account/withdraw"
+    ],
+    "keywords": [
+      "shielded",
+      "pool",
+      "notes",
+      "balances",
+      "merkle",
+      "tree"
+    ]
+  },
+  "Fee Structure": {
+    "aliases": [],
+    "pages": [
+      "how-it-works/fee-structure"
+    ],
+    "keywords": [
+      "fee",
+      "structure",
+      "model",
+      "fees",
+      "collected",
+      "worked"
+    ]
+  }
+}

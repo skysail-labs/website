@@ -96,6 +96,11 @@ const config: Config = {
           label: "Docs",
         },
         {
+          to: "/get-started/mcp",
+          position: "right",
+          label: "MCP",
+        },
+        {
           href: "https://github.com/Nyx-Privacy/nyx",
           position: "right",
           className: "header-github-link",
