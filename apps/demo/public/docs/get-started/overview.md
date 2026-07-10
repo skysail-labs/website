@@ -6,7 +6,8 @@ orders to a matching engine that runs **inside an attested Intel TDX Confidentia
 VM** (a "CVM"). Settlement lands **trustlessly on Solana**, with a zero-knowledge
 proof binding every transfer to a committed note. Solana sees custody and
 proofs, never your order. The enclave sees your order but can never move your
-funds without an on-chain proof.
+funds without an on-chain proof. Darknyx is spot-only: every order is fully
+collateralized, with no leverage, funding, or liquidations.
 :::
 
 ## What Darknyx is
@@ -50,7 +51,7 @@ Darknyx is three layers that compose into one trust chain.
 ```mermaid
 flowchart LR
     CLIENT["Client<br/>(Wallet + SDK)"] -->|"signed orders & ZK input proofs<br/>(HTTPS/WS)"| MATCHING["Matching<br/>(Confidential VM)"]
-    matching -->|"attested settle txs & ZK proofs"| CUSTODY["Custody<br/>(Solana Vault)"]
+    MATCHING -->|"attested settle txs & ZK proofs"| CUSTODY["Custody<br/>(Solana Vault)"]
     
     classDef default fill:#14121d,stroke:#d6be8b,stroke-width:1px,color:#f5f3ee;
 ```
@@ -67,15 +68,6 @@ flowchart LR
   zero-knowledge input proof, signs the order with your trading key, and (if you
   want the full guarantee) verifies the running enclave against an expected
   measurement before trusting it.
-
-## Spot, not perps
-
-Darknyx is a **spot** venue. There are no positions, no leverage, no funding, and no
-liquidations. Every order is fully collateralized up front by a note you already
-deposited, and a trade is an atomic swap of value between two notes. If you have
-traded a perps dark pool before, the concepts that carry over are order types,
-time-in-force, and execution attributes; the concepts that do not (positions,
-margin, funding) simply are not part of the model.
 
 ## Who it is for
 

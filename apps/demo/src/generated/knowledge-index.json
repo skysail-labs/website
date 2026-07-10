@@ -782,7 +782,6 @@
     "aliases": [],
     "pages": [
       "trading-concepts/order-types",
-      "get-started/overview",
       "orders/place-order",
       "trading-concepts/time-in-force"
     ],
@@ -818,8 +817,8 @@
       "trading-concepts/execution-attributes",
       "trading-concepts/order-compatibility",
       "trading-concepts/order-types",
-      "get-started/overview",
-      "orders/place-order"
+      "orders/place-order",
+      "trading-concepts/time-in-force"
     ],
     "keywords": [
       "execution",
