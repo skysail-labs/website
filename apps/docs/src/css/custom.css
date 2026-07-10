@@ -225,8 +225,8 @@ h1, h2, h3, h4, h5, h6 {
 
 [data-theme="dark"] .menu__link--active:not(.menu__link--sublist) {
   font-weight: 500 !important;
-  background: rgba(245, 243, 238, 0.08) !important;
-  color: #ffffff !important;
+  background: rgba(245, 243, 238, 0.06) !important;
+  color: var(--nyx-accent) !important;
 }
 
 [data-theme="dark"] .menu__list-item-collapsible > .menu__link {
@@ -245,8 +245,8 @@ h1, h2, h3, h4, h5, h6 {
 
 [data-theme="light"] .menu__link--active:not(.menu__link--sublist) {
   font-weight: 500 !important;
-  background: rgba(10, 10, 13, 0.06) !important;
-  color: #0a0a0d !important;
+  background: rgba(10, 10, 13, 0.04) !important;
+  color: var(--ifm-color-primary-darker) !important;
 }
 
 [data-theme="light"] .menu__list-item-collapsible > .menu__link {
@@ -270,8 +270,13 @@ h1, h2, h3, h4, h5, h6 {
   border-left: var(--nyx-rule);
 }
 
+.table-of-contents li {
+  margin: 0 !important;          /* tighter vertical rhythm between entries */
+}
+
 .table-of-contents__link {
-  padding: 3px 8px;
+  position: relative;
+  padding: 1.5px 8px;
   border-radius: var(--nyx-r-xs);
   display: block;
   transition: color var(--nyx-dur-fast) var(--nyx-ease);
@@ -280,6 +285,18 @@ h1, h2, h3, h4, h5, h6 {
 .table-of-contents__link--active {
   font-weight: 600;
   color: var(--ifm-color-primary);
+}
+
+/* Accent bar over the left rule for the active entry (matches the design). */
+.table-of-contents__link--active::before {
+  content: "";
+  position: absolute;
+  left: -17px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--ifm-color-primary);
+  border-radius: 1px;
 }
 
 /* ─── Article / prose ──────────────────────────────────── */

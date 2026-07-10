@@ -95,17 +95,6 @@ const config: Config = {
           position: "left",
           label: "Docs",
         },
-        {
-          to: "/get-started/mcp",
-          position: "right",
-          label: "MCP",
-        },
-        {
-          href: "https://github.com/Nyx-Privacy/nyx",
-          position: "right",
-          className: "header-github-link",
-          "aria-label": "GitHub",
-        },
       ],
     },
     footer: {
@@ -125,19 +114,6 @@ const config: Config = {
             { label: "Place Order", to: "/orders/place-order" },
             { label: "API", to: "/api/base-urls" },
             { label: "TypeScript SDK", to: "/sdk/typescript-client" },
-          ],
-        },
-        {
-          title: "Links",
-          items: [
-            {
-              label: "App",
-              href: "https://darknyx.xyz",
-            },
-            {
-              label: "GitHub",
-              href: "https://github.com/Nyx-Privacy/nyx",
-            },
           ],
         },
       ],

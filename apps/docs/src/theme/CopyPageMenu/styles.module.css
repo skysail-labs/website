@@ -1,0 +1,172 @@
+/* Per-page "Copy page" / MCP dropdown. Additive and fully scoped — reuses the
+   --nyx-* design tokens and Infima content colors so it matches the docs theme
+   without touching any global styles. */
+
+.wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 1rem;
+}
+
+.root {
+  position: relative;
+  font-size: 0.875rem;
+}
+
+/* Split "Copy page" button */
+.split {
+  display: inline-flex;
+  align-items: stretch;
+  border: var(--nyx-hairline);
+  border-radius: var(--nyx-r-md, 8px);
+  background: var(--ifm-background-surface-color, var(--nyx-graphite));
+  overflow: hidden;
+}
+
+.primary,
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.7rem;
+  background: transparent;
+  border: 0;
+  color: var(--ifm-color-content, inherit);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--nyx-dur-fast, 160ms) var(--nyx-ease, ease),
+    color var(--nyx-dur-fast, 160ms) var(--nyx-ease, ease);
+}
+
+.primary svg,
+.toggle svg {
+  flex: 0 0 auto;
+  opacity: 0.85;
+}
+
+.toggle {
+  padding: 0.4rem 0.45rem;
+  border-left: var(--nyx-hairline);
+}
+
+.primary:hover,
+.toggle:hover,
+.rootOpen .toggle {
+  background: var(--ifm-color-emphasis-100, rgba(255, 255, 255, 0.06));
+}
+
+.chevron {
+  transition: transform var(--nyx-dur-fast, 160ms) var(--nyx-ease, ease);
+}
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* Dropdown menu */
+.menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  width: 320px;
+  max-width: min(320px, calc(100vw - 2rem));
+  padding: 0.35rem;
+  background: var(--ifm-background-surface-color, var(--nyx-graphite));
+  border: var(--nyx-hairline);
+  border-radius: var(--nyx-r-md, 8px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  animation: nyx-menu-in var(--nyx-dur-fast, 160ms) var(--nyx-ease, ease);
+}
+
+@keyframes nyx-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.5rem 0.55rem;
+  border: 0;
+  border-radius: var(--nyx-r-sm, 4px);
+  background: transparent;
+  color: var(--ifm-color-content, inherit);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--nyx-dur-fast, 160ms) var(--nyx-ease, ease);
+}
+
+.item:hover,
+.item:focus-visible {
+  background: var(--ifm-color-emphasis-100, rgba(255, 255, 255, 0.06));
+  text-decoration: none;
+  color: var(--ifm-color-content, inherit);
+  outline: none;
+}
+
+.itemIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border: var(--nyx-hairline);
+  border-radius: var(--nyx-r-sm, 4px);
+  color: var(--ifm-color-content, inherit);
+  opacity: 0.9;
+}
+
+/* Official brand SVGs are imported as components; constrain their native size
+   and force currentColor so they match the menu text in light and dark mode. */
+.brandIcon {
+  display: block;
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.itemText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.itemTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.extIcon {
+  opacity: 0.55;
+}
+
+.itemSub {
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  color: var(--ifm-color-content-secondary, rgba(255, 255, 255, 0.55));
+}
+
+@media (max-width: 600px) {
+  .primary span {
+    display: none;
+  }
+  .menu {
+    width: 280px;
+  }
+}

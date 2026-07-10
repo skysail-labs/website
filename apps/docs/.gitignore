@@ -8,6 +8,10 @@
 .docusaurus
 .cache-loader
 
+# Raw-markdown copies emitted by scripts/emit-raw-markdown.mjs (served at /docs/<slug>.md)
+/static/**/*.md
+/static/.raw-markdown-manifest.json
+
 # Misc
 .DS_Store
 .env.local

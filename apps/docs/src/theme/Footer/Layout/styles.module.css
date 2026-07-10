@@ -1,0 +1,66 @@
+/* Brand-left / links-right footer layout. Additive and scoped. */
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 0.5rem 0 1.5rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+}
+.brand:hover {
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.brandLogo {
+  display: block;
+  width: 26px;
+  height: 26px;
+}
+
+.brandName {
+  font-family: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.04em;
+  color: var(--nyx-accent);
+}
+
+/* Push the configured link columns to the right side. */
+.links {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1 1 auto;
+}
+.links :global(.footer__links) {
+  margin-bottom: 0;
+}
+.links :global(.footer__col) {
+  text-align: left;
+}
+
+.bottom {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: var(--nyx-hairline);
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+@media (max-width: 700px) {
+  .top {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .links {
+    justify-content: flex-start;
+  }
+}

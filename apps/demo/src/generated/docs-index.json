@@ -1,9 +1,9 @@
 {
   "meta": {
     "version": "1.0",
-    "generatedAt": "2026-07-09T14:23:07.324Z",
-    "docCount": 35,
-    "conceptCount": 55
+    "generatedAt": "2026-07-10T19:14:49.568Z",
+    "docCount": 34,
+    "conceptCount": 54
   },
   "pages": [
     {
@@ -100,59 +100,6 @@
         "account/account-model"
       ],
       "description": "The Darknyx API surface at a glance: the two-layer auth model, the REST and WebSocket endpoints, and a quick start."
-    },
-    {
-      "slug": "get-started/mcp",
-      "title": "MCP Server",
-      "section": "Get Started",
-      "sectionPosition": 1,
-      "position": 3,
-      "url": "https://darknyx.xyz/docs/get-started/mcp",
-      "headings": [
-        "Connect",
-        "Claude Code",
-        "Cursor",
-        "VS Code",
-        "What it exposes",
-        "Try it"
-      ],
-      "tags": [
-        "mcp",
-        "server",
-        "connect",
-        "claude",
-        "code",
-        "cursor",
-        "exposes",
-        "try"
-      ],
-      "body": "# MCP Server\n\nThese docs are available as a hosted **MCP (Model Context Protocol) server**, so\nAI coding tools can query them as structured knowledge instead of scraping web\npages.\n\n```\nhttps://darknyx.xyz/api/mcp\n```\n\nThe server is stateless, read-only retrieval. Your assistant does the\nreasoning; the server returns grounded documentation with canonical URLs.\n\n## Connect\n\n### Claude Code\n\n```bash\nclaude mcp add --transport http darknyx-docs https://darknyx.xyz/api/mcp\n```\n\n### Cursor\n\nAdd to `.cursor/mcp.json` (project) or `~/.cursor/mcp.json` (global):\n\n```json\n{\n  \"mcpServers\": {\n    \"darknyx-docs\": {\n      \"url\": \"https://darknyx.xyz/api/mcp\"\n    }\n  }\n}\n```\n\n### VS Code\n\nAdd to `.vscode/mcp.json`:\n\n```json\n{\n  \"servers\": {\n    \"darknyx-docs\": {\n      \"type\": \"http\",\n      \"url\": \"https://darknyx.xyz/api/mcp\"\n    }\n  }\n}\n```\n\n## What it exposes\n\n| Tool | Purpose |\n| --- | --- |\n| `search_docs` | Ranked keyword search across every page |\n| `read_doc` | Full markdown of one page by slug |\n| `related_docs` | Pages linked to a given page |\n| `get_navigation` | The full docs hierarchy |\n| `find_examples` | Search code examples only |\n| `get_doc_context` | One-call context bundle for complex questions |\n| `trace` | Traverse the concept graph (e.g. `TEE`, `Settlement`) |\n\nPages are also exposed as MCP resources (`docs://page/<slug>`,\n`docs://navigation`, `docs://knowledge`).\n\n## Try it\n\nOnce connected, ask your assistant things like:\n\n- \"How does settlement work in Darknyx?\"\n- \"Show me the withdrawal flow.\"\n- \"Find the deposit code examples.\"\n- \"What should I read before integrating the SDK?\"\n\nAnswers come back grounded in these docs, with links to the exact pages.",
-      "codeBlocks": [
-        {
-          "language": "text",
-          "code": "https://darknyx.xyz/api/mcp"
-        },
-        {
-          "language": "bash",
-          "code": "claude mcp add --transport http darknyx-docs https://darknyx.xyz/api/mcp",
-          "heading": "Claude Code"
-        },
-        {
-          "language": "json",
-          "code": "{\n  \"mcpServers\": {\n    \"darknyx-docs\": {\n      \"url\": \"https://darknyx.xyz/api/mcp\"\n    }\n  }\n}",
-          "heading": "Cursor"
-        },
-        {
-          "language": "json",
-          "code": "{\n  \"servers\": {\n    \"darknyx-docs\": {\n      \"type\": \"http\",\n      \"url\": \"https://darknyx.xyz/api/mcp\"\n    }\n  }\n}",
-          "heading": "VS Code"
-        }
-      ],
-      "readingTime": 1,
-      "related": [
-        "get-started/programmatic-access"
-      ],
-      "description": "Connect Claude Code, Cursor, or VS Code to the Darknyx documentation over the Model Context Protocol and ask questions directly against these docs."
     },
     {
       "slug": "api/base-urls",

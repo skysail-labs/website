@@ -489,20 +489,6 @@
       "apis"
     ]
   },
-  "MCP Server": {
-    "aliases": [],
-    "pages": [
-      "get-started/mcp"
-    ],
-    "keywords": [
-      "mcp",
-      "server",
-      "connect",
-      "claude",
-      "code",
-      "cursor"
-    ]
-  },
   "Base URLs": {
     "aliases": [],
     "pages": [
