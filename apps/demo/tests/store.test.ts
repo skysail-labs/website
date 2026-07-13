@@ -43,7 +43,7 @@ describe("store", () => {
     expect(new Set(all).size).toBe(all.length);
     for (const section of nav) {
       expect(section.section.length).toBeGreaterThan(0);
-      for (const p of section.pages) expect(p.url).toContain("darknyx.xyz/docs/");
+      for (const p of section.pages) expect(p.url).toContain("darknyx.trade/docs/");
     }
   });
 

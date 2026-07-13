@@ -9,7 +9,7 @@ describe("relatedDocs", () => {
     const related = relatedDocs(donor.slug)!;
     expect(related.length).toBe(donor.related.length);
     for (const r of related) {
-      expect(r.url).toContain("darknyx.xyz/docs/");
+      expect(r.url).toContain("darknyx.trade/docs/");
       expect(r.title.length).toBeGreaterThan(0);
     }
   });

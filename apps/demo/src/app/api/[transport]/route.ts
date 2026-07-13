@@ -14,7 +14,7 @@ Preferred workflow:
 - Deep-dive on a named protocol concept (e.g. "Settlement", "TEE"): trace.
 - Need example code: find_examples.
 - Need the documentation structure: get_navigation.
-Always cite the returned darknyx.xyz URLs when answering from these docs.`;
+Always cite the returned darknyx.trade URLs when answering from these docs.`;
 
 const json = (data: unknown) => ({
   content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }],

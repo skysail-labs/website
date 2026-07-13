@@ -19,10 +19,10 @@ import styles from "./styles.module.css";
 // The hosted docs MCP server (lives on the demo app at the apex domain, same
 // origin as these docs). Kept as a constant so the value — and the Cursor
 // deep-link config derived from it below — stay in sync and SSR-stable.
-const MCP_URL = "https://darknyx.xyz/api/mcp";
+const MCP_URL = "https://darknyx.trade/api/mcp";
 // btoa(JSON.stringify({ url: MCP_URL })) — precomputed so the href is identical
 // on server and client (no hydration mismatch, no window.btoa at render).
-const CURSOR_CONFIG_B64 = "eyJ1cmwiOiJodHRwczovL2RhcmtueXgueHl6L2FwaS9tY3AifQ==";
+const CURSOR_CONFIG_B64 = "eyJ1cmwiOiJodHRwczovL2RhcmtueXgudHJhZGUvYXBpL21jcCJ9";
 
 async function copyText(text: string): Promise<boolean> {
   try {

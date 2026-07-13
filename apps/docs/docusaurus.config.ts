@@ -11,7 +11,7 @@ const config: Config = {
     v4: true,
   },
 
-  url: "https://darknyx.xyz",
+  url: "https://darknyx.trade",
   baseUrl: "/docs/",
 
   organizationName: "Nyx-Privacy",

@@ -291,7 +291,7 @@ export function DocsGateway() {
                     id="waitlist-email"
                     type="email"
                     required
-                    placeholder="trader@darknyx.xyz"
+                    placeholder="trader@darknyx.trade"
                     className="waitlist-input"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}

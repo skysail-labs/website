@@ -11,7 +11,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const DOCS_DIR = join(__dirname, "..", "..", "docs", "docs");
 const CONFIG_FILE = join(__dirname, "..", "..", "docs", "docusaurus.config.ts");
 const OUT_DIR = join(__dirname, "..", "src", "generated");
-const BASE_URL = "https://darknyx.xyz/docs";
+const BASE_URL = "https://darknyx.trade/docs";
 const INDEX_VERSION = "1.0";
 
 const STOPWORDS = new Set([
@@ -120,8 +120,8 @@ function deriveTags(title, headings) {
 function resolveLink(href, currentSection) {
   let h = href.split("#")[0].trim();
   if (!h) return null;
-  if (/^https?:\/\//.test(h)) {
-    const m = h.match(/darknyx\.xyz\/docs\/(.+)/);
+  if (/https?:\/\//.test(h)) {
+    const m = h.match(/darknyx\.(?:xyz|trade)\/docs\/(.+)/);
     if (!m) return null;
     h = m[1];
   } else if (h.startsWith("/docs/")) h = h.slice("/docs/".length);

@@ -32,7 +32,7 @@ describe("docs-index.json", () => {
     for (const p of index.pages) {
       expect(p.slug).toMatch(/^[a-z0-9-]+\/[a-z0-9-]+$/);
       expect(p.slug).not.toMatch(/\/\d+-/); // numeric prefixes stripped
-      expect(p.url).toBe(`https://darknyx.xyz/docs/${p.slug}`);
+      expect(p.url).toBe(`https://darknyx.trade/docs/${p.slug}`);
       expect(p.title.length).toBeGreaterThan(0);
       expect(p.section.length).toBeGreaterThan(0);
       expect(p.readingTime).toBeGreaterThanOrEqual(1);

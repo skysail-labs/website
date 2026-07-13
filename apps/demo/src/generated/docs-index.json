@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generatedAt": "2026-07-10T21:40:30.224Z",
+    "generatedAt": "2026-07-13T08:12:16.778Z",
     "docCount": 34,
     "conceptCount": 54
   },
@@ -12,7 +12,7 @@
       "section": "Get Started",
       "sectionPosition": 1,
       "position": 1,
-      "url": "https://darknyx.xyz/docs/get-started/overview",
+      "url": "https://darknyx.trade/docs/get-started/overview",
       "headings": [
         "What Darknyx is",
         "What \"private\" means here",
@@ -56,7 +56,7 @@
       "section": "Get Started",
       "sectionPosition": 1,
       "position": 2,
-      "url": "https://darknyx.xyz/docs/get-started/programmatic-access",
+      "url": "https://darknyx.trade/docs/get-started/programmatic-access",
       "headings": [
         "The authentication model",
         "Available APIs",
@@ -104,7 +104,7 @@
       "section": "API",
       "sectionPosition": 2,
       "position": 1,
-      "url": "https://darknyx.xyz/docs/api/base-urls",
+      "url": "https://darknyx.trade/docs/api/base-urls",
       "headings": [
         "The gateway",
         "Common headers",
@@ -163,7 +163,7 @@
       "section": "API",
       "sectionPosition": 2,
       "position": 2,
-      "url": "https://darknyx.xyz/docs/api/authentication",
+      "url": "https://darknyx.trade/docs/api/authentication",
       "headings": [
         "The credential model",
         "POST /auth/token",
@@ -243,7 +243,7 @@
       "section": "API",
       "sectionPosition": 2,
       "position": 3,
-      "url": "https://darknyx.xyz/docs/api/transport-and-attestation",
+      "url": "https://darknyx.trade/docs/api/transport-and-attestation",
       "headings": [
         "The trust boundary",
         "Verifying the engine",
@@ -306,7 +306,7 @@
       "section": "Account",
       "sectionPosition": 4,
       "position": 1,
-      "url": "https://darknyx.xyz/docs/account/account-model",
+      "url": "https://darknyx.trade/docs/account/account-model",
       "headings": [
         "Why there is no balance in GET /account",
         "What you read, and from where",
@@ -358,7 +358,7 @@
       "section": "Account",
       "sectionPosition": 4,
       "position": 2,
-      "url": "https://darknyx.xyz/docs/account/merkle-proofs",
+      "url": "https://darknyx.trade/docs/account/merkle-proofs",
       "headings": [
         "Why you need these",
         "GET /tree/root",
@@ -429,7 +429,7 @@
       "section": "Account",
       "sectionPosition": 4,
       "position": 3,
-      "url": "https://darknyx.xyz/docs/account/transparency",
+      "url": "https://darknyx.trade/docs/account/transparency",
       "headings": [
         "GET /transparency",
         "Response",
@@ -477,7 +477,7 @@
       "section": "Account",
       "sectionPosition": 4,
       "position": 4,
-      "url": "https://darknyx.xyz/docs/account/settlement-status",
+      "url": "https://darknyx.trade/docs/account/settlement-status",
       "headings": [
         "GET /settlement/status/&#123;batchid&#125;",
         "Example",
@@ -534,7 +534,7 @@
       "section": "Account",
       "sectionPosition": 4,
       "position": 5,
-      "url": "https://darknyx.xyz/docs/account/deposit",
+      "url": "https://darknyx.trade/docs/account/deposit",
       "headings": [
         "What a deposit does",
         "Using the SDK",
@@ -575,7 +575,7 @@
       "section": "Account",
       "sectionPosition": 4,
       "position": 6,
-      "url": "https://darknyx.xyz/docs/account/withdraw",
+      "url": "https://darknyx.trade/docs/account/withdraw",
       "headings": [
         "What a withdrawal does",
         "Using the SDK",
@@ -613,7 +613,7 @@
       "section": "Orders",
       "sectionPosition": 5,
       "position": 1,
-      "url": "https://darknyx.xyz/docs/orders/place-order",
+      "url": "https://darknyx.trade/docs/orders/place-order",
       "headings": [
         "How a Darknyx order differs",
         "Request body",
@@ -675,7 +675,7 @@
       "section": "Orders",
       "sectionPosition": 5,
       "position": 2,
-      "url": "https://darknyx.xyz/docs/orders/cancel-order",
+      "url": "https://darknyx.trade/docs/orders/cancel-order",
       "headings": [
         "Path parameters",
         "Request body",
@@ -733,7 +733,7 @@
       "section": "Orders",
       "sectionPosition": 5,
       "position": 3,
-      "url": "https://darknyx.xyz/docs/orders/modify-order",
+      "url": "https://darknyx.trade/docs/orders/modify-order",
       "headings": [
         "Why modify instead of cancel-then-place",
         "Path parameters",
@@ -796,7 +796,7 @@
       "section": "Orders",
       "sectionPosition": 5,
       "position": 4,
-      "url": "https://darknyx.xyz/docs/orders/get-order",
+      "url": "https://darknyx.trade/docs/orders/get-order",
       "headings": [
         "Path parameters",
         "Example",
@@ -851,7 +851,7 @@
       "section": "Orders",
       "sectionPosition": 5,
       "position": 5,
-      "url": "https://darknyx.xyz/docs/orders/anchor-topup",
+      "url": "https://darknyx.trade/docs/orders/anchor-topup",
       "headings": [
         "Background: the anchor pool",
         "Path parameters",
@@ -912,7 +912,7 @@
       "section": "WebSocket API",
       "sectionPosition": 6,
       "position": 1,
-      "url": "https://darknyx.xyz/docs/websocket/ws-trading",
+      "url": "https://darknyx.trade/docs/websocket/ws-trading",
       "headings": [
         "Connect",
         "Message format",
@@ -991,7 +991,7 @@
       "section": "WebSocket API",
       "sectionPosition": 6,
       "position": 2,
-      "url": "https://darknyx.xyz/docs/websocket/orders-channel",
+      "url": "https://darknyx.trade/docs/websocket/orders-channel",
       "headings": [
         "Connect",
         "Event shape",
@@ -1051,7 +1051,7 @@
       "section": "WebSocket API",
       "sectionPosition": 6,
       "position": 3,
-      "url": "https://darknyx.xyz/docs/websocket/fills-channel",
+      "url": "https://darknyx.trade/docs/websocket/fills-channel",
       "headings": [
         "Why a separate fills stream",
         "Connect",
@@ -1108,7 +1108,7 @@
       "section": "WebSocket API",
       "sectionPosition": 6,
       "position": 4,
-      "url": "https://darknyx.xyz/docs/websocket/session-stream",
+      "url": "https://darknyx.trade/docs/websocket/session-stream",
       "headings": [
         "When to use it",
         "Connect and log in",
@@ -1170,7 +1170,7 @@
       "section": "Trading Concepts",
       "sectionPosition": 7,
       "position": 1,
-      "url": "https://darknyx.xyz/docs/trading-concepts/order-types",
+      "url": "https://darknyx.trade/docs/trading-concepts/order-types",
       "headings": [
         "How matching works here",
         "Native types",
@@ -1230,7 +1230,7 @@
       "section": "Trading Concepts",
       "sectionPosition": 7,
       "position": 2,
-      "url": "https://darknyx.xyz/docs/trading-concepts/time-in-force",
+      "url": "https://darknyx.trade/docs/trading-concepts/time-in-force",
       "headings": [
         "The two controls",
         "Available behaviors",
@@ -1278,7 +1278,7 @@
       "section": "Trading Concepts",
       "sectionPosition": 7,
       "position": 3,
-      "url": "https://darknyx.xyz/docs/trading-concepts/execution-attributes",
+      "url": "https://darknyx.trade/docs/trading-concepts/execution-attributes",
       "headings": [
         "Minimum fill size",
         "All-or-None (AON)",
@@ -1327,7 +1327,7 @@
       "section": "Trading Concepts",
       "sectionPosition": 7,
       "position": 4,
-      "url": "https://darknyx.xyz/docs/trading-concepts/clearing-price",
+      "url": "https://darknyx.trade/docs/trading-concepts/clearing-price",
       "headings": [
         "One price per batch",
         "Why there is no maker/taker",
@@ -1372,7 +1372,7 @@
       "section": "Trading Concepts",
       "sectionPosition": 7,
       "position": 5,
-      "url": "https://darknyx.xyz/docs/trading-concepts/self-trade-prevention",
+      "url": "https://darknyx.trade/docs/trading-concepts/self-trade-prevention",
       "headings": [
         "The rule",
         "Why a single behavior",
@@ -1411,7 +1411,7 @@
       "section": "Trading Concepts",
       "sectionPosition": 7,
       "position": 6,
-      "url": "https://darknyx.xyz/docs/trading-concepts/anchor-pool",
+      "url": "https://darknyx.trade/docs/trading-concepts/anchor-pool",
       "headings": [
         "The problem it solves",
         "The mechanism",
@@ -1459,7 +1459,7 @@
       "section": "Trading Concepts",
       "sectionPosition": 7,
       "position": 7,
-      "url": "https://darknyx.xyz/docs/trading-concepts/order-compatibility",
+      "url": "https://darknyx.trade/docs/trading-concepts/order-compatibility",
       "headings": [
         "Type × Time in Force",
         "Type × Execution Attributes",
@@ -1499,7 +1499,7 @@
       "section": "SDK",
       "sectionPosition": 8,
       "position": 1,
-      "url": "https://darknyx.xyz/docs/sdk/typescript-client",
+      "url": "https://darknyx.trade/docs/sdk/typescript-client",
       "headings": [
         "What the SDK does for you",
         "Client implementation",
@@ -1566,7 +1566,7 @@
       "section": "How It Works",
       "sectionPosition": 9,
       "position": 1,
-      "url": "https://darknyx.xyz/docs/how-it-works/trade-flow",
+      "url": "https://darknyx.trade/docs/how-it-works/trade-flow",
       "headings": [
         "Order-to-settlement lifecycle",
         "Step by step",
@@ -1609,7 +1609,7 @@
       "section": "How It Works",
       "sectionPosition": 9,
       "position": 2,
-      "url": "https://darknyx.xyz/docs/how-it-works/tee-architecture",
+      "url": "https://darknyx.trade/docs/how-it-works/tee-architecture",
       "headings": [
         "Why a confidential VM",
         "Keys bound to the image",
@@ -1655,7 +1655,7 @@
       "section": "How It Works",
       "sectionPosition": 9,
       "position": 3,
-      "url": "https://darknyx.xyz/docs/how-it-works/privacy-and-attestation",
+      "url": "https://darknyx.trade/docs/how-it-works/privacy-and-attestation",
       "headings": [
         "Who can see your orders?",
         "The three privacy properties",
@@ -1701,7 +1701,7 @@
       "section": "How It Works",
       "sectionPosition": 9,
       "position": 4,
-      "url": "https://darknyx.xyz/docs/how-it-works/shielded-pool",
+      "url": "https://darknyx.trade/docs/how-it-works/shielded-pool",
       "headings": [
         "Notes, not balances",
         "The Merkle tree",
@@ -1764,7 +1764,7 @@
       "section": "How It Works",
       "sectionPosition": 9,
       "position": 5,
-      "url": "https://darknyx.xyz/docs/how-it-works/settlement",
+      "url": "https://darknyx.trade/docs/how-it-works/settlement",
       "headings": [
         "Settlement is on-chain and proven",
         "The pipeline",
@@ -1808,7 +1808,7 @@
       "section": "How It Works",
       "sectionPosition": 9,
       "position": 6,
-      "url": "https://darknyx.xyz/docs/how-it-works/fee-structure",
+      "url": "https://darknyx.trade/docs/how-it-works/fee-structure",
       "headings": [
         "The fee model",
         "How fees are collected",

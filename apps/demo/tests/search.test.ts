@@ -9,7 +9,7 @@ describe("searchDocs", () => {
     expect(results[0].slug).toBe("how-it-works/settlement");
     expect(results[0].score).toBeGreaterThan(0);
     expect(results[0].snippet.length).toBeGreaterThan(0);
-    expect(results[0].url).toBe("https://darknyx.xyz/docs/how-it-works/settlement");
+    expect(results[0].url).toBe("https://darknyx.trade/docs/how-it-works/settlement");
   });
 
   test("results are sorted by descending score and capped", () => {
@@ -64,7 +64,7 @@ describe("findExamples", () => {
     for (const r of results) {
       expect(r.language.length).toBeGreaterThan(0);
       expect(r.code.length).toBeGreaterThan(0);
-      expect(r.page.url).toContain("darknyx.xyz/docs/");
+      expect(r.page.url).toContain("darknyx.trade/docs/");
     }
     expect(results.some((r) => r.code.includes(token!))).toBe(true);
   });
