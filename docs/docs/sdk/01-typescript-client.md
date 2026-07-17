@@ -16,7 +16,7 @@ viewing-key derivation, and canonical signing) so your code works in economic te
 
 ## What the SDK does for you
 
-The hard part of a Nyx order is its cryptographic backing: the collateral-note
+The hard part of a Darknyx order is its cryptographic backing: the collateral-note
 commitment, the zero-knowledge input proof, the owner-commitment opening, the
 signed viewing key, and the current boot session (see [Place Order](../orders/place-order)). The SDK
 derives all of it from your seed and a spendable note, and signs the canonical

@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 title: System Status
-description: How Nyx signals readiness and degraded mode, so you can check it before trading and back off when subsystems are down.
+description: How Darknyx signals readiness and degraded mode, so you can check it before trading and back off when subsystems are down.
 ---
 
 # System Status
