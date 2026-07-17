@@ -1,6 +1,6 @@
 {
   "framework": "nextjs",
   "installCommand": "bun install",
-  "buildCommand": "cd ../docs && bun install && bun run build && mkdir -p ../demo/public/docs && cp -r build/* ../demo/public/docs/ && cd ../demo && bun run build",
+  "buildCommand": "cd docs && bun install && bun run build && mkdir -p ../public/docs && cp -r build/* ../public/docs/ && cd .. && bun run build",
   "outputDirectory": ".next"
 }

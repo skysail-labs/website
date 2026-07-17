@@ -1,117 +1,231 @@
-# Darknyx Darkpool
+# `apps/demo` — Nyx live devnet dApp
 
-A **dark pool on Solana** for SPL tokens. Order intent stays inside a
-MagicBlock Ephemeral Rollup (ER), settlement is atomic on L1 with a
-TEE-signed payload, and balances are encrypted UTXO notes (Poseidon
-commitments in an incremental Merkle tree). Lock, output-construction,
-and withdrawal each carry their own Groth16 ZK proof.
+A self-contained Next.js (App Router) front-end that walks a connected
+**Phantom** wallet through the full Nyx privacy stack on **Solana devnet**:
 
-> **Status:** functional on Solana **devnet**. Live ER + change-note +
-> partial-fill flows are green end-to-end. **Not audited. Not for
-> mainnet use.**
+1. **Identity** — derive a darkpool master seed from a deterministic Phantom
+   signature, prove `VALID_WALLET_CREATE` in the **browser** (snarkjs +
+   `circuits/valid_wallet_create/circuit.{wasm,zkey}` served from `public/`).
+2. **Private deposit + withdraw** — deposit shielded base/quote into the vault
+   and later spend the note via a browser-generated `VALID_SPEND` Groth16
+   proof. The Merkle witness is reconstructed from the on-chain `right_path`
+   snapshot we capture at deposit time, so no off-chain indexer is needed.
+3. **Trade on devnet** — register the wallet on-chain, airdrop test tokens,
+   init + delegate an Ephemeral Rollup pending-order slot, deposit quote
+   collateral, submit a bid on the **ER** (signed by the seed-derived trading
+   key, not Phantom), then run a server-side counterparty + `run_batch` and
+   commit the market back to L1.
 
----
-
-## At a glance
-
-| Property                        | How                                                                  |
-|---------------------------------|----------------------------------------------------------------------|
-| Hidden order intent             | `submit_order` runs inside the MagicBlock ER, never on L1            |
-| Hidden balances                 | UTXO notes (Poseidon commitments) in a depth-20 Merkle tree          |
-| Atomic settlement               | TEE Ed25519-signed `tee_forced_settle` enforces conservation on L1   |
-| TEE can't lock a note it doesn't own | `VALID_INPUT` Groth16 verified at `lock_note` time (v2)         |
-| TEE can't misroute outputs      | `VALID_CREATE` Groth16 verified at `verify_valid_create` time (v3)   |
-| Per-mint solvency invariant     | `outstanding[mint] ≤ vault_token_account.amount` after every ix (v2) |
-| Bounded censorship window       | `MAX_LOCK_TTL_SLOTS` (~24h) ceiling on note locks (v2)               |
-| Trustless withdrawal            | Groth16 `VALID_SPEND` proof — no operator can move user funds        |
-| Front-running protection        | Uniform clearing price + Pyth circuit breaker per batch              |
-
-For the full cryptographic walkthrough (key model, the four ZK
-circuits, lifecycle, settlement mechanics) see
-**[`CRYPTOGRAPHY.md`](CRYPTOGRAPHY.md)**.
+> All circuits run entirely in the user's browser inside a dedicated Web
+> Worker (`src/workers/prover.worker.ts`). The user's Phantom signature, seed,
+> and trading secret never leave the browser except as a short-lived input
+> to the demo's API routes — which exist purely to talk to admin/funder/TEE
+> keypairs that a real user wouldn't possess.
 
 ---
 
-## Deployed programs (Solana devnet)
+## Required local state
 
-| Program           | Address                                          |
-|-------------------|--------------------------------------------------|
-| `vault`           | `C63vKvysCzX55PKraas4Wc22ijqjGJQdPC1mrzCFVWZx`   |
-| `matching_engine` | `6EasFxo6RCWrK4KAwcdUJqL4KjReLC3rtah8EtHgHSqe`   |
+The demo expects the same artefacts as the SDK's devnet integration tests:
 
-MagicBlock infra (used by the SDK):
+| Path                             | Purpose                                                          |
+| -------------------------------- | ---------------------------------------------------------------- |
+| `.devnet/e2e-config.json`        | RPC URL, vault / matching-engine program ids, market PDA, mints. |
+| `.devnet/keypairs/admin.json`    | Mint authority for the demo's base + quote test tokens.          |
+| `.devnet/keypairs/tee_authority.json` | Attested TEE signing key — signs `lock_note` + `run_batch`. |
+| `~/.config/solana/id.json`       | SOL funder for ATA creation, slot init, delegation, etc.         |
 
-| Thing                            | Address                                          |
-|----------------------------------|--------------------------------------------------|
-| Delegation program               | `DELeGGvXpWV2fqJUhqcF5ZSYMS4JTLjteaAMARRSaeSh`  |
-| Magic program                    | `Magic11111111111111111111111111111111111111`  |
-| Magic context                    | `MagicContext1111111111111111111111111111111`  |
-| ER RPC (devnet)                  | `https://devnet.magicblock.app`                |
+You also need the four circuit blobs in `apps/demo/public/circuits/`:
 
-Verify on-chain:
-
-```sh
-solana program show C63vKvysCzX55PKraas4Wc22ijqjGJQdPC1mrzCFVWZx
-solana program show 6EasFxo6RCWrK4KAwcdUJqL4KjReLC3rtah8EtHgHSqe
+```
+public/circuits/valid_wallet_create/circuit.wasm
+public/circuits/valid_wallet_create/circuit.zkey
+public/circuits/valid_spend/circuit.wasm
+public/circuits/valid_spend/circuit.zkey
 ```
 
+These are checked in for convenience; regenerate them with
+`scripts/build-circuits.sh` when the circom sources change.
+
 ---
 
-## Quickstart
+## Environment variables
 
-```sh
-# 1. Install everything
+Drop a `.env.local` in `apps/demo/` with at least:
+
+```ini
+# Required — base58 secret (32-byte seed or 64-byte secret) for the maker persona
+DEMO_MAKER_SECRET_BASE58=<base58>
+
+# Optional — overrides for keypair paths
+DEMO_ADMIN_KEYPAIR_PATH=.devnet/keypairs/admin.json
+DEMO_TEE_KEYPAIR_PATH=.devnet/keypairs/tee_authority.json
+DEMO_FUNDER_KEYPAIR_PATH=~/.config/solana/id.json
+
+# Optional — RPC URLs (default to whatever .devnet/e2e-config.json holds)
+DEMO_L1_RPC_URL=https://api.devnet.solana.com
+DEMO_ER_RPC_URL=https://devnet.magicblock.app
+
+# Optional — airdrop sizes (raw token base units)
+DEMO_USER_AIRDROP_BASE=1000000000
+DEMO_USER_AIRDROP_QUOTE=1000000000
+DEMO_COUNTERPARTY_MINT_UI=200000000000
+
+# Optional — fixed exchange rate (quote-atoms per base-atom on-chain).
+# With mock TWAP=100 and ±5% circuit breaker, keep this inside [95, 105].
+# When BASE and QUOTE mints use the *same* decimals (default after bootstrap:
+# 6+6 from `devnet-setup.test.ts`), the human peg matches this number
+# (e.g. 100 → 1 BASE = 100 QUOTE). The dapp reads decimals + this ratio from
+# `GET /api/dapp/token-meta` (backed by `.devnet/e2e-config.json` on the server).
+DEMO_EXCHANGE_QUOTE_PER_BASE=100
+
+# Optional — SPL mint decimals for *both* BASE and QUOTE when running the
+# one-shot devnet bootstrap (`packages/sdk/tests/devnet-setup.test.ts`).
+# Default 6. Changing this requires re-running setup and updating Vercel
+# `DEMO_E2E_CONFIG_JSON` / local `.devnet/e2e-config.json`.
+# DEMO_MINT_DECIMALS=6
+
+# ---- Public, browser-visible defaults (inlined into the client bundle) ----
+NEXT_PUBLIC_DEMO_ER_RPC_URL=https://devnet.magicblock.app
+# Must stay in [95, 105] with the mock oracle TWAP=100 unless you change the oracle.
+NEXT_PUBLIC_DEMO_EXCHANGE_QUOTE_PER_BASE=100
+# NEXT_PUBLIC_DEMO_ORDER_PRICE=100
+# Human-token defaults for the trade / private-deposit panels
+NEXT_PUBLIC_DEMO_BASE_HUMAN=0.1
+NEXT_PUBLIC_DEMO_PRIVATE_AMOUNT=10
+```
+
+Anything `NEXT_PUBLIC_*` is bundled into the client; all other vars stay
+server-side and are read inside `app/api/dapp/*` route handlers.
+
+---
+
+## Running
+
+From the monorepo root:
+
+```bash
+# 1. Install once
 npm install
 
-# 2. Build the ZK circuits + Rust verifier-key consts
-bash scripts/build-circuits.sh
+# 2. (one-time) Generate the devnet config + keypairs
+#    See packages/sdk/tests/devnet-setup.test.ts for the canonical recipe.
 
-# 3. Build the on-chain programs
-cargo build-sbf --manifest-path programs/vault/Cargo.toml
-cargo build-sbf --manifest-path programs/matching_engine/Cargo.toml
-
-# 4. Run the full test gate (~110 Rust unit/integ + 88 SDK unit + 17 env-gated devnet)
-cargo test --workspace
-( cd packages/sdk && ../../node_modules/.bin/vitest run )
+# 3. Run the dApp
+cd apps/demo
+npm run dev          # http://localhost:3000/dapp
 ```
 
-To run the live devnet ER trade flow, see
-[`scripts/dev-commands.md`](scripts/dev-commands.md) §10 / §11.
+In production mode:
+
+```bash
+cd apps/demo
+npm run build && npm run start
+```
+
+The build runs the full TypeScript check across all routes, components, and
+the prover worker.
 
 ---
 
-## Repo layout (one-liner per top-level dir)
+## Recommended on-page flow
 
-| Path             | What's there                                                                |
-|------------------|------------------------------------------------------------------------------|
-| `programs/`      | On-chain Anchor programs — `vault` and `matching_engine`                    |
-| `crates/`        | `darkpool-crypto` — host-side Poseidon / key derivation / note crypto       |
-| `circuits/`      | Circom 2 ZK circuits — `valid_wallet_create`, `valid_spend`, `valid_input` (v2), `valid_create` (v3) |
-| `packages/sdk/`  | `@darknyx/sdk` — TypeScript client (ix builders, prover, settlement)            |
-| `scripts/`       | Build / deploy / setup shell scripts + master dev cheat-sheet               |
-| `docs/`          | Deep-dive design docs                                                        |
-| `.devnet/`       | Generated keypairs + e2e config (gitignored)                                 |
+1. **Connect Phantom** (devnet cluster).
+2. **Wallet identity panel** — sign the deterministic message, prove
+   `VALID_WALLET_CREATE` in the worker. The 64-byte trading secret + Groth16
+   proof bytes are stashed into `sessionStorage` under
+   `nyx-dapp-session-v1`.
+3. *(Optional)* **Private deposit / withdraw panel** — first run the
+   trade-flow **airdrop** step to seed your ATAs, then deposit a shielded
+   note and withdraw it. This panel exercises the full
+   `deposit → VALID_SPEND in browser → withdraw` arc and is the simplest
+   end-to-end privacy demo. It must run **before** any `submit_order` /
+   `run_batch` so the user's note is still the latest leaf in the vault tree
+   (the demo verifies this and returns a clean error otherwise).
+4. **Trade panel** — five chained steps (BASE + QUOTE are auto-airdropped
+   by the identity panel above, so this flow assumes funded ATAs):
+
+   | Step | Cluster | What happens |
+   | ---- | ------- | ------------ |
+   | 1 · Register wallet     | L1 | Phantom signs `create_wallet` (browser-built proof). Idempotent — if the `WalletEntry` PDA already exists from a prior run the step is skipped. |
+   | 2 · Init + delegate slot | L1 | Funder + trading-key sign `init_pending_order_slot` then `delegate_pending_order` to MagicBlock. |
+   | 3 · Deposit collateral  | L1 | Phantom deposits the quote leg of the bid. |
+   | 4 · Submit bid          | ER | **Trading key** (not Phantom) signs `submit_order` on the Ephemeral Rollup. |
+   | 5 · Counterparty + `run_batch` | L1 + ER | Server flips a maker, deposits its leg, submits the opposite order, runs `run_batch`, undelegates the market, waits for L1 commit. |
+
+   Need to top up tokens later? Re-run the identity panel ("Re-derive") —
+   it triggers another `/api/dapp/airdrop` mint to your wallet.
+
+Every confirmed signature is appended to the on-page receipt with an
+explorer link.
+
+---
+
+## Architecture notes
+
+- **No node-only code reaches the browser.** The SDK's pure-TS helpers
+  (`noteCommitment`, `nullifier`, `formatGroth16ForOnChain`, etc.) are
+  imported by both client and server. Anything that needs SOL signing,
+  filesystem reads, or the maker persona is wrapped in an `app/api/dapp/*`
+  route with `runtime = "nodejs"`.
+- **The Web Worker is the only place snarkjs runs.** The main thread sends
+  decimal-string circuit inputs + URLs to `/circuits/...` and gets back a
+  raw `proof.json` object. Formatting into on-chain bytes happens on the
+  main thread via `formatGroth16ForOnChain` from `@nyx/sdk`.
+- **Phantom never sees the trading key.** `submit_order` lives on the ER
+  and must be signed by the seed-derived trading key, so we surface the
+  64-byte secret in the session and sign the raw transaction client-side.
+  The seed itself is never persisted; it's re-derived from the Phantom
+  signature on every API call (see `lib/dapp/phantom-verify.ts`).
+- **Withdraw without an indexer.** The on-chain vault keeps only
+  `right_path[0..20]` and a leaf-count, not the full tree. To produce an
+  inclusion proof for the user's deposit note, `/api/dapp/private-deposit`
+  snapshots `right_path` *before* the deposit lands and stashes it in the
+  response. `/api/dapp/withdraw-prepare` reconstructs the witness from that
+  snapshot using the same insertion math the on-chain `append_leaf` runs
+  (see `lib/dapp/merkle-witness.ts`). It validates the resulting root
+  against the live `vault_config.current_root` before returning, so any
+  drift surfaces as a clean error rather than a silent proof failure.
 
 ---
 
-## Documentation map
+## API surface (server)
 
-| Document                                                       | Read it for…                                                |
-|----------------------------------------------------------------|-------------------------------------------------------------|
-| **[`CRYPTOGRAPHY.md`](CRYPTOGRAPHY.md)**                       | Cryptographic walkthrough — key model, four ZK circuits, lifecycle, settlement mechanics. **Start here if you care about the crypto.** |
-| **[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)**             | System overview: every component, PDA, flow, threat model  |
-| **[`DeepWiki`](https://deepwiki.com/skysail-labs/darknyx)**    | Indexed, code-linked walkthrough of the repo                |
-| **[`scripts/dev-commands.md`](scripts/dev-commands.md)**       | Master command cheat-sheet — build, test, deploy, troubleshoot |
-| `tee_v2_status_and_migration_brief.md`                         | Snapshot of the v1 → v2 audit + migration plan              |
-| `order_privacy_fix.md`                                         | Design note — why `submit_order` moved into the ER          |
-| `partial_fill_and_fee_notes.md`                                | Design note — partial-fill collateral rotation + fee notes   |
-| `change_note_implementation.md`                                | Design note — change-note schema for partial fills          |
-| `darkpool_protocol_spec_v3_changed.md`                         | Original protocol spec (historical reference)                |
+All of these live under `app/api/dapp/` and run on the Node.js runtime:
 
-The `*.md` design notes at the repo root are historical and informative;
-the **authoritative** description of the live system is in
-[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), the indexed
-[DeepWiki](https://deepwiki.com/skysail-labs/darknyx), and in the source code under
-`programs/` and `packages/sdk/src/`.
+| Route                          | Purpose                                                           |
+| ------------------------------ | ----------------------------------------------------------------- |
+| `derive-identity`              | Verify Phantom signature, derive seed, return identity + trading. |
+| `register-wallet`              | Build `create_wallet` ix (browser sends via Phantom).             |
+| `airdrop`                      | Admin mints base + quote into the user's ATAs.                    |
+| `private-deposit`              | Build `createAssociatedTokenAccount` (idempotent) + shielded `deposit` ixs + capture `right_path` snapshot. |
+| `withdraw-prepare`             | Reconstruct Merkle witness, return circuit inputs.                |
+| `withdraw-finalize`            | Re-verify session, build the `withdraw` ix from the proof.        |
+| `init-slot`                    | Init + delegate the user's pending-order slot on the ER.          |
+| `deposit-prepare`              | Build a quote-collateral deposit ix for the trade flow.           |
+| `build-submit-order`           | Build `submit_order` ix (browser signs with the trading key).     |
+| `counter-and-match`            | Server-side maker mirror + `run_batch` + commit-back to L1.       |
+| `prover-fixture`               | Returns the smoke-test circuit inputs used by the prover panel.   |
 
 ---
+
+## Known limitations
+
+- **Single-process leaf tracking.** `private-deposit` only handles the
+  case where the user's note is the most recent leaf appended to the
+  vault. Concurrent deposits or running the trade flow before withdrawing
+  invalidate the snapshot — the route returns a 409 with a descriptive
+  message instead of a corrupt witness.
+- **Fill-note withdraw isn't wired yet.** After `run_batch` the user holds
+  fill + change notes whose blindings are derivable from the seed, but the
+  demo doesn't yet track their leaf indices through the ER → L1 commit
+  path. Adding it requires either a server-side shadow tree fed by every
+  ER+L1 mutation or an on-chain event indexer.
+- **Private deposit amount is raw SPL units.** The `Amount` field is the same
+  `u64` the vault passes to `transfer_checked` — not Phantom’s human-readable
+  balance. If pre-flight fails with Token `insufficient funds`, lower the
+  amount or mint more via the trade-flow airdrop. That is unrelated to Merkle
+  resets or `devnet-setup` — those scripts wire programs and PDAs; they do
+  not top up your personal ATAs.
+- **Single demo session per server process.** All state is in-memory inside
+  the Next.js server. Restart the dev server to reset.

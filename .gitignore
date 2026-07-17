@@ -1,36 +1,48 @@
-# Node
-node_modules/
-dist/
-*.log
-.turbo/
-*.tsbuildinfo
+# ── Next.js (repo root) ───────────────────────────────────
+/node_modules
+/.next/
+/out/
+/.pnp
+.pnp.*
+next-env.d.ts
 
-# Environment
-.env
-.env.*
+# ── Docusaurus ────────────────────────────────────────────
+docs/node_modules/
+docs/build/
+docs/.docusaurus/
+
+# ── Built docs output served by Next.js ───────────────────
+/public/docs/
+
+# ── Env / secrets ─────────────────────────────────────────
+.env*
 !.env.example
 !.env.devnet.example
 !.env.mainnet.example
-# IDE
-.vscode/
-.idea/
-.superpowers/
+.demo-keypairs/
 
-#agents
+# ── Misc ──────────────────────────────────────────────────
+.DS_Store
+*.pem
+*.tsbuildinfo
+/coverage
+.vercel
+
+# ── Debug logs ────────────────────────────────────────────
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ── Yarn ──────────────────────────────────────────────────
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# ── Agent / tool artifacts ────────────────────────────────
 .agents/
 .factory/
+.superpowers/
 skills-lock.json
-
-
-#ui_iters
-backup_2/
-backup_src
-optimization.md
-suggestions.md
-
-# keypairs
-.demo-keypairs/
-.DS_Store	
-apps/demo/.env.local
-apps/.DS_Store
-apps/demo/.DS_Store

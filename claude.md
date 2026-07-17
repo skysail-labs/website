@@ -1,3 +1,0 @@
-- never commit on your own
-- never co author or mention claude in any commits
-- always review the commit message from me
