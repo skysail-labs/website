@@ -129,18 +129,15 @@ flowchart TD
     file: 'how-it-works/02-tee-architecture.md',
     replacements: [
       {
-        detect: 'measured image (compose hash)',
+        detect: 'Intel TDX quote + measured event log',
         replaceWith: `\`\`\`mermaid
 flowchart TD
-    subgraph ValidFlow ["Valid Path"]
-        IMAGE["measured image (compose hash)"] -->|"key derivation bound to measurement"| KEYS["enclave keys<br/>- TLS cert key (terminates TLS inside)<br/>- Ed25519 settlement signer (on-chain)"]
-    end
+    A["Intel TDX quote + measured event log"]
+    B["client verifies the approved image and complete signer set"]
+    C["finalized VaultConfig contains that same ordered signer set"]
+    D["Solana accepts a settlement only with a registered signature and a valid Groth16 proof"]
 
-    subgraph InvalidFlow ["Tampered Path"]
-        SWAP["swap the code"] --> MEASUREMENT["different measurement"]
-        MEASUREMENT -->|"produces"| DIFF_KEYS["different keys"]
-        DIFF_KEYS --> CONSEQUENCE["can't decrypt TLS channel<br/>&<br/>can't sign settlement the on-chain program accepts"]
-    end
+    A --> B --> C --> D
 \`\`\``
       }
     ]
@@ -204,19 +201,21 @@ flowchart TD
     file: 'how-it-works/05-settlement.md',
     replacements: [
       {
-        detect: 'lock ─────────┐  pin the input notes',
+        detect: 'reserve matched orders',
         replaceWith: `\`\`\`mermaid
 flowchart TD
-    A["A. LOCK<br/>(pins input notes of every match in the batch)"]
-    B["B. VERIFY<br/>(verifies batch's ZK match proof on-chain)"]
-    C["C. SETTLE (per match)<br/>(nullifies inputs, appends outputs)"]
-    D["D. CLOSE<br/>(reclaims batch marker & releases lock state)"]
+    A["reserve matched orders"]
+    B["lock both input commitments before their expiry"]
+    C["verify one batch proof on-chain"]
+    D["send match 1 independently → confirmed / rejected / ambiguous"]
+    E["send match 2 independently → confirmed / rejected / ambiguous"]
+    F["marker reclaimed only after its expiry"]
 
-    A -->|"pins notes"| B
-    B -->|"verifies proof"| C
-    C -->|"completes matches"| D
-
-    A -.->|"locks active until settled"| C
+    A --> B --> C
+    C --> D
+    C --> E
+    D --> F
+    E --> F
 \`\`\``
       }
     ]
@@ -238,49 +237,6 @@ flowchart LR
     ]
   },
   {
-    file: 'trading-concepts/04-clearing-price.md',
-    replacements: [
-      {
-        detect: 'clearing price = oracle-anchored',
-        replaceWith: `\`\`\`mermaid
-flowchart TD
-    BIDS["resting bids that cross"]
-    ASKS["resting asks that cross"]
-    CLEARING["clearing price = oracle-anchored<br/>(within the circuit-breaker band)"]
-    SETTLE["every match in the batch settles at this single price"]
-
-    BIDS & ASKS --> CLEARING
-    CLEARING --> SETTLE
-\`\`\``
-      }
-    ]
-  },
-  {
-    file: 'trading-concepts/06-anchor-pool.md',
-    replacements: [
-      {
-        detect: 'collateral note + anchor pool',
-        replaceWith: `\`\`\`mermaid
-flowchart TD
-    PLACE["place order ➔ collateral note + anchor pool [a0, a1, a2, … a9]"]
-
-    PF1["partial fill 1"] --> C0["consume a0"] --> MINT1["mint change note (you own it)"] --> REST1["order keeps resting"]
-    PF2["partial fill 2"] --> C1["consume a1"] --> MINT2["mint change note (you own it)"] --> REST2["order keeps resting"]
-
-    PLACE -.-> PF1
-    PLACE -.-> PF2
-\`\`\``
-      },
-      {
-        detect: 'remaining anchors → 0',
-        replaceWith: `\`\`\`mermaid
-flowchart LR
-    A["remaining anchors ➔ 0"] --> B["order paused"] --> C["POST .../anchors (5 fresh)"] --> D["resumes"]
-\`\`\``
-      }
-    ]
-  },
-  {
     file: 'websocket/01-ws-trading.md',
     replacements: [
       {
@@ -297,16 +253,23 @@ flowchart LR
     file: 'websocket/02-orders-channel.md',
     replacements: [
       {
-        detect: 'order.place ──► (rests) ──► partially_filled',
+        detect: 'order.place ──► pending_settlement',
         replaceWith: `\`\`\`mermaid
 flowchart TD
-    PLACE["order.place"] --> RESTS1["(rests)"]
-    PLACE --> RESTS2["(rests)"]
-    PLACE --> RESTS3["(rests)"]
+    PLACE["order.place"]
+    PENDING["pending_settlement"]
+    PF["partially_filled"]
+    FF["fully_filled (terminal)"]
+    SF["settlement_failed (terminal; fresh order required)"]
+    REST["(rests)"]
+    EC["expired / cancelled (terminal)"]
 
-    RESTS1 --> PF1["partially_filled"] --> PF2["partially_filled"] --> FF["fully_filled (terminal)"]
-    RESTS2 --> EXPIRED["expired (terminal)"]
-    RESTS3 --> CANCELLED["cancelled (terminal)"]
+    PLACE --> PENDING
+    PENDING --> PF
+    PF -->|"…"| FF
+    PENDING --> SF
+    PLACE --> REST
+    REST --> EC
 \`\`\``
       }
     ]

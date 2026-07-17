@@ -28,7 +28,7 @@ The SDK assembles the proof and the transaction.
 ## Using the SDK
 
 ```typescript
-import { getWithdrawFunction } from "@darknyx/sdk";
+import { getWithdrawFunction } from "@nyx/sdk";
 
 const withdraw = getWithdrawFunction({ client /* + prover */ });
 

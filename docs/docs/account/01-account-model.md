@@ -1,13 +1,13 @@
 ---
 sidebar_position: 1
 title: Account Model
-description: How balances work on Darknyx, as UTXO-style notes you own on-chain, reconstructed client-side from Merkle proofs and your own keys.
+description: How balances work on Nyx, as UTXO-style notes you own on-chain, reconstructed client-side from Merkle proofs and your own keys.
 ---
 
 # Account Model
 
 :::info TL;DR
-Darknyx has no server-held balance ledger. Your assets are **UTXO-style notes**
+Nyx has no server-held balance ledger. Your assets are **UTXO-style notes**
 committed on-chain as hashes. Only you, with your spending key, can determine
 which notes are yours and what they are worth. You reconstruct your account state
 **client-side** from the public Merkle tree plus your keys; the engine never sees
@@ -22,9 +22,9 @@ your **open orders** (the orders you placed that are still in the book). It does
 
 On a custodial venue the operator keeps your balance in a database and serves it
 on request. That only works because the operator can see what you hold, which is
-exactly the position privacy Darknyx is built to remove.
+exactly the position privacy Nyx is built to remove.
 
-On Darknyx your balance is the set of **notes** you own. A note is committed on-chain
+On Nyx your balance is the set of **notes** you own. A note is committed on-chain
 as a Poseidon hash that seals its owner, value, and token. Determining that a
 given note is *yours* and reading its amount requires your **spending key**, and
 that key never enters the enclave. So the engine *cannot* compute your balance
@@ -50,8 +50,10 @@ flowchart TD
     UNSPENT --> ACTION
 ```
 
-This is the trustless design: the data you need is public, and only your keys
-turn it into a balance.
+This is the self-custodial design: the data needed for recovery is public, and
+only your keys turn it into a balance. Before sending private order intent, you
+still verify the enclave measurement and signer set; see
+[Privacy & Attestation](../how-it-works/privacy-and-attestation).
 
 ## What you read, and from where
 
@@ -86,13 +88,13 @@ flowchart LR
     CONSUMED["CONSUMED (and new notes created)<br/>(nullified; value lives in output notes)"]
 ```
 
-- **Spendable.** The note has an inclusion path in the current Merkle root and
-  no nullifier has been published for it. You can back an order with it or
+- **Spendable.** The note has an inclusion path in a recent Merkle root and no
+  applicable consume record exists. You can back an order with it or
   withdraw it.
 - **Locked.** An order references it as collateral; a per-order lock pins it
   between match and settlement so it cannot be double-committed.
-- **Consumed.** Settlement (or a withdrawal) has published its nullifier; the
-  note is spent. Its value now lives in freshly created output notes (a change
+- **Consumed.** Settlement/merge has created a commitment-keyed consumed-note
+  entry, or withdrawal has published its nullifier. Its value now lives in freshly created output notes (a change
   note for the unfilled remainder, the traded asset, and so on), each a new
   spendable note you own.
 
@@ -101,27 +103,25 @@ touch, double-spends are impossible regardless of what the engine does.
 
 ## Recovering your notes
 
-Because your balance is derived, not stored by the venue, you can rebuild it on
-any device from one secret: your **master seed**. Everything else follows from it.
+Because your balance is derived, not stored by the venue, custody begins with a
+securely generated **master seed** and its encrypted backup.
 
-- **A deterministic seed.** The SDK can derive your master seed from a **wallet
-  signature** over a fixed message, so the same wallet reproduces the same seed on
-  any device. There is no separate key file to back up or lose. (You can also use
-  a random seed you store yourself.)
+- **CSPRNG seed + encrypted backup.** Export the versioned authenticated backup
+  and import it on a new device. Wallet-message signatures are not a seed or
+  spend-authority mode.
 - **Keys and notes.** From the seed the SDK derives your trading, spending, and
-  viewing keys, scans the public Merkle tree to find the notes you own, and
-  regenerates each order's continuation
-  [anchors](../trading-concepts/anchor-pool).
-- **Change notes.** A change note from a partial fill is recoverable from the
-  **encrypted ciphertext stored on-chain at settlement**, written when the order
-  was placed with a `viewing_pubkey`. The SDK decrypts the change amount with your
-  viewing key and self-verifies it against the on-chain commitment, so change
-  notes survive a lost local store, a fresh device, or an engine redeploy. See
+  viewing keys. A deposit's public recovery nonce reconstructs its hidden inner;
+  merge and settlement outputs are derived from consumed openings and finalized
+  chain data.
+- **Settlement outputs.** Exact trade and partial-fill change notes are
+  recoverable from the **encrypted ciphertext stored on-chain at settlement**.
+  The SDK decrypts the two-amount tuple with your viewing key, derives outputs
+  from the consumed opening, and can rebuild deposit/fill/merge chains with
+  `recoverNotesFromChain`. A live recovery drill remains a mainnet gate. See
   [Fills Channel](../websocket/fills-channel).
 
-The upshot: sign with the same wallet on a new machine and the SDK reconstructs
-your full spendable balance from public on-chain data plus your keys. Nothing
-about your account lives only on the engine.
+The upshot: protect the encrypted seed backup. The engine never becomes your
+custodian; the seed backup + finalized chain are the durable recovery material.
 
 ## Trading keys vs. spending keys
 

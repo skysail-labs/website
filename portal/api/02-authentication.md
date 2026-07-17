@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 title: Authentication
-description: The two-layer Darknyx auth model, account bearer tokens plus per-order trading-key signatures, and how to obtain and use them.
+description: The two-layer Nyx auth model, account bearer tokens plus per-order trading-key signatures, and how to obtain and use them.
 ---
 
 # Authentication
@@ -96,12 +96,19 @@ curl -s "$GATEWAY/orders/$ORDER_ID" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-On the WebSocket routes, pass it as a query parameter (the upgrade cannot carry
-a header from a browser); the `Authorization` header is also accepted:
+Open the sole WebSocket endpoint without credentials in the URL, then send the
+token in an in-band `login` frame:
 
 ```text
-wss://<gateway-host>/ws/orders?token=<access_token>
+wss://<gateway-host>/v1/stream
 ```
+
+```json
+{ "op": "login", "request_id": "login-1", "token": "<access_token>" }
+```
+
+The server emits `auth_expired` shortly before expiry. Obtain a fresh token and
+send another `login` frame on the same session; subscriptions remain active.
 
 ## Token expiry and revocation
 
@@ -124,7 +131,7 @@ order's trading key, in addition to the bearer token.
 
 - **Place.** Sign the canonical order body. The signature binds every economic
   field of the order (symbol, side, type, amount, price limit, expiry, the
-  collateral-note commitment, the continuation anchor-pool hash, and a nonce) so
+  collateral-note commitment, viewing key, boot session, and nonce) so
   the venue can attribute the order to your key without any per-order on-chain
   transaction.
 - **Cancel.** Sign a canonical cancel body over the order id, your trading key,

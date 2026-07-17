@@ -10,15 +10,15 @@ description: A worked TypeScript client that authenticates, reads markets, build
 A reference client that ties the pieces together: get a bearer token, read
 markets and server time, use the SDK's **order builders** to assemble a signed
 order from a deposited note, submit it, and subscribe to the order and fill
-streams. The SDK owns the cryptography (note commitments, the input proof, and
-the anchor pool) so your code works in economic terms.
+streams. The SDK owns the cryptography (note commitments, the input proof,
+viewing-key derivation, and canonical signing) so your code works in economic terms.
 :::
 
 ## What the SDK does for you
 
-The hard part of a Darknyx order is its cryptographic backing: the collateral-note
-commitment, the zero-knowledge input proof, the owner-commitment opening, and the
-continuation anchor pool (see [Place Order](../orders/place-order)). The SDK
+The hard part of a Nyx order is its cryptographic backing: the collateral-note
+commitment, the zero-knowledge input proof, the owner-commitment opening, the
+signed viewing key, and the current boot session (see [Place Order](../orders/place-order)). The SDK
 derives all of it from your seed and a spendable note, and signs the canonical
 body with your trading key. You supply the *intent* (side, amount, price,
 time-in-force) and get back a ready-to-send order.
@@ -27,14 +27,16 @@ The SDK also ships:
 
 - **Order builders**: presets for market, all-or-none, and good-til-time orders
   over the native fields. They include the `viewing_pubkey` for on-chain
-  change-amount recovery **by default**, so a change note stays recoverable
-  without any extra work.
+  trade/change recovery **by default**, so exact and partial output notes stay
+  recoverable without extra work.
 - **Stream clients**: per-account order-lifecycle and fill subscriptions, with
   the fill-memo verification built in.
-- **Recovery helpers**: derive a deterministic master seed from a wallet
-  signature (`seedFromWalletSignature`, over `MASTER_SEED_MESSAGE`) so the same
-  wallet reproduces your keys on any device, and recover change notes from the
-  on-chain ciphertext (`recoverChangeFromChain`) when backfilling.
+- **Recovery helpers**: generate and securely store a CSPRNG master seed, export
+  or import its authenticated versioned backup with
+  `exportEncryptedMasterSeed` / `importEncryptedMasterSeed`, recover fill outputs
+  (`recoverFillFromChain`), or rebuild deposits, fills, continuations, and merges
+  from seed + chain (`recoverNotesFromChain`).
+  Wallet-message signatures are not used as spend authority.
 - **System helpers**: server time (for slot-based expiry) and the degraded-mode
   status.
 
@@ -57,11 +59,11 @@ import {
   nodeValidInputProver,
   placeOrder,
   TradingClient,
-  DarknyxApiError,
+  NyxApiError,
   deriveOrderId,
-} from "@darknyx/sdk";
+} from "@nyx/sdk";
 
-class DarknyxClient {
+class NyxClient {
   private token: string | null = null;
 
   constructor(private gateway: string) {
@@ -100,7 +102,7 @@ class DarknyxClient {
   // ── Orders ───────────────────────────────────────────────────────────
   // `order` is a fully-built, signed wire body, produced by the SDK's
   // order-builder from your keys + a spendable note (it fills the note
-  // commitment, the VALID_INPUT proof, the anchor pool, and the signature).
+  // commitment, VALID_INPUT proof, viewing key, session, and signature).
   placeOrder(order: object) {
     return fetch(`${this.gateway}/orders`, {
       method: "POST",
@@ -129,7 +131,7 @@ class DarknyxClient {
     return fetch(`${this.gateway}/orders/${orderId}`, { headers: this.auth() }).then((r) => r.json());
   }
 
-  settlementStatus(batchId: string) {
+  settlementStatus(batchId: number) {
     return fetch(`${this.gateway}/settlement/status/${batchId}`, { headers: this.auth() }).then((r) => r.json());
   }
 }
@@ -159,7 +161,7 @@ const aon = aonPolicy({ amount: 10_000_000n, priceLimit: 150_000_000n });
 
 // `proveAndBuildOrder` does the whole flow: fetch the note's inclusion witness
 // from /tree/inclusion, generate the VALID_INPUT proof, then assemble + sign the
-// wire body (note commitment, proof, anchor pool, trading-key signature). The
+// wire body (note commitment, proof, viewing key, session, trading signature). The
 // prover is pluggable: `nodeValidInputProver` runs the compiled circuit via
 // snarkjs in Node; a browser app supplies its own WASM prover.
 const order = await proveAndBuildOrder({
@@ -180,6 +182,7 @@ const order = await proveAndBuildOrder({
   policy: gttPolicy,
   amount: 10_000_000n,
   orderId: deriveOrderId(masterSeed, 0),
+  sessionId: Uint8Array.from(Buffer.from(info.boot_session_id, "hex")),
 });
 
 // Submit over REST...
@@ -196,7 +199,7 @@ directly. `proveAndBuildOrder` is just the fetch-prove-build convenience on top.
 ## Streaming order and fill events
 
 ```typescript
-// Per-account order lifecycle: partial / full fill, cancel, expiry.
+// Per-account order lifecycle: reservation, confirmed fills, failure, cancel, expiry.
 const orders = subscribeOrderUpdates({
   gatewayWsUrl: WSS,
   token: client["token"]!,
@@ -208,7 +211,7 @@ const orders = subscribeOrderUpdates({
 });
 
 // Per-account fills: verified change-note memos (the SDK checks each memo's
-// anchor + commitment binding before handing it to you).
+// consumed-input derivation + commitment binding before handing it to you).
 const fills = subscribeFills({
   gatewayWsUrl: WSS,
   token: client["token"]!,
@@ -222,8 +225,8 @@ const fills = subscribeFills({
 
 ## Submitting over the trading socket
 
-For a high-frequency client, submit orders over the [WebSocket trading
-socket](../websocket/ws-trading) instead of REST, using one warm connection plus
+For a high-frequency client, submit orders over the shared
+[`/v1/stream` session](../websocket/session-stream) instead of REST, using one warm connection plus
 cancel-on-disconnect. The `TradingClient` correlates each reply to its request
 and resolves a promise per call:
 
@@ -239,7 +242,7 @@ try {
   const res = await trader.place(order);          // resolves with the acceptance
   console.log("accepted", res.order_id);
 } catch (e) {
-  if (e instanceof DarknyxApiError) console.error(e.code, e.message); // numeric code
+  if (e instanceof NyxApiError) console.error(e.code, e.message); // numeric code
 }
 
 // Cancel + modify use the same socket; build the bodies with buildCancel / buildOrder.
@@ -250,14 +253,14 @@ await trader.cancel(hex(orderId), cancel);
 ## Usage
 
 ```typescript
-const client = new DarknyxClient("https://<gateway-host>");
+const client = new NyxClient("https://<gateway-host>");
 await client.login(API_KEY, API_SECRET, PASSPHRASE);
 
 const status = await client.systemStatus();
 if (status.degraded) throw new Error("venue degraded, back off");
 
 const markets = await client.getInstruments();
-console.log(markets.instruments.map((m) => m.symbol));
+console.log(markets.map((m) => m.symbol));
 
 // build + place an order (see above), then watch its lifecycle on the streams.
 ```

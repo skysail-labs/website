@@ -1,17 +1,18 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 title: Programmatic Access
-description: "The Darknyx API surface at a glance: the two-layer auth model, the REST and WebSocket endpoints, and a quick start."
+description: "The Nyx API surface at a glance: the two-layer auth model, the REST and WebSocket endpoints, and a quick start."
 ---
 
 # Programmatic Access
 
 :::info TL;DR
-Darknyx exposes a **REST + WebSocket API** served directly by the enclave over
-RA-TLS. Authentication is **two layers**: an account **bearer token** (who is
+Nyx exposes a **REST + WebSocket API** from the confidential-VM deployment.
+Authentication is **two layers**: an account **bearer token** (who is
 allowed to talk to the venue) plus a per-order **trading-key signature** (who
-cryptographically owns the order). Read endpoints are public; order management is
-authenticated.
+cryptographically owns the order). Market and health reads are public; private
+state and order management are authenticated. Attestation verifies the server
+before a client discloses order intent.
 :::
 
 ## The authentication model
@@ -38,12 +39,12 @@ See [Authentication](../api/authentication) for the full credential model and
 | Surface | Use it for |
 |---|---|
 | **REST** | One-off calls, cold starts, snapshots: auth, instruments, order management, account state via Merkle proofs, transparency, settlement status. |
-| **WebSocket** | Long-running clients: a bidirectional **trading** socket, a per-account **orders** lifecycle stream, and a per-account **fills** stream. |
+| **WebSocket** | Long-running clients: order operations plus `orders`, `fills`, and `tree` subscriptions multiplexed over one `/v1/stream` session. |
 
-REST is simplest to start with. A long-running trading client should move order
-submission to the WebSocket trading socket (one warm, pre-authenticated
-connection instead of a TLS + bearer round-trip per request) and subscribe to
-the orders and fills channels for push updates.
+REST is simplest to start with. A long-running trading client should use one
+warm, in-band-authenticated `/v1/stream` connection for order operations and
+subscribe to lifecycle and fill events. Sequence numbers let it detect gaps and
+reconcile after reconnecting.
 
 ## Endpoint map
 
@@ -59,7 +60,8 @@ the orders and fills channels for push updates.
 | `DELETE` | `/orders/{order_id}` | bearer + sig | Cancel an order |
 | `PUT` | `/orders/{order_id}` | bearer + sig | Modify (atomic cancel + replace) |
 | `GET` | `/orders/{order_id}` | bearer | Order status |
-| `POST` | `/orders/{order_id}/anchors` | bearer + sig | Top up an order's continuation anchor pool |
+| `GET` | `/account` | bearer | Open orders owned by the account |
+| `GET/PUT` | `/account/settings` | bearer | Account stream preferences |
 | `GET` | `/tree/root` | public | Current Merkle root of a shard |
 | `GET` | `/tree/inclusion` | bearer | Inclusion proof for a note commitment |
 | `GET` | `/tree/leaves` | bearer | Paginated leaf read |
@@ -75,13 +77,10 @@ the orders and fills channels for push updates.
 
 | Path | Direction | Purpose |
 |---|---|---|
-| `/ws/trading` | bidirectional | Stream framed `order.place` / `order.cancel` / `order.modify`; optional cancel-on-disconnect |
-| `/ws/orders` | server → client | Per-account order-lifecycle events (partial / filled / cancelled / expired) |
-| `/ws/fills` | server → client | Per-account continuation-fill memos |
+| `/v1/stream` | bidirectional | In-band login; framed order operations; `orders`, `fills`, and `tree` subscriptions; cancel-on-disconnect |
 
-WebSocket sockets self-authenticate with the bearer token as a `?token=` query
-parameter (browsers and the global `WebSocket` cannot set an `Authorization`
-header on the upgrade); an `Authorization: Bearer` header is also accepted.
+Open `/v1/stream` without query credentials and authenticate with an `op: login`
+frame. The SDK multiplexes all channels and order operations on that session.
 
 ## Quick start
 
@@ -99,7 +98,7 @@ curl -s "$GATEWAY/instruments" | jq .
 curl -s "$GATEWAY/system/status" | jq .
 
 # 4. Place an order. The body carries the collateral-note commitment, the
-#    VALID_INPUT proof, the continuation anchor pool, and a trading-key
+#    VALID_INPUT proof, signed viewing key + boot session, and a trading-key
 #    signature over the canonical body. The SDK builds all of these. See
 #    Orders → Place Order for the full field reference.
 curl -s -X POST "$GATEWAY/orders" \
@@ -110,8 +109,8 @@ curl -s -X POST "$GATEWAY/orders" \
 
 :::tip Use the SDK
 A raw place-order body is large: it includes a note commitment, a 256-byte
-zero-knowledge input proof, an owner-commitment opening, and a ten-entry
-continuation anchor pool, all of which the **TypeScript SDK** derives and signs
+zero-knowledge input proof, the note opening needed for intake validation, a
+contributory viewing key, and the current boot session, all of which the **TypeScript SDK** signs
 for you from your keys and a deposited note. Hand-building the body is possible
 (the wire contract is documented), but the SDK is the intended path. See
 [SDK → TypeScript Client](../sdk/typescript-client).
@@ -121,7 +120,7 @@ for you from your keys and a deposited note. Hand-building the body is possible
 
 Read endpoints and authenticated order management are subject to operational
 rate limiting at the venue. Design clients to back off on `429` responses and to
-prefer the WebSocket trading socket for high-frequency order management, since one
-authenticated connection avoids the per-request handshake cost. See
+prefer the shared `/v1/stream` session for high-frequency order management,
+since one authenticated connection avoids per-request setup. See
 [System Status](../reference/system-status) for how the venue signals
 degradation.

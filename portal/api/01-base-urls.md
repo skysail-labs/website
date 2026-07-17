@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 title: Base URLs
-description: Where the Darknyx API lives, the common request and response conventions, and the health and time endpoints.
+description: Where the Nyx API lives, the common request and response conventions, and the health and time endpoints.
 ---
 
 # Base URLs
@@ -15,7 +15,7 @@ inside the attested VM. Use the gateway origin for HTTPS and the same origin
 
 ## The gateway
 
-Darknyx is served directly by the confidential VM behind a TLS endpoint whose
+Nyx is served directly by the confidential VM behind a TLS endpoint whose
 certificate key is generated inside the enclave and never leaves it (see
 [Transport & Attestation](./transport-and-attestation)). A single origin serves
 everything:
@@ -26,8 +26,8 @@ WebSocket wss://<gateway-host>
 ```
 
 - REST paths are mounted at the root (`/auth/token`, `/orders`, `/instruments`, …).
-- WebSocket paths are mounted at the same root (`/ws/trading`, `/ws/orders`,
-  `/ws/fills`); connect with the `wss://` scheme.
+- The sole WebSocket path is `/v1/stream`; connect with the `wss://` scheme and
+  authenticate in-band with `op: login`.
 
 The exact host for a given deployment is published with that deployment. The
 identity of the code behind the host is independently verifiable. See
@@ -40,8 +40,8 @@ identity of the code behind the host is independently verifiable. See
 | `Authorization` | authenticated requests | `Bearer <access_token>` from `POST /auth/token` |
 | `Content-Type` | requests with a body | `application/json` |
 
-WebSocket upgrades cannot set an `Authorization` header from a browser, so the
-WebSocket routes also accept the bearer token as a `?token=` query parameter.
+The `/v1/stream` WebSocket upgrades without credentials; authenticate afterward
+with an in-band `login` frame so bearer tokens never appear in URLs.
 
 ## Response conventions
 
@@ -49,8 +49,9 @@ REST handlers return JSON. A successful read returns the resource directly; a
 successful write returns a small result object (for example, a placed order
 returns `{ "order_id", "status", "arrival_slot" }`).
 
-Errors return an HTTP status code that encodes the class of failure, with a
-plain-text or JSON message describing the specific reason:
+Errors return an HTTP status code plus a structured JSON
+`{ "code": <number>, "message": <string> }` body. Every REST response also
+carries `x-request-id` for support correlation.
 
 | Status | Meaning |
 |---|---|
@@ -99,7 +100,7 @@ and for clock-skew diagnostics.
 | `unix_ms` | integer | Server wall-clock time, milliseconds since the Unix epoch. |
 
 :::tip Order expiry is slot-based
-Darknyx orders expire at a **Solana slot**, not a wall-clock timestamp. To place a
+Nyx orders expire at a **Solana slot**, not a wall-clock timestamp. To place a
 "good for the next ten minutes" order, read `/time`, project the wall-clock
 target onto a slot using the current slot as the anchor (Solana targets roughly
 400 ms per slot), and pass that as `expiry_slot`. The SDK does this conversion

@@ -25,13 +25,13 @@ your bid  ✓  other ask    →  eligible to match
 other bid ✓  your ask     →  eligible to match
 ```
 
-The result: every execution you receive is against a *different* counterparty.
+The result: every execution you receive is against a *different trading key*.
 
 ## Why a single behavior
 
 On a continuous order book, self-trade prevention comes in flavors (cancel the
 resting side, cancel the incoming side, cancel both) because there is a maker and
-a taker to choose between. A Darknyx batch has no maker/taker ordering: all crossing
+a taker to choose between. A Nyx batch has no maker/taker ordering: all crossing
 orders clear together at one price (see [Clearing Price](./clearing-price)). There
 is no "resting vs. incoming" side to pick, so the honest behavior is a single
 rule, **two orders from one key never match each other**, and the orders remain
@@ -41,7 +41,7 @@ available to match against everyone else in the same batch.
 
 - **No accidental wash trades.** A market maker quoting both sides cannot
   accidentally trade with itself and manufacture fake volume or churn fees.
-- **Clean execution records.** Every fill is against a genuine third party.
+- **Cleaner execution records.** Every fill is against a distinct trading key.
 
 ## What it is not
 

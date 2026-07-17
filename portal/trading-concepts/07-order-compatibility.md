@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 6
 title: Order Compatibility
 description: Which combinations of order type, time in force, execution attribute, and price field are valid.
 ---
@@ -20,7 +20,7 @@ programmatically.
 | `ioc` | No; IOC never rests | Yes | n/a |
 | `fok` | No; FOK never rests | n/a | Yes |
 
-Time-in-force on Darknyx is carried by the order type plus `expiry_slot`: a resting
+Time-in-force on Nyx is carried by the order type plus `expiry_slot`: a resting
 order is a `limit` with an expiry; an immediate order is `ioc` or `fok`. See
 [Time in Force](./time-in-force).
 
@@ -51,9 +51,8 @@ sell into any clearing price.
 |---|---|
 | Cancel a resting order | Yes, [Cancel Order](../orders/cancel-order) |
 | Modify a resting order (atomic cancel + replace) | Yes, [Modify Order](../orders/modify-order) |
-| Top up a resting order's anchor pool | Yes, [Anchor Top-Up](../orders/anchor-topup) |
 
-IOC and FOK orders do not rest, so there is nothing to cancel, modify, or top up
+IOC and FOK orders do not rest, so there is nothing to cancel or modify
 after they execute.
 
 ## Quick validity examples

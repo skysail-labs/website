@@ -1,15 +1,16 @@
 ---
 sidebar_position: 4
 title: Get Order
-description: Read the current status of one order, including its state, filled quantity, and the batch it matched in.
+description: Read the current live status and filled quantity of an order owned by the authenticated account.
 ---
 
 # Get Order
 
 :::info TL;DR
-`GET /orders/{order_id}` returns the current state of one order: its status,
-filled quantity, and remaining size. For live updates without polling, subscribe
-to the [Orders Channel](../websocket/orders-channel) instead.
+`GET /orders/{order_id}` returns the current state of one order owned by the
+authenticated API account: its status, filled quantity, and remaining size. For
+live updates without polling, subscribe to the
+[Orders Channel](../websocket/orders-channel) instead.
 :::
 
 ```text
@@ -54,7 +55,7 @@ curl -s "$GATEWAY/orders/$ORDER_ID" \
 | `order_id` | string | The order id. |
 | `side` | string | `"bid"` or `"ask"`. |
 | `order_type` | string | `"limit"`, `"ioc"`, or `"fok"`. |
-| `status` | string | `pending`, `matched`, `expired`, or `cancelled`. |
+| `status` | string | Usually `pending` or `pending_settlement` for a live tracked order. Terminal lifecycle is delivered on the orders stream and may already have aged out of this read. |
 | `amount` | integer | The order's original size, in base units. |
 | `filled_quantity` | integer | How much has filled so far. |
 | `price_limit` | integer | The worst acceptable price (quote units per base). |
@@ -75,11 +76,14 @@ without a request per check.
 |---|---|
 | Malformed `order_id` hex | `400` |
 | Missing or invalid bearer token | `401` |
-| No order with that id is currently tracked | `404` |
+| No owned order with that id is currently tracked | `404` |
+
+An order owned by another account returns the same `404` code and body as an
+unknown id. This prevents callers from probing whether another account has a
+particular order.
 
 :::note Terminal orders age out
 The book tracks resting and recently-terminal orders. A long-since-filled,
 expired, or cancelled order may no longer be queryable here; recover fill details
-from your durable fill history (see [Fills Channel](../websocket/fills-channel))
-and on-chain settlement status.
+from your seed plus finalized chain (see [Fills Channel](../websocket/fills-channel)).
 :::
