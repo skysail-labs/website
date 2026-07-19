@@ -5,8 +5,13 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/docs",
-        destination: "/docs/get-started/overview/",
-        permanent: false,
+        destination: "https://darknyx.gitbook.io/darknyx",
+        permanent: true,
+      },
+      {
+        source: "/docs/:path*",
+        destination: "https://darknyx.gitbook.io/darknyx",
+        permanent: true,
       },
     ];
   },
