@@ -8,7 +8,6 @@ import { EngravedText } from "@/components/landing/engraved-text";
 import { HorizontalScroll } from "@/components/landing/horizontal-scroll";
 import { MorphingLogo } from "@/components/landing/morphing-logo";
 import { MorphingWordmark } from "@/components/landing/morphing-wordmark";
-import { DocsGateway } from "@/components/landing/docs-gateway";
 import { SideRays } from "@/components/landing/side-rays";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 
@@ -223,20 +222,7 @@ export default function Home() {
           <a href="#features">Overview</a>
           <Link href="/docs">Docs</Link>
         </div>
-        <div className="end">
-          <button
-            onClick={() => {
-              const gatewaySection = document.querySelector(".docs-gateway-section");
-              if (gatewaySection) {
-                gatewaySection.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
-            className="btn ghost status waitlist-trigger"
-            type="button"
-          >
-            <span className="pdot"></span>Join waitlist
-          </button>
-        </div>
+        <div className="end" />
       </nav>
 
       {/* ===================== HERO — OBSIDIAN CHAMBER ===================== */}
@@ -426,7 +412,6 @@ export default function Home() {
         <div className="line"></div>
       </div>
 
-      <DocsGateway />
 
       <div className="section-divider">
         <div className="line"></div>
