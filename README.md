@@ -8,12 +8,10 @@ Orders match inside a Confidential VM (Intel TDX). Funds are held in a shielded 
 
 ```
 /                   Next.js website (darknyx.trade)
-├── docs/           Docusaurus documentation site (/docs)
-├── portal/         Source of truth for all doc page content
-├── design-system/  Brand assets, tokens, favicons
-└── scripts/        Build and sync utilities
+├── gitbook/        GitBook doc source → darknyx.gitbook.io/darknyx
+└── design-system/  Brand assets, tokens, favicons
 ```
 
 ## Docs
 
-The documentation lives at [darknyx.trade/docs](https://darknyx.trade/docs). To update it, edit files in `portal/` and run the sync — see `docs/CLAUDE.md` for the exact workflow.
+The documentation lives at [darknyx.gitbook.io/darknyx](https://darknyx.gitbook.io/darknyx), synced from the `gitbook/` directory in this repo.
