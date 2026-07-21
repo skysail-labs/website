@@ -6,14 +6,6 @@
 .pnp.*
 next-env.d.ts
 
-# ── Docusaurus ────────────────────────────────────────────
-docs/node_modules/
-docs/build/
-docs/.docusaurus/
-
-# ── Built docs output served by Next.js ───────────────────
-/public/docs/
-
 # ── Env / secrets ─────────────────────────────────────────
 .env*
 !.env.example
