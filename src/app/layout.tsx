@@ -69,7 +69,29 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${cormorant.variable} h-full antialiased`}
+      // The inline script below adds `dn-js` to this element before React
+      // hydrates, so the client className legitimately differs from the
+      // server's. Without this, React logs a hydration mismatch on every load.
+      suppressHydrationWarning
     >
+      <head>
+        {/*
+          Scroll-reveal content starts at opacity 0, which means it is only
+          visible if JavaScript runs. That is a bad trade for a marketing page:
+          a blocked or failed chunk, or a back/forward navigation the browser
+          serves without re-hydrating, leaves the page with backgrounds but no
+          text. So the hiding is gated on this flag instead.
+
+          Runs synchronously before first paint, so there is no flash. If the
+          app never hydrates, the timer drops the flag and everything shows.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var d=document.documentElement;d.classList.add('dn-js');
+setTimeout(function(){if(!d.classList.contains('dn-hydrated'))d.classList.remove('dn-js');},2500);})();`,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-nyx-ink text-nyx-chalk">{children}</body>
     </html>
   );

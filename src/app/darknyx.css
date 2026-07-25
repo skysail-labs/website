@@ -1,0 +1,1649 @@
+/* ============================================================================
+   DARKNYX — institutional landing system
+   ----------------------------------------------------------------------------
+   Everything here is namespaced `dn-` so it can coexist with the legacy
+   `site.css` sheet (still used by /landing) without collision.
+
+   Material language: near-black ground, warm off-white type, a single
+   controlled gold for illumination, muted steel as a secondary signal.
+   Geometry is architectural — hairlines, right angles, generous air.
+   ========================================================================== */
+
+.dn {
+  /* ---- ground & surfaces ---- */
+  --dn-bg: #0b0b0b;
+  --dn-bg-deep: #070707;
+  --dn-surface: #131312;
+  --dn-surface-2: #181816;
+  --dn-surface-3: #1e1e1b;
+
+  /* ---- type ---- */
+  --dn-fg: #f2efe9;
+  --dn-fg-2: rgba(242, 239, 233, 0.6);
+  --dn-fg-3: rgba(242, 239, 233, 0.38);
+  --dn-fg-4: rgba(242, 239, 233, 0.22);
+
+  /* ---- accents ---- */
+  --dn-gold: #d9a441;
+  --dn-gold-bright: #e8c07c;
+  --dn-gold-dim: rgba(217, 164, 65, 0.55);
+  --dn-gold-wash: rgba(217, 164, 65, 0.08);
+  --dn-steel: #7d94b8;
+  --dn-steel-dim: rgba(125, 148, 184, 0.4);
+
+  /* ---- lines ---- */
+  --dn-line: rgba(242, 239, 233, 0.08);
+  --dn-line-2: rgba(242, 239, 233, 0.14);
+  --dn-line-3: rgba(242, 239, 233, 0.24);
+
+  /* ---- typography ----
+     Serif carries the display headings; Arial carries all running content;
+     mono is reserved for eyebrows, tiers and other small tracked labels. */
+  --dn-serif: var(--font-cormorant), "Cormorant Garamond", "Times New Roman", serif;
+  --dn-sans: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --dn-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* ---- metrics ---- */
+  --dn-shell: 1240px;
+  --dn-gutter: clamp(20px, 5vw, 72px);
+  --dn-nav-h: 66px; /* height of the floating bar itself */
+  --dn-nav-top: clamp(12px, 1.6vw, 20px); /* gap between it and the viewport */
+  --dn-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  position: relative;
+  background: var(--dn-bg);
+  color: var(--dn-fg);
+  font-family: var(--dn-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: clip;
+  isolation: isolate;
+}
+
+.dn ::selection {
+  background: rgba(217, 164, 65, 0.24);
+  color: #fff;
+}
+
+/* Base resets live up here so component rules below can win on equal footing. */
+.dn ul,
+.dn ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dn a {
+  color: inherit;
+  text-decoration: none;
+}
+
+html:has(.dn) {
+  /* Clears the floating bar plus its top gap. Literal rather than calc() —
+     the --dn-nav-* tokens are scoped to .dn, not to <html>. */
+  scroll-padding-top: 112px;
+  background: #0b0b0b;
+}
+
+/* ---------------------------------------------------------------------------
+   Layout primitives
+   ------------------------------------------------------------------------- */
+
+.dn-shell {
+  width: 100%;
+  max-width: var(--dn-shell);
+  margin-inline: auto;
+  padding-inline: var(--dn-gutter);
+}
+
+.dn-section {
+  position: relative;
+  padding-block: clamp(76px, 9vw, 136px);
+}
+
+.dn-section--tight {
+  padding-block: clamp(64px, 8vw, 112px);
+}
+
+/* A hairline that runs the full bleed of the page, used between movements. */
+.dn-rule {
+  height: 1px;
+  border: 0;
+  margin: 0;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--dn-line-2) 12%,
+    var(--dn-line-2) 88%,
+    transparent
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   Typography
+   ------------------------------------------------------------------------- */
+
+.dn-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--dn-mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--dn-gold);
+  margin: 0;
+}
+
+.dn-eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 1px;
+  background: var(--dn-gold-dim);
+  flex: none;
+}
+
+.dn-eyebrow--plain::before {
+  display: none;
+}
+
+.dn-eyebrow--muted {
+  color: var(--dn-fg-3);
+}
+
+.dn-eyebrow--muted::before {
+  background: var(--dn-line-3);
+}
+
+/* Editorial display face — the voice of the page. */
+.dn-display {
+  font-family: var(--dn-serif);
+  font-weight: 300;
+  font-size: clamp(2.1rem, 4.3vw, 3.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  color: var(--dn-fg);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.dn-display--hero {
+  font-size: clamp(2.6rem, 5vw, 4.35rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  max-width: 15ch;
+}
+
+.dn-display em {
+  font-style: italic;
+  color: var(--dn-gold-bright);
+}
+
+.dn-lede {
+  font-size: clamp(1rem, 1.28vw, 1.125rem);
+  line-height: 1.72;
+  color: var(--dn-fg-2);
+  margin: 0;
+  max-width: 62ch;
+}
+
+.dn-body {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--dn-fg-2);
+  margin: 0;
+}
+
+.dn-mono-label {
+  font-family: var(--dn-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dn-fg-3);
+}
+
+/* Section heading block: eyebrow + display + lede */
+.dn-head {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  max-width: 900px;
+}
+
+.dn-head .dn-lede {
+  max-width: 68ch;
+}
+
+/* ---------------------------------------------------------------------------
+   Buttons
+   ------------------------------------------------------------------------- */
+
+/* `.dn .dn-btn` rather than `.dn-btn`: the `.dn a` colour reset above is more
+   specific than a bare class, and would otherwise repaint button labels. */
+.dn .dn-btn {
+  --dn-btn-fg: var(--dn-bg);
+  --dn-btn-bg: var(--dn-fg);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 26px;
+  border: 1px solid transparent;
+  /* Controls are rounded, containers are not — the pill header sets the rule
+     for anything clickable; panels and cards stay square. */
+  border-radius: 999px;
+  background: var(--dn-btn-bg);
+  color: var(--dn-btn-fg);
+  font-family: var(--dn-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 240ms var(--dn-ease),
+    color 240ms var(--dn-ease),
+    border-color 240ms var(--dn-ease),
+    transform 240ms var(--dn-ease);
+}
+
+.dn-btn .dn-btn-arr {
+  display: inline-block;
+  transition: transform 300ms var(--dn-ease);
+}
+
+.dn-btn:hover .dn-btn-arr {
+  transform: translateX(4px);
+}
+
+.dn-btn--primary:hover {
+  --dn-btn-bg: var(--dn-gold-bright);
+}
+
+.dn-btn--ghost {
+  --dn-btn-bg: transparent;
+  --dn-btn-fg: var(--dn-fg);
+  border-color: var(--dn-line-2);
+}
+
+.dn-btn--ghost:hover {
+  border-color: var(--dn-gold-dim);
+  --dn-btn-fg: var(--dn-gold-bright);
+}
+
+.dn-btn--sm {
+  padding: 10px 18px;
+  font-size: 12px;
+}
+
+/* Pill CTA — the arrow becomes a filled disc rather than a sliding glyph. */
+.dn .dn-btn--pill {
+  border-radius: 999px;
+  padding: 6px 6px 6px 20px;
+  gap: 12px;
+  font-size: 13.5px;
+}
+
+.dn .dn-btn--pill .dn-btn-arr {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--dn-bg);
+  color: var(--dn-fg);
+  font-size: 13px;
+  line-height: 1;
+  transition: transform 300ms var(--dn-ease);
+}
+
+/* A disc that slides sideways reads as broken; grow it instead. */
+.dn .dn-btn--pill:hover .dn-btn-arr {
+  transform: scale(1.08);
+}
+
+/* Inline text link. Same specificity note as `.dn .dn-btn` above. */
+.dn .dn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--dn-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dn-fg-3);
+  transition: color 240ms var(--dn-ease);
+}
+
+.dn-link .dn-link-arr {
+  transition: transform 300ms var(--dn-ease);
+}
+
+.dn-link:hover {
+  color: var(--dn-gold-bright);
+}
+
+.dn-link:hover .dn-link-arr {
+  transform: translateX(4px);
+}
+
+/* No border-radius here — the outline follows whatever shape the element
+   already has, so focusing a pill button doesn't square it off. */
+.dn :is(a, button):focus-visible {
+  outline: 1px solid var(--dn-gold);
+  outline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+   Scroll reveal
+   ------------------------------------------------------------------------- */
+
+/* Gated on `.dn-js` (set by the inline script in the root layout) so that
+   content is visible by default and only hidden once JS is confirmed to be
+   running. Without the gate a page served without hydration renders blank. */
+.dn-js .dn-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 900ms var(--dn-ease),
+    transform 900ms var(--dn-ease);
+  transition-delay: var(--dn-reveal-delay, 0ms);
+}
+
+.dn-js .dn-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dn-js .dn-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Navigation
+   ------------------------------------------------------------------------- */
+
+/* The bar floats clear of the viewport edges. The <nav> itself is only a
+   positioning frame — it takes no background and no pointer events, so the
+   page stays reachable in the gap around the pill. */
+.dn-nav {
+  position: fixed;
+  inset: var(--dn-nav-top) 0 auto;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  padding-inline: var(--dn-gutter);
+  pointer-events: none;
+}
+
+.dn-nav-inner {
+  pointer-events: auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  max-width: var(--dn-shell);
+  height: var(--dn-nav-h);
+  padding: 0 11px 0 22px;
+  border: 1px solid rgba(242, 239, 233, 0.13);
+  border-radius: 999px;
+  /* Semi-opaque rather than blur-dependent: backdrop-filter is silently
+     neutralised whenever the OS has "reduce transparency" on. Over a near-black
+     page a translucent dark fill reads the same either way. */
+  background: rgba(38, 38, 34, 0.72);
+  backdrop-filter: blur(20px) saturate(1.15);
+  -webkit-backdrop-filter: blur(20px) saturate(1.15);
+  box-shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.7);
+  transition:
+    background 400ms var(--dn-ease),
+    border-color 400ms var(--dn-ease),
+    box-shadow 400ms var(--dn-ease);
+}
+
+.dn-nav.is-scrolled .dn-nav-inner {
+  background: rgba(24, 24, 22, 0.94);
+  border-color: rgba(242, 239, 233, 0.16);
+  box-shadow: 0 14px 46px -14px rgba(0, 0, 0, 0.85);
+}
+
+.dn-nav-brand {
+  display: inline-flex;
+  align-items: center;
+  color: var(--dn-fg);
+}
+
+/* --- Lockup: mark and wordmark sharing one baseline --- */
+
+.dn-lockup {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: calc(var(--dn-lockup-fs) * 0.42);
+  /* The mark's SVG box carries empty space above the moon (ink starts at y=24)
+     and below the rules (ink ends at y=82), so centring the lockup's box leaves
+     the visible ink sitting high. Nudge it back down onto the optical centre. */
+  transform: translateY(calc(0.2 * var(--dn-lockup-fs)));
+}
+
+.dn-lockup-mark {
+  flex: none;
+  color: var(--dn-gold);
+  /* Puts the mark's horizon rule (y=66 of the 120-unit grid, so 55% down) onto
+     the wordmark's baseline. Arial: ascent 0.9em, descent 0.2em, so in a
+     line-height:1 box the half-leading is (1 - 1.1)/2 and the baseline lands
+     0.85em below the top. Measured residual: 0.06px. */
+  margin-top: calc(0.85 * var(--dn-lockup-fs) - 0.55 * var(--dn-lockup-mark));
+}
+
+.dn-lockup-word {
+  font-family: var(--dn-sans);
+  font-size: var(--dn-lockup-fs);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--dn-fg);
+  white-space: nowrap;
+}
+
+.dn-lockup-word span {
+  color: var(--dn-fg-3);
+  font-weight: 400;
+}
+
+.dn-nav-links {
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  gap: 30px;
+}
+
+.dn-nav-links a {
+  position: relative;
+  font-size: 14px;
+  color: var(--dn-fg-2);
+  transition: color 240ms var(--dn-ease);
+}
+
+.dn-nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -6px;
+  height: 1px;
+  background: var(--dn-gold);
+  transition: right 320ms var(--dn-ease);
+}
+
+.dn-nav-links a:hover {
+  color: var(--dn-fg);
+}
+
+.dn-nav-links a:hover::after {
+  right: 0;
+}
+
+.dn-nav-end {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dn-nav-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--dn-line-2);
+  border-radius: 999px;
+  color: var(--dn-fg);
+  cursor: pointer;
+}
+
+.dn-nav-toggle span {
+  display: block;
+  width: 15px;
+  height: 1px;
+  background: currentColor;
+  position: relative;
+  transition: background 200ms var(--dn-ease);
+}
+
+.dn-nav-toggle span::before,
+.dn-nav-toggle span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 15px;
+  height: 1px;
+  background: currentColor;
+  transition: transform 280ms var(--dn-ease);
+}
+
+.dn-nav-toggle span::before {
+  top: -5px;
+}
+
+.dn-nav-toggle span::after {
+  top: 5px;
+}
+
+.dn-nav-toggle[aria-expanded="true"] span {
+  background: transparent;
+}
+
+.dn-nav-toggle[aria-expanded="true"] span::before {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.dn-nav-toggle[aria-expanded="true"] span::after {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+/* A floating panel that echoes the bar above it, rather than a full-bleed
+   sheet. Fully opaque — see the note on `.dn-nav-inner`; a translucent drawer
+   leaves the page legible straight through the menu. */
+.dn-nav-drawer {
+  position: fixed;
+  top: calc(var(--dn-nav-top) + var(--dn-nav-h) + 10px);
+  left: var(--dn-gutter);
+  right: var(--dn-gutter);
+  z-index: 99;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 22px 22px;
+  border: 1px solid rgba(242, 239, 233, 0.12);
+  border-radius: 26px;
+  background: #121211;
+  box-shadow: 0 20px 60px -18px rgba(0, 0, 0, 0.9);
+  max-height: calc(100svh - var(--dn-nav-top) - var(--dn-nav-h) - 30px);
+  overflow-y: auto;
+}
+
+.dn-nav-drawer a {
+  padding: 15px 0;
+  font-size: 17px;
+  color: var(--dn-fg-2);
+  border-bottom: 1px solid var(--dn-line);
+}
+
+.dn-nav-drawer .dn-btn {
+  margin-top: 20px;
+  justify-content: center;
+}
+
+@media (max-width: 940px) {
+  .dn-nav-links,
+  .dn-nav-end .dn-btn {
+    display: none;
+  }
+
+  /* A hidden grid item is removed from the flow, so `.dn-nav-end` would
+     otherwise slide up into the vacated middle column next to the wordmark. */
+  .dn-nav-inner {
+    grid-template-columns: auto 1fr;
+    padding-right: 9px;
+  }
+
+  .dn-nav-end {
+    justify-self: end;
+  }
+
+  .dn-nav-toggle {
+    display: inline-flex;
+  }
+
+  .dn-nav-drawer.is-open {
+    display: flex;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Hero
+   ------------------------------------------------------------------------- */
+
+.dn-hero {
+  position: relative;
+  min-height: min(820px, 100svh);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: calc(var(--dn-nav-top) + var(--dn-nav-h) + clamp(24px, 4vh, 56px));
+  padding-bottom: clamp(28px, 4vh, 56px);
+  overflow: hidden;
+}
+
+/* Architectural plate — the temple at night, sunk low so the chamber floats in
+   the sky above it. Swap the image by overriding --dn-plate on the element. */
+.dn-hero-plate {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--dn-plate, url("/assets/hero_dn.png"));
+  background-size: cover;
+  background-position: 56% 82%;
+  opacity: 1;
+  filter: contrast(1.1) brightness(1.45) saturate(1.05);
+  transform: scale(1.03);
+}
+
+/* Two scrims. The first sinks the left third to near-black so the headline
+   always sits on flat ground; the second feathers the top and bottom edges
+   into the page. */
+.dn-hero-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      100deg,
+      rgba(11, 11, 11, 0.96) 0%,
+      rgba(11, 11, 11, 0.93) 38%,
+      /* Holds full strength past the copy measure (~53%), then falls away
+         quickly so the temple owns the right-hand half of the frame. */
+      rgba(11, 11, 11, 0.66) 50%,
+      rgba(11, 11, 11, 0.08) 66%,
+      rgba(11, 11, 11, 0.12) 84%,
+      rgba(11, 11, 11, 0.5) 100%
+    ),
+    linear-gradient(to bottom, var(--dn-bg) 0%, rgba(11, 11, 11, 0.5) 12%, transparent 34%, transparent 68%, var(--dn-bg) 100%);
+}
+
+/* A single controlled shaft of gold entering from upper right. */
+.dn-hero-light {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(
+    58% 44% at 76% 18%,
+    rgba(217, 164, 65, 0.16) 0%,
+    rgba(217, 164, 65, 0.05) 42%,
+    transparent 72%
+  );
+  mix-blend-mode: screen;
+  animation: dn-breathe 14s ease-in-out infinite alternate;
+}
+
+@keyframes dn-breathe {
+  from {
+    opacity: 0.72;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Single column. The temple carries the right-hand half of the frame, so the
+   copy is held to a measure rather than stretched across the shell. */
+.dn-hero-inner {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(22px, 2.6vh, 32px);
+  width: 100%;
+  max-width: 580px;
+}
+
+/* Kept short of the temple's leading column so no line runs into the stonework. */
+.dn-hero-inner .dn-lede {
+  max-width: 46ch;
+}
+
+.dn-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 2px;
+}
+
+@media (max-width: 900px) {
+  .dn-hero {
+    min-height: auto;
+    padding-bottom: 64px;
+  }
+
+  /* The copy runs the full width here, so the angled left-hand scrim has
+     nothing to hide behind, and the hero is too short for the temple to have
+     room of its own. It drops back to architectural texture: dimmer, with an
+     even vertical scrim holding the whole copy block on flat ground. */
+  .dn-hero-plate {
+    background-position: 60% 86%;
+    opacity: 0.7;
+    filter: contrast(1.06) brightness(1);
+  }
+
+  .dn-hero-veil {
+    background: linear-gradient(
+      to bottom,
+      var(--dn-bg) 0%,
+      rgba(11, 11, 11, 0.92) 16%,
+      rgba(11, 11, 11, 0.9) 72%,
+      rgba(11, 11, 11, 0.7) 90%,
+      rgba(11, 11, 11, 0.85) 100%
+    );
+  }
+
+  .dn-hero-inner {
+    max-width: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Market gap — three editorial panels
+   ------------------------------------------------------------------------- */
+
+.dn-gap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 1.4vw, 20px);
+  margin-top: clamp(56px, 7vw, 96px);
+}
+
+/* Each alternative reads as its own object: a raised plate with a lit top
+   edge, rather than a column of text divided by hairlines. */
+.dn-gap-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 36px clamp(24px, 2.4vw, 34px) 40px;
+  overflow: hidden;
+  border: 1px solid var(--dn-line-2);
+  border-radius: 3px;
+  background: linear-gradient(
+    to bottom,
+    rgba(242, 239, 233, 0.05),
+    rgba(242, 239, 233, 0.014) 60%,
+    transparent
+  );
+  transition:
+    background 500ms var(--dn-ease),
+    border-color 500ms var(--dn-ease),
+    transform 500ms var(--dn-ease);
+}
+
+/* Lit top edge, present at rest rather than only on hover. */
+.dn-gap-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--dn-gold), rgba(217, 164, 65, 0.12) 78%, transparent);
+}
+
+.dn-gap-panel:hover {
+  border-color: var(--dn-gold-dim);
+  transform: translateY(-3px);
+  background: linear-gradient(
+    to bottom,
+    rgba(242, 239, 233, 0.075),
+    rgba(242, 239, 233, 0.02) 60%,
+    transparent
+  );
+}
+
+/* Ghosted numeral, set large enough to register as structure. */
+.dn-gap-index {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  font-family: var(--dn-serif);
+  font-size: 3.6rem;
+  line-height: 1;
+  color: rgba(242, 239, 233, 0.07);
+  pointer-events: none;
+}
+
+/* The venue name is what should catch the eye first. */
+.dn-gap-venue {
+  font-family: var(--dn-serif);
+  font-weight: 400;
+  font-size: clamp(1.55rem, 2.1vw, 2rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--dn-fg);
+  margin: 0;
+  padding-right: 52px; /* clears the numeral */
+  /* Two lines reserved: "Centralised exchanges" wraps, and without this its
+     whole panel would sit a line lower than the other two. */
+  min-height: 2.2em;
+}
+
+.dn-gap-verdict {
+  margin: 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--dn-line);
+  font-family: var(--dn-serif);
+  font-style: italic;
+  font-size: clamp(1.02rem, 1.35vw, 1.2rem);
+  line-height: 1.35;
+  color: var(--dn-gold-bright);
+  /* Reserves the tallest verdict so the paragraphs below share one baseline
+     across the three columns: 14px padding + two lines at 1.35 line-height. */
+  min-height: calc(14px + 2.7em);
+  text-wrap: balance;
+}
+
+.dn-gap-conclusion {
+  margin-top: clamp(56px, 7vw, 88px);
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(28px, 4vw, 72px);
+  align-items: start;
+  padding-top: clamp(40px, 5vw, 60px);
+  border-top: 1px solid var(--dn-line);
+}
+
+.dn-gap-conclusion p {
+  font-family: var(--dn-serif);
+  font-weight: 300;
+  font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--dn-fg);
+  margin: 0;
+  text-wrap: balance;
+}
+
+/* Transition ladder: exposed → trusted → verifiable */
+.dn-transition {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--dn-line);
+  border-radius: 2px;
+  background: var(--dn-surface);
+}
+
+.dn-transition-step {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  font-family: var(--dn-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dn-fg-3);
+}
+
+.dn-transition-step + .dn-transition-step {
+  border-top: 1px solid var(--dn-line);
+}
+
+.dn-transition-step .dn-dot {
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--dn-fg-4);
+  border-radius: 50%;
+  flex: none;
+}
+
+.dn-transition-step[data-state="now"] {
+  color: var(--dn-fg);
+  background: linear-gradient(to right, rgba(217, 164, 65, 0.09), transparent 70%);
+  box-shadow: inset 2px 0 0 var(--dn-gold);
+}
+
+.dn-transition-step[data-state="now"] .dn-dot {
+  background: var(--dn-gold);
+  border-color: var(--dn-gold);
+  box-shadow: 0 0 10px rgba(217, 164, 65, 0.8);
+}
+
+@media (max-width: 900px) {
+  .dn-gap-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Panels stack here, so there is no cross-column baseline to reserve for. */
+  .dn-gap-venue,
+  .dn-gap-verdict {
+    min-height: 0;
+  }
+
+  .dn-gap-conclusion {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Solution — four pillars + execution flow
+   ------------------------------------------------------------------------- */
+
+.dn-sol {
+  overflow: hidden;
+}
+
+/* The colonnade corridor, revealed only across the lower half of the section
+   so it sits behind the execution sequence rather than behind the cards —
+   the pillar cards are opaque and would occlude it anyway. */
+.dn-sol-plate {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--dn-plate, url("/assets/how_it_works_dn.png"));
+  background-size: cover;
+  background-position: center 78%;
+  opacity: 0.26;
+  filter: contrast(1.04) brightness(0.9);
+  mask-image: linear-gradient(to bottom, transparent 34%, rgba(0, 0, 0, 0.7) 62%, #000 82%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 34%, rgba(0, 0, 0, 0.7) 62%, #000 82%, transparent 100%);
+  pointer-events: none;
+}
+
+.dn-sol > .dn-shell {
+  position: relative;
+  z-index: 1;
+}
+
+.dn-pillars {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: clamp(56px, 7vw, 92px);
+  background: var(--dn-line);
+  border: 1px solid var(--dn-line);
+  border-radius: 2px;
+}
+
+.dn-pillar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: clamp(32px, 3.4vw, 48px);
+  background: var(--dn-bg);
+  transition: background 500ms var(--dn-ease);
+}
+
+.dn-pillar:hover {
+  background: var(--dn-surface);
+}
+
+.dn-pillar-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--dn-gold);
+  opacity: 0.85;
+  transition:
+    opacity 400ms var(--dn-ease),
+    transform 600ms var(--dn-ease);
+}
+
+.dn-pillar:hover .dn-pillar-icon {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.dn-pillar h3 {
+  font-family: var(--dn-sans);
+  font-size: clamp(1.05rem, 1.35vw, 1.22rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--dn-fg);
+  margin: 0;
+}
+
+.dn-pillar p {
+  max-width: 44ch;
+}
+
+/* --- Execution flow --- */
+
+.dn-flow {
+  margin-top: clamp(56px, 7vw, 96px);
+  padding-top: clamp(40px, 5vw, 64px);
+  border-top: 1px solid var(--dn-line);
+}
+
+.dn-flow-track {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 40px;
+}
+
+/* The rail the light travels along. */
+.dn-flow-track::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--dn-line-2);
+}
+
+.dn-flow-track::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 0;
+  height: 1px;
+  width: var(--dn-flow-progress, 0%);
+  background: linear-gradient(to right, var(--dn-gold-dim), var(--dn-gold));
+  box-shadow: 0 0 12px rgba(217, 164, 65, 0.5);
+  transition: width 1200ms var(--dn-ease);
+}
+
+.dn-flow-step {
+  position: relative;
+  padding: 30px 24px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dn-flow-step::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  border: 1px solid var(--dn-line-3);
+  border-radius: 50%;
+  background: var(--dn-bg);
+  transition:
+    border-color 500ms var(--dn-ease),
+    background 500ms var(--dn-ease),
+    box-shadow 500ms var(--dn-ease);
+}
+
+.dn-flow-step.is-lit::before {
+  border-color: var(--dn-gold);
+  background: var(--dn-gold);
+  box-shadow: 0 0 14px rgba(217, 164, 65, 0.75);
+}
+
+.dn-flow-num {
+  font-family: var(--dn-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  color: var(--dn-fg-4);
+  transition: color 500ms var(--dn-ease);
+}
+
+.dn-flow-step.is-lit .dn-flow-num {
+  color: var(--dn-gold);
+}
+
+.dn-flow-label {
+  font-size: clamp(0.98rem, 1.25vw, 1.12rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--dn-fg-3);
+  transition: color 500ms var(--dn-ease);
+}
+
+.dn-flow-step.is-lit .dn-flow-label {
+  color: var(--dn-fg);
+}
+
+.dn-flow-note {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--dn-fg-4);
+  max-width: 26ch;
+  transition: color 500ms var(--dn-ease);
+}
+
+.dn-flow-step.is-lit .dn-flow-note {
+  color: var(--dn-fg-3);
+}
+
+@media (max-width: 900px) {
+  .dn-pillars {
+    grid-template-columns: 1fr;
+  }
+
+  .dn-flow-track {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-left: 26px;
+  }
+
+  .dn-flow-track::before,
+  .dn-flow-track::after {
+    top: 0;
+    bottom: 0;
+    left: 5px;
+    right: auto;
+    width: 1px;
+    height: auto;
+  }
+
+  .dn-flow-track::after {
+    height: var(--dn-flow-progress, 0%);
+    width: 1px;
+    transition: height 1200ms var(--dn-ease);
+  }
+
+  .dn-flow-step {
+    padding: 0 0 34px;
+  }
+
+  .dn-flow-step::before {
+    left: -26px;
+    top: 4px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Architecture — three connected layers
+   ------------------------------------------------------------------------- */
+
+.dn-arch {
+  position: relative;
+  background: linear-gradient(to bottom, var(--dn-bg), var(--dn-bg-deep) 40%, var(--dn-bg));
+}
+
+.dn-arch-plate {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--dn-plate, url("/assets/final.png"));
+  background-size: cover;
+  background-position: center;
+  /* High-contrast white line-art directly behind body copy, so it takes far
+     less opacity than the photographic plates before it starts competing. */
+  opacity: 0.15;
+  filter: grayscale(0.9) brightness(1.15);
+  mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
+  pointer-events: none;
+}
+
+.dn-arch > .dn-shell {
+  position: relative;
+  z-index: 1;
+}
+
+.dn-layers {
+  margin-top: clamp(56px, 7vw, 92px);
+  display: flex;
+  flex-direction: column;
+}
+
+.dn-layer {
+  position: relative;
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: clamp(24px, 4vw, 64px);
+  padding: clamp(32px, 3.6vw, 46px) 0;
+  border-top: 1px solid var(--dn-line);
+  transition: background 500ms var(--dn-ease);
+}
+
+.dn-layer:last-child {
+  border-bottom: 1px solid var(--dn-line);
+}
+
+.dn-layer::after {
+  content: "";
+  position: absolute;
+  left: -24px;
+  top: -1px;
+  width: 2px;
+  height: 0;
+  background: var(--dn-gold);
+  transition: height 600ms var(--dn-ease);
+}
+
+.dn-layer:hover::after {
+  height: calc(100% + 1px);
+}
+
+.dn-layer-tier {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dn-layer-tier .dn-num {
+  font-family: var(--dn-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dn-gold);
+}
+
+.dn-layer-tier .dn-name {
+  font-family: var(--dn-serif);
+  font-size: clamp(1.3rem, 1.8vw, 1.6rem);
+  font-weight: 400;
+  line-height: 1.16;
+  color: var(--dn-fg);
+}
+
+.dn-layer-main {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 60ch;
+}
+
+.dn-layer-chip {
+  align-self: flex-start;
+  padding: 6px 12px;
+  border: 1px solid var(--dn-line-2);
+  border-radius: 2px;
+  background: var(--dn-surface);
+  font-family: var(--dn-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--dn-fg-2);
+  transition:
+    border-color 400ms var(--dn-ease),
+    color 400ms var(--dn-ease);
+}
+
+.dn-layer:hover .dn-layer-chip {
+  border-color: var(--dn-gold-dim);
+  color: var(--dn-gold-bright);
+}
+
+.dn-layer-cta {
+  padding-top: 6px;
+}
+
+/* Connector glyph between layers (the "↓" of the cutaway). */
+.dn-layer-connector {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-left: 4px;
+  color: var(--dn-fg-4);
+  font-family: var(--dn-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.dn-layer-connector::before {
+  content: "";
+  width: 1px;
+  height: 34px;
+  background: linear-gradient(to bottom, var(--dn-gold-dim), transparent);
+  margin-left: 22px;
+}
+
+@media (max-width: 900px) {
+  .dn-layer {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .dn-layer::after {
+    left: -14px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Thesis
+   ------------------------------------------------------------------------- */
+
+.dn-thesis {
+  position: relative;
+  overflow: hidden;
+}
+
+.dn-thesis-plate {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--dn-plate, url("/assets/content.png"));
+  background-size: cover;
+  background-position: center 30%;
+  opacity: 0.72;
+  filter: contrast(1.06) brightness(1.15);
+}
+
+.dn-thesis-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom, var(--dn-bg) 0%, rgba(11, 11, 11, 0.6) 26%, rgba(11, 11, 11, 0.82) 60%, var(--dn-bg) 100%),
+    radial-gradient(90% 70% at 30% 40%, transparent, rgba(11, 11, 11, 0.6));
+}
+
+.dn-thesis > .dn-shell {
+  position: relative;
+  z-index: 2;
+}
+
+.dn-thesis-points {
+  margin-top: clamp(56px, 7vw, 88px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(28px, 3.4vw, 56px);
+}
+
+.dn-thesis-point {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 26px;
+  border-top: 1px solid var(--dn-line-2);
+}
+
+.dn-thesis-point .dn-numeral {
+  font-family: var(--dn-serif);
+  font-size: 1.05rem;
+  letter-spacing: 0.14em;
+  color: var(--dn-gold);
+}
+
+.dn-thesis-point h3 {
+  font-family: var(--dn-serif);
+  font-weight: 400;
+  font-size: clamp(1.25rem, 1.65vw, 1.5rem);
+  line-height: 1.24;
+  letter-spacing: -0.01em;
+  color: var(--dn-fg);
+  margin: 0;
+  text-wrap: balance;
+}
+
+/* Closing statement — the loudest quiet moment on the page. */
+.dn-thesis-closing {
+  margin-top: clamp(64px, 8vw, 112px);
+  padding-top: clamp(40px, 5vw, 64px);
+  border-top: 1px solid var(--dn-line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
+.dn-thesis-closing-lines {
+  font-family: var(--dn-serif);
+  font-weight: 300;
+  font-size: clamp(1.85rem, 4vw, 3.2rem);
+  line-height: 1.16;
+  letter-spacing: -0.015em;
+  color: var(--dn-fg-3);
+}
+
+.dn-thesis-closing-lines span {
+  display: block;
+}
+
+.dn-thesis-closing-lines span:last-child {
+  color: var(--dn-fg);
+}
+
+.dn-thesis-closing-lines span:last-child::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 1px;
+  margin: 30px auto 0;
+  background: var(--dn-gold);
+  box-shadow: 0 0 14px rgba(217, 164, 65, 0.6);
+}
+
+@media (max-width: 900px) {
+  .dn-thesis-points {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Contact
+   ------------------------------------------------------------------------- */
+
+.dn-contact-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(36px, 5vw, 88px);
+  align-items: center;
+  padding: clamp(40px, 5vw, 72px);
+  border: 1px solid var(--dn-line-2);
+  border-radius: 2px;
+  background:
+    linear-gradient(135deg, rgba(217, 164, 65, 0.05), transparent 46%),
+    var(--dn-surface);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Corner ticks — a drafting mark, not a decoration. */
+.dn-contact-inner::before,
+.dn-contact-inner::after {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--dn-gold-dim);
+  pointer-events: none;
+}
+
+.dn-contact-inner::before {
+  top: -1px;
+  left: -1px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.dn-contact-inner::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: 0;
+  border-top: 0;
+}
+
+.dn-contact-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dn-contact-side {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.dn-audiences {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--dn-line);
+}
+
+.dn-audiences li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--dn-line);
+  font-size: 13.5px;
+  color: var(--dn-fg-2);
+}
+
+.dn-audiences li::before {
+  content: "";
+  width: 14px;
+  height: 1px;
+  background: var(--dn-gold-dim);
+  flex: none;
+}
+
+.dn-contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+@media (max-width: 900px) {
+  .dn-contact-inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Footer
+   ------------------------------------------------------------------------- */
+
+.dn-footer {
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--dn-line);
+  background: var(--dn-bg-deep);
+}
+
+.dn-footer-plate {
+  position: absolute;
+  inset: auto 0 0;
+  height: 74%;
+  z-index: 0;
+  background-image: var(--dn-plate, url("/assets/footer.png"));
+  background-size: cover;
+  background-position: center bottom;
+  /* White line-art, so it goes further with less opacity than the photographic
+     plates. Weighted to the very bottom of the page. */
+  opacity: 0.3;
+  mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.45) 55%, #000 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.45) 55%, #000 100%);
+  pointer-events: none;
+}
+
+.dn-footer > .dn-shell {
+  position: relative;
+  z-index: 1;
+}
+
+.dn-footer-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
+  gap: clamp(32px, 4vw, 64px);
+  padding-block: clamp(56px, 7vw, 88px) clamp(48px, 6vw, 72px);
+}
+
+.dn-footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.dn-footer-tagline {
+  font-family: var(--dn-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--dn-fg-3);
+}
+
+.dn-footer-col h4 {
+  margin: 0 0 18px;
+  font-family: var(--dn-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dn-fg-4);
+  font-weight: 400;
+}
+
+.dn-footer-col ul {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.dn-footer-col a {
+  font-size: 13.5px;
+  color: var(--dn-fg-2);
+  transition: color 240ms var(--dn-ease);
+}
+
+.dn-footer-col a:hover {
+  color: var(--dn-gold-bright);
+}
+
+.dn-footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 24px;
+  border-top: 1px solid var(--dn-line);
+  font-family: var(--dn-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dn-fg-4);
+}
+
+.dn-footer-social {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.dn-footer-social a {
+  display: inline-flex;
+  color: var(--dn-fg-3);
+  transition: color 240ms var(--dn-ease);
+}
+
+.dn-footer-social a:hover {
+  color: var(--dn-gold-bright);
+}
+
+@media (max-width: 900px) {
+  .dn-footer-top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dn-footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Shared utility
+   ------------------------------------------------------------------------- */
+
+.dn-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Fine film grain over the whole page — keeps the flats from banding. */
+.dn-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}

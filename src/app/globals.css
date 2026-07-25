@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import "./site.css";
+/* Landing system. Namespaced `dn-`; imported last so it wins over site.css. */
+@import "./darknyx.css";
 
 /* ---------------------------------------------------------------------------
  * Darknyx design tokens (mirrors apps/demo/design-system/tokens/tokens.css).
