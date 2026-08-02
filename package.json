@@ -10,23 +10,11 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.6.1",
-    "@react-three/postprocessing": "^3.0.4",
-    "circomlibjs": "^0.1.7",
-    "framer-motion": "^12.40.0",
     "googleapis": "^173.0.0",
-    "highlight.js": "^11.11.1",
-    "mermaid": "^11.12.1",
     "next": "16.2.6",
-    "ogl": "^1.0.11",
-    "postprocessing": "^6.39.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "resend": "^6.14.0",
-    "snarkjs": "^0.7.5",
-    "three": "^0.184.0",
-    "zod": "^4.4.3"
+    "resend": "^6.14.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

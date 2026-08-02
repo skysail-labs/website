@@ -216,8 +216,11 @@ html:has(.dn) {
   z-index: 0;
   background-size: cover;
   pointer-events: none;
-  filter: grayscale(1) sepia(0.42) saturate(1.55) hue-rotate(-8deg) brightness(0.92)
-    contrast(1.1);
+  /* Brightness and contrast are per-plate because the sources are not alike:
+     three are lit photographs, one is a near-black engraving that needs
+     lifting rather than damping to register at all. */
+  filter: grayscale(1) sepia(0.42) saturate(1.55) hue-rotate(-8deg)
+    brightness(var(--dn-plate-brightness, 0.92)) contrast(var(--dn-plate-contrast, 1.1));
   opacity: var(--dn-plate-opacity, 0.3);
   /* One envelope for all of them: nothing at the seams, texture in the middle. */
   mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
@@ -775,7 +778,13 @@ html:has(.dn) {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background-image: var(--dn-plate, url("/assets/hero_dn.png"));
+  background-image: var(
+    --dn-plate,
+    image-set(
+      url("/assets/hero_dn.avif") type("image/avif"),
+      url("/assets/hero_dn.webp") type("image/webp")
+    )
+  );
   background-size: cover;
   /* Pulled left of centre so the olive tree stays in frame rather than being
      cropped to a few branches in the corner. */
@@ -1136,7 +1145,13 @@ html:has(.dn) {
    so it sits behind the execution sequence rather than behind the cards —
    the pillar cards are opaque and would occlude it anyway. */
 .dn-sol-plate {
-  background-image: var(--dn-plate, url("/assets/how_it_works_dn.png"));
+  background-image: var(
+    --dn-plate,
+    image-set(
+      url("/assets/how_it_works_dn.avif") type("image/avif"),
+      url("/assets/how_it_works_dn.webp") type("image/webp")
+    )
+  );
   background-position: center 78%;
   /* Sits directly behind the pipeline rail and its panel, so it runs quieter
      than the other plates — this is the most type-dense band on the page. */
@@ -1434,20 +1449,6 @@ html:has(.dn) {
   }
 }
 
-.dn-flow-venue {
-  display: inline-block;
-  margin-bottom: 16px;
-  padding: 5px 11px;
-  border: 1px solid var(--dn-gold-faint);
-  border-radius: var(--dn-r-sm);
-  background: var(--dn-gold-wash);
-  font-family: var(--dn-mono);
-  font-size: var(--dn-fs-label);
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--dn-gold-bright);
-}
 
 .dn-flow-panel-copy .dn-body {
   max-width: 62ch;
@@ -1568,7 +1569,13 @@ html:has(.dn) {
 }
 
 .dn-arch-plate {
-  background-image: var(--dn-plate, url("/assets/final.png"));
+  background-image: var(
+    --dn-plate,
+    image-set(
+      url("/assets/final.avif") type("image/avif"),
+      url("/assets/final.webp") type("image/webp")
+    )
+  );
   background-position: center;
   /* Line-art rather than photography, so it carries further per unit opacity
      and is pulled back accordingly. */
@@ -1699,20 +1706,46 @@ html:has(.dn) {
 }
 
 .dn-thesis-plate {
-  background-image: var(--dn-plate, url("/assets/content.png"));
+  background-image: var(
+    --dn-plate,
+    image-set(
+      url("/assets/content.avif") type("image/avif"),
+      url("/assets/content.webp") type("image/webp")
+    )
+  );
   background-position: center 30%;
-  /* Held below the others: this is the only plate that sits directly under
-     running body copy, and at its original 0.72 it was unreadable. */
-  --dn-plate-opacity: 0.24;
+  /* Unlike the other three, this source is a near-black engraving — fine white
+     linework on an almost unlit ground. The shared grade's 0.92 brightness
+     damped it into nothing, so it gets lifted hard and pushed on contrast to
+     bring the linework out, then held at a moderate opacity because this is
+     the only plate sitting directly under running body copy. */
+  --dn-plate-brightness: 2.4;
+  --dn-plate-contrast: 1.45;
+  --dn-plate-opacity: 0.42;
 }
 
+/* Now that the engraving behind this section is actually legible, the veil has
+   to earn its keep. Its old radial was clearest at 30%/40% — precisely where
+   the heading and lede sit — so it lit the plate up under the one thing that
+   needed flat ground.
+
+   It now rakes from the left instead: the copy column gets its tone held down,
+   and the right-hand side, which carries no text, is left open so the
+   Acropolis and the Athena figure read. */
 .dn-thesis-veil {
   position: absolute;
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(to bottom, var(--dn-bg) 0%, rgba(10, 9, 8, 0.6) 26%, rgba(10, 9, 8, 0.82) 60%, var(--dn-bg) 100%),
-    radial-gradient(90% 70% at 30% 40%, transparent, rgba(10, 9, 8, 0.6));
+    linear-gradient(
+      100deg,
+      rgba(10, 9, 8, 0.88) 0%,
+      rgba(10, 9, 8, 0.82) 30%,
+      rgba(10, 9, 8, 0.52) 52%,
+      rgba(10, 9, 8, 0.22) 72%,
+      rgba(10, 9, 8, 0.3) 100%
+    ),
+    linear-gradient(to bottom, var(--dn-bg) 0%, rgba(10, 9, 8, 0.4) 16%, rgba(10, 9, 8, 0.45) 72%, var(--dn-bg) 100%);
 }
 
 .dn-thesis > .dn-shell {
@@ -2110,7 +2143,13 @@ html:has(.dn) {
 .dn-footer-plate {
   inset: auto 0 0;
   height: 74%;
-  background-image: var(--dn-plate, url("/assets/footer.png"));
+  background-image: var(
+    --dn-plate,
+    image-set(
+      url("/assets/footer.avif") type("image/avif"),
+      url("/assets/footer.webp") type("image/webp")
+    )
+  );
   background-position: center bottom;
   /* The page closes on the plate, so this is the one interior image allowed to
      come up — it sits under the footer's link columns, not prose. The envelope

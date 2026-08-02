@@ -162,7 +162,6 @@ export function ExecutionFlow() {
         {/* Keyed so the panel re-mounts on change and replays its entrance. */}
         <div className="dn-flow-panel-inner" key={stage.step}>
           <div className="dn-flow-panel-copy">
-            <span className="dn-flow-venue">{stage.venue}</span>
             <p className="dn-body">{stage.detail}</p>
           </div>
 

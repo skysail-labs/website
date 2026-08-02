@@ -104,8 +104,8 @@ export const SOLUTION = {
    *
    * Each stage carries three registers: the plain-language `label` a reader
    * skims, the `note` that says what it means, and the `detail` + `spec` pair
-   * that a technical reader opens to check the work. `venue` names where the
-   * stage physically executes, which is the whole argument of the section —
+   * that a technical reader opens to check the work. Every stage's spec names
+   * where it physically executes, which is the whole argument of the section —
    * intent stays client-side, matching stays in the enclave, only proofs and
    * commitments ever reach the chain. */
   flowLabel: "Execution pipeline",
@@ -113,7 +113,6 @@ export const SOLUTION = {
     {
       step: "01",
       label: "Order intent",
-      venue: "Client",
       note: "Order intent never touches a public book.",
       detail:
         "The client builds a Poseidon commitment over the order and the note backing it, then submits it directly to the enclave. Side, size, limit and note remain on the trader's machine — nothing about the order is broadcast, and nothing enters a public mempool or order book.",
@@ -126,7 +125,6 @@ export const SOLUTION = {
     {
       step: "02",
       label: "TDX enclave match",
-      venue: "Intel TDX",
       note: "Uniform clearing price inside the enclave.",
       detail:
         "Inside an attested Intel TDX confidential VM, private bids and asks clear as a batch at a single uniform price, subject to market controls and an external TWAP circuit breaker. The operator cannot observe or reorder the book, and clients can verify the enclave measurement before they ever submit.",
@@ -139,7 +137,6 @@ export const SOLUTION = {
     {
       step: "03",
       label: "ZK proof generation",
-      venue: "Groth16",
       note: "Groth16 constrains every transition.",
       detail:
         "The enclave produces a Groth16 validity proof over the batch. The proof constrains conservation of value, correct output-note construction, fee application and market binding — so a settlement that does not follow the rules cannot be authorised, whatever the operator intends.",
@@ -152,7 +149,6 @@ export const SOLUTION = {
     {
       step: "04",
       label: "Solana settlement",
-      venue: "Solana",
       note: "Amounts and prices stay hidden.",
       detail:
         "Solana verifies the proof and atomically updates the vault and the note commitment tree. Replay-protection accounts prevent a batch being used twice. What lands on-chain is a verified state transition — the trade amounts and execution prices are never part of it.",
@@ -221,8 +217,8 @@ export type Article = {
 
 export const ARTICLES: readonly Article[] = [
   {
-    // TODO(darknyx): confirm the published title and date of this piece.
-    title: "Settle in the dark, prove in the light",
+    // TODO(darknyx): confirm the published date of this piece.
+    title: "Solana Solved Retail Execution. Institutional Execution Comes Next.",
     date: "2026-07-28",
     href: "https://x.com/DarknyxProtocol/status/2082338365140046078",
     image: "/assets/articles/thesis-dark-liquidity.jpg",
