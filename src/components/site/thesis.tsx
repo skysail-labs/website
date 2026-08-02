@@ -1,5 +1,6 @@
 import { Reveal } from "./reveal";
-import { THESIS } from "./copy";
+import { ArticleCard } from "./article-card";
+import { ARTICLES, THESIS } from "./copy";
 
 export function Thesis() {
   return (
@@ -20,12 +21,10 @@ export function Thesis() {
           </Reveal>
         </div>
 
-        <div className="dn-thesis-points">
-          {THESIS.points.map((point, i) => (
-            <Reveal key={point.index} as="article" className="dn-thesis-point" delay={i * 110}>
-              <span className="dn-numeral">{point.index}</span>
-              <h3>{point.heading}</h3>
-              <p className="dn-body">{point.body}</p>
+        <div className="dn-articles">
+          {ARTICLES.map((article, i) => (
+            <Reveal key={article.href} delay={i * 110}>
+              <ArticleCard article={article} priority={i === 0} />
             </Reveal>
           ))}
         </div>

@@ -43,12 +43,6 @@ export function Architecture() {
                   </SiteLink>
                 </div>
               </article>
-
-              {i < ARCHITECTURE.layers.length - 1 && (
-                <div className="dn-layer-connector" aria-hidden="true">
-                  constrains the layer below
-                </div>
-              )}
             </Reveal>
           ))}
         </div>

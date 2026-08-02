@@ -100,11 +100,68 @@ export const SOLUTION = {
       body: "Assets remain inside the Solana vault. Groth16 proofs constrain conservation, note creation, fees and valid balance transitions, while replay-protection accounts prevent double use.",
     },
   ],
+  /* The execution pipeline.
+   *
+   * Each stage carries three registers: the plain-language `label` a reader
+   * skims, the `note` that says what it means, and the `detail` + `spec` pair
+   * that a technical reader opens to check the work. `venue` names where the
+   * stage physically executes, which is the whole argument of the section —
+   * intent stays client-side, matching stays in the enclave, only proofs and
+   * commitments ever reach the chain. */
+  flowLabel: "Execution pipeline",
   flow: [
-    { step: "01", label: "Submit privately", note: "Order intent never touches a public book." },
-    { step: "02", label: "Match in TDX", note: "Uniform clearing price inside the enclave." },
-    { step: "03", label: "Prove the batch", note: "Groth16 constrains every transition." },
-    { step: "04", label: "Settle on Solana", note: "Amounts and prices stay hidden." },
+    {
+      step: "01",
+      label: "Order intent",
+      venue: "Client",
+      note: "Order intent never touches a public book.",
+      detail:
+        "The client builds a Poseidon commitment over the order and the note backing it, then submits it directly to the enclave. Side, size, limit and note remain on the trader's machine — nothing about the order is broadcast, and nothing enters a public mempool or order book.",
+      spec: [
+        { k: "Commitment", v: "Poseidon" },
+        { k: "Executes on", v: "Client" },
+        { k: "Public data", v: "None" },
+      ],
+    },
+    {
+      step: "02",
+      label: "TDX enclave match",
+      venue: "Intel TDX",
+      note: "Uniform clearing price inside the enclave.",
+      detail:
+        "Inside an attested Intel TDX confidential VM, private bids and asks clear as a batch at a single uniform price, subject to market controls and an external TWAP circuit breaker. The operator cannot observe or reorder the book, and clients can verify the enclave measurement before they ever submit.",
+      spec: [
+        { k: "Mechanism", v: "Uniform-price batch" },
+        { k: "Executes on", v: "Attested TDX VM" },
+        { k: "Public data", v: "None" },
+      ],
+    },
+    {
+      step: "03",
+      label: "ZK proof generation",
+      venue: "Groth16",
+      note: "Groth16 constrains every transition.",
+      detail:
+        "The enclave produces a Groth16 validity proof over the batch. The proof constrains conservation of value, correct output-note construction, fee application and market binding — so a settlement that does not follow the rules cannot be authorised, whatever the operator intends.",
+      spec: [
+        { k: "System", v: "Groth16 / BN254" },
+        { k: "Constrains", v: "Value, notes, fees" },
+        { k: "Public data", v: "Proof only" },
+      ],
+    },
+    {
+      step: "04",
+      label: "Solana settlement",
+      venue: "Solana",
+      note: "Amounts and prices stay hidden.",
+      detail:
+        "Solana verifies the proof and atomically updates the vault and the note commitment tree. Replay-protection accounts prevent a batch being used twice. What lands on-chain is a verified state transition — the trade amounts and execution prices are never part of it.",
+      spec: [
+        { k: "Update", v: "Atomic vault write" },
+        { k: "Replay guard", v: "Nullifier accounts" },
+        { k: "Data leaked", v: "0%" },
+      ],
+    },
   ],
 } as const;
 
@@ -141,27 +198,51 @@ export const ARCHITECTURE = {
   ],
 } as const;
 
+/* ---------------------------------------------------------------------------
+ * Writing
+ *
+ * The thesis section argues its case through published pieces rather than
+ * summary cards. Add an entry here and it appears in the grid — the layout
+ * alternates card widths as the list grows, so no layout change is needed.
+ * Newest first.
+ *
+ * `image` is served through next/image, which negotiates AVIF/WebP per
+ * request, so store a single reasonably-sized JPEG rather than a set.
+ * ------------------------------------------------------------------------- */
+export type Article = {
+  title: string;
+  /** ISO date. Rendered via `articleDate` so the displayed format lives here. */
+  date: string;
+  href: string;
+  image: string;
+  /** Describes the image for readers who cannot see it. */
+  alt: string;
+};
+
+export const ARTICLES: readonly Article[] = [
+  {
+    // TODO(darknyx): confirm the published title and date of this piece.
+    title: "Settle in the dark, prove in the light",
+    date: "2026-07-28",
+    href: "https://x.com/DarknyxProtocol/status/2082338365140046078",
+    image: "/assets/articles/thesis-dark-liquidity.jpg",
+    alt: "A moonlit colonnade looking out over the Acropolis, a thread of gold light running along the marble floor.",
+  },
+];
+
+export function articleDate(iso: string): string {
+  return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
 export const THESIS = {
   label: "Market thesis",
   title: "Every mature market eventually separates price discovery from disclosure.",
   lede: "Equities took forty years to build the venues where size could trade without broadcasting itself. On-chain markets are arriving at the same threshold, with one advantage: the settlement layer can be verified rather than trusted.",
-  points: [
-    {
-      index: "I",
-      heading: "Serious size needs a room, not a stage.",
-      body: "As professional flow moves on-chain, the venues that win institutional volume will be the ones where a position can be built without the market reading it in real time. Transparency of settlement is a feature. Transparency of intent is a cost.",
-    },
-    {
-      index: "II",
-      heading: "Confidentiality without custody is now buildable.",
-      body: "Attested hardware and practical proving systems have converged. A venue can conceal execution from everyone, including its own operator, while proving to the chain that no value was created, duplicated or misdirected.",
-    },
-    {
-      index: "III",
-      heading: "Neutrality is the durable moat.",
-      body: "Dealer-run venues optimise for their own book. A market-neutral confidential venue accrues the flow that cannot accept counterparty discretion: funds, treasuries and market makers who need execution quality without surrendering their strategy.",
-    },
-  ],
   closing: {
     lines: ["Public settlement is valuable.", "Public execution is not."],
     body: "Darknyx is built on that single distinction.",

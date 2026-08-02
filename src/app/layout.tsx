@@ -1,27 +1,47 @@
 import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono, Space_Grotesk, Cormorant_Garamond } from "next/font/google";
+import { IBM_Plex_Mono, Inter, Newsreader } from "next/font/google";
 
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
+/**
+ * Three faces, three jobs, one argument.
+ *
+ *   Newsreader   display — headlines and pull quotes. The brand voice.
+ *   Inter        text    — every running word on the page.
+ *   IBM Plex Mono label  — eyebrows, tiers, spec values. Anything tracked.
+ *
+ * The display face was Cormorant Garamond, which was working against the page
+ * in two ways. Its associations are literary and decorative rather than
+ * institutional; and as a high-contrast Garamond revival its hairlines thin
+ * optically when set light-on-dark, so the headlines rendered fragile on the
+ * near-black ground. Newsreader is an editorial face drawn for screens: lower
+ * stroke contrast, so it holds its weight inverted, with enough authority to
+ * carry a market thesis.
+ *
+ * Inter and Plex Mono share a rationalist, closed-aperture skeleton with
+ * Newsreader's roman, so the three read as one system rather than three
+ * borrowed voices. Plex Mono also sets tighter than JetBrains Mono at the
+ * micro sizes the eyebrows use, where 0.24em of tracking otherwise sprawls.
+ */
+const newsreader = Newsreader({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-space-grotesk",
-  display: "swap",
-});
-
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["300", "400", "600"],
+  weight: ["400", "500", "600"],
   style: ["normal", "italic"],
-  variable: "--font-cormorant",
+  variable: "--font-display",
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-text",
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
-  variable: "--font-jetbrains-mono",
+  variable: "--font-label",
   display: "swap",
 });
 
@@ -68,7 +88,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${cormorant.variable} h-full antialiased`}
+      className={`${newsreader.variable} ${inter.variable} ${plexMono.variable}`}
       // The inline script below adds `dn-js` to this element before React
       // hydrates, so the client className legitimately differs from the
       // server's. Without this, React logs a hydration mismatch on every load.
@@ -92,7 +112,7 @@ setTimeout(function(){if(!d.classList.contains('dn-hydrated'))d.classList.remove
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-nyx-ink text-nyx-chalk">{children}</body>
+      <body>{children}</body>
     </html>
   );
 }

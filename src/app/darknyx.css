@@ -1,54 +1,139 @@
 /* ============================================================================
    DARKNYX — institutional landing system
    ----------------------------------------------------------------------------
-   Everything here is namespaced `dn-` so it can coexist with the legacy
-   `site.css` sheet (still used by /landing) without collision.
+   The whole design system. Everything is namespaced `dn-` and scoped under the
+   `.dn` root, which is also where the tokens live.
 
-   Material language: near-black ground, warm off-white type, a single
-   controlled gold for illumination, muted steel as a secondary signal.
-   Geometry is architectural — hairlines, right angles, generous air.
+   Material language: a warm near-black ground, warm off-white type, and a
+   single controlled gold used as *light* rather than as decoration — it marks
+   what is live and nothing else. Structure is carried by neutral hairlines, so
+   the gold never has to do a layout job. Geometry is architectural: right
+   angles, hairlines, generous air.
    ========================================================================== */
 
 .dn {
-  /* ---- ground & surfaces ---- */
-  --dn-bg: #0b0b0b;
-  --dn-bg-deep: #070707;
-  --dn-surface: #131312;
-  --dn-surface-2: #181816;
-  --dn-surface-3: #1e1e1b;
+  /* ---- ground & surfaces ----
+     The ground is a *warm* near-black, not a neutral one. This is the single
+     decision that makes the gold read as light falling on the page rather than
+     a colour pasted onto it — neutral #0b0b0b left the two unrelated.
+     Each surface step is a real, perceptible lift so a card reads as an object
+     sitting on the ground rather than a slightly different patch of void. */
+  --dn-bg: #0a0908;
+  --dn-bg-deep: #060505;
+  --dn-bg-raised: #100e0c;
+  --dn-surface: #14120f;
+  --dn-surface-2: #1a1713;
+  --dn-surface-3: #221e19;
 
-  /* ---- type ---- */
-  --dn-fg: #f2efe9;
-  --dn-fg-2: rgba(242, 239, 233, 0.6);
-  --dn-fg-3: rgba(242, 239, 233, 0.38);
-  --dn-fg-4: rgba(242, 239, 233, 0.22);
+  /* ---- type ----
+     Four tiers, and only four. Anything dimmer than --dn-fg-3 is decoration,
+     not text, and must never carry a word the reader needs. */
+  --dn-fg: #f4f1eb;
+  --dn-fg-2: rgba(244, 241, 235, 0.66);
+  /* 0.52 rather than 0.46: this tier carries the flow notes, spec keys and
+     mono labels, and at 0.46 it measured 4.08:1 against the ground — under
+     the 4.5:1 floor for text this size. At 0.52 it clears at 5.2:1. */
+  --dn-fg-3: rgba(244, 241, 235, 0.52);
+  /* Decoration only. Never put a word the reader needs on this. */
+  --dn-fg-4: rgba(244, 241, 235, 0.26);
 
-  /* ---- accents ---- */
-  --dn-gold: #d9a441;
-  --dn-gold-bright: #e8c07c;
-  --dn-gold-dim: rgba(217, 164, 65, 0.55);
-  --dn-gold-wash: rgba(217, 164, 65, 0.08);
-  --dn-steel: #7d94b8;
-  --dn-steel-dim: rgba(125, 148, 184, 0.4);
+  /* ---- gold ----
+     A strict hierarchy. Gold previously carried eyebrows, icons, dots, chips,
+     numerals, borders and connectors all at full strength, which meant it
+     signalled nothing. Now:
+       --dn-gold        the live signal. Active state, primary emphasis. Rare.
+       --dn-gold-bright highlight on gold, for text on a gold ground.
+       --dn-gold-dim    structural gold: rules, marks, inactive indices.
+       --dn-gold-wash   fills and glows. Never text. */
+  --dn-gold: #e0a94a;
+  --dn-gold-bright: #f0cd8e;
+  --dn-gold-deep: #a97a2c;
+  --dn-gold-dim: rgba(224, 169, 74, 0.5);
+  --dn-gold-faint: rgba(224, 169, 74, 0.24);
+  --dn-gold-wash: rgba(224, 169, 74, 0.07);
+  --dn-gold-glow: rgba(224, 169, 74, 0.16);
 
-  /* ---- lines ---- */
-  --dn-line: rgba(242, 239, 233, 0.08);
-  --dn-line-2: rgba(242, 239, 233, 0.14);
-  --dn-line-3: rgba(242, 239, 233, 0.24);
+  /* Secondary signal, used only where something must read as *not* gold —
+     the resting state of a sequence, a neutral chip. */
+  --dn-steel: #8b9bb0;
+  --dn-steel-dim: rgba(139, 155, 176, 0.36);
+
+  /* ---- lines ----
+     Structure is neutral. Gold is never load-bearing for layout. */
+  --dn-line: rgba(244, 241, 235, 0.07);
+  --dn-line-2: rgba(244, 241, 235, 0.13);
+  --dn-line-3: rgba(244, 241, 235, 0.22);
+
+  /* ---- elevation ----
+     Warm-tinted shadow. Pure-black shadow on a warm ground reads as a hole. */
+  --dn-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --dn-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.4);
+  --dn-shadow-lg: 0 24px 56px -16px rgba(0, 0, 0, 0.8), 0 4px 12px rgba(0, 0, 0, 0.5);
+  --dn-shadow-gold: 0 0 0 1px var(--dn-gold-faint), 0 12px 40px -12px var(--dn-gold-glow);
 
   /* ---- typography ----
-     Serif carries the display headings; Arial carries all running content;
-     mono is reserved for eyebrows, tiers and other small tracked labels. */
-  --dn-serif: var(--font-cormorant), "Cormorant Garamond", "Times New Roman", serif;
-  --dn-sans: Arial, "Helvetica Neue", Helvetica, sans-serif;
-  --dn-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", Menlo, monospace;
+     Three families, three jobs, and no overlap between them.
+
+       --dn-serif  display only. Headlines, pull quotes, section titles, and
+                   the numerals that behave as ornament. Never body copy.
+       --dn-sans   every running word. Ledes, body, buttons, nav, links.
+       --dn-mono   labels only. Eyebrows, tiers, spec keys, step indices —
+                   anything set small, tracked and uppercase.
+
+     A word belongs to exactly one of these. That rule is what makes the page
+     read as one voice rather than three competing ones. */
+  --dn-serif: var(--font-display), "Newsreader", "Times New Roman", serif;
+  --dn-sans: var(--font-text), "Inter", system-ui, -apple-system, sans-serif;
+  --dn-mono: var(--font-label), ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* ---- type scale ----
+     One ratio, applied everywhere. Each display step fluidly interpolates
+     between a phone size and a desktop size; the text steps are fixed,
+     because body copy that grows with the viewport is harder to read, not
+     easier. Sizes below --dn-fs-xs exist only as tracked mono labels. */
+  /* Newsreader sets appreciably wider than the Garamond it replaced, so the
+     hero step comes down — at 4.75rem the third line ran into the colonnade. */
+  --dn-fs-hero: clamp(2.6rem, 4.8vw, 4.2rem);
+  --dn-fs-display: clamp(2.1rem, 4.2vw, 3.4rem);
+  --dn-fs-title: clamp(1.6rem, 2.6vw, 2.15rem);
+  --dn-fs-quote: clamp(1.3rem, 1.75vw, 1.6rem);
+  --dn-fs-lede: clamp(1.0625rem, 1.15vw, 1.1875rem);
+  --dn-fs-body: 0.9375rem;
+  --dn-fs-sm: 0.8125rem;
+  --dn-fs-xs: 0.75rem;
+  --dn-fs-label-lg: 11px;
+  --dn-fs-label: 10.5px;
+  --dn-fs-label-sm: 9.5px;
+
+  /* Tracking. Display sizes tighten, labels open up. */
+  --dn-tr-display: -0.021em;
+  --dn-tr-text: -0.006em;
+  --dn-tr-label: 0.22em;
+
+  /* ---- radius ---- */
+  --dn-r-sm: 3px;
+  --dn-r: 6px;
+  --dn-r-lg: 10px;
+  --dn-r-pill: 9999px;
+
+  /* ---- motion ----
+     A fixed set of speeds. Anything that moves picks one; nothing invents its
+     own. --dn-t is the default for any state change a pointer causes.
+     The two long ones are narrative, not interface: --dn-t-reveal is the
+     scroll entrance, --dn-t-rail is the pipeline light travelling its track. */
+  --dn-t-fast: 160ms;
+  --dn-t: 280ms;
+  --dn-t-slow: 640ms;
+  --dn-t-reveal: 900ms;
+  --dn-t-rail: 1200ms;
+  --dn-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dn-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* ---- metrics ---- */
   --dn-shell: 1240px;
   --dn-gutter: clamp(20px, 5vw, 72px);
   --dn-nav-h: 66px; /* height of the floating bar itself */
   --dn-nav-top: clamp(12px, 1.6vw, 20px); /* gap between it and the viewport */
-  --dn-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   position: relative;
   background: var(--dn-bg);
@@ -61,7 +146,7 @@
 }
 
 .dn ::selection {
-  background: rgba(217, 164, 65, 0.24);
+  background: rgba(224, 169, 74, 0.24);
   color: #fff;
 }
 
@@ -82,7 +167,7 @@ html:has(.dn) {
   /* Clears the floating bar plus its top gap. Literal rather than calc() —
      the --dn-nav-* tokens are scoped to .dn, not to <html>. */
   scroll-padding-top: 112px;
-  background: #0b0b0b;
+  background: #0a0908;
 }
 
 /* ---------------------------------------------------------------------------
@@ -103,6 +188,40 @@ html:has(.dn) {
 
 .dn-section--tight {
   padding-block: clamp(64px, 8vw, 112px);
+}
+
+/* ---------------------------------------------------------------------------
+   Architectural plates
+   ----------------------------------------------------------------------------
+   The classical plates behind the interior sections were each graded
+   differently — opacities from 0.15 to 0.72, some sepia, some greyscale, some
+   masked and some not. Read in sequence they came across as four unrelated
+   photographs rather than one material.
+
+   They are now a single material rather than four unrelated photographs: each
+   is desaturated and re-tinted warm so the stone shares a temperature with the
+   gold, and all of them sit under one mask envelope. They are meant to be
+   seen — the architecture is part of the brand — but never at a strength that
+   puts texture underneath a word the reader has to work at. The hero keeps its
+   own full-strength grade below; it is the one image on the page allowed to
+   behave like a picture rather than a material.
+   ------------------------------------------------------------------------- */
+
+.dn-sol-plate,
+.dn-arch-plate,
+.dn-thesis-plate,
+.dn-footer-plate {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  pointer-events: none;
+  filter: grayscale(1) sepia(0.42) saturate(1.55) hue-rotate(-8deg) brightness(0.92)
+    contrast(1.1);
+  opacity: var(--dn-plate-opacity, 0.3);
+  /* One envelope for all of them: nothing at the seams, texture in the middle. */
+  mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
 }
 
 /* A hairline that runs the full bleed of the page, used between movements. */
@@ -128,9 +247,9 @@ html:has(.dn) {
   align-items: center;
   gap: 12px;
   font-family: var(--dn-mono);
-  font-size: 10.5px;
-  font-weight: 400;
-  letter-spacing: 0.24em;
+  font-size: var(--dn-fs-label);
+  font-weight: 500;
+  letter-spacing: var(--dn-tr-label);
   text-transform: uppercase;
   color: var(--dn-gold);
   margin: 0;
@@ -140,7 +259,7 @@ html:has(.dn) {
   content: "";
   width: 22px;
   height: 1px;
-  background: var(--dn-gold-dim);
+  background: linear-gradient(to right, var(--dn-gold), var(--dn-gold-faint));
   flex: none;
 }
 
@@ -156,48 +275,71 @@ html:has(.dn) {
   background: var(--dn-line-3);
 }
 
-/* Editorial display face — the voice of the page. */
+/* Editorial display face — the voice of the page.
+   Newsreader carries more weight per stem than the Garamond revival it
+   replaced, so it sets at 500/600 rather than 700; pushing it to bold would
+   make it shout where the old face needed the help to be seen at all. */
 .dn-display {
   font-family: var(--dn-serif);
-  font-weight: 700;
-  font-size: clamp(2.1rem, 4.3vw, 3.5rem);
-  line-height: 1.08;
-  letter-spacing: -0.015em;
+  font-weight: 600;
+  font-size: var(--dn-fs-display);
+  line-height: 1.1;
+  letter-spacing: var(--dn-tr-display);
   color: var(--dn-fg);
   margin: 0;
   text-wrap: balance;
 }
 
 .dn-display--hero {
-  font-size: clamp(2.6rem, 5vw, 4.35rem);
-  line-height: 1.04;
-  letter-spacing: -0.02em;
+  font-size: var(--dn-fs-hero);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
   max-width: 15ch;
 }
 
-.dn-display em {
+/* Section-level heading, a step below .dn-display. */
+.dn-title {
+  font-family: var(--dn-serif);
+  font-weight: 600;
+  font-size: var(--dn-fs-title);
+  line-height: 1.16;
+  letter-spacing: -0.016em;
+  color: var(--dn-fg);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.dn-display em,
+.dn-title em {
   font-style: italic;
   color: var(--dn-gold-bright);
 }
 
+/* Running text. Fixed sizes — body copy that grows with the viewport is
+   harder to read, not easier — with the measure doing the responsive work. */
 .dn-lede {
-  font-size: clamp(1rem, 1.28vw, 1.125rem);
-  line-height: 1.72;
+  font-size: var(--dn-fs-lede);
+  line-height: 1.68;
+  letter-spacing: var(--dn-tr-text);
   color: var(--dn-fg-2);
   margin: 0;
   max-width: 62ch;
+  text-wrap: pretty;
 }
 
 .dn-body {
-  font-size: 0.9375rem;
-  line-height: 1.75;
+  font-size: var(--dn-fs-body);
+  line-height: 1.72;
+  letter-spacing: var(--dn-tr-text);
   color: var(--dn-fg-2);
   margin: 0;
+  text-wrap: pretty;
 }
 
 .dn-mono-label {
   font-family: var(--dn-mono);
-  font-size: 10.5px;
+  font-size: var(--dn-fs-label);
+  font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--dn-fg-3);
@@ -242,15 +384,15 @@ html:has(.dn) {
   cursor: pointer;
   white-space: nowrap;
   transition:
-    background 240ms var(--dn-ease),
-    color 240ms var(--dn-ease),
-    border-color 240ms var(--dn-ease),
-    transform 240ms var(--dn-ease);
+    background var(--dn-t) var(--dn-ease),
+    color var(--dn-t) var(--dn-ease),
+    border-color var(--dn-t) var(--dn-ease),
+    transform var(--dn-t) var(--dn-ease);
 }
 
 .dn-btn .dn-btn-arr {
   display: inline-block;
-  transition: transform 300ms var(--dn-ease);
+  transition: transform var(--dn-t) var(--dn-ease);
 }
 
 .dn-btn:hover .dn-btn-arr {
@@ -261,20 +403,25 @@ html:has(.dn) {
   --dn-btn-bg: var(--dn-gold-bright);
 }
 
-.dn-btn--ghost {
+/* Scoped to `.dn` to match the specificity of the `.dn .dn-btn` base above.
+   Without it the base's --dn-btn-bg won and every secondary CTA rendered as a
+   second solid white pill, leaving the two actions with no hierarchy. */
+.dn .dn-btn--ghost {
   --dn-btn-bg: transparent;
-  --dn-btn-fg: var(--dn-fg);
+  --dn-btn-fg: var(--dn-fg-2);
   border-color: var(--dn-line-2);
 }
 
-.dn-btn--ghost:hover {
-  border-color: var(--dn-gold-dim);
+.dn .dn-btn--ghost:hover {
+  --dn-btn-bg: var(--dn-gold-wash);
   --dn-btn-fg: var(--dn-gold-bright);
+  border-color: var(--dn-gold-dim);
 }
 
-.dn-btn--sm {
+/* Scoped like the base so its overrides actually land. */
+.dn .dn-btn--sm {
   padding: 10px 18px;
-  font-size: 12px;
+  font-size: var(--dn-fs-xs);
 }
 
 /* Pill CTA — the arrow becomes a filled disc rather than a sliding glyph. */
@@ -282,7 +429,7 @@ html:has(.dn) {
   border-radius: 999px;
   padding: 6px 6px 6px 20px;
   gap: 12px;
-  font-size: 13.5px;
+  font-size: var(--dn-fs-sm);
 }
 
 .dn .dn-btn--pill .dn-btn-arr {
@@ -296,7 +443,7 @@ html:has(.dn) {
   color: var(--dn-fg);
   font-size: 13px;
   line-height: 1;
-  transition: transform 300ms var(--dn-ease);
+  transition: transform var(--dn-t) var(--dn-ease);
 }
 
 /* A disc that slides sideways reads as broken; grow it instead. */
@@ -310,15 +457,15 @@ html:has(.dn) {
   align-items: center;
   gap: 10px;
   font-family: var(--dn-mono);
-  font-size: 11px;
+  font-size: var(--dn-fs-label-lg);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--dn-fg-3);
-  transition: color 240ms var(--dn-ease);
+  transition: color var(--dn-t) var(--dn-ease);
 }
 
 .dn-link .dn-link-arr {
-  transition: transform 300ms var(--dn-ease);
+  transition: transform var(--dn-t) var(--dn-ease);
 }
 
 .dn-link:hover {
@@ -347,8 +494,8 @@ html:has(.dn) {
   opacity: 0;
   transform: translateY(18px);
   transition:
-    opacity 900ms var(--dn-ease),
-    transform 900ms var(--dn-ease);
+    opacity var(--dn-t-reveal) var(--dn-ease),
+    transform var(--dn-t-reveal) var(--dn-ease);
   transition-delay: var(--dn-reveal-delay, 0ms);
 }
 
@@ -402,9 +549,9 @@ html:has(.dn) {
   -webkit-backdrop-filter: blur(20px) saturate(1.15);
   box-shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.7);
   transition:
-    background 400ms var(--dn-ease),
-    border-color 400ms var(--dn-ease),
-    box-shadow 400ms var(--dn-ease);
+    background var(--dn-t) var(--dn-ease),
+    border-color var(--dn-t) var(--dn-ease),
+    box-shadow var(--dn-t) var(--dn-ease);
 }
 
 .dn-nav.is-scrolled .dn-nav-inner {
@@ -467,7 +614,7 @@ html:has(.dn) {
   position: relative;
   font-size: 14px;
   color: var(--dn-fg-2);
-  transition: color 240ms var(--dn-ease);
+  transition: color var(--dn-t) var(--dn-ease);
 }
 
 .dn-nav-links a::after {
@@ -478,7 +625,7 @@ html:has(.dn) {
   bottom: -6px;
   height: 1px;
   background: var(--dn-gold);
-  transition: right 320ms var(--dn-ease);
+  transition: right var(--dn-t) var(--dn-ease);
 }
 
 .dn-nav-links a:hover {
@@ -514,7 +661,7 @@ html:has(.dn) {
   height: 1px;
   background: currentColor;
   position: relative;
-  transition: background 200ms var(--dn-ease);
+  transition: background var(--dn-t) var(--dn-ease);
 }
 
 .dn-nav-toggle span::before,
@@ -525,7 +672,7 @@ html:has(.dn) {
   width: 15px;
   height: 1px;
   background: currentColor;
-  transition: transform 280ms var(--dn-ease);
+  transition: transform var(--dn-t) var(--dn-ease);
 }
 
 .dn-nav-toggle span::before {
@@ -630,15 +777,29 @@ html:has(.dn) {
   z-index: 0;
   background-image: var(--dn-plate, url("/assets/hero_dn.png"));
   background-size: cover;
-  background-position: 56% 82%;
+  /* Pulled left of centre so the olive tree stays in frame rather than being
+     cropped to a few branches in the corner. */
+  background-position: 46% 74%;
   opacity: 1;
-  filter: contrast(1.1) brightness(1.45) saturate(1.05);
+  /* The plate is a lit photograph, not the dark engraving this was originally
+     graded for — a 1.45 brightness lift blew the colonnade's highlights into a
+     flat mass. Near-neutral now, with the contrast doing the shaping. */
+  filter: contrast(1.06) brightness(1.02) saturate(1.04);
   transform: scale(1.03);
 }
 
-/* Two scrims. The first sinks the left third to near-black so the headline
-   always sits on flat ground; the second feathers the top and bottom edges
-   into the page. */
+/* Three scrims, each with one job.
+
+   The first is a gentle rake from the left. It used to be a near-opaque wall
+   over the left third, which held the headline beautifully and erased the
+   tree along with it. It now only takes the edge off, so the left of the
+   frame stays legible as an image.
+
+   The second is the local ground under the copy — see .dn-hero-inner::before
+   below. Holding the type's protection there rather than in this global rake
+   is what lets the rake be this light.
+
+   The third feathers the top and bottom edges into the page. */
 .dn-hero-veil {
   position: absolute;
   inset: 0;
@@ -646,16 +807,14 @@ html:has(.dn) {
   background:
     linear-gradient(
       100deg,
-      rgba(11, 11, 11, 0.96) 0%,
-      rgba(11, 11, 11, 0.93) 38%,
-      /* Holds full strength past the copy measure (~53%), then falls away
-         quickly so the temple owns the right-hand half of the frame. */
-      rgba(11, 11, 11, 0.66) 50%,
-      rgba(11, 11, 11, 0.08) 66%,
-      rgba(11, 11, 11, 0.12) 84%,
-      rgba(11, 11, 11, 0.5) 100%
+      rgba(10, 9, 8, 0.72) 0%,
+      rgba(10, 9, 8, 0.58) 30%,
+      rgba(10, 9, 8, 0.4) 50%,
+      rgba(10, 9, 8, 0.1) 68%,
+      rgba(10, 9, 8, 0.14) 84%,
+      rgba(10, 9, 8, 0.48) 100%
     ),
-    linear-gradient(to bottom, var(--dn-bg) 0%, rgba(11, 11, 11, 0.5) 12%, transparent 34%, transparent 68%, var(--dn-bg) 100%);
+    linear-gradient(to bottom, var(--dn-bg) 0%, rgba(10, 9, 8, 0.5) 12%, transparent 34%, transparent 68%, var(--dn-bg) 100%);
 }
 
 /* A single controlled shaft of gold entering from upper right. */
@@ -666,8 +825,8 @@ html:has(.dn) {
   pointer-events: none;
   background: radial-gradient(
     58% 44% at 76% 18%,
-    rgba(217, 164, 65, 0.16) 0%,
-    rgba(217, 164, 65, 0.05) 42%,
+    rgba(224, 169, 74, 0.16) 0%,
+    rgba(224, 169, 74, 0.05) 42%,
     transparent 72%
   );
   mix-blend-mode: screen;
@@ -694,6 +853,28 @@ html:has(.dn) {
   gap: clamp(22px, 2.6vh, 32px);
   width: 100%;
   max-width: 580px;
+}
+
+/* The copy's own ground: a soft ellipse that travels with the text block
+   rather than a wall painted across the left of the frame. It is what keeps
+   the headline on flat tone while the tree behind it stays visible.
+
+   Generously oversized and heavily blurred so it has no perceptible edge —
+   the reader should register the type as legible, not notice a shape. */
+.dn-hero-inner::before {
+  content: "";
+  position: absolute;
+  inset: -18% -30% -22% -34%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    62% 58% at 42% 50%,
+    rgba(8, 7, 6, 0.9) 0%,
+    rgba(8, 7, 6, 0.72) 44%,
+    rgba(8, 7, 6, 0.34) 68%,
+    transparent 84%
+  );
+  filter: blur(22px);
 }
 
 /* Kept short of the temple's leading column so no line runs into the stonework. */
@@ -729,10 +910,10 @@ html:has(.dn) {
     background: linear-gradient(
       to bottom,
       var(--dn-bg) 0%,
-      rgba(11, 11, 11, 0.92) 16%,
-      rgba(11, 11, 11, 0.9) 72%,
-      rgba(11, 11, 11, 0.7) 90%,
-      rgba(11, 11, 11, 0.85) 100%
+      rgba(10, 9, 8, 0.92) 16%,
+      rgba(10, 9, 8, 0.9) 72%,
+      rgba(10, 9, 8, 0.7) 90%,
+      rgba(10, 9, 8, 0.85) 100%
     );
   }
 
@@ -759,20 +940,18 @@ html:has(.dn) {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  /* Bottom padding runs long so the three panels, whose copy lengths differ,
+     end on a common floor instead of leaving one with a ragged void. */
   padding: 36px clamp(24px, 2.4vw, 34px) 40px;
   overflow: hidden;
-  border: 1px solid var(--dn-line-2);
-  border-radius: 3px;
-  background: linear-gradient(
-    to bottom,
-    rgba(242, 239, 233, 0.05),
-    rgba(242, 239, 233, 0.014) 60%,
-    transparent
-  );
+  border: 1px solid var(--dn-line);
+  border-radius: var(--dn-r);
+  background: linear-gradient(to bottom, var(--dn-surface), var(--dn-bg-raised) 70%);
+  box-shadow: var(--dn-shadow-sm);
   transition:
-    background 500ms var(--dn-ease),
-    border-color 500ms var(--dn-ease),
-    transform 500ms var(--dn-ease);
+    border-color var(--dn-t) var(--dn-ease),
+    transform var(--dn-t) var(--dn-ease),
+    box-shadow var(--dn-t) var(--dn-ease);
 }
 
 /* Lit top edge, present at rest rather than only on hover. */
@@ -783,18 +962,39 @@ html:has(.dn) {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(to right, var(--dn-gold), rgba(217, 164, 65, 0.12) 78%, transparent);
+  z-index: 2;
+  background: linear-gradient(to right, var(--dn-gold), var(--dn-gold-faint) 78%, transparent);
+  transition: box-shadow var(--dn-t) var(--dn-ease);
+}
+
+.dn-gap-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(110% 80% at 50% 0%, var(--dn-gold-wash), transparent 60%);
+  opacity: 0;
+  transition: opacity var(--dn-t) var(--dn-ease);
+}
+
+.dn-gap-panel > * {
+  position: relative;
+  z-index: 1;
 }
 
 .dn-gap-panel:hover {
-  border-color: var(--dn-gold-dim);
-  transform: translateY(-3px);
-  background: linear-gradient(
-    to bottom,
-    rgba(242, 239, 233, 0.075),
-    rgba(242, 239, 233, 0.02) 60%,
-    transparent
-  );
+  border-color: var(--dn-line-2);
+  transform: translateY(-4px);
+  box-shadow: var(--dn-shadow-lg);
+}
+
+.dn-gap-panel:hover::before {
+  box-shadow: 0 0 18px var(--dn-gold-glow);
+}
+
+.dn-gap-panel:hover::after {
+  opacity: 1;
 }
 
 /* Ghosted numeral, set large enough to register as structure. */
@@ -803,19 +1003,20 @@ html:has(.dn) {
   top: 14px;
   right: 20px;
   font-family: var(--dn-serif);
-  font-size: 3.6rem;
+  font-size: clamp(2.8rem, 4vw, 3.6rem);
+  font-weight: 500;
   line-height: 1;
-  color: rgba(242, 239, 233, 0.07);
+  color: rgba(244, 241, 235, 0.08);
   pointer-events: none;
 }
 
 /* The venue name is what should catch the eye first. */
 .dn-gap-venue {
   font-family: var(--dn-serif);
-  font-weight: 700;
-  font-size: clamp(1.55rem, 2.1vw, 2rem);
-  line-height: 1.1;
-  letter-spacing: -0.015em;
+  font-weight: 600;
+  font-size: var(--dn-fs-title);
+  line-height: 1.14;
+  letter-spacing: -0.016em;
   color: var(--dn-fg);
   margin: 0;
   padding-right: 52px; /* clears the numeral */
@@ -830,7 +1031,8 @@ html:has(.dn) {
   border-top: 1px solid var(--dn-line);
   font-family: var(--dn-serif);
   font-style: italic;
-  font-size: clamp(1.02rem, 1.35vw, 1.2rem);
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  font-weight: 400;
   line-height: 1.35;
   color: var(--dn-gold-bright);
   /* Reserves the tallest verdict so the paragraphs below share one baseline
@@ -851,10 +1053,10 @@ html:has(.dn) {
 
 .dn-gap-conclusion p {
   font-family: var(--dn-serif);
-  font-weight: 700;
+  font-weight: 600;
   font-size: clamp(1.5rem, 2.4vw, 2.1rem);
-  line-height: 1.3;
-  letter-spacing: -0.01em;
+  line-height: 1.28;
+  letter-spacing: -0.018em;
   color: var(--dn-fg);
   margin: 0;
   text-wrap: balance;
@@ -876,7 +1078,7 @@ html:has(.dn) {
   gap: 16px;
   padding: 20px 24px;
   font-family: var(--dn-mono);
-  font-size: 11.5px;
+  font-size: var(--dn-fs-label-lg);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--dn-fg-3);
@@ -896,14 +1098,14 @@ html:has(.dn) {
 
 .dn-transition-step[data-state="now"] {
   color: var(--dn-fg);
-  background: linear-gradient(to right, rgba(217, 164, 65, 0.09), transparent 70%);
+  background: linear-gradient(to right, rgba(224, 169, 74, 0.09), transparent 70%);
   box-shadow: inset 2px 0 0 var(--dn-gold);
 }
 
 .dn-transition-step[data-state="now"] .dn-dot {
   background: var(--dn-gold);
   border-color: var(--dn-gold);
-  box-shadow: 0 0 10px rgba(217, 164, 65, 0.8);
+  box-shadow: 0 0 10px rgba(224, 169, 74, 0.8);
 }
 
 @media (max-width: 900px) {
@@ -934,17 +1136,13 @@ html:has(.dn) {
    so it sits behind the execution sequence rather than behind the cards —
    the pillar cards are opaque and would occlude it anyway. */
 .dn-sol-plate {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
   background-image: var(--dn-plate, url("/assets/how_it_works_dn.png"));
-  background-size: cover;
   background-position: center 78%;
-  opacity: 0.26;
-  filter: contrast(1.04) brightness(0.9);
-  mask-image: linear-gradient(to bottom, transparent 34%, rgba(0, 0, 0, 0.7) 62%, #000 82%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 34%, rgba(0, 0, 0, 0.7) 62%, #000 82%, transparent 100%);
-  pointer-events: none;
+  /* Sits directly behind the pipeline rail and its panel, so it runs quieter
+     than the other plates — this is the most type-dense band on the page. */
+  --dn-plate-opacity: 0.26;
+  mask-image: linear-gradient(to bottom, transparent 34%, rgba(0, 0, 0, 0.7) 62%, #000 84%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 34%, rgba(0, 0, 0, 0.7) 62%, #000 84%, transparent 100%);
 }
 
 .dn-sol > .dn-shell {
@@ -952,6 +1150,8 @@ html:has(.dn) {
   z-index: 1;
 }
 
+/* A hairline mosaic: the 1px grid gap *is* the rule between cells, so the four
+   pillars read as one ruled plate rather than four floating boxes. */
 .dn-pillars {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -959,7 +1159,9 @@ html:has(.dn) {
   margin-top: clamp(56px, 7vw, 92px);
   background: var(--dn-line);
   border: 1px solid var(--dn-line);
-  border-radius: 2px;
+  border-radius: var(--dn-r);
+  overflow: hidden;
+  box-shadow: var(--dn-shadow-sm);
 }
 
 .dn-pillar {
@@ -968,27 +1170,63 @@ html:has(.dn) {
   flex-direction: column;
   gap: 20px;
   padding: clamp(32px, 3.4vw, 48px);
-  background: var(--dn-bg);
-  transition: background 500ms var(--dn-ease);
+  background: var(--dn-bg-raised);
+  transition: background var(--dn-t) var(--dn-ease);
+}
+
+/* Because the cells sit flush, a pillar cannot lift on hover without breaking
+   the grid. It brightens and grows a gold top edge instead. */
+.dn-pillar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, var(--dn-gold), transparent 70%);
+  opacity: 0;
+  transition: opacity var(--dn-t) var(--dn-ease);
+}
+
+.dn-pillar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(90% 70% at 0% 0%, var(--dn-gold-wash), transparent 58%);
+  opacity: 0;
+  transition: opacity var(--dn-t) var(--dn-ease);
 }
 
 .dn-pillar:hover {
   background: var(--dn-surface);
 }
 
+.dn-pillar:hover::before,
+.dn-pillar:hover::after {
+  opacity: 1;
+}
+
+.dn-pillar > * {
+  position: relative;
+  z-index: 1;
+}
+
 .dn-pillar-icon {
   width: 40px;
   height: 40px;
   color: var(--dn-gold);
-  opacity: 0.85;
+  opacity: 0.8;
   transition:
-    opacity 400ms var(--dn-ease),
-    transform 600ms var(--dn-ease);
+    opacity var(--dn-t) var(--dn-ease),
+    transform var(--dn-t-slow) var(--dn-ease),
+    filter var(--dn-t) var(--dn-ease);
 }
 
 .dn-pillar:hover .dn-pillar-icon {
   opacity: 1;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  filter: drop-shadow(0 4px 12px var(--dn-gold-glow));
 }
 
 .dn-pillar h3 {
@@ -1005,13 +1243,16 @@ html:has(.dn) {
   max-width: 44ch;
 }
 
-/* --- Execution flow --- */
+/* --- Execution pipeline ---
+   A tablist that reads as a rail. The stages are the tabs; the panel below
+   carries the detail for whichever stage is selected. */
 
 .dn-flow {
   margin-top: clamp(56px, 7vw, 96px);
   padding-top: clamp(40px, 5vw, 64px);
   border-top: 1px solid var(--dn-line);
 }
+
 
 .dn-flow-track {
   position: relative;
@@ -1020,13 +1261,22 @@ html:has(.dn) {
   margin-top: 40px;
 }
 
-/* The rail the light travels along. */
+/* The rail the light travels along.
+   Each node sits at the leading edge of its column, so the rail stops one
+   column short of the track — otherwise it runs on past the final node into
+   empty space. */
+.dn-flow-track {
+  --dn-flow-rail: calc(100% - (100% / var(--dn-flow-steps, 4)));
+  /* Half a column, so the rail begins under the first node. */
+  --dn-flow-inset: calc(100% / var(--dn-flow-steps, 4) / 2);
+}
+
 .dn-flow-track::before {
   content: "";
   position: absolute;
   top: 5px;
-  left: 0;
-  right: 0;
+  left: var(--dn-flow-inset);
+  width: var(--dn-flow-rail);
   height: 1px;
   background: var(--dn-line-2);
 }
@@ -1035,78 +1285,214 @@ html:has(.dn) {
   content: "";
   position: absolute;
   top: 5px;
-  left: 0;
+  left: var(--dn-flow-inset);
   height: 1px;
-  width: var(--dn-flow-progress, 0%);
+  /* --dn-flow-progress is a unitless 0–1 fraction of the rail, so 1 lands on
+     the last node rather than overshooting it. */
+  width: calc(var(--dn-flow-rail) * var(--dn-flow-progress, 0));
   background: linear-gradient(to right, var(--dn-gold-dim), var(--dn-gold));
-  box-shadow: 0 0 12px rgba(217, 164, 65, 0.5);
-  transition: width 1200ms var(--dn-ease);
+  box-shadow: 0 0 12px var(--dn-gold-glow);
+  transition: width var(--dn-t-rail) var(--dn-ease);
 }
 
-.dn-flow-step {
+.dn .dn-flow-step {
   position: relative;
-  padding: 30px 24px 0 0;
+  padding: 30px 14px 22px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 12px;
+  /* Reset the UA button. This is a control, but it has to read as type. */
+  appearance: none;
+  background: none;
+  border: 0;
+  margin: 0;
+  font: inherit;
+  /* Each stage is centred under its own node, which puts the rail's two ends
+     an equal distance from the edges of the track — the assembly reads as one
+     centred object rather than something anchored to the left. */
+  text-align: center;
+  color: inherit;
+  cursor: pointer;
 }
 
 .dn-flow-step::before {
   content: "";
   position: absolute;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 11px;
   height: 11px;
   border: 1px solid var(--dn-line-3);
   border-radius: 50%;
   background: var(--dn-bg);
   transition:
-    border-color 500ms var(--dn-ease),
-    background 500ms var(--dn-ease),
-    box-shadow 500ms var(--dn-ease);
+    border-color var(--dn-t) var(--dn-ease),
+    background var(--dn-t) var(--dn-ease),
+    box-shadow var(--dn-t) var(--dn-ease),
+    transform var(--dn-t) var(--dn-ease);
 }
 
 .dn-flow-step.is-lit::before {
   border-color: var(--dn-gold);
   background: var(--dn-gold);
-  box-shadow: 0 0 14px rgba(217, 164, 65, 0.75);
+  box-shadow: 0 0 14px var(--dn-gold-glow);
+}
+
+/* The selected stage's node grows a ring, so selection is legible even to a
+   reader who cannot distinguish the gold from the lit state. */
+.dn-flow-step.is-active::before {
+  transform: translateX(-50%) scale(1.25);
+  box-shadow:
+    0 0 0 4px var(--dn-gold-wash),
+    0 0 18px var(--dn-gold-glow);
 }
 
 .dn-flow-num {
   font-family: var(--dn-mono);
-  font-size: 10.5px;
+  font-size: var(--dn-fs-label);
+  font-weight: 500;
   letter-spacing: 0.2em;
   color: var(--dn-fg-4);
-  transition: color 500ms var(--dn-ease);
+  transition: color var(--dn-t) var(--dn-ease);
 }
 
 .dn-flow-step.is-lit .dn-flow-num {
+  color: var(--dn-gold-dim);
+}
+
+.dn-flow-step.is-active .dn-flow-num {
   color: var(--dn-gold);
 }
 
 .dn-flow-label {
-  font-size: clamp(0.98rem, 1.25vw, 1.12rem);
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
   font-weight: 500;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.012em;
   color: var(--dn-fg-3);
-  transition: color 500ms var(--dn-ease);
+  transition: color var(--dn-t) var(--dn-ease);
 }
 
 .dn-flow-step.is-lit .dn-flow-label {
+  color: var(--dn-fg-2);
+}
+
+.dn-flow-step.is-active .dn-flow-label,
+.dn-flow-step:hover .dn-flow-label {
   color: var(--dn-fg);
 }
 
 .dn-flow-note {
-  font-size: 0.8125rem;
+  font-size: var(--dn-fs-sm);
   line-height: 1.6;
   color: var(--dn-fg-4);
   max-width: 26ch;
-  transition: color 500ms var(--dn-ease);
+  margin-inline: auto;
+  transition: color var(--dn-t) var(--dn-ease);
 }
 
 .dn-flow-step.is-lit .dn-flow-note {
   color: var(--dn-fg-3);
+}
+
+/* --- The detail panel --- */
+
+.dn-flow-panel {
+  margin-top: 34px;
+  border: 1px solid var(--dn-line-2);
+  border-radius: var(--dn-r-lg);
+  background:
+    linear-gradient(to bottom right, var(--dn-gold-wash), transparent 42%),
+    var(--dn-surface);
+  box-shadow: var(--dn-shadow);
+  overflow: hidden;
+}
+
+.dn-flow-panel-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 0.44fr);
+  gap: clamp(28px, 4vw, 56px);
+  padding: clamp(26px, 3.2vw, 40px);
+  animation: dn-panel-in var(--dn-t-slow) var(--dn-ease-out) both;
+}
+
+@keyframes dn-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dn-flow-panel-inner {
+    animation: none;
+  }
+}
+
+.dn-flow-venue {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 5px 11px;
+  border: 1px solid var(--dn-gold-faint);
+  border-radius: var(--dn-r-sm);
+  background: var(--dn-gold-wash);
+  font-family: var(--dn-mono);
+  font-size: var(--dn-fs-label);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dn-gold-bright);
+}
+
+.dn-flow-panel-copy .dn-body {
+  max-width: 62ch;
+}
+
+/* The spec table. Hairline rows, mono values — it should read as a datasheet
+   sitting beside the prose, not as more prose. */
+.dn-flow-spec {
+  margin: 0;
+  align-self: start;
+  border-top: 1px solid var(--dn-line);
+}
+
+.dn-flow-spec-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--dn-line);
+}
+
+.dn-flow-spec dt {
+  font-family: var(--dn-mono);
+  font-size: var(--dn-fs-label-sm);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dn-fg-3);
+  white-space: nowrap;
+}
+
+.dn-flow-spec dd {
+  margin: 0;
+  font-size: var(--dn-fs-sm);
+  font-weight: 500;
+  color: var(--dn-fg);
+  text-align: right;
+}
+
+@media (max-width: 760px) {
+  .dn-flow-panel-inner {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
 }
 
 @media (max-width: 900px) {
@@ -1120,29 +1506,55 @@ html:has(.dn) {
     padding-left: 26px;
   }
 
+  /* Stacked, so the rail runs vertically. Same rule as the horizontal case:
+     it stops one row short so it ends on the last node. Rows are equal
+     fractions of the track's height here, so the shared --dn-flow-rail
+     percentage carries over unchanged. */
   .dn-flow-track::before,
   .dn-flow-track::after {
     top: 0;
-    bottom: 0;
+    bottom: auto;
     left: 5px;
     right: auto;
     width: 1px;
-    height: auto;
+    height: var(--dn-flow-rail);
+    transition: none;
   }
 
   .dn-flow-track::after {
-    height: var(--dn-flow-progress, 0%);
+    height: calc(var(--dn-flow-rail) * var(--dn-flow-progress, 0));
     width: 1px;
-    transition: height 1200ms var(--dn-ease);
+    background: linear-gradient(to bottom, var(--dn-gold-dim), var(--dn-gold));
+    transition: height var(--dn-t-rail) var(--dn-ease);
   }
 
-  .dn-flow-step {
+  /* Stacked, this is a vertical timeline running down a single rail, so the
+     desktop centring is undone: content goes back to the left margin and the
+     node sits out on the rail beside it. */
+  .dn .dn-flow-step {
     padding: 0 0 34px;
+    align-items: flex-start;
+    text-align: left;
   }
 
   .dn-flow-step::before {
     left: -26px;
     top: 4px;
+    transform: none;
+  }
+
+  .dn-flow-step.is-active::before {
+    transform: scale(1.25);
+  }
+
+  .dn-flow-note {
+    margin-inline: 0;
+  }
+
+  /* The rail runs the full height of the stack from the first node down. */
+  .dn-flow-track::before,
+  .dn-flow-track::after {
+    left: 5px;
   }
 }
 
@@ -1156,19 +1568,11 @@ html:has(.dn) {
 }
 
 .dn-arch-plate {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
   background-image: var(--dn-plate, url("/assets/final.png"));
-  background-size: cover;
   background-position: center;
-  /* High-contrast white line-art directly behind body copy, so it takes far
-     less opacity than the photographic plates before it starts competing. */
-  opacity: 0.15;
-  filter: grayscale(0.9) brightness(1.15);
-  mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
-  pointer-events: none;
+  /* Line-art rather than photography, so it carries further per unit opacity
+     and is pulled back accordingly. */
+  --dn-plate-opacity: 0.2;
 }
 
 .dn-arch > .dn-shell {
@@ -1188,9 +1592,17 @@ html:has(.dn) {
   grid-template-columns: 190px minmax(0, 1fr) auto;
   align-items: start;
   gap: clamp(24px, 4vw, 64px);
-  padding: clamp(32px, 3.6vw, 46px) 0;
+  padding: clamp(32px, 3.6vw, 46px) clamp(16px, 1.8vw, 26px);
+  /* Pull the row's own padding back out to the shell edge, so the hover wash
+     bleeds past the type without the content shifting. */
+  margin-inline: clamp(-26px, -1.8vw, -16px);
   border-top: 1px solid var(--dn-line);
-  transition: background 500ms var(--dn-ease);
+  border-radius: var(--dn-r);
+  transition: background var(--dn-t) var(--dn-ease);
+}
+
+.dn-layer:hover {
+  background: linear-gradient(to right, var(--dn-gold-wash), transparent 62%);
 }
 
 .dn-layer:last-child {
@@ -1200,12 +1612,13 @@ html:has(.dn) {
 .dn-layer::after {
   content: "";
   position: absolute;
-  left: -24px;
+  left: 0;
   top: -1px;
   width: 2px;
   height: 0;
   background: var(--dn-gold);
-  transition: height 600ms var(--dn-ease);
+  box-shadow: 0 0 12px var(--dn-gold-glow);
+  transition: height var(--dn-t-slow) var(--dn-ease);
 }
 
 .dn-layer:hover::after {
@@ -1220,7 +1633,7 @@ html:has(.dn) {
 
 .dn-layer-tier .dn-num {
   font-family: var(--dn-mono);
-  font-size: 10.5px;
+  font-size: var(--dn-fs-label);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--dn-gold);
@@ -1228,8 +1641,8 @@ html:has(.dn) {
 
 .dn-layer-tier .dn-name {
   font-family: var(--dn-serif);
-  font-size: clamp(1.3rem, 1.8vw, 1.6rem);
-  font-weight: 400;
+  font-size: var(--dn-fs-quote);
+  font-weight: 500;
   line-height: 1.16;
   color: var(--dn-fg);
 }
@@ -1248,12 +1661,12 @@ html:has(.dn) {
   border-radius: 2px;
   background: var(--dn-surface);
   font-family: var(--dn-mono);
-  font-size: 11px;
+  font-size: var(--dn-fs-label-lg);
   letter-spacing: 0.08em;
   color: var(--dn-fg-2);
   transition:
-    border-color 400ms var(--dn-ease),
-    color 400ms var(--dn-ease);
+    border-color var(--dn-t) var(--dn-ease),
+    color var(--dn-t) var(--dn-ease);
 }
 
 .dn-layer:hover .dn-layer-chip {
@@ -1263,27 +1676,6 @@ html:has(.dn) {
 
 .dn-layer-cta {
   padding-top: 6px;
-}
-
-/* Connector glyph between layers (the "↓" of the cutaway). */
-.dn-layer-connector {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding-left: 4px;
-  color: var(--dn-fg-4);
-  font-family: var(--dn-mono);
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
-.dn-layer-connector::before {
-  content: "";
-  width: 1px;
-  height: 34px;
-  background: linear-gradient(to bottom, var(--dn-gold-dim), transparent);
-  margin-left: 22px;
 }
 
 @media (max-width: 900px) {
@@ -1307,14 +1699,11 @@ html:has(.dn) {
 }
 
 .dn-thesis-plate {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
   background-image: var(--dn-plate, url("/assets/content.png"));
-  background-size: cover;
   background-position: center 30%;
-  opacity: 0.72;
-  filter: contrast(1.06) brightness(1.15);
+  /* Held below the others: this is the only plate that sits directly under
+     running body copy, and at its original 0.72 it was unreadable. */
+  --dn-plate-opacity: 0.24;
 }
 
 .dn-thesis-veil {
@@ -1322,8 +1711,8 @@ html:has(.dn) {
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(to bottom, var(--dn-bg) 0%, rgba(11, 11, 11, 0.6) 26%, rgba(11, 11, 11, 0.82) 60%, var(--dn-bg) 100%),
-    radial-gradient(90% 70% at 30% 40%, transparent, rgba(11, 11, 11, 0.6));
+    linear-gradient(to bottom, var(--dn-bg) 0%, rgba(10, 9, 8, 0.6) 26%, rgba(10, 9, 8, 0.82) 60%, var(--dn-bg) 100%),
+    radial-gradient(90% 70% at 30% 40%, transparent, rgba(10, 9, 8, 0.6));
 }
 
 .dn-thesis > .dn-shell {
@@ -1331,62 +1720,269 @@ html:has(.dn) {
   z-index: 2;
 }
 
-.dn-thesis-points {
+/* --- Writing ---
+   The thesis argues its case through published pieces rather than summary
+   cards. Each is a single link: a full-bleed image, a scrim, and the title
+   and date sitting on it.
+
+   The grid alternates card widths as the list grows — 7/5 then 5/7 across a
+   twelve-column field — so adding an entry to ARTICLES restaggers the section
+   without a layout change. A lone article takes the full width instead of
+   sitting in a 7-column card beside an empty gap.
+   ------------------------------------------------------------------------- */
+
+
+.dn-articles {
   margin-top: clamp(56px, 7vw, 88px);
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(28px, 3.4vw, 56px);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  /* The cards carry no intrinsic height — their content is absolutely
+     positioned over the image — so the row sets it. Fixing it here also keeps
+     the two cards in a pair the same height without either of them needing an
+     aspect-ratio, which would otherwise fight the column width. */
+  grid-auto-rows: clamp(260px, 24vw, 370px);
+  gap: clamp(14px, 1.6vw, 22px);
 }
 
-.dn-thesis-point {
+/* A single article runs the full measure, so it gets a wider, shallower row. */
+.dn-articles:has(> :only-child) {
+  grid-auto-rows: clamp(280px, 27vw, 420px);
+}
+
+/* The grid items are the Reveal wrappers, not the cards themselves. */
+.dn-articles > * {
+  grid-column: span 12;
+  min-width: 0;
+}
+
+@media (min-width: 900px) {
+  .dn-articles > *:nth-child(4n + 1),
+  .dn-articles > *:nth-child(4n + 4) {
+    grid-column: span 7;
+  }
+
+  .dn-articles > *:nth-child(4n + 2),
+  .dn-articles > *:nth-child(4n + 3) {
+    grid-column: span 5;
+  }
+
+  /* One article has no partner to sit beside, so it runs the full measure. */
+  .dn-articles > *:only-child {
+    grid-column: span 12;
+  }
+}
+
+.dn .dn-article {
+  position: relative;
+  display: block;
+  /* Fills the grid item in both axes. Deliberately no aspect-ratio: combined
+     with a stretched height it would derive width from the row and overflow
+     the column. The row height above does that job instead. */
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--dn-line-2);
+  border-radius: var(--dn-r-lg);
+  background: var(--dn-surface);
+  box-shadow: var(--dn-shadow);
+  isolation: isolate;
+  transition:
+    border-color var(--dn-t) var(--dn-ease),
+    transform var(--dn-t) var(--dn-ease),
+    box-shadow var(--dn-t) var(--dn-ease);
+}
+
+.dn-article-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  overflow: hidden;
+}
+
+.dn-article-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The source is a wide panorama whose subject sits right of centre; anchor
+     there so the Acropolis survives the crop in the narrow cards. */
+  object-position: 68% 50%;
+  transition: transform var(--dn-t-slow) var(--dn-ease);
+}
+
+/* Sinks the lower third so the title always has flat ground under it,
+   whatever the image behind happens to be doing. */
+.dn-article-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      to top,
+      rgba(6, 5, 5, 0.94) 0%,
+      rgba(6, 5, 5, 0.78) 22%,
+      rgba(6, 5, 5, 0.28) 48%,
+      transparent 72%
+    );
+  transition: opacity var(--dn-t) var(--dn-ease);
+}
+
+.dn-article-body {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding-top: 26px;
-  border-top: 1px solid var(--dn-line-2);
+  gap: 10px;
+  padding: clamp(20px, 2.4vw, 30px);
 }
 
-.dn-thesis-point .dn-numeral {
+.dn-article-title {
+  display: block;
   font-family: var(--dn-serif);
-  font-size: 1.05rem;
-  letter-spacing: 0.14em;
-  color: var(--dn-gold);
-}
-
-.dn-thesis-point h3 {
-  font-family: var(--dn-serif);
-  font-weight: 700;
-  font-size: clamp(1.25rem, 1.65vw, 1.5rem);
-  line-height: 1.24;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  font-size: var(--dn-fs-quote);
+  line-height: 1.2;
+  letter-spacing: -0.014em;
   color: var(--dn-fg);
-  margin: 0;
   text-wrap: balance;
 }
 
-/* Closing statement — the loudest quiet moment on the page. */
+/* Sits inline after the title, the way a standfirst runs on. */
+.dn-article-more {
+  margin-left: 0.4em;
+  font-weight: 400;
+  color: var(--dn-fg-3);
+  transition: color var(--dn-t) var(--dn-ease);
+}
+
+.dn-article-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--dn-mono);
+  font-size: var(--dn-fs-label);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dn-fg-3);
+}
+
+.dn-article-arr {
+  display: inline-block;
+  color: var(--dn-gold);
+  transition: transform var(--dn-t) var(--dn-ease);
+}
+
+.dn-article:hover {
+  transform: translateY(-4px);
+  border-color: var(--dn-gold-dim);
+  box-shadow: var(--dn-shadow-lg);
+}
+
+.dn-article:hover .dn-article-img {
+  transform: scale(1.04);
+}
+
+.dn-article:hover .dn-article-more {
+  color: var(--dn-gold-bright);
+}
+
+.dn-article:hover .dn-article-arr {
+  transform: translate(3px, -3px);
+}
+
+.dn-article:focus-visible {
+  border-color: var(--dn-gold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dn-article,
+  .dn-article-img,
+  .dn-article-arr {
+    transition: none;
+  }
+
+  .dn-article:hover {
+    transform: none;
+  }
+
+  .dn-article:hover .dn-article-img {
+    transform: none;
+  }
+}
+
+/* --- Closing statement ---
+   The loudest quiet moment on the page, and the line the whole thesis is
+   built to deliver. It gets its own stage: a framed plate, the two halves of
+   the statement set in opposition, and a single gold rule between them. */
+
 .dn-thesis-closing {
+  position: relative;
   margin-top: clamp(64px, 8vw, 112px);
-  padding-top: clamp(40px, 5vw, 64px);
-  border-top: 1px solid var(--dn-line);
+  padding: clamp(52px, 7vw, 92px) clamp(28px, 5vw, 72px);
+  border: 1px solid var(--dn-line-2);
+  border-radius: var(--dn-r-lg);
+  background:
+    radial-gradient(90% 130% at 50% 0%, var(--dn-gold-wash), transparent 58%),
+    linear-gradient(to bottom, var(--dn-surface), var(--dn-bg-deep));
+  box-shadow: var(--dn-shadow-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+  gap: 26px;
   text-align: center;
+  overflow: hidden;
+}
+
+/* Hairline corner brackets — the same architectural device as the contact
+   plate, so the two framed moments on the page rhyme. */
+.dn-thesis-closing::before,
+.dn-thesis-closing::after {
+  content: "";
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--dn-gold-faint);
+  pointer-events: none;
+}
+
+.dn-thesis-closing::before {
+  top: 18px;
+  left: 18px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.dn-thesis-closing::after {
+  bottom: 18px;
+  right: 18px;
+  border-left: 0;
+  border-top: 0;
 }
 
 .dn-thesis-closing-lines {
+  margin: 0;
   font-family: var(--dn-serif);
-  font-weight: 700;
-  font-size: clamp(1.85rem, 4vw, 3.2rem);
-  line-height: 1.16;
-  letter-spacing: -0.015em;
-  color: var(--dn-fg-3);
+  font-weight: 600;
+  font-size: clamp(2rem, 4.4vw, 3.5rem);
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
 .dn-thesis-closing-lines span {
   display: block;
+}
+
+/* The first line is the concession, the second is the claim. Setting the
+   concession back lets the claim land without either being shouted. Its own
+   value rather than --dn-fg-3, because at this size 3:1 is the bar and the
+   separation between the two lines is what the whole device depends on. */
+.dn-thesis-closing-lines span:first-child {
+  color: rgba(244, 241, 235, 0.44);
 }
 
 .dn-thesis-closing-lines span:last-child {
@@ -1396,17 +1992,15 @@ html:has(.dn) {
 .dn-thesis-closing-lines span:last-child::after {
   content: "";
   display: block;
-  width: 56px;
+  width: 64px;
   height: 1px;
-  margin: 30px auto 0;
-  background: var(--dn-gold);
-  box-shadow: 0 0 14px rgba(217, 164, 65, 0.6);
+  margin: 32px auto 0;
+  background: linear-gradient(to right, transparent, var(--dn-gold), transparent);
+  box-shadow: 0 0 16px var(--dn-gold-glow);
 }
 
-@media (max-width: 900px) {
-  .dn-thesis-points {
-    grid-template-columns: 1fr;
-  }
+.dn-thesis-closing .dn-body {
+  color: var(--dn-fg-2);
 }
 
 /* ---------------------------------------------------------------------------
@@ -1422,7 +2016,7 @@ html:has(.dn) {
   border: 1px solid var(--dn-line-2);
   border-radius: 2px;
   background:
-    linear-gradient(135deg, rgba(217, 164, 65, 0.05), transparent 46%),
+    linear-gradient(135deg, rgba(224, 169, 74, 0.05), transparent 46%),
     var(--dn-surface);
   position: relative;
   overflow: hidden;
@@ -1478,7 +2072,7 @@ html:has(.dn) {
   gap: 12px;
   padding: 13px 0;
   border-bottom: 1px solid var(--dn-line);
-  font-size: 13.5px;
+  font-size: var(--dn-fs-sm);
   color: var(--dn-fg-2);
 }
 
@@ -1514,19 +2108,29 @@ html:has(.dn) {
 }
 
 .dn-footer-plate {
-  position: absolute;
   inset: auto 0 0;
   height: 74%;
-  z-index: 0;
   background-image: var(--dn-plate, url("/assets/footer.png"));
-  background-size: cover;
   background-position: center bottom;
-  /* White line-art, so it goes further with less opacity than the photographic
-     plates. Weighted to the very bottom of the page. */
-  opacity: 0.3;
-  mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.45) 55%, #000 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.45) 55%, #000 100%);
-  pointer-events: none;
+  /* The page closes on the plate, so this is the one interior image allowed to
+     come up — it sits under the footer's link columns, not prose. The envelope
+     peaks across those columns and then eases off again, so the copyright rule
+     at the very bottom is not sitting on the brightest stonework. */
+  --dn-plate-opacity: 0.34;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 0, 0, 0.5) 42%,
+    #000 74%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 0, 0, 0.5) 42%,
+    #000 74%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
 }
 
 .dn-footer > .dn-shell {
@@ -1558,7 +2162,7 @@ html:has(.dn) {
 .dn-footer-col h4 {
   margin: 0 0 18px;
   font-family: var(--dn-mono);
-  font-size: 10px;
+  font-size: var(--dn-fs-label);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--dn-fg-4);
@@ -1572,9 +2176,9 @@ html:has(.dn) {
 }
 
 .dn-footer-col a {
-  font-size: 13.5px;
+  font-size: var(--dn-fs-sm);
   color: var(--dn-fg-2);
-  transition: color 240ms var(--dn-ease);
+  transition: color var(--dn-t) var(--dn-ease);
 }
 
 .dn-footer-col a:hover {
@@ -1590,7 +2194,7 @@ html:has(.dn) {
   padding-block: 24px;
   border-top: 1px solid var(--dn-line);
   font-family: var(--dn-mono);
-  font-size: 10.5px;
+  font-size: var(--dn-fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--dn-fg-4);
@@ -1605,7 +2209,7 @@ html:has(.dn) {
 .dn-footer-social a {
   display: inline-flex;
   color: var(--dn-fg-3);
-  transition: color 240ms var(--dn-ease);
+  transition: color var(--dn-t) var(--dn-ease);
 }
 
 .dn-footer-social a:hover {

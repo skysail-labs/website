@@ -33,6 +33,7 @@ export default function HomePage() {
         <Solution />
         <hr className="dn-rule" />
         <Architecture />
+        <hr className="dn-rule" />
         <Thesis />
         <hr className="dn-rule" />
         <Contact />
