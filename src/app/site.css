@@ -1773,7 +1773,7 @@ img.scene-art {
 
 .prose h2 {
   font-size: clamp(22px, 2.4vw, 30px);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.02em;
   margin: 56px 0 0;
   padding-top: 26px;
@@ -1783,7 +1783,7 @@ img.scene-art {
 
 .prose h3 {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.01em;
   margin: 34px 0 0;
   color: var(--chalk);
