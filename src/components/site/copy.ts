@@ -217,9 +217,8 @@ export type Article = {
 
 export const ARTICLES: readonly Article[] = [
   {
-    // TODO(darknyx): confirm the published date of this piece.
     title: "Solana Solved Retail Execution. Institutional Execution Comes Next.",
-    date: "2026-07-28",
+    date: "2026-07-29",
     href: "https://x.com/DarknyxProtocol/status/2082338365140046078",
     image: "/assets/articles/thesis-dark-liquidity.jpg",
     alt: "A moonlit colonnade looking out over the Acropolis, a thread of gold light running along the marble floor.",
