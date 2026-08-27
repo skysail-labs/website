@@ -23,6 +23,19 @@ export const contactHref = CONTACT.email
   ? `mailto:${CONTACT.email}?subject=${encodeURIComponent("Darknyx introduction")}`
   : CONTACT.x;
 
+/**
+ * The interactive product demo, served as a static bundle from `public/demo/`.
+ *
+ * Everything it shows other than the price chart is a local simulation, and it
+ * says so on every screen — so the label stays plain rather than implying live
+ * trading. `scenario=funded` seeds the walkthrough with balances so a first
+ * visitor sees a populated venue instead of an empty one.
+ */
+export const DEMO = {
+  href: "/demo?scenario=funded",
+  label: "Launch app",
+} as const;
+
 export const NAV_LINKS = [
   { label: "Protocol", href: "#protocol" },
   { label: "Architecture", href: "#architecture" },

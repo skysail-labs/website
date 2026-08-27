@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Lockup } from "./lockup";
 import { SiteLink } from "./site-link";
-import { NAV_LINKS, HERO, contactHref } from "./copy";
+import { NAV_LINKS, HERO, DEMO, contactHref } from "./copy";
 
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
@@ -44,6 +44,9 @@ export function SiteNav() {
           </div>
 
           <div className="dn-nav-end">
+            <SiteLink className="dn-btn dn-btn--primary dn-btn--pill dn-btn--pill-plain" href={DEMO.href}>
+              {DEMO.label}
+            </SiteLink>
             <SiteLink className="dn-btn dn-btn--primary dn-btn--pill" href={contactHref}>
               {HERO.primaryCta}
               <span className="dn-btn-arr" aria-hidden="true">
@@ -69,6 +72,13 @@ export function SiteNav() {
             {link.label}
           </SiteLink>
         ))}
+        <SiteLink
+          className="dn-btn dn-btn--primary dn-btn--pill dn-btn--pill-plain"
+          href={DEMO.href}
+          onClick={() => setOpen(false)}
+        >
+          {DEMO.label}
+        </SiteLink>
         <SiteLink
           className="dn-btn dn-btn--primary dn-btn--pill"
           href={contactHref}
