@@ -16,7 +16,7 @@
 export const CONTACT = {
   email: "" as string,
   x: "https://x.com/DarkNyxProtocol",
-  docs: "https://darknyx.gitbook.io/darknyx",
+  docs: "https://darknyx.mintlify.site",
 } as const;
 
 export const contactHref = CONTACT.email
@@ -273,7 +273,7 @@ export const FOOTER = {
       title: "Resources",
       links: [
         { label: "Documentation", href: "/docs" },
-        { label: "How it works", href: `${CONTACT.docs}/how-it-works/trade-flow` },
+        { label: "How it works", href: `${CONTACT.docs}/documentation/how-it-works/trade-flow` },
       ],
     },
     {

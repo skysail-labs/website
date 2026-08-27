@@ -5,12 +5,12 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/docs",
-        destination: "https://darknyx.gitbook.io/darknyx",
+        destination: "https://darknyx.mintlify.site/",
         permanent: true,
       },
       {
         source: "/docs/:path*",
-        destination: "https://darknyx.gitbook.io/darknyx",
+        destination: "https://darknyx.mintlify.site/",
         permanent: true,
       },
     ];
