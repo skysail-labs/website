@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
  * Anything that leaves the site opens in a new tab, so a visitor reading the
  * page never loses their place. In-page anchors and `mailto:` stay in place.
  *
- * `/docs` counts as leaving: it 301s to GitBook (see next.config.ts).
+ * `/docs` counts as leaving: it 301s to the Mintlify docs (see next.config.ts).
  */
 export function isOffsite(href: string) {
   return /^https?:\/\//.test(href) || href === "/docs" || href.startsWith("/docs/");

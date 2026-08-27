@@ -8,10 +8,9 @@ Orders match inside a Confidential VM (Intel TDX). Funds are held in a shielded 
 
 ```
 /                   Next.js website (darknyx.trade)
-├── gitbook/        GitBook doc source → darknyx.gitbook.io/darknyx
 └── design-system/  Brand assets, tokens, favicons
 ```
 
 ## Docs
 
-The documentation lives at [darknyx.gitbook.io/darknyx](https://darknyx.gitbook.io/darknyx), synced from the `gitbook/` directory in this repo.
+The documentation lives at [darknyx.mintlify.site](https://darknyx.mintlify.site) and is maintained in a separate repo. `darknyx.trade/docs` redirects there (see `next.config.ts`).
