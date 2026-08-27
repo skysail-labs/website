@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Minified output of the darknyx-showcase build, vendored into public/ to
+    // serve /demo. It is not authored here, and linting it reports hundreds of
+    // false positives that would drown real findings.
+    "public/demo/**",
   ]),
   {
     rules: {

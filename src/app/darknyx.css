@@ -454,6 +454,15 @@ html:has(.dn) {
   transform: scale(1.08);
 }
 
+/* A pill carrying no arrow disc. The disc is what gives `--pill` its height,
+   and `--pill`'s padding is left-heavy to make room for it, so a pill without
+   one collapses and sits off-centre. Restore the height explicitly and even the
+   padding out, keeping it the same size as the arrow pills it stands beside. */
+.dn .dn-btn--pill-plain {
+  min-height: 46px;
+  padding: 6px 24px;
+}
+
 /* Inline text link. Same specificity note as `.dn .dn-btn` above. */
 .dn .dn-link {
   display: inline-flex;

@@ -6,9 +6,21 @@ import type { ReactNode } from "react";
  * page never loses their place. In-page anchors and `mailto:` stay in place.
  *
  * `/docs` counts as leaving: it 301s to the Mintlify docs (see next.config.ts).
+ *
+ * `/demo` counts too, for a different reason: it is a self-contained static
+ * bundle in `public/demo/`, outside the Next router. Routing it through
+ * `next/link` would client-navigate to a route that does not exist and render
+ * not-found, so it needs a plain anchor and a real document load.
  */
 export function isOffsite(href: string) {
-  return /^https?:\/\//.test(href) || href === "/docs" || href.startsWith("/docs/");
+  return (
+    /^https?:\/\//.test(href) ||
+    href === "/docs" ||
+    href.startsWith("/docs/") ||
+    href === "/demo" ||
+    href.startsWith("/demo/") ||
+    href.startsWith("/demo?")
+  );
 }
 
 export function SiteLink({
