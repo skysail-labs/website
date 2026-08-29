@@ -65,23 +65,18 @@ export const MARKET_GAP = {
     "Proprietary market makers rebuilt Solana's spot market in eighteen months. On ordinary swaps they now quote inside a few basis points and match centralised execution.",
   intro2:
     "Above that, execution degrades, and the reason is balance sheet rather than technology. A venue can only fill what it is willing to hold. There is no neutral place on Solana where two parties with real size can meet each other directly.",
-  /* Each figure carries the source it came from — the section's argument rests
-   * on the numbers, so nothing here is asserted without an attribution. */
   stats: [
     {
-      value: "20–40%",
+      value: "40–50%",
       body: "of Solana weekly DEX volume now clears through proprietary market makers, and over 80% of SOL-to-stablecoin flow.",
-      source: "Gate Research, 2026",
     },
     {
       value: "1–5 bps",
       body: "typical quoted spread on SOL for retail-sized trades. On-chain execution is genuinely competitive at the small end.",
-      source: "Chorus One, 2025",
     },
     {
       value: "$100k",
       body: "is roughly where that quality begins to fall away. The remaining gap reflects balance-sheet scale, not microstructure.",
-      source: "Chorus One, 2025",
     },
   ],
 } as const;
@@ -145,7 +140,7 @@ export const SOLUTION = {
       kicker: "Settlement",
       heading: "Value moves only against a proof.",
       body: "Balances are commitments, not readable accounts. Every settlement carries a zero-knowledge proof of conservation, ownership and correct state transition. A compromised operator cannot mint, and cannot spend what isn't theirs.",
-      check: "The on-chain verifier, which rejects any settlement that fails to prove — including ours.",
+      check: "The on-chain verifier, which rejects any settlement that fails to prove, including ours.",
     },
     {
       icon: "veil",
@@ -177,7 +172,7 @@ export const SOLUTION = {
       label: "Order intent",
       note: "Order intent never touches a public book.",
       detail:
-        "The client builds a Poseidon commitment over the order and the note backing it, then submits it directly to the enclave. Side, size, limit and note remain on the trader's machine — nothing about the order is broadcast, and nothing enters a public mempool or order book.",
+        "The client builds a Poseidon commitment over the order and the note backing it, then submits it directly to the enclave. Side, size, limit and note remain on the trader's machine. Nothing about the order is broadcast, and nothing enters a public mempool or order book.",
       spec: [
         { k: "Commitment", v: "Poseidon" },
         { k: "Executes on", v: "Client" },

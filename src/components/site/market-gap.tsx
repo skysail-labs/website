@@ -25,7 +25,6 @@ export function MarketGap() {
             <Reveal key={stat.value} as="article" className="dn-stat" delay={i * 110}>
               <span className="dn-stat-n">{stat.value}</span>
               <p className="dn-stat-l">{stat.body}</p>
-              <p className="dn-stat-s">{stat.source}</p>
             </Reveal>
           ))}
         </div>
