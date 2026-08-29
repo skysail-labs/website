@@ -11,10 +11,6 @@ export function Hero() {
 
       <div className="dn-shell">
         <div className="dn-hero-inner">
-          <Reveal as="p" className="dn-eyebrow" delay={0} threshold={0}>
-            {HERO.eyebrow}
-          </Reveal>
-
           <Reveal as="h1" className="dn-display dn-display--hero" delay={90} threshold={0}>
             {HERO.headline}
           </Reveal>

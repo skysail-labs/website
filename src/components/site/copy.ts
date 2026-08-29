@@ -37,52 +37,91 @@ export const DEMO = {
 } as const;
 
 export const NAV_LINKS = [
+  { label: "The gap", href: "#market" },
+  { label: "Who it's for", href: "#counterparties" },
   { label: "Protocol", href: "#protocol" },
   { label: "Architecture", href: "#architecture" },
-  { label: "Thesis", href: "#thesis" },
   { label: "Docs", href: "/docs" },
   { label: "Contact", href: "#contact" },
 ] as const;
 
+/**
+ * The whitepaper is not published yet, so the CTA falls back to the docs.
+ * TODO(darknyx): point this at the real whitepaper URL once it exists.
+ */
+export const whitepaperHref = CONTACT.docs;
+
 export const HERO = {
-  eyebrow: "Private execution for Solana markets",
-  headline: "Move size without showing your hand.",
-  body: "Darknyx is a non-custodial private execution venue for professional traders. Orders are matched inside an attested confidential environment, while trade amounts and execution prices remain hidden during on-chain settlement.",
+  headline: "Private execution for Solana markets",
+  body: "Darknyx is a non-custodial venue where large orders meet privately. Matching runs inside an attested enclave; settlement is constrained by proofs on Solana.",
   primaryCta: "Talk to the team",
   secondaryCta: "Explore the protocol",
 } as const;
 
 export const MARKET_GAP = {
-  label: "The market gap",
-  title: "Large orders should not become public signals.",
+  label: "The gap",
+  title: "Solana solved retail execution. Size is still unsolved.",
   intro:
-    "Public markets expose more than transactions. They expose direction, size, urgency and strategy. For professional traders, that information can create adverse price movement before an order is fully executed.",
-  panels: [
+    "Proprietary market makers rebuilt Solana's spot market in eighteen months. On ordinary swaps they now quote inside a few basis points and match centralised execution.",
+  intro2:
+    "Above that, execution degrades, and the reason is balance sheet rather than technology. A venue can only fill what it is willing to hold. There is no neutral place on Solana where two parties with real size can meet each other directly.",
+  /* Each figure carries the source it came from — the section's argument rests
+   * on the numbers, so nothing here is asserted without an attribution. */
+  stats: [
     {
-      index: "01",
-      venue: "Public AMMs",
-      heading: "Open by design.",
-      body: "AMMs make liquidity permissionless and composable, but large trades remain visible and interact with public liquidity curves. Size becomes price impact, and execution intent becomes observable.",
+      value: "20–40%",
+      body: "of Solana weekly DEX volume now clears through proprietary market makers, and over 80% of SOL-to-stablecoin flow.",
+      source: "Gate Research, 2026",
     },
     {
-      index: "02",
-      venue: "PropAMMs",
-      heading: "Excellent retail execution. Limited institutional neutrality.",
-      body: "PropAMMs have significantly improved execution for ordinary swaps. Their proprietary pricing and balance-sheet-driven liquidity work well for retail-sized flow, but they remain dealer-controlled venues rather than neutral markets for confidential block execution.",
+      value: "1–5 bps",
+      body: "typical quoted spread on SOL for retail-sized trades. On-chain execution is genuinely competitive at the small end.",
+      source: "Chorus One, 2025",
     },
     {
-      index: "03",
-      venue: "Centralised exchanges",
-      heading: "Private, but not verifiable.",
-      body: "Centralised venues conceal orders from the public, but require traders to surrender custody and trust an opaque operator with balances, matching and settlement.",
+      value: "$100k",
+      body: "is roughly where that quality begins to fall away. The remaining gap reflects balance-sheet scale, not microstructure.",
+      source: "Chorus One, 2025",
     },
   ],
-  conclusion:
-    "The missing layer is a market-neutral venue where large orders can meet privately without sacrificing custody or verifiable settlement.",
-  transition: [
-    { text: "Transparent but exposed", state: "past" },
-    { text: "Private but trusted", state: "past" },
-    { text: "Private and verifiable", state: "now" },
+} as const;
+
+/* ---------------------------------------------------------------------------
+ * Who it's for
+ *
+ * The venue only works when both sides of a block show up, so the section is
+ * built as two counterparties facing each other across a spine rather than as
+ * a single audience pitch. Side A brings a position to put on; side B has one
+ * to take off.
+ * ------------------------------------------------------------------------- */
+export const COUNTERPARTIES = {
+  label: "Who it's for",
+  title: "Two counterparties, one venue.",
+  intro:
+    "One side has a position to put on. The other has one to take off. Neither can act publicly without announcing it. Darknyx crosses them at a fair reference price.",
+  sides: [
+    {
+      side: "a",
+      tag: "Funds, desks and large traders",
+      heading: "Execute the position, not the announcement.",
+      body: "Public liquidity reveals direction and urgency long before your order is finished.",
+      points: [
+        "Order intent never reaches a public book or mempool",
+        "No price impact — fills clear at a reference price, not along a curve",
+        "Signal interest in a block without revealing that you have one",
+      ],
+    },
+    {
+      side: "b",
+      tag: "Market makers",
+      heading: "Get flat without telling the market you need to.",
+      body: "Unwinding inventory in public costs spread and shows your hand.",
+      points: [
+        "Cross at the reference price, so neither side pays a spread",
+        "Rest interest privately, with no signal to competing quotes",
+        "Clear positions larger than your book wants to carry",
+      ],
+    },
   ],
 } as const;
 
@@ -90,27 +129,37 @@ export const SOLUTION = {
   label: "The protocol",
   title: "Private execution. Verifiable settlement.",
   intro:
-    "Darknyx separates execution confidentiality from settlement trust. Order intent remains inside an attested Intel TDX confidential VM, while Solana and zero-knowledge proofs constrain how assets and private balances may be updated.",
+    "Confidentiality that rests on a promise is not confidentiality. Each property below is enforced by something you can check yourself — an attestation, a proof, or a published parameter.",
+  /* Each pillar names its enforcement in `check`: the thing a trader can verify
+   * for themselves, so the property is not taken on trust. */
   pillars: [
     {
       icon: "flow",
-      heading: "Confidential order flow",
-      body: "Orders are submitted directly to the confidential execution environment. Side, size, limit and backing note never enter a public order book or L1 transaction.",
-    },
-    {
-      icon: "match",
-      heading: "Private matching",
-      body: "Private bids and asks are matched through a uniform-clearing-price auction inside the enclave, subject to market controls and an external TWAP circuit breaker.",
-    },
-    {
-      icon: "veil",
-      heading: "Hidden settlement details",
-      body: "Trade amounts and execution prices remain hidden on-chain. Traders receive their fills privately and recover their resulting note balances through the client.",
+      kicker: "Execution",
+      heading: "Matching runs inside a sealed enclave.",
+      body: "Order intent is encrypted directly to a confidential VM on attested hardware. Side, size and limit never enter a public book or an L1 transaction.",
+      check: "Remote attestation over the enclave measurement, before any order leaves your client.",
     },
     {
       icon: "vault",
-      heading: "Non-custodial, constrained settlement",
-      body: "Assets remain inside the Solana vault. Groth16 proofs constrain conservation, note creation, fees and valid balance transitions, while replay-protection accounts prevent double use.",
+      kicker: "Settlement",
+      heading: "Value moves only against a proof.",
+      body: "Balances are commitments, not readable accounts. Every settlement carries a zero-knowledge proof of conservation, ownership and correct state transition. A compromised operator cannot mint, and cannot spend what isn't theirs.",
+      check: "The on-chain verifier, which rejects any settlement that fails to prove — including ours.",
+    },
+    {
+      icon: "veil",
+      kicker: "Pricing",
+      heading: "Fills are confined to a reference band.",
+      body: "The venue cannot invent a price. Fills must land within a published band around an external reference, so we have no ability to fill you where the market wasn't.",
+      check: "Band width and reference source are public parameters, changed only through governance.",
+    },
+    {
+      icon: "match",
+      kicker: "Timing",
+      heading: "Orders clear in batches at a single price.",
+      body: "A uniform-price auction on a randomised cadence. There is no queue position to win and no latency edge to buy, which makes resting interest here safer than resting it in public.",
+      check: "One clearing price per batch, reported with the reference at the moment of the cross.",
     },
   ],
   /* The execution pipeline.
@@ -257,10 +306,17 @@ export const THESIS = {
   },
 } as const;
 
+export const WHITEPAPER = {
+  label: "Whitepaper",
+  title: "The full architecture, and the research behind it.",
+  body: "Venue design and market structure, the account-commitment state model, proof system and settlement pipeline, and the trust boundary set out in full with its limits.",
+  cta: "Read the whitepaper",
+} as const;
+
 export const CONTACT_SECTION = {
   label: "Contact",
-  title: "Speak with the team.",
-  body: "Darknyx is in active development on Solana devnet. We work directly with funds, market makers, treasuries and ecosystem partners ahead of the private mainnet beta.",
+  title: "Bring us the trade you'd rather nobody saw.",
+  body: "Darknyx is in active development on Solana. We work directly with funds, trading desks and market makers ahead of the private mainnet beta.",
   audiences: [
     "Funds and trading desks",
     "Market makers",

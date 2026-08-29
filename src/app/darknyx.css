@@ -941,204 +941,214 @@ html:has(.dn) {
 }
 
 /* ---------------------------------------------------------------------------
-   Market gap — three editorial panels
+   Market gap — three cited statistics
+   ----------------------------------------------------------------------------
+   A ruled datasheet, not cards: the section's argument rests on the numbers,
+   so they are set as a single measured row under one heavy top rule with the
+   sources named beneath each figure.
    ------------------------------------------------------------------------- */
 
-.dn-gap-grid {
+.dn-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(14px, 1.4vw, 20px);
-  margin-top: clamp(56px, 7vw, 96px);
+  margin-top: clamp(48px, 6vw, 84px);
+  border-top: 1px solid var(--dn-line-3);
 }
 
-/* Each alternative reads as its own object: a raised plate with a lit top
-   edge, rather than a column of text divided by hairlines. */
-.dn-gap-panel {
-  position: relative;
+.dn-stat {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  /* Bottom padding runs long so the three panels, whose copy lengths differ,
-     end on a common floor instead of leaving one with a ragged void. */
-  padding: 36px clamp(24px, 2.4vw, 34px) 40px;
-  overflow: hidden;
-  border: 1px solid var(--dn-line);
-  border-radius: var(--dn-r);
-  background: linear-gradient(to bottom, var(--dn-surface), var(--dn-bg-raised) 70%);
-  box-shadow: var(--dn-shadow-sm);
-  transition:
-    border-color var(--dn-t) var(--dn-ease),
-    transform var(--dn-t) var(--dn-ease),
-    box-shadow var(--dn-t) var(--dn-ease);
+  padding: 32px clamp(22px, 2.2vw, 34px) 8px;
+  border-right: 1px solid var(--dn-line);
 }
 
-/* Lit top edge, present at rest rather than only on hover. */
-.dn-gap-panel::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  z-index: 2;
-  background: linear-gradient(to right, var(--dn-gold), var(--dn-gold-faint) 78%, transparent);
-  transition: box-shadow var(--dn-t) var(--dn-ease);
+.dn-stat:first-child {
+  padding-left: 0;
 }
 
-.dn-gap-panel::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(110% 80% at 50% 0%, var(--dn-gold-wash), transparent 60%);
-  opacity: 0;
-  transition: opacity var(--dn-t) var(--dn-ease);
+.dn-stat:last-child {
+  padding-right: 0;
+  border-right: 0;
 }
 
-.dn-gap-panel > * {
-  position: relative;
-  z-index: 1;
-}
-
-.dn-gap-panel:hover {
-  border-color: var(--dn-line-2);
-  transform: translateY(-4px);
-  box-shadow: var(--dn-shadow-lg);
-}
-
-.dn-gap-panel:hover::before {
-  box-shadow: 0 0 18px var(--dn-gold-glow);
-}
-
-.dn-gap-panel:hover::after {
-  opacity: 1;
-}
-
-/* Ghosted numeral, set large enough to register as structure. */
-.dn-gap-index {
-  position: absolute;
-  top: 14px;
-  right: 20px;
+.dn-stat-n {
   font-family: var(--dn-serif);
-  font-size: clamp(2.8rem, 4vw, 3.6rem);
-  font-weight: 500;
+  font-weight: 600;
+  font-size: clamp(2.1rem, 3.4vw, 3rem);
   line-height: 1;
-  color: rgba(244, 241, 235, 0.08);
-  pointer-events: none;
-}
-
-/* The venue name is what should catch the eye first. */
-.dn-gap-venue {
-  font-family: var(--dn-serif);
-  font-weight: 600;
-  font-size: var(--dn-fs-title);
-  line-height: 1.14;
-  letter-spacing: -0.016em;
-  color: var(--dn-fg);
-  margin: 0;
-  padding-right: 52px; /* clears the numeral */
-  /* Two lines reserved: "Centralised exchanges" wraps, and without this its
-     whole panel would sit a line lower than the other two. */
-  min-height: 2.2em;
-}
-
-.dn-gap-verdict {
-  margin: 0;
-  padding-top: 14px;
-  border-top: 1px solid var(--dn-line);
-  font-family: var(--dn-serif);
-  font-style: italic;
-  font-size: clamp(1rem, 1.3vw, 1.15rem);
-  font-weight: 400;
-  line-height: 1.35;
+  letter-spacing: -0.03em;
   color: var(--dn-gold-bright);
-  /* Reserves the tallest verdict so the paragraphs below share one baseline
-     across the three columns: 14px padding + two lines at 1.35 line-height. */
-  min-height: calc(14px + 2.7em);
-  text-wrap: balance;
 }
 
-.dn-gap-conclusion {
-  margin-top: clamp(56px, 7vw, 88px);
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: clamp(28px, 4vw, 72px);
-  align-items: start;
-  padding-top: clamp(40px, 5vw, 60px);
-  border-top: 1px solid var(--dn-line);
+.dn-stat-l {
+  margin: 18px 0 0;
+  font-size: var(--dn-fs-body);
+  line-height: 1.62;
+  color: var(--dn-fg-2);
+  max-width: 34ch;
 }
 
-.dn-gap-conclusion p {
-  font-family: var(--dn-serif);
-  font-weight: 600;
-  font-size: clamp(1.5rem, 2.4vw, 2.1rem);
-  line-height: 1.28;
-  letter-spacing: -0.018em;
-  color: var(--dn-fg);
-  margin: 0;
-  text-wrap: balance;
-}
-
-/* Transition ladder: exposed → trusted → verifiable */
-.dn-transition {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  border: 1px solid var(--dn-line);
-  border-radius: 2px;
-  background: var(--dn-surface);
-}
-
-.dn-transition-step {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 20px 24px;
+/* Pushed to a common floor so the three attributions line up whatever the
+   paragraph above happens to run to. */
+.dn-stat-s {
+  margin: 22px 0 0;
   font-family: var(--dn-mono);
-  font-size: var(--dn-fs-label-lg);
-  letter-spacing: 0.14em;
+  font-size: var(--dn-fs-label-sm);
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--dn-fg-3);
 }
 
-.dn-transition-step + .dn-transition-step {
-  border-top: 1px solid var(--dn-line);
+@media (max-width: 760px) {
+  .dn-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .dn-stat {
+    padding: 26px 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--dn-line);
+  }
+
+  .dn-stat:last-child {
+    border-bottom: 0;
+  }
 }
 
-.dn-transition-step .dn-dot {
+/* ---------------------------------------------------------------------------
+   Who it's for — two counterparties across a spine
+   ------------------------------------------------------------------------- */
+
+.dn-spine {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  margin-top: clamp(48px, 6vw, 76px);
+}
+
+.dn-side {
+  display: flex;
+  flex-direction: column;
+  padding-inline: clamp(24px, 3.4vw, 52px);
+}
+
+.dn-side--a {
+  padding-left: 0;
+}
+
+.dn-side--b {
+  padding-right: 0;
+}
+
+/* The spine itself. A single mark rides its centre — the cross where the two
+   sides meet. */
+.dn-spine-rail {
+  position: relative;
+  background: var(--dn-line-2);
+}
+
+.dn-spine-rail::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  background: var(--dn-gold);
+  box-shadow: 0 0 12px var(--dn-gold-glow);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* Side A is the live signal (gold); side B is the counter-signal (steel), so
+   the two read as opposite sides of one trade rather than two audiences. */
+.dn-side-tag {
+  align-self: flex-start;
+  font-family: var(--dn-mono);
+  font-size: var(--dn-fs-label);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding-bottom: 14px;
+  border-bottom: 2px solid;
+}
+
+.dn-side--a .dn-side-tag {
+  color: var(--dn-gold);
+  border-color: var(--dn-gold-dim);
+}
+
+.dn-side--b .dn-side-tag {
+  color: var(--dn-steel);
+  border-color: var(--dn-steel-dim);
+}
+
+.dn-side-title {
+  font-family: var(--dn-serif);
+  font-weight: 600;
+  font-size: var(--dn-fs-title);
+  line-height: 1.14;
+  letter-spacing: -0.014em;
+  color: var(--dn-fg);
+  margin: 22px 0 0;
+  text-wrap: balance;
+}
+
+.dn-side .dn-body {
+  margin-top: 14px;
+  max-width: 40ch;
+}
+
+/* `.dn-side .dn-side-list` rather than a bare class: the `.dn ul` reset zeroes
+   margins at (0,1,1), which a single class cannot outrank. */
+.dn-side .dn-side-list {
+  margin-top: 26px;
+}
+
+.dn-side-list li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 14px 0;
+  border-top: 1px solid var(--dn-line);
+  font-size: var(--dn-fs-sm);
+  line-height: 1.5;
+  color: var(--dn-fg-2);
+}
+
+.dn-side-list li::before {
+  content: "";
   width: 6px;
   height: 6px;
-  border: 1px solid var(--dn-fg-4);
-  border-radius: 50%;
+  margin-top: 7px;
   flex: none;
 }
 
-.dn-transition-step[data-state="now"] {
-  color: var(--dn-fg);
-  background: linear-gradient(to right, rgba(224, 169, 74, 0.09), transparent 70%);
-  box-shadow: inset 2px 0 0 var(--dn-gold);
+.dn-side--a .dn-side-list li::before {
+  background: var(--dn-gold-dim);
 }
 
-.dn-transition-step[data-state="now"] .dn-dot {
-  background: var(--dn-gold);
-  border-color: var(--dn-gold);
-  box-shadow: 0 0 10px rgba(224, 169, 74, 0.8);
+.dn-side--b .dn-side-list li::before {
+  background: var(--dn-steel-dim);
 }
 
-@media (max-width: 900px) {
-  .dn-gap-grid {
+@media (max-width: 860px) {
+  .dn-spine {
     grid-template-columns: 1fr;
   }
 
-  /* Panels stack here, so there is no cross-column baseline to reserve for. */
-  .dn-gap-venue,
-  .dn-gap-verdict {
-    min-height: 0;
+  .dn-spine-rail {
+    display: none;
   }
 
-  .dn-gap-conclusion {
-    grid-template-columns: 1fr;
+  .dn-side {
+    padding-inline: 0;
+  }
+
+  .dn-side--b {
+    margin-top: 44px;
+    padding-top: 40px;
+    border-top: 1px solid var(--dn-line);
   }
 }
 
@@ -1265,6 +1275,51 @@ html:has(.dn) {
 
 .dn-pillar p {
   max-width: 44ch;
+}
+
+/* Icon and section kicker share the top line of the cell. */
+.dn-pillar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.dn-pillar-kicker {
+  font-family: var(--dn-mono);
+  font-size: var(--dn-fs-label-sm);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dn-fg-3);
+}
+
+/* The enforcement register — the thing a trader can check for themselves. It
+   is pushed to the foot of the cell so the four checks line up across the
+   grid, and the label is the only gold in the pillar, so the eye lands on the
+   verification rather than the claim. */
+.dn-pillar-check {
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--dn-line);
+}
+
+.dn-pillar-check-label {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--dn-mono);
+  font-size: var(--dn-fs-label-sm);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dn-gold);
+}
+
+.dn .dn-pillar-check p {
+  font-size: var(--dn-fs-sm);
+  line-height: 1.55;
+  color: var(--dn-fg-3);
+  margin: 0;
 }
 
 /* --- Execution pipeline ---
@@ -2043,6 +2098,42 @@ html:has(.dn) {
 
 .dn-thesis-closing .dn-body {
   color: var(--dn-fg-2);
+}
+
+/* ---------------------------------------------------------------------------
+   Whitepaper — a rule-framed doorway
+   ----------------------------------------------------------------------------
+   Deliberately quiet: two heavy rules top and bottom, copy on the left, a
+   single action on the right. It is a threshold between the argument and the
+   contact section, not another card.
+   ------------------------------------------------------------------------- */
+
+.dn-paper-cta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+  padding-block: clamp(36px, 4.5vw, 56px);
+  border-top: 1px solid var(--dn-line-3);
+  border-bottom: 1px solid var(--dn-line-3);
+}
+
+.dn-paper-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 62ch;
+}
+
+.dn-paper-copy .dn-title {
+  max-width: 22ch;
+}
+
+@media (max-width: 800px) {
+  .dn-paper-cta {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
 }
 
 /* ---------------------------------------------------------------------------

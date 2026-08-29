@@ -24,9 +24,16 @@ export function Solution() {
         <div className="dn-pillars">
           {SOLUTION.pillars.map((pillar, i) => (
             <Reveal key={pillar.heading} as="article" className="dn-pillar" delay={(i % 2) * 110}>
-              <PillarIcon name={pillar.icon as PillarIconName} className="dn-pillar-icon" />
+              <div className="dn-pillar-top">
+                <PillarIcon name={pillar.icon as PillarIconName} className="dn-pillar-icon" />
+                <span className="dn-pillar-kicker">{pillar.kicker}</span>
+              </div>
               <h3>{pillar.heading}</h3>
               <p className="dn-body">{pillar.body}</p>
+              <div className="dn-pillar-check">
+                <span className="dn-pillar-check-label">What you check</span>
+                <p>{pillar.check}</p>
+              </div>
             </Reveal>
           ))}
         </div>

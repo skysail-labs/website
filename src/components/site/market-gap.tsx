@@ -15,31 +15,19 @@ export function MarketGap() {
           <Reveal as="p" className="dn-lede" delay={160}>
             {MARKET_GAP.intro}
           </Reveal>
+          <Reveal as="p" className="dn-lede" delay={220}>
+            {MARKET_GAP.intro2}
+          </Reveal>
         </div>
 
-        <div className="dn-gap-grid">
-          {MARKET_GAP.panels.map((panel, i) => (
-            <Reveal key={panel.venue} as="article" className="dn-gap-panel" delay={i * 110}>
-              <span className="dn-gap-index" aria-hidden="true">
-                {panel.index}
-              </span>
-              <h3 className="dn-gap-venue">{panel.venue}</h3>
-              <p className="dn-gap-verdict">{panel.heading}</p>
-              <p className="dn-body">{panel.body}</p>
+        <div className="dn-stats">
+          {MARKET_GAP.stats.map((stat, i) => (
+            <Reveal key={stat.value} as="article" className="dn-stat" delay={i * 110}>
+              <span className="dn-stat-n">{stat.value}</span>
+              <p className="dn-stat-l">{stat.body}</p>
+              <p className="dn-stat-s">{stat.source}</p>
             </Reveal>
           ))}
-        </div>
-
-        <div className="dn-gap-conclusion">
-          <Reveal as="p">{MARKET_GAP.conclusion}</Reveal>
-          <Reveal as="div" className="dn-transition" delay={120}>
-            {MARKET_GAP.transition.map((step) => (
-              <div key={step.text} className="dn-transition-step" data-state={step.state}>
-                <span className="dn-dot" aria-hidden="true" />
-                {step.text}
-              </div>
-            ))}
-          </Reveal>
         </div>
       </div>
     </section>
