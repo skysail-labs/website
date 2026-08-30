@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
  * Anything that leaves the site opens in a new tab, so a visitor reading the
  * page never loses their place. In-page anchors and `mailto:` stay in place.
  *
- * `/docs` counts as leaving: it 301s to the Mintlify docs (see next.config.ts).
+ * `/docs` counts as leaving: it 301s to docs.darknyx.trade (see next.config.ts).
  *
  * `/demo` counts too, for a different reason: it is a self-contained static
  * bundle in `public/demo/`, outside the Next router. Routing it through

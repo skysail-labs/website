@@ -16,7 +16,7 @@
 export const CONTACT = {
   email: "" as string,
   x: "https://x.com/DarkNyxProtocol",
-  docs: "https://darknyx.mintlify.site",
+  docs: "https://docs.darknyx.trade",
 } as const;
 
 export const contactHref = CONTACT.email
@@ -27,13 +27,13 @@ export const contactHref = CONTACT.email
  * The interactive product demo, served as a static bundle from `public/demo/`.
  *
  * Everything it shows other than the price chart is a local simulation, and it
- * says so on every screen — so the label stays plain rather than implying live
+ * says so on every screen. The label is "Demo" so the nav never implies live
  * trading. `scenario=funded` seeds the walkthrough with balances so a first
  * visitor sees a populated venue instead of an empty one.
  */
 export const DEMO = {
   href: "/demo?scenario=funded",
-  label: "Launch app",
+  label: "Demo",
 } as const;
 
 export const NAV_LINKS = [

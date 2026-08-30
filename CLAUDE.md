@@ -22,7 +22,7 @@
 
 ## Docs
 
-Docs are hosted on Mintlify at [darknyx.mintlify.site](https://darknyx.mintlify.site) and live in a **separate repo** — they are not part of this repository. `darknyx.trade/docs` (and `/docs/*`) 301-redirects there; the redirect is defined in `next.config.ts`. To change where docs point, edit that redirect and the `CONTACT.docs` URL in `src/components/site/copy.ts`.
+Docs are hosted on Mintlify at [docs.darknyx.trade](https://docs.darknyx.trade) and live in a **separate repo** — they are not part of this repository. `darknyx.trade/docs` (and `/docs/*`) 301-redirects there; the redirect is defined in `next.config.ts`. To change where docs point, edit that redirect and the `CONTACT.docs` URL in `src/components/site/copy.ts`.
 
 ## Local dev
 

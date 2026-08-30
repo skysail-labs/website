@@ -44,7 +44,7 @@ export function SiteNav() {
           </div>
 
           <div className="dn-nav-end">
-            <SiteLink className="dn-btn dn-btn--primary dn-btn--pill dn-btn--pill-plain" href={DEMO.href}>
+            <SiteLink className="dn-btn dn-btn--ghost dn-btn--pill dn-btn--pill-plain" href={DEMO.href}>
               {DEMO.label}
             </SiteLink>
             <SiteLink className="dn-btn dn-btn--primary dn-btn--pill" href={contactHref}>
@@ -73,7 +73,7 @@ export function SiteNav() {
           </SiteLink>
         ))}
         <SiteLink
-          className="dn-btn dn-btn--primary dn-btn--pill dn-btn--pill-plain"
+          className="dn-btn dn-btn--ghost dn-btn--pill dn-btn--pill-plain"
           href={DEMO.href}
           onClick={() => setOpen(false)}
         >

@@ -13,4 +13,4 @@ Orders match inside a Confidential VM (Intel TDX). Funds are held in a shielded 
 
 ## Docs
 
-The documentation lives at [darknyx.mintlify.site](https://darknyx.mintlify.site) and is maintained in a separate repo. `darknyx.trade/docs` redirects there (see `next.config.ts`).
+The documentation lives at [docs.darknyx.trade](https://docs.darknyx.trade) and is maintained in a separate repo. `darknyx.trade/docs` redirects there (see `next.config.ts`).
