@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Lockup } from "./lockup";
 import { SiteLink } from "./site-link";
-import { XIcon } from "./icons";
+import { XIcon, GithubIcon } from "./icons";
 import { FOOTER, CONTACT } from "./copy";
 
 const YEAR = new Date().getFullYear();
@@ -39,6 +39,9 @@ export function SiteFooter() {
             © {YEAR} {FOOTER.legal}
           </span>
           <div className="dn-footer-social">
+            <SiteLink href={CONTACT.github} aria-label="Darknyx on GitHub">
+              <GithubIcon size={14} />
+            </SiteLink>
             <SiteLink href={CONTACT.x} aria-label="Darknyx on X">
               <XIcon size={13} />
             </SiteLink>

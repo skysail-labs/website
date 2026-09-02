@@ -16,6 +16,7 @@
 export const CONTACT = {
   email: "" as string,
   x: "https://x.com/DarkNyxProtocol",
+  github: "https://github.com/skysail-labs/darknyx",
   docs: "https://docs.darknyx.trade",
 } as const;
 
@@ -344,6 +345,7 @@ export const FOOTER = {
       title: "Company",
       links: [
         { label: "Contact", href: "#contact" },
+        { label: "GitHub", href: CONTACT.github },
         { label: "X / Twitter", href: CONTACT.x },
       ],
     },
